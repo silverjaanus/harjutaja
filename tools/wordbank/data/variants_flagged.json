@@ -1,0 +1,56 @@
+{
+  "flagged": [
+    {
+      "string": "libu",
+      "why": "HIGH. Real vulgar word: 'libu' = whore/slut, a very common insult. Generated as a non-word variant of 'lipu' (lipp = flag)."
+    },
+    {
+      "string": "suka",
+      "why": "MEDIUM. Real word (genitive of 'sukk' = stocking), but read aloud it is identical to the Russian swear word 'suka' (bitch), widely known to Estonian kids through youth slang and the 'cyka blyat' gaming meme."
+    },
+    {
+      "string": "sittika",
+      "why": "MEDIUM. Non-word variant of 'sitika' (sitikas = beetle); with the doubled t it audibly contains 'sitt' (= shit)."
+    },
+    {
+      "string": "sittikas",
+      "why": "MEDIUM. Non-word variant of 'sitikas' (beetle); with the doubled t it audibly contains 'sitt' (= shit)."
+    },
+    {
+      "string": "sittikat",
+      "why": "MEDIUM. Non-word variant of 'sitikat' (beetle, partitive); with the doubled t it audibly contains 'sitt' (= shit)."
+    },
+    {
+      "string": "keppi",
+      "why": "MEDIUM-LOW. Primary meaning innocent (partitive of 'kepp' = stick), but 'keppi'/'keppima' is very common vulgar slang for sex ('keppi tegema/saama'). Judgment call."
+    },
+    {
+      "string": "kepi",
+      "why": "LOW. Genitive of 'kepp' = stick; same lemma as the vulgar slang 'keppima' (to fuck). Innocent on its own; flagged only together with 'keppi'."
+    },
+    {
+      "string": "pagane",
+      "why": "LOW. Real word: 'pagan/pagane' = heathen, but 'pagana!/pagane' is a common mild curse (like 'damn'). Generated as a non-word variant of 'pakane' (frost)."
+    },
+    {
+      "string": "kaku",
+      "why": "LOW (giggle). Real form (genitive of 'kakk' = owl / bun), but one vowel away from 'kaka' (poop); likely to make 9-year-olds giggle."
+    },
+    {
+      "string": "kakku",
+      "why": "LOW (giggle). Real form (partitive of 'kakk' = owl / bun), but sounds very close to 'kaka' (poop); likely giggle trigger."
+    },
+    {
+      "string": "sitika",
+      "why": "LOW (giggle). Real word: 'sitikas' = beetle (standard, used in children's books), but it is etymologically from 'sitt' (shit) and the 'sit-' start may trigger giggles. Keep if you want the base word."
+    },
+    {
+      "string": "sitikas",
+      "why": "LOW (giggle). Real word: 'sitikas' = beetle; derived from 'sitt' (shit), 'sit-' start may trigger giggles."
+    },
+    {
+      "string": "sitikat",
+      "why": "LOW (giggle). Real word: partitive of 'sitikas' = beetle; derived from 'sitt' (shit), 'sit-' start may trigger giggles."
+    }
+  ]
+}

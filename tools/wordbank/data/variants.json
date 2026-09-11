@@ -1,0 +1,4607 @@
+[
+ {
+  "word": "abi",
+  "id": "abi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "agen",
+  "id": "agen",
+  "kind": "lyhike"
+ },
+ {
+  "word": "agent",
+  "id": "agent",
+  "kind": "lyhike"
+ },
+ {
+  "word": "aken",
+  "id": "aken",
+  "kind": "pikk"
+ },
+ {
+  "word": "akent",
+  "id": "akent",
+  "kind": "pikk"
+ },
+ {
+  "word": "akken",
+  "id": "akken",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "akkent",
+  "id": "akkent",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "api",
+  "id": "api",
+  "kind": "pikk"
+ },
+ {
+  "word": "appi",
+  "id": "appi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "habe",
+  "id": "habe",
+  "kind": "lyhike"
+ },
+ {
+  "word": "habeme",
+  "id": "habeme",
+  "kind": "lyhike"
+ },
+ {
+  "word": "habet",
+  "id": "habet",
+  "kind": "lyhike"
+ },
+ {
+  "word": "habu",
+  "id": "habu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "habut",
+  "id": "habut",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hape",
+  "id": "hape",
+  "kind": "pikk"
+ },
+ {
+  "word": "hapeme",
+  "id": "hapeme",
+  "kind": "pikk"
+ },
+ {
+  "word": "hapet",
+  "id": "hapet",
+  "kind": "pikk"
+ },
+ {
+  "word": "happe",
+  "id": "happe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "happeme",
+  "id": "happeme",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "happet",
+  "id": "happet",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "happu",
+  "id": "happu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "happut",
+  "id": "happut",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hapu",
+  "id": "hapu",
+  "kind": "pikk"
+ },
+ {
+  "word": "haput",
+  "id": "haput",
+  "kind": "pikk"
+ },
+ {
+  "word": "higi",
+  "id": "higi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hiki",
+  "id": "hiki",
+  "kind": "pikk"
+ },
+ {
+  "word": "hikki",
+  "id": "hikki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hobune",
+  "id": "hobune",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hobuse",
+  "id": "hobuse",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hobust",
+  "id": "hobust",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hoppune",
+  "id": "hoppune",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hoppuse",
+  "id": "hoppuse",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hoppust",
+  "id": "hoppust",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hopune",
+  "id": "hopune",
+  "kind": "pikk"
+ },
+ {
+  "word": "hopuse",
+  "id": "hopuse",
+  "kind": "pikk"
+ },
+ {
+  "word": "hopust",
+  "id": "hopust",
+  "kind": "pikk"
+ },
+ {
+  "word": "häbi",
+  "id": "h2bi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "häda",
+  "id": "h2da",
+  "kind": "lyhike"
+ },
+ {
+  "word": "häpi",
+  "id": "h2pi",
+  "kind": "pikk"
+ },
+ {
+  "word": "häppi",
+  "id": "h2ppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "häta",
+  "id": "h2ta",
+  "kind": "pikk"
+ },
+ {
+  "word": "hätta",
+  "id": "h2tta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hõbe",
+  "id": "h6be",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hõbeda",
+  "id": "h6beda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hõbedat",
+  "id": "h6bedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "hõpe",
+  "id": "h6pe",
+  "kind": "pikk"
+ },
+ {
+  "word": "hõpeda",
+  "id": "h6peda",
+  "kind": "pikk"
+ },
+ {
+  "word": "hõpedat",
+  "id": "h6pedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "hõppe",
+  "id": "h6ppe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hõppeda",
+  "id": "h6ppeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "hõppedat",
+  "id": "h6ppedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "igav",
+  "id": "igav",
+  "kind": "lyhike"
+ },
+ {
+  "word": "igava",
+  "id": "igava",
+  "kind": "lyhike"
+ },
+ {
+  "word": "igavat",
+  "id": "igavat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ikav",
+  "id": "ikav",
+  "kind": "pikk"
+ },
+ {
+  "word": "ikava",
+  "id": "ikava",
+  "kind": "pikk"
+ },
+ {
+  "word": "ikavat",
+  "id": "ikavat",
+  "kind": "pikk"
+ },
+ {
+  "word": "ikkav",
+  "id": "ikkav",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "ikkava",
+  "id": "ikkava",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "ikkavat",
+  "id": "ikkavat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "jagi",
+  "id": "jagi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jaki",
+  "id": "jaki",
+  "kind": "pikk"
+ },
+ {
+  "word": "jakki",
+  "id": "jakki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "jobe",
+  "id": "jobe",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jobet",
+  "id": "jobet",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jope",
+  "id": "jope",
+  "kind": "pikk"
+ },
+ {
+  "word": "jopet",
+  "id": "jopet",
+  "kind": "pikk"
+ },
+ {
+  "word": "joppe",
+  "id": "joppe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "joppet",
+  "id": "joppet",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "jube",
+  "id": "jube",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jubeda",
+  "id": "jubeda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jubedat",
+  "id": "jubedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "judu",
+  "id": "judu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "juduka",
+  "id": "juduka",
+  "kind": "lyhike"
+ },
+ {
+  "word": "judukas",
+  "id": "judukas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "judukat",
+  "id": "judukat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jupe",
+  "id": "jupe",
+  "kind": "pikk"
+ },
+ {
+  "word": "jupeda",
+  "id": "jupeda",
+  "kind": "pikk"
+ },
+ {
+  "word": "jupedat",
+  "id": "jupedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "juppe",
+  "id": "juppe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "juppeda",
+  "id": "juppeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "juppedat",
+  "id": "juppedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "juttu",
+  "id": "juttu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "juttuka",
+  "id": "juttuka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "juttukas",
+  "id": "juttukas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "juttukat",
+  "id": "juttukat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "jutu",
+  "id": "jutu",
+  "kind": "pikk"
+ },
+ {
+  "word": "jutuka",
+  "id": "jutuka",
+  "kind": "pikk"
+ },
+ {
+  "word": "jutukas",
+  "id": "jutukas",
+  "kind": "pikk"
+ },
+ {
+  "word": "jutukat",
+  "id": "jutukat",
+  "kind": "pikk"
+ },
+ {
+  "word": "jõge",
+  "id": "j6ge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jõgi",
+  "id": "j6gi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "jõke",
+  "id": "j6ke",
+  "kind": "pikk"
+ },
+ {
+  "word": "jõki",
+  "id": "j6ki",
+  "kind": "pikk"
+ },
+ {
+  "word": "jõkke",
+  "id": "j6kke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "jõkki",
+  "id": "j6kki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kabe",
+  "id": "kabe",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kabet",
+  "id": "kabet",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kabi",
+  "id": "kabi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadaka",
+  "id": "kadaka",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadakas",
+  "id": "kadakas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadakat",
+  "id": "kadakat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kade",
+  "id": "kade",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadeda",
+  "id": "kadeda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadedat",
+  "id": "kadedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadus",
+  "id": "kadus",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kaduse",
+  "id": "kaduse",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kadust",
+  "id": "kadust",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kagu",
+  "id": "kagu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kakku",
+  "id": "kakku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kaku",
+  "id": "kaku",
+  "kind": "pikk"
+ },
+ {
+  "word": "kape",
+  "id": "kape",
+  "kind": "pikk"
+ },
+ {
+  "word": "kapet",
+  "id": "kapet",
+  "kind": "pikk"
+ },
+ {
+  "word": "kapi",
+  "id": "kapi",
+  "kind": "pikk"
+ },
+ {
+  "word": "kappe",
+  "id": "kappe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kappet",
+  "id": "kappet",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kappi",
+  "id": "kappi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kataka",
+  "id": "kataka",
+  "kind": "pikk"
+ },
+ {
+  "word": "katakas",
+  "id": "katakas",
+  "kind": "pikk"
+ },
+ {
+  "word": "katakat",
+  "id": "katakat",
+  "kind": "pikk"
+ },
+ {
+  "word": "kate",
+  "id": "kate",
+  "kind": "pikk"
+ },
+ {
+  "word": "kateda",
+  "id": "kateda",
+  "kind": "pikk"
+ },
+ {
+  "word": "katedat",
+  "id": "katedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "kattaka",
+  "id": "kattaka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kattakas",
+  "id": "kattakas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kattakat",
+  "id": "kattakat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "katte",
+  "id": "katte",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "katteda",
+  "id": "katteda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kattedat",
+  "id": "kattedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kattus",
+  "id": "kattus",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kattuse",
+  "id": "kattuse",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kattust",
+  "id": "kattust",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "katus",
+  "id": "katus",
+  "kind": "pikk"
+ },
+ {
+  "word": "katuse",
+  "id": "katuse",
+  "kind": "pikk"
+ },
+ {
+  "word": "katust",
+  "id": "katust",
+  "kind": "pikk"
+ },
+ {
+  "word": "kebi",
+  "id": "kebi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kedi",
+  "id": "kedi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kepi",
+  "id": "kepi",
+  "kind": "pikk"
+ },
+ {
+  "word": "keppi",
+  "id": "keppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "keti",
+  "id": "keti",
+  "kind": "pikk"
+ },
+ {
+  "word": "ketti",
+  "id": "ketti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kibe",
+  "id": "kibe",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kibeda",
+  "id": "kibeda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kibedat",
+  "id": "kibedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kipe",
+  "id": "kipe",
+  "kind": "pikk"
+ },
+ {
+  "word": "kipeda",
+  "id": "kipeda",
+  "kind": "pikk"
+ },
+ {
+  "word": "kipedat",
+  "id": "kipedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "kippe",
+  "id": "kippe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kippeda",
+  "id": "kippeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kippedat",
+  "id": "kippedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kodi",
+  "id": "kodi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kodu",
+  "id": "kodu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kodud",
+  "id": "kodud",
+  "kind": "lyhike"
+ },
+ {
+  "word": "koga",
+  "id": "koga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "koka",
+  "id": "koka",
+  "kind": "pikk"
+ },
+ {
+  "word": "kokka",
+  "id": "kokka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "koti",
+  "id": "koti",
+  "kind": "pikk"
+ },
+ {
+  "word": "kotti",
+  "id": "kotti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kottu",
+  "id": "kottu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kottud",
+  "id": "kottud",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kotu",
+  "id": "kotu",
+  "kind": "pikk"
+ },
+ {
+  "word": "kotud",
+  "id": "kotud",
+  "kind": "pikk"
+ },
+ {
+  "word": "krabi",
+  "id": "krabi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "krabid",
+  "id": "krabid",
+  "kind": "lyhike"
+ },
+ {
+  "word": "krapi",
+  "id": "krapi",
+  "kind": "pikk"
+ },
+ {
+  "word": "krapid",
+  "id": "krapid",
+  "kind": "pikk"
+ },
+ {
+  "word": "krappi",
+  "id": "krappi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "krappid",
+  "id": "krappid",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kuge",
+  "id": "kuge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kuke",
+  "id": "kuke",
+  "kind": "pikk"
+ },
+ {
+  "word": "kukke",
+  "id": "kukke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käba",
+  "id": "k2ba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "käbi",
+  "id": "k2bi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "käbid",
+  "id": "k2bid",
+  "kind": "lyhike"
+ },
+ {
+  "word": "käbik",
+  "id": "k2bik",
+  "kind": "lyhike"
+ },
+ {
+  "word": "käbiku",
+  "id": "k2biku",
+  "kind": "lyhike"
+ },
+ {
+  "word": "käbikut",
+  "id": "k2bikut",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kägu",
+  "id": "k2gu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "käkku",
+  "id": "k2kku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käku",
+  "id": "k2ku",
+  "kind": "pikk"
+ },
+ {
+  "word": "käpa",
+  "id": "k2pa",
+  "kind": "pikk"
+ },
+ {
+  "word": "käpi",
+  "id": "k2pi",
+  "kind": "pikk"
+ },
+ {
+  "word": "käpid",
+  "id": "k2pid",
+  "kind": "pikk"
+ },
+ {
+  "word": "käpik",
+  "id": "k2pik",
+  "kind": "pikk"
+ },
+ {
+  "word": "käpiku",
+  "id": "k2piku",
+  "kind": "pikk"
+ },
+ {
+  "word": "käpikut",
+  "id": "k2pikut",
+  "kind": "pikk"
+ },
+ {
+  "word": "käppa",
+  "id": "k2ppa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käppi",
+  "id": "k2ppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käppid",
+  "id": "k2ppid",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käppik",
+  "id": "k2ppik",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käppiku",
+  "id": "k2ppiku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "käppikut",
+  "id": "k2ppikut",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "kübar",
+  "id": "kybar",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kübara",
+  "id": "kybara",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kübarat",
+  "id": "kybarat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "kügi",
+  "id": "kygi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "küki",
+  "id": "kyki",
+  "kind": "pikk"
+ },
+ {
+  "word": "kükki",
+  "id": "kykki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "küpar",
+  "id": "kypar",
+  "kind": "pikk"
+ },
+ {
+  "word": "küpara",
+  "id": "kypara",
+  "kind": "pikk"
+ },
+ {
+  "word": "küparat",
+  "id": "kyparat",
+  "kind": "pikk"
+ },
+ {
+  "word": "küppar",
+  "id": "kyppar",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "küppara",
+  "id": "kyppara",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "küpparat",
+  "id": "kypparat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "labi",
+  "id": "labi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "labida",
+  "id": "labida",
+  "kind": "lyhike"
+ },
+ {
+  "word": "labidas",
+  "id": "labidas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "labidat",
+  "id": "labidat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ladi",
+  "id": "ladi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "laga",
+  "id": "laga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lage",
+  "id": "lage",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lagi",
+  "id": "lagi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "laka",
+  "id": "laka",
+  "kind": "pikk"
+ },
+ {
+  "word": "lake",
+  "id": "lake",
+  "kind": "pikk"
+ },
+ {
+  "word": "laki",
+  "id": "laki",
+  "kind": "pikk"
+ },
+ {
+  "word": "lakka",
+  "id": "lakka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lakke",
+  "id": "lakke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lakki",
+  "id": "lakki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lapi",
+  "id": "lapi",
+  "kind": "pikk"
+ },
+ {
+  "word": "lapida",
+  "id": "lapida",
+  "kind": "pikk"
+ },
+ {
+  "word": "lapidas",
+  "id": "lapidas",
+  "kind": "pikk"
+ },
+ {
+  "word": "lapidat",
+  "id": "lapidat",
+  "kind": "pikk"
+ },
+ {
+  "word": "lappi",
+  "id": "lappi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lappida",
+  "id": "lappida",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lappidas",
+  "id": "lappidas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lappidat",
+  "id": "lappidat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lati",
+  "id": "lati",
+  "kind": "pikk"
+ },
+ {
+  "word": "latti",
+  "id": "latti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "libe",
+  "id": "libe",
+  "kind": "lyhike"
+ },
+ {
+  "word": "libeda",
+  "id": "libeda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "libedat",
+  "id": "libedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "libu",
+  "id": "libu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lipe",
+  "id": "lipe",
+  "kind": "pikk"
+ },
+ {
+  "word": "lipeda",
+  "id": "lipeda",
+  "kind": "pikk"
+ },
+ {
+  "word": "lipedat",
+  "id": "lipedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "lippe",
+  "id": "lippe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lippeda",
+  "id": "lippeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lippedat",
+  "id": "lippedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lippu",
+  "id": "lippu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lipu",
+  "id": "lipu",
+  "kind": "pikk"
+ },
+ {
+  "word": "logi",
+  "id": "logi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "loki",
+  "id": "loki",
+  "kind": "pikk"
+ },
+ {
+  "word": "lokki",
+  "id": "lokki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "luba",
+  "id": "luba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ludi",
+  "id": "ludi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "luge",
+  "id": "luge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lugu",
+  "id": "lugu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lugud",
+  "id": "lugud",
+  "kind": "lyhike"
+ },
+ {
+  "word": "luke",
+  "id": "luke",
+  "kind": "pikk"
+ },
+ {
+  "word": "lukke",
+  "id": "lukke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lukku",
+  "id": "lukku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lukkud",
+  "id": "lukkud",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "luku",
+  "id": "luku",
+  "kind": "pikk"
+ },
+ {
+  "word": "lukud",
+  "id": "lukud",
+  "kind": "pikk"
+ },
+ {
+  "word": "lupa",
+  "id": "lupa",
+  "kind": "pikk"
+ },
+ {
+  "word": "luppa",
+  "id": "luppa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "luti",
+  "id": "luti",
+  "kind": "pikk"
+ },
+ {
+  "word": "lutti",
+  "id": "lutti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõbu",
+  "id": "l6bu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõbud",
+  "id": "l6bud",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõbus",
+  "id": "l6bus",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõbusa",
+  "id": "l6busa",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõbusat",
+  "id": "l6busat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõge",
+  "id": "l6ge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõget",
+  "id": "l6get",
+  "kind": "lyhike"
+ },
+ {
+  "word": "lõke",
+  "id": "l6ke",
+  "kind": "pikk"
+ },
+ {
+  "word": "lõket",
+  "id": "l6ket",
+  "kind": "pikk"
+ },
+ {
+  "word": "lõkke",
+  "id": "l6kke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõkket",
+  "id": "l6kket",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõppu",
+  "id": "l6ppu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõppud",
+  "id": "l6ppud",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõppus",
+  "id": "l6ppus",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõppusa",
+  "id": "l6ppusa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõppusat",
+  "id": "l6ppusat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "lõpu",
+  "id": "l6pu",
+  "kind": "pikk"
+ },
+ {
+  "word": "lõpud",
+  "id": "l6pud",
+  "kind": "pikk"
+ },
+ {
+  "word": "lõpus",
+  "id": "l6pus",
+  "kind": "pikk"
+ },
+ {
+  "word": "lõpusa",
+  "id": "l6pusa",
+  "kind": "pikk"
+ },
+ {
+  "word": "lõpusat",
+  "id": "l6pusat",
+  "kind": "pikk"
+ },
+ {
+  "word": "madal",
+  "id": "madal",
+  "kind": "lyhike"
+ },
+ {
+  "word": "madala",
+  "id": "madala",
+  "kind": "lyhike"
+ },
+ {
+  "word": "madalat",
+  "id": "madalat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "madu",
+  "id": "madu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mage",
+  "id": "mage",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mageda",
+  "id": "mageda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "magedat",
+  "id": "magedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "magu",
+  "id": "magu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "magus",
+  "id": "magus",
+  "kind": "lyhike"
+ },
+ {
+  "word": "magusa",
+  "id": "magusa",
+  "kind": "lyhike"
+ },
+ {
+  "word": "magusat",
+  "id": "magusat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "make",
+  "id": "make",
+  "kind": "pikk"
+ },
+ {
+  "word": "makeda",
+  "id": "makeda",
+  "kind": "pikk"
+ },
+ {
+  "word": "makedat",
+  "id": "makedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "makke",
+  "id": "makke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "makkeda",
+  "id": "makkeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "makkedat",
+  "id": "makkedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "makku",
+  "id": "makku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "makkus",
+  "id": "makkus",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "makkusa",
+  "id": "makkusa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "makkusat",
+  "id": "makkusat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "maku",
+  "id": "maku",
+  "kind": "pikk"
+ },
+ {
+  "word": "makus",
+  "id": "makus",
+  "kind": "pikk"
+ },
+ {
+  "word": "makusa",
+  "id": "makusa",
+  "kind": "pikk"
+ },
+ {
+  "word": "makusat",
+  "id": "makusat",
+  "kind": "pikk"
+ },
+ {
+  "word": "matal",
+  "id": "matal",
+  "kind": "pikk"
+ },
+ {
+  "word": "matala",
+  "id": "matala",
+  "kind": "pikk"
+ },
+ {
+  "word": "matalat",
+  "id": "matalat",
+  "kind": "pikk"
+ },
+ {
+  "word": "mattal",
+  "id": "mattal",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mattala",
+  "id": "mattala",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mattalat",
+  "id": "mattalat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mattu",
+  "id": "mattu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "matu",
+  "id": "matu",
+  "kind": "pikk"
+ },
+ {
+  "word": "mobi",
+  "id": "mobi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mopi",
+  "id": "mopi",
+  "kind": "pikk"
+ },
+ {
+  "word": "moppi",
+  "id": "moppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "muda",
+  "id": "muda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "muder",
+  "id": "muder",
+  "kind": "lyhike"
+ },
+ {
+  "word": "muduka",
+  "id": "muduka",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mudukas",
+  "id": "mudukas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mudukat",
+  "id": "mudukat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mugav",
+  "id": "mugav",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mugava",
+  "id": "mugava",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mugavat",
+  "id": "mugavat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mukav",
+  "id": "mukav",
+  "kind": "pikk"
+ },
+ {
+  "word": "mukava",
+  "id": "mukava",
+  "kind": "pikk"
+ },
+ {
+  "word": "mukavat",
+  "id": "mukavat",
+  "kind": "pikk"
+ },
+ {
+  "word": "mukkav",
+  "id": "mukkav",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mukkava",
+  "id": "mukkava",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mukkavat",
+  "id": "mukkavat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "muta",
+  "id": "muta",
+  "kind": "pikk"
+ },
+ {
+  "word": "muter",
+  "id": "muter",
+  "kind": "pikk"
+ },
+ {
+  "word": "mutta",
+  "id": "mutta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mutter",
+  "id": "mutter",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "muttuka",
+  "id": "muttuka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "muttukas",
+  "id": "muttukas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "muttukat",
+  "id": "muttukat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mutuka",
+  "id": "mutuka",
+  "kind": "pikk"
+ },
+ {
+  "word": "mutukas",
+  "id": "mutukas",
+  "kind": "pikk"
+ },
+ {
+  "word": "mutukat",
+  "id": "mutukat",
+  "kind": "pikk"
+ },
+ {
+  "word": "mäge",
+  "id": "m2ge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mäger",
+  "id": "m2ger",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mägi",
+  "id": "m2gi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "mäke",
+  "id": "m2ke",
+  "kind": "pikk"
+ },
+ {
+  "word": "mäker",
+  "id": "m2ker",
+  "kind": "pikk"
+ },
+ {
+  "word": "mäki",
+  "id": "m2ki",
+  "kind": "pikk"
+ },
+ {
+  "word": "mäkke",
+  "id": "m2kke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mäkker",
+  "id": "m2kker",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "mäkki",
+  "id": "m2kki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "naba",
+  "id": "naba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "napa",
+  "id": "napa",
+  "kind": "pikk"
+ },
+ {
+  "word": "nappa",
+  "id": "nappa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nibi",
+  "id": "nibi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nigel",
+  "id": "nigel",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nigela",
+  "id": "nigela",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nigelat",
+  "id": "nigelat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nikel",
+  "id": "nikel",
+  "kind": "pikk"
+ },
+ {
+  "word": "nikela",
+  "id": "nikela",
+  "kind": "pikk"
+ },
+ {
+  "word": "nikelat",
+  "id": "nikelat",
+  "kind": "pikk"
+ },
+ {
+  "word": "nikkel",
+  "id": "nikkel",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nikkela",
+  "id": "nikkela",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nikkelat",
+  "id": "nikkelat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nipi",
+  "id": "nipi",
+  "kind": "pikk"
+ },
+ {
+  "word": "nippi",
+  "id": "nippi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "noga",
+  "id": "noga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "noka",
+  "id": "noka",
+  "kind": "pikk"
+ },
+ {
+  "word": "nokka",
+  "id": "nokka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nubu",
+  "id": "nubu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nubuka",
+  "id": "nubuka",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nubukas",
+  "id": "nubukas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nubukat",
+  "id": "nubukat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nudu",
+  "id": "nudu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nuga",
+  "id": "nuga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nuge",
+  "id": "nuge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nuger",
+  "id": "nuger",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nugu",
+  "id": "nugu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nuka",
+  "id": "nuka",
+  "kind": "pikk"
+ },
+ {
+  "word": "nuke",
+  "id": "nuke",
+  "kind": "pikk"
+ },
+ {
+  "word": "nuker",
+  "id": "nuker",
+  "kind": "pikk"
+ },
+ {
+  "word": "nukka",
+  "id": "nukka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nukke",
+  "id": "nukke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nukker",
+  "id": "nukker",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nukku",
+  "id": "nukku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nuku",
+  "id": "nuku",
+  "kind": "pikk"
+ },
+ {
+  "word": "nuppu",
+  "id": "nuppu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nuppuka",
+  "id": "nuppuka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nuppukas",
+  "id": "nuppukas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nuppukat",
+  "id": "nuppukat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nupu",
+  "id": "nupu",
+  "kind": "pikk"
+ },
+ {
+  "word": "nupuka",
+  "id": "nupuka",
+  "kind": "pikk"
+ },
+ {
+  "word": "nupukas",
+  "id": "nupukas",
+  "kind": "pikk"
+ },
+ {
+  "word": "nupukat",
+  "id": "nupukat",
+  "kind": "pikk"
+ },
+ {
+  "word": "nuttu",
+  "id": "nuttu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nutu",
+  "id": "nutu",
+  "kind": "pikk"
+ },
+ {
+  "word": "näbits",
+  "id": "n2bits",
+  "kind": "lyhike"
+ },
+ {
+  "word": "näbitsa",
+  "id": "n2bitsa",
+  "kind": "lyhike"
+ },
+ {
+  "word": "näbitsat",
+  "id": "n2bitsat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "näbu",
+  "id": "n2bu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nägu",
+  "id": "n2gu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nägus",
+  "id": "n2gus",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nägusa",
+  "id": "n2gusa",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nägusat",
+  "id": "n2gusat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "näkku",
+  "id": "n2kku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näkkus",
+  "id": "n2kkus",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näkkusa",
+  "id": "n2kkusa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näkkusat",
+  "id": "n2kkusat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näku",
+  "id": "n2ku",
+  "kind": "pikk"
+ },
+ {
+  "word": "näkus",
+  "id": "n2kus",
+  "kind": "pikk"
+ },
+ {
+  "word": "näkusa",
+  "id": "n2kusa",
+  "kind": "pikk"
+ },
+ {
+  "word": "näkusat",
+  "id": "n2kusat",
+  "kind": "pikk"
+ },
+ {
+  "word": "näpits",
+  "id": "n2pits",
+  "kind": "pikk"
+ },
+ {
+  "word": "näpitsa",
+  "id": "n2pitsa",
+  "kind": "pikk"
+ },
+ {
+  "word": "näpitsat",
+  "id": "n2pitsat",
+  "kind": "pikk"
+ },
+ {
+  "word": "näppits",
+  "id": "n2ppits",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näppitsa",
+  "id": "n2ppitsa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näppitsat",
+  "id": "n2ppitsat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näppu",
+  "id": "n2ppu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "näpu",
+  "id": "n2pu",
+  "kind": "pikk"
+ },
+ {
+  "word": "nõges",
+  "id": "n6ges",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nõgese",
+  "id": "n6gese",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nõgest",
+  "id": "n6gest",
+  "kind": "lyhike"
+ },
+ {
+  "word": "nõkes",
+  "id": "n6kes",
+  "kind": "pikk"
+ },
+ {
+  "word": "nõkese",
+  "id": "n6kese",
+  "kind": "pikk"
+ },
+ {
+  "word": "nõkest",
+  "id": "n6kest",
+  "kind": "pikk"
+ },
+ {
+  "word": "nõkkes",
+  "id": "n6kkes",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nõkkese",
+  "id": "n6kkese",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nõkkest",
+  "id": "n6kkest",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "odav",
+  "id": "odav",
+  "kind": "lyhike"
+ },
+ {
+  "word": "odava",
+  "id": "odava",
+  "kind": "lyhike"
+ },
+ {
+  "word": "odavat",
+  "id": "odavat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "oga",
+  "id": "oga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ogas",
+  "id": "ogas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ogast",
+  "id": "ogast",
+  "kind": "lyhike"
+ },
+ {
+  "word": "oka",
+  "id": "oka",
+  "kind": "pikk"
+ },
+ {
+  "word": "okas",
+  "id": "okas",
+  "kind": "pikk"
+ },
+ {
+  "word": "okast",
+  "id": "okast",
+  "kind": "pikk"
+ },
+ {
+  "word": "okka",
+  "id": "okka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "okkas",
+  "id": "okkas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "okkast",
+  "id": "okkast",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "otav",
+  "id": "otav",
+  "kind": "pikk"
+ },
+ {
+  "word": "otava",
+  "id": "otava",
+  "kind": "pikk"
+ },
+ {
+  "word": "otavat",
+  "id": "otavat",
+  "kind": "pikk"
+ },
+ {
+  "word": "ottav",
+  "id": "ottav",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "ottava",
+  "id": "ottava",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "ottavat",
+  "id": "ottavat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "paber",
+  "id": "paber",
+  "kind": "lyhike"
+ },
+ {
+  "word": "paberi",
+  "id": "paberi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "paberit",
+  "id": "paberit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pabi",
+  "id": "pabi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pada",
+  "id": "pada",
+  "kind": "lyhike"
+ },
+ {
+  "word": "padi",
+  "id": "padi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagane",
+  "id": "pagane",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagar",
+  "id": "pagar",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagari",
+  "id": "pagari",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagarit",
+  "id": "pagarit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagase",
+  "id": "pagase",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagast",
+  "id": "pagast",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pagi",
+  "id": "pagi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pakane",
+  "id": "pakane",
+  "kind": "pikk"
+ },
+ {
+  "word": "pakar",
+  "id": "pakar",
+  "kind": "pikk"
+ },
+ {
+  "word": "pakari",
+  "id": "pakari",
+  "kind": "pikk"
+ },
+ {
+  "word": "pakarit",
+  "id": "pakarit",
+  "kind": "pikk"
+ },
+ {
+  "word": "pakase",
+  "id": "pakase",
+  "kind": "pikk"
+ },
+ {
+  "word": "pakast",
+  "id": "pakast",
+  "kind": "pikk"
+ },
+ {
+  "word": "paki",
+  "id": "paki",
+  "kind": "pikk"
+ },
+ {
+  "word": "pakkane",
+  "id": "pakkane",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pakkar",
+  "id": "pakkar",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pakkari",
+  "id": "pakkari",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pakkarit",
+  "id": "pakkarit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pakkase",
+  "id": "pakkase",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pakkast",
+  "id": "pakkast",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pakki",
+  "id": "pakki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "paper",
+  "id": "paper",
+  "kind": "pikk"
+ },
+ {
+  "word": "paperi",
+  "id": "paperi",
+  "kind": "pikk"
+ },
+ {
+  "word": "paperit",
+  "id": "paperit",
+  "kind": "pikk"
+ },
+ {
+  "word": "papi",
+  "id": "papi",
+  "kind": "pikk"
+ },
+ {
+  "word": "papper",
+  "id": "papper",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "papperi",
+  "id": "papperi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "papperit",
+  "id": "papperit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pappi",
+  "id": "pappi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pata",
+  "id": "pata",
+  "kind": "pikk"
+ },
+ {
+  "word": "pati",
+  "id": "pati",
+  "kind": "pikk"
+ },
+ {
+  "word": "patta",
+  "id": "patta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "patti",
+  "id": "patti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pegi",
+  "id": "pegi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "peki",
+  "id": "peki",
+  "kind": "pikk"
+ },
+ {
+  "word": "pekki",
+  "id": "pekki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pibar",
+  "id": "pibar",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pibart",
+  "id": "pibart",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pidu",
+  "id": "pidu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pidur",
+  "id": "pidur",
+  "kind": "lyhike"
+ },
+ {
+  "word": "piduri",
+  "id": "piduri",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pidurit",
+  "id": "pidurit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "piga",
+  "id": "piga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pika",
+  "id": "pika",
+  "kind": "pikk"
+ },
+ {
+  "word": "pikka",
+  "id": "pikka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pipar",
+  "id": "pipar",
+  "kind": "pikk"
+ },
+ {
+  "word": "pipart",
+  "id": "pipart",
+  "kind": "pikk"
+ },
+ {
+  "word": "pippar",
+  "id": "pippar",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pippart",
+  "id": "pippart",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pittu",
+  "id": "pittu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pittur",
+  "id": "pittur",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pitturi",
+  "id": "pitturi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pitturit",
+  "id": "pitturit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pitu",
+  "id": "pitu",
+  "kind": "pikk"
+ },
+ {
+  "word": "pitur",
+  "id": "pitur",
+  "kind": "pikk"
+ },
+ {
+  "word": "pituri",
+  "id": "pituri",
+  "kind": "pikk"
+ },
+ {
+  "word": "piturit",
+  "id": "piturit",
+  "kind": "pikk"
+ },
+ {
+  "word": "podi",
+  "id": "podi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "poti",
+  "id": "poti",
+  "kind": "pikk"
+ },
+ {
+  "word": "potti",
+  "id": "potti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pragu",
+  "id": "pragu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "prakku",
+  "id": "prakku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "praku",
+  "id": "praku",
+  "kind": "pikk"
+ },
+ {
+  "word": "prügi",
+  "id": "prygi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "prüki",
+  "id": "pryki",
+  "kind": "pikk"
+ },
+ {
+  "word": "prükki",
+  "id": "prykki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "pudel",
+  "id": "pudel",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pudeli",
+  "id": "pudeli",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pudelit",
+  "id": "pudelit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "puder",
+  "id": "puder",
+  "kind": "lyhike"
+ },
+ {
+  "word": "puduka",
+  "id": "puduka",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pudukas",
+  "id": "pudukas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "pudukat",
+  "id": "pudukat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "putel",
+  "id": "putel",
+  "kind": "pikk"
+ },
+ {
+  "word": "puteli",
+  "id": "puteli",
+  "kind": "pikk"
+ },
+ {
+  "word": "putelit",
+  "id": "putelit",
+  "kind": "pikk"
+ },
+ {
+  "word": "puter",
+  "id": "puter",
+  "kind": "pikk"
+ },
+ {
+  "word": "puttel",
+  "id": "puttel",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "putteli",
+  "id": "putteli",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "puttelit",
+  "id": "puttelit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "putter",
+  "id": "putter",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "puttuka",
+  "id": "puttuka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "puttukas",
+  "id": "puttukas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "puttukat",
+  "id": "puttukat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "putuka",
+  "id": "putuka",
+  "kind": "pikk"
+ },
+ {
+  "word": "putukas",
+  "id": "putukas",
+  "kind": "pikk"
+ },
+ {
+  "word": "putukat",
+  "id": "putukat",
+  "kind": "pikk"
+ },
+ {
+  "word": "põder",
+  "id": "p6der",
+  "kind": "lyhike"
+ },
+ {
+  "word": "põter",
+  "id": "p6ter",
+  "kind": "pikk"
+ },
+ {
+  "word": "põtter",
+  "id": "p6tter",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rada",
+  "id": "rada",
+  "kind": "lyhike"
+ },
+ {
+  "word": "radas",
+  "id": "radas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "radast",
+  "id": "radast",
+  "kind": "lyhike"
+ },
+ {
+  "word": "radu",
+  "id": "radu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rata",
+  "id": "rata",
+  "kind": "pikk"
+ },
+ {
+  "word": "ratas",
+  "id": "ratas",
+  "kind": "pikk"
+ },
+ {
+  "word": "ratast",
+  "id": "ratast",
+  "kind": "pikk"
+ },
+ {
+  "word": "ratta",
+  "id": "ratta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rattas",
+  "id": "rattas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rattast",
+  "id": "rattast",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rattu",
+  "id": "rattu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "ratu",
+  "id": "ratu",
+  "kind": "pikk"
+ },
+ {
+  "word": "rebane",
+  "id": "rebane",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rebase",
+  "id": "rebase",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rebast",
+  "id": "rebast",
+  "kind": "lyhike"
+ },
+ {
+  "word": "redel",
+  "id": "redel",
+  "kind": "lyhike"
+ },
+ {
+  "word": "redeli",
+  "id": "redeli",
+  "kind": "lyhike"
+ },
+ {
+  "word": "redelit",
+  "id": "redelit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "redis",
+  "id": "redis",
+  "kind": "lyhike"
+ },
+ {
+  "word": "redise",
+  "id": "redise",
+  "kind": "lyhike"
+ },
+ {
+  "word": "redist",
+  "id": "redist",
+  "kind": "lyhike"
+ },
+ {
+  "word": "repane",
+  "id": "repane",
+  "kind": "pikk"
+ },
+ {
+  "word": "repase",
+  "id": "repase",
+  "kind": "pikk"
+ },
+ {
+  "word": "repast",
+  "id": "repast",
+  "kind": "pikk"
+ },
+ {
+  "word": "reppane",
+  "id": "reppane",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "reppase",
+  "id": "reppase",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "reppast",
+  "id": "reppast",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "retel",
+  "id": "retel",
+  "kind": "pikk"
+ },
+ {
+  "word": "reteli",
+  "id": "reteli",
+  "kind": "pikk"
+ },
+ {
+  "word": "retelit",
+  "id": "retelit",
+  "kind": "pikk"
+ },
+ {
+  "word": "retis",
+  "id": "retis",
+  "kind": "pikk"
+ },
+ {
+  "word": "retise",
+  "id": "retise",
+  "kind": "pikk"
+ },
+ {
+  "word": "retist",
+  "id": "retist",
+  "kind": "pikk"
+ },
+ {
+  "word": "rettel",
+  "id": "rettel",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "retteli",
+  "id": "retteli",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rettelit",
+  "id": "rettelit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rettis",
+  "id": "rettis",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rettise",
+  "id": "rettise",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rettist",
+  "id": "rettist",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "riba",
+  "id": "riba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ribad",
+  "id": "ribad",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ribi",
+  "id": "ribi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ribid",
+  "id": "ribid",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rida",
+  "id": "rida",
+  "kind": "lyhike"
+ },
+ {
+  "word": "riga",
+  "id": "riga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rigas",
+  "id": "rigas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rigast",
+  "id": "rigast",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rika",
+  "id": "rika",
+  "kind": "pikk"
+ },
+ {
+  "word": "rikas",
+  "id": "rikas",
+  "kind": "pikk"
+ },
+ {
+  "word": "rikast",
+  "id": "rikast",
+  "kind": "pikk"
+ },
+ {
+  "word": "rikka",
+  "id": "rikka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rikkas",
+  "id": "rikkas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rikkast",
+  "id": "rikkast",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "ripa",
+  "id": "ripa",
+  "kind": "pikk"
+ },
+ {
+  "word": "ripad",
+  "id": "ripad",
+  "kind": "pikk"
+ },
+ {
+  "word": "ripi",
+  "id": "ripi",
+  "kind": "pikk"
+ },
+ {
+  "word": "ripid",
+  "id": "ripid",
+  "kind": "pikk"
+ },
+ {
+  "word": "rippa",
+  "id": "rippa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rippad",
+  "id": "rippad",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rippi",
+  "id": "rippi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rippid",
+  "id": "rippid",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rita",
+  "id": "rita",
+  "kind": "pikk"
+ },
+ {
+  "word": "ritta",
+  "id": "ritta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rodi",
+  "id": "rodi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "roti",
+  "id": "roti",
+  "kind": "pikk"
+ },
+ {
+  "word": "rotti",
+  "id": "rotti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rugi",
+  "id": "rugi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rugis",
+  "id": "rugis",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rugist",
+  "id": "rugist",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ruki",
+  "id": "ruki",
+  "kind": "pikk"
+ },
+ {
+  "word": "rukis",
+  "id": "rukis",
+  "kind": "pikk"
+ },
+ {
+  "word": "rukist",
+  "id": "rukist",
+  "kind": "pikk"
+ },
+ {
+  "word": "rukki",
+  "id": "rukki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rukkis",
+  "id": "rukkis",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rukkist",
+  "id": "rukkist",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "räbane",
+  "id": "r2bane",
+  "kind": "lyhike"
+ },
+ {
+  "word": "räbase",
+  "id": "r2base",
+  "kind": "lyhike"
+ },
+ {
+  "word": "räbast",
+  "id": "r2bast",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rädik",
+  "id": "r2dik",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rädiku",
+  "id": "r2diku",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rädikut",
+  "id": "r2dikut",
+  "kind": "lyhike"
+ },
+ {
+  "word": "räpane",
+  "id": "r2pane",
+  "kind": "pikk"
+ },
+ {
+  "word": "räpase",
+  "id": "r2pase",
+  "kind": "pikk"
+ },
+ {
+  "word": "räpast",
+  "id": "r2past",
+  "kind": "pikk"
+ },
+ {
+  "word": "räppane",
+  "id": "r2ppane",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "räppase",
+  "id": "r2ppase",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "räppast",
+  "id": "r2ppast",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rätik",
+  "id": "r2tik",
+  "kind": "pikk"
+ },
+ {
+  "word": "rätiku",
+  "id": "r2tiku",
+  "kind": "pikk"
+ },
+ {
+  "word": "rätikut",
+  "id": "r2tikut",
+  "kind": "pikk"
+ },
+ {
+  "word": "rättik",
+  "id": "r2ttik",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rättiku",
+  "id": "r2ttiku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rättikut",
+  "id": "r2ttikut",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rõdu",
+  "id": "r6du",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rõdud",
+  "id": "r6dud",
+  "kind": "lyhike"
+ },
+ {
+  "word": "rõttu",
+  "id": "r6ttu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rõttud",
+  "id": "r6ttud",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "rõtu",
+  "id": "r6tu",
+  "kind": "pikk"
+ },
+ {
+  "word": "rõtud",
+  "id": "r6tud",
+  "kind": "pikk"
+ },
+ {
+  "word": "saba",
+  "id": "saba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sadam",
+  "id": "sadam",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sadama",
+  "id": "sadama",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sadamat",
+  "id": "sadamat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sadul",
+  "id": "sadul",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sadula",
+  "id": "sadula",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sadulat",
+  "id": "sadulat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sapa",
+  "id": "sapa",
+  "kind": "pikk"
+ },
+ {
+  "word": "sappa",
+  "id": "sappa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "satam",
+  "id": "satam",
+  "kind": "pikk"
+ },
+ {
+  "word": "satama",
+  "id": "satama",
+  "kind": "pikk"
+ },
+ {
+  "word": "satamat",
+  "id": "satamat",
+  "kind": "pikk"
+ },
+ {
+  "word": "sattam",
+  "id": "sattam",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sattama",
+  "id": "sattama",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sattamat",
+  "id": "sattamat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sattul",
+  "id": "sattul",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sattula",
+  "id": "sattula",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sattulat",
+  "id": "sattulat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "satul",
+  "id": "satul",
+  "kind": "pikk"
+ },
+ {
+  "word": "satula",
+  "id": "satula",
+  "kind": "pikk"
+ },
+ {
+  "word": "satulat",
+  "id": "satulat",
+  "kind": "pikk"
+ },
+ {
+  "word": "seba",
+  "id": "seba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sebik",
+  "id": "sebik",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sebiku",
+  "id": "sebiku",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sebikut",
+  "id": "sebikut",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sepa",
+  "id": "sepa",
+  "kind": "pikk"
+ },
+ {
+  "word": "sepik",
+  "id": "sepik",
+  "kind": "pikk"
+ },
+ {
+  "word": "sepiku",
+  "id": "sepiku",
+  "kind": "pikk"
+ },
+ {
+  "word": "sepikut",
+  "id": "sepikut",
+  "kind": "pikk"
+ },
+ {
+  "word": "seppa",
+  "id": "seppa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "seppik",
+  "id": "seppik",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "seppiku",
+  "id": "seppiku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "seppikut",
+  "id": "seppikut",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sibelga",
+  "id": "sibelga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sibelgas",
+  "id": "sibelgas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sibelgat",
+  "id": "sibelgat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sibul",
+  "id": "sibul",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sibula",
+  "id": "sibula",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sibulat",
+  "id": "sibulat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sidika",
+  "id": "sidika",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sidikas",
+  "id": "sidikas",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sidikat",
+  "id": "sidikat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "siga",
+  "id": "siga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sigu",
+  "id": "sigu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sika",
+  "id": "sika",
+  "kind": "pikk"
+ },
+ {
+  "word": "sikka",
+  "id": "sikka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sikku",
+  "id": "sikku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "siku",
+  "id": "siku",
+  "kind": "pikk"
+ },
+ {
+  "word": "sipelga",
+  "id": "sipelga",
+  "kind": "pikk"
+ },
+ {
+  "word": "sipelgas",
+  "id": "sipelgas",
+  "kind": "pikk"
+ },
+ {
+  "word": "sipelgat",
+  "id": "sipelgat",
+  "kind": "pikk"
+ },
+ {
+  "word": "sippelga",
+  "id": "sippelga",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sippelgas",
+  "id": "sippelgas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sippelgat",
+  "id": "sippelgat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sippul",
+  "id": "sippul",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sippula",
+  "id": "sippula",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sippulat",
+  "id": "sippulat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sipul",
+  "id": "sipul",
+  "kind": "pikk"
+ },
+ {
+  "word": "sipula",
+  "id": "sipula",
+  "kind": "pikk"
+ },
+ {
+  "word": "sipulat",
+  "id": "sipulat",
+  "kind": "pikk"
+ },
+ {
+  "word": "sitika",
+  "id": "sitika",
+  "kind": "pikk"
+ },
+ {
+  "word": "sitikas",
+  "id": "sitikas",
+  "kind": "pikk"
+ },
+ {
+  "word": "sitikat",
+  "id": "sitikat",
+  "kind": "pikk"
+ },
+ {
+  "word": "sittika",
+  "id": "sittika",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sittikas",
+  "id": "sittikas",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sittikat",
+  "id": "sittikat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sogi",
+  "id": "sogi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "soki",
+  "id": "soki",
+  "kind": "pikk"
+ },
+ {
+  "word": "sokki",
+  "id": "sokki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "subi",
+  "id": "subi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "suga",
+  "id": "suga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "suka",
+  "id": "suka",
+  "kind": "pikk"
+ },
+ {
+  "word": "sukka",
+  "id": "sukka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "supi",
+  "id": "supi",
+  "kind": "pikk"
+ },
+ {
+  "word": "suppi",
+  "id": "suppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sõber",
+  "id": "s6ber",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sõda",
+  "id": "s6da",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sõper",
+  "id": "s6per",
+  "kind": "pikk"
+ },
+ {
+  "word": "sõpper",
+  "id": "s6pper",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sõta",
+  "id": "s6ta",
+  "kind": "pikk"
+ },
+ {
+  "word": "sõtta",
+  "id": "s6tta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "süda",
+  "id": "syda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "südame",
+  "id": "sydame",
+  "kind": "lyhike"
+ },
+ {
+  "word": "südant",
+  "id": "sydant",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sügav",
+  "id": "sygav",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sügava",
+  "id": "sygava",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sügavat",
+  "id": "sygavat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sügis",
+  "id": "sygis",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sügise",
+  "id": "sygise",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sügist",
+  "id": "sygist",
+  "kind": "lyhike"
+ },
+ {
+  "word": "sükav",
+  "id": "sykav",
+  "kind": "pikk"
+ },
+ {
+  "word": "sükava",
+  "id": "sykava",
+  "kind": "pikk"
+ },
+ {
+  "word": "sükavat",
+  "id": "sykavat",
+  "kind": "pikk"
+ },
+ {
+  "word": "sükis",
+  "id": "sykis",
+  "kind": "pikk"
+ },
+ {
+  "word": "sükise",
+  "id": "sykise",
+  "kind": "pikk"
+ },
+ {
+  "word": "sükist",
+  "id": "sykist",
+  "kind": "pikk"
+ },
+ {
+  "word": "sükkav",
+  "id": "sykkav",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sükkava",
+  "id": "sykkava",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sükkavat",
+  "id": "sykkavat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sükkis",
+  "id": "sykkis",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sükkise",
+  "id": "sykkise",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "sükkist",
+  "id": "sykkist",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "süta",
+  "id": "syta",
+  "kind": "pikk"
+ },
+ {
+  "word": "sütame",
+  "id": "sytame",
+  "kind": "pikk"
+ },
+ {
+  "word": "sütant",
+  "id": "sytant",
+  "kind": "pikk"
+ },
+ {
+  "word": "sütta",
+  "id": "sytta",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "süttame",
+  "id": "syttame",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "süttant",
+  "id": "syttant",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tegi",
+  "id": "tegi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tegu",
+  "id": "tegu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "teki",
+  "id": "teki",
+  "kind": "pikk"
+ },
+ {
+  "word": "tekki",
+  "id": "tekki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tekku",
+  "id": "tekku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "teku",
+  "id": "teku",
+  "kind": "pikk"
+ },
+ {
+  "word": "tibu",
+  "id": "tibu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tibud",
+  "id": "tibud",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tige",
+  "id": "tige",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tigeda",
+  "id": "tigeda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tigedat",
+  "id": "tigedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tigu",
+  "id": "tigu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tike",
+  "id": "tike",
+  "kind": "pikk"
+ },
+ {
+  "word": "tikeda",
+  "id": "tikeda",
+  "kind": "pikk"
+ },
+ {
+  "word": "tikedat",
+  "id": "tikedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "tikke",
+  "id": "tikke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tikkeda",
+  "id": "tikkeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tikkedat",
+  "id": "tikkedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tikku",
+  "id": "tikku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tiku",
+  "id": "tiku",
+  "kind": "pikk"
+ },
+ {
+  "word": "tippu",
+  "id": "tippu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tippud",
+  "id": "tippud",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tipu",
+  "id": "tipu",
+  "kind": "pikk"
+ },
+ {
+  "word": "tipud",
+  "id": "tipud",
+  "kind": "pikk"
+ },
+ {
+  "word": "tobe",
+  "id": "tobe",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tobeda",
+  "id": "tobeda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tobedat",
+  "id": "tobedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tope",
+  "id": "tope",
+  "kind": "pikk"
+ },
+ {
+  "word": "topeda",
+  "id": "topeda",
+  "kind": "pikk"
+ },
+ {
+  "word": "topedat",
+  "id": "topedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "toppe",
+  "id": "toppe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "toppeda",
+  "id": "toppeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "toppedat",
+  "id": "toppedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tragi",
+  "id": "tragi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tragid",
+  "id": "tragid",
+  "kind": "lyhike"
+ },
+ {
+  "word": "traki",
+  "id": "traki",
+  "kind": "pikk"
+ },
+ {
+  "word": "trakid",
+  "id": "trakid",
+  "kind": "pikk"
+ },
+ {
+  "word": "trakki",
+  "id": "trakki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "trakkid",
+  "id": "trakkid",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "trebi",
+  "id": "trebi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "trepi",
+  "id": "trepi",
+  "kind": "pikk"
+ },
+ {
+  "word": "treppi",
+  "id": "treppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tuba",
+  "id": "tuba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tudi",
+  "id": "tudi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tuga",
+  "id": "tuga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tuge",
+  "id": "tuge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tugev",
+  "id": "tugev",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tugeva",
+  "id": "tugeva",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tugevat",
+  "id": "tugevat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tugi",
+  "id": "tugi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tuka",
+  "id": "tuka",
+  "kind": "pikk"
+ },
+ {
+  "word": "tuke",
+  "id": "tuke",
+  "kind": "pikk"
+ },
+ {
+  "word": "tukev",
+  "id": "tukev",
+  "kind": "pikk"
+ },
+ {
+  "word": "tukeva",
+  "id": "tukeva",
+  "kind": "pikk"
+ },
+ {
+  "word": "tukevat",
+  "id": "tukevat",
+  "kind": "pikk"
+ },
+ {
+  "word": "tuki",
+  "id": "tuki",
+  "kind": "pikk"
+ },
+ {
+  "word": "tukka",
+  "id": "tukka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tukke",
+  "id": "tukke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tukkev",
+  "id": "tukkev",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tukkeva",
+  "id": "tukkeva",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tukkevat",
+  "id": "tukkevat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tukki",
+  "id": "tukki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tupa",
+  "id": "tupa",
+  "kind": "pikk"
+ },
+ {
+  "word": "tuppa",
+  "id": "tuppa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tuti",
+  "id": "tuti",
+  "kind": "pikk"
+ },
+ {
+  "word": "tutti",
+  "id": "tutti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "täbi",
+  "id": "t2bi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tädi",
+  "id": "t2di",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tädid",
+  "id": "t2did",
+  "kind": "lyhike"
+ },
+ {
+  "word": "täpi",
+  "id": "t2pi",
+  "kind": "pikk"
+ },
+ {
+  "word": "täppi",
+  "id": "t2ppi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "täti",
+  "id": "t2ti",
+  "kind": "pikk"
+ },
+ {
+  "word": "tätid",
+  "id": "t2tid",
+  "kind": "pikk"
+ },
+ {
+  "word": "tätti",
+  "id": "t2tti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tättid",
+  "id": "t2ttid",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tõde",
+  "id": "t6de",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tõte",
+  "id": "t6te",
+  "kind": "pikk"
+ },
+ {
+  "word": "tõtte",
+  "id": "t6tte",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tüdar",
+  "id": "tydar",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tüdart",
+  "id": "tydart",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tügi",
+  "id": "tygi",
+  "kind": "lyhike"
+ },
+ {
+  "word": "tüki",
+  "id": "tyki",
+  "kind": "pikk"
+ },
+ {
+  "word": "tükki",
+  "id": "tykki",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tütar",
+  "id": "tytar",
+  "kind": "pikk"
+ },
+ {
+  "word": "tütart",
+  "id": "tytart",
+  "kind": "pikk"
+ },
+ {
+  "word": "tüttar",
+  "id": "tyttar",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "tüttart",
+  "id": "tyttart",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "uba",
+  "id": "uba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ube",
+  "id": "ube",
+  "kind": "lyhike"
+ },
+ {
+  "word": "udu",
+  "id": "udu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "upa",
+  "id": "upa",
+  "kind": "pikk"
+ },
+ {
+  "word": "upe",
+  "id": "upe",
+  "kind": "pikk"
+ },
+ {
+  "word": "uppa",
+  "id": "uppa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "uppe",
+  "id": "uppe",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "uttu",
+  "id": "uttu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "utu",
+  "id": "utu",
+  "kind": "pikk"
+ },
+ {
+  "word": "vaba",
+  "id": "vaba",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vabad",
+  "id": "vabad",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vaber",
+  "id": "vaber",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vabu",
+  "id": "vabu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vapa",
+  "id": "vapa",
+  "kind": "pikk"
+ },
+ {
+  "word": "vapad",
+  "id": "vapad",
+  "kind": "pikk"
+ },
+ {
+  "word": "vaper",
+  "id": "vaper",
+  "kind": "pikk"
+ },
+ {
+  "word": "vappa",
+  "id": "vappa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vappad",
+  "id": "vappad",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vapper",
+  "id": "vapper",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vappu",
+  "id": "vappu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vapu",
+  "id": "vapu",
+  "kind": "pikk"
+ },
+ {
+  "word": "vedel",
+  "id": "vedel",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vedela",
+  "id": "vedela",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vedelat",
+  "id": "vedelat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vedur",
+  "id": "vedur",
+  "kind": "lyhike"
+ },
+ {
+  "word": "veduri",
+  "id": "veduri",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vedurit",
+  "id": "vedurit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vetel",
+  "id": "vetel",
+  "kind": "pikk"
+ },
+ {
+  "word": "vetela",
+  "id": "vetela",
+  "kind": "pikk"
+ },
+ {
+  "word": "vetelat",
+  "id": "vetelat",
+  "kind": "pikk"
+ },
+ {
+  "word": "vettel",
+  "id": "vettel",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vettela",
+  "id": "vettela",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vettelat",
+  "id": "vettelat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vettur",
+  "id": "vettur",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vetturi",
+  "id": "vetturi",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vetturit",
+  "id": "vetturit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vetur",
+  "id": "vetur",
+  "kind": "pikk"
+ },
+ {
+  "word": "veturi",
+  "id": "veturi",
+  "kind": "pikk"
+ },
+ {
+  "word": "veturit",
+  "id": "veturit",
+  "kind": "pikk"
+ },
+ {
+  "word": "vibu",
+  "id": "vibu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vibud",
+  "id": "vibud",
+  "kind": "lyhike"
+ },
+ {
+  "word": "viga",
+  "id": "viga",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vigu",
+  "id": "vigu",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vigur",
+  "id": "vigur",
+  "kind": "lyhike"
+ },
+ {
+  "word": "viguri",
+  "id": "viguri",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vigurit",
+  "id": "vigurit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "vika",
+  "id": "vika",
+  "kind": "pikk"
+ },
+ {
+  "word": "vikka",
+  "id": "vikka",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vikku",
+  "id": "vikku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vikkur",
+  "id": "vikkur",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vikkuri",
+  "id": "vikkuri",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vikkurit",
+  "id": "vikkurit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "viku",
+  "id": "viku",
+  "kind": "pikk"
+ },
+ {
+  "word": "vikur",
+  "id": "vikur",
+  "kind": "pikk"
+ },
+ {
+  "word": "vikuri",
+  "id": "vikuri",
+  "kind": "pikk"
+ },
+ {
+  "word": "vikurit",
+  "id": "vikurit",
+  "kind": "pikk"
+ },
+ {
+  "word": "vippu",
+  "id": "vippu",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vippud",
+  "id": "vippud",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "vipu",
+  "id": "vipu",
+  "kind": "pikk"
+ },
+ {
+  "word": "vipud",
+  "id": "vipud",
+  "kind": "pikk"
+ },
+ {
+  "word": "võdi",
+  "id": "v6di",
+  "kind": "lyhike"
+ },
+ {
+  "word": "võdit",
+  "id": "v6dit",
+  "kind": "lyhike"
+ },
+ {
+  "word": "võti",
+  "id": "v6ti",
+  "kind": "pikk"
+ },
+ {
+  "word": "võtit",
+  "id": "v6tit",
+  "kind": "pikk"
+ },
+ {
+  "word": "võtti",
+  "id": "v6tti",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "võttit",
+  "id": "v6ttit",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "äge",
+  "id": "2ge",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ägeda",
+  "id": "2geda",
+  "kind": "lyhike"
+ },
+ {
+  "word": "ägedat",
+  "id": "2gedat",
+  "kind": "lyhike"
+ },
+ {
+  "word": "äke",
+  "id": "2ke",
+  "kind": "pikk"
+ },
+ {
+  "word": "äkeda",
+  "id": "2keda",
+  "kind": "pikk"
+ },
+ {
+  "word": "äkedat",
+  "id": "2kedat",
+  "kind": "pikk"
+ },
+ {
+  "word": "äkke",
+  "id": "2kke",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "äkkeda",
+  "id": "2kkeda",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "äkkedat",
+  "id": "2kkedat",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "õbik",
+  "id": "6bik",
+  "kind": "lyhike"
+ },
+ {
+  "word": "õbiku",
+  "id": "6biku",
+  "kind": "lyhike"
+ },
+ {
+  "word": "õbikut",
+  "id": "6bikut",
+  "kind": "lyhike"
+ },
+ {
+  "word": "õde",
+  "id": "6de",
+  "kind": "lyhike"
+ },
+ {
+  "word": "õpik",
+  "id": "6pik",
+  "kind": "pikk"
+ },
+ {
+  "word": "õpiku",
+  "id": "6piku",
+  "kind": "pikk"
+ },
+ {
+  "word": "õpikut",
+  "id": "6pikut",
+  "kind": "pikk"
+ },
+ {
+  "word": "õppik",
+  "id": "6ppik",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "õppiku",
+  "id": "6ppiku",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "õppikut",
+  "id": "6ppikut",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "õte",
+  "id": "6te",
+  "kind": "pikk"
+ },
+ {
+  "word": "õtte",
+  "id": "6tte",
+  "kind": "ylipikk"
+ }
+]

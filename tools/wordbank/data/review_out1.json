@@ -1,0 +1,1353 @@
+[
+ {
+  "id": "puder",
+  "word": "puder",
+  "sentence": "Puder on juba valmis.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "l6ke",
+  "word": "lõke",
+  "sentence": "Õues põleb suur lõke.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "l6kke",
+  "word": "lõkke",
+  "sentence": "Me istume lõkke ääres.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "l6ket",
+  "word": "lõket",
+  "sentence": "Me tegime õhtul lõket.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vedel",
+  "word": "vedel",
+  "sentence": "Supp on liiga vedel.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vedela",
+  "word": "vedela",
+  "sentence": "Ema ostis vedela seebi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vedelat",
+  "word": "vedelat",
+  "sentence": "Ta sõi vedelat putru.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "papi",
+  "word": "papi",
+  "sentence": "Ma lõikasin papi tükkideks.",
+  "flag": "ok",
+  "note": "Sõnastiku tähendus (raha) on släng; lause kasutab tavatähendust papp = paks paber."
+ },
+ {
+  "id": "pappi",
+  "word": "pappi",
+  "sentence": "Meil on vaja pappi ja liimi.",
+  "flag": "ok",
+  "note": "Sõnastiku tähendus (raha) on släng; lause kasutab tavatähendust papp = paks paber."
+ },
+ {
+  "id": "t2pi",
+  "word": "täpi",
+  "sentence": "Ta joonistas paberile punase täpi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "t2ppi",
+  "word": "täppi",
+  "sentence": "Sellel lepatriinul pole ühtegi täppi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "libe",
+  "word": "libe",
+  "sentence": "Tee on täna libe.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "libeda",
+  "word": "libeda",
+  "sentence": "Libeda jää peal on raske seista.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "libedat",
+  "word": "libedat",
+  "sentence": "Ma kardan libedat teed.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "rebane",
+  "word": "rebane",
+  "sentence": "Rebane jooksis üle tee.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "rebase",
+  "word": "rebase",
+  "sentence": "Rebase saba on kohev.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "rebast",
+  "word": "rebast",
+  "sentence": "Ma nägin metsas rebast.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tibu",
+  "word": "tibu",
+  "sentence": "Kollane tibu piiksub õues.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tibud",
+  "word": "tibud",
+  "sentence": "Tibud jooksevad kana järel.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nutu",
+  "word": "nutu",
+  "sentence": "Nutu asemel tuli naer.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nuttu",
+  "word": "nuttu",
+  "sentence": "Ta ei suutnud nuttu tagasi hoida.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "lati",
+  "word": "lati",
+  "sentence": "Isa saagis lati pooleks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "latti",
+  "word": "latti",
+  "sentence": "Aia jaoks on vaja latti.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "laka",
+  "word": "laka",
+  "sentence": "Ma harjasin hobuse laka puhtaks.",
+  "flag": "ok",
+  "note": "Sama vorm on ka sõnal lakk = pööning (laka, lakka); lapsele on hobuse lakk tuttavam."
+ },
+ {
+  "id": "lakka",
+  "word": "lakka",
+  "sentence": "Hobune raputab oma lakka.",
+  "flag": "ok",
+  "note": "Sama vorm on ka sõnal lakk = pööning (läks lakka); lapsele on hobuse lakk tuttavam."
+ },
+ {
+  "id": "jope",
+  "word": "jope",
+  "sentence": "Uus jope on soe.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "jopet",
+  "word": "jopet",
+  "sentence": "Ma ei leia oma jopet.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "r2tik",
+  "word": "rätik",
+  "sentence": "Vanaemal on peas kirju rätik.",
+  "flag": "ok",
+  "note": "Lapsele tuttav ka tähenduses käterätik."
+ },
+ {
+  "id": "r2tiku",
+  "word": "rätiku",
+  "sentence": "Ta sidus rätiku pähe.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "r2tikut",
+  "word": "rätikut",
+  "sentence": "Ta otsib oma rätikut.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "muda",
+  "word": "muda",
+  "sentence": "Jõe põhjas on muda.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "mutta",
+  "word": "mutta",
+  "sentence": "Auto jäi mutta kinni.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "uba",
+  "word": "uba",
+  "sentence": "Üks uba kukkus maha.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "ube",
+  "word": "ube",
+  "sentence": "Vanaema kasvatab aias ube.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kepi",
+  "word": "kepi",
+  "sentence": "Koer tõi kepi tagasi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "keppi",
+  "word": "keppi",
+  "sentence": "Koer närib keppi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pragu",
+  "word": "pragu",
+  "sentence": "Seinas on suur pragu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "prakku",
+  "word": "prakku",
+  "sentence": "Münt kukkus prakku ja kadus.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sepa",
+  "word": "sepa",
+  "sentence": "Sepa käed on tugevad.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "seppa",
+  "word": "seppa",
+  "sentence": "Me külastasime vana seppa.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "lapi",
+  "word": "lapi",
+  "sentence": "Ta väänas lapi kuivaks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "lappi",
+  "word": "lappi",
+  "sentence": "Ma otsin puhast lappi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "habe",
+  "word": "habe",
+  "sentence": "Vanaisal on hall habe.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "habeme",
+  "word": "habeme",
+  "sentence": "Isa ajas habeme maha.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "habet",
+  "word": "habet",
+  "sentence": "Isa ajab hommikul habet.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kuke",
+  "word": "kuke",
+  "sentence": "Kuke hari on punane.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kukke",
+  "word": "kukke",
+  "sentence": "Ma ei karda kukke.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pada",
+  "word": "pada",
+  "sentence": "Suur pada on tulel.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "patta",
+  "word": "patta",
+  "sentence": "Ema pani kartulid patta.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "p6der",
+  "word": "põder",
+  "sentence": "Põder seisab metsa serval.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "hapu",
+  "word": "hapu",
+  "sentence": "Sidrun on hapu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "haput",
+  "word": "haput",
+  "sentence": "Ma ei taha haput õuna.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "noka",
+  "word": "noka",
+  "sentence": "Vares avas noka ja kraaksus.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nokka",
+  "word": "nokka",
+  "sentence": "Varblane puhastab oma nokka.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "higi",
+  "word": "higi",
+  "sentence": "Higi jookseb mööda nägu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "higid",
+  "word": "higid",
+  "sentence": "Hirmust tulid tal külmad higid peale.",
+  "flag": "rare",
+  "note": "Mitmus on väga harv; kasutatakse peaaegu ainult ainsust (higi)."
+ },
+ {
+  "id": "sipelgas",
+  "word": "sipelgas",
+  "sentence": "Sipelgas ronib mööda kätt.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sipelga",
+  "word": "sipelga",
+  "sentence": "Sipelga jalad on peenikesed.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sipelgat",
+  "word": "sipelgat",
+  "sentence": "Ta vaatas sipelgat luubiga.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tiku",
+  "word": "tiku",
+  "sentence": "Isa süütas tiku.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tikku",
+  "word": "tikku",
+  "sentence": "Ta ei leidnud ühtegi tikku.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "jaki",
+  "word": "jaki",
+  "sentence": "Ta pani jaki selga.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "jakki",
+  "word": "jakki",
+  "sentence": "Täna pole jakki vaja.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "rukis",
+  "word": "rukis",
+  "sentence": "Põllul kasvab rukis.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "rukki",
+  "word": "rukki",
+  "sentence": "Rukki kõrred on pikad.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "rukist",
+  "word": "rukist",
+  "sentence": "Põllumees külvab põllule rukist.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kybar",
+  "word": "kübar",
+  "sentence": "Tädi kübar on väga suur.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kybara",
+  "word": "kübara",
+  "sentence": "Kübara serv on lai.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kybarat",
+  "word": "kübarat",
+  "sentence": "Ta kannab suvel kübarat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "redel",
+  "word": "redel",
+  "sentence": "Redel on vastu seina.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "redeli",
+  "word": "redeli",
+  "sentence": "Isa ronis redeli otsa.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "redelit",
+  "word": "redelit",
+  "sentence": "Ema hoiab redelit kinni.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pakane",
+  "word": "pakane",
+  "sentence": "Öösel oli kõva pakane.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pakase",
+  "word": "pakase",
+  "sentence": "Pakase käes läksid põsed punaseks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pakast",
+  "word": "pakast",
+  "sentence": "Ma ei karda pakast.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "suka",
+  "word": "suka",
+  "sentence": "Suka kand on katki.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sukka",
+  "word": "sukka",
+  "sentence": "Ma ei leia teist sukka.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "labidas",
+  "word": "labidas",
+  "sentence": "Labidas on kuuri nurgas.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "labida",
+  "word": "labida",
+  "sentence": "Labida vars on pikk.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "labidat",
+  "word": "labidat",
+  "sentence": "Ta otsib kuurist labidat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "okas",
+  "word": "okas",
+  "sentence": "Kuuse okas torkas mu sõrme.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "okka",
+  "word": "okka",
+  "sentence": "Ta tõmbas okka sõrmest välja.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "okast",
+  "word": "okast",
+  "sentence": "Sipelgas kannab pesasse okast.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vedur",
+  "word": "vedur",
+  "sentence": "Vedur veab pikka rongi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "veduri",
+  "word": "veduri",
+  "sentence": "Veduri vile oli vali.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vedurit",
+  "word": "vedurit",
+  "sentence": "Me vaatasime jaamas vedurit.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kadakas",
+  "word": "kadakas",
+  "sentence": "Kadakas kasvab mere ääres.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kadaka",
+  "word": "kadaka",
+  "sentence": "Kadaka marjad on sinised.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kadakat",
+  "word": "kadakat",
+  "sentence": "Lambad ei söö kadakat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tigu",
+  "word": "tigu",
+  "sentence": "Tigu roomab aeglaselt lehel.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "k2bi",
+  "word": "käbi",
+  "sentence": "Käbi kukkus puu otsast.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "k2bid",
+  "word": "käbid",
+  "sentence": "Käbid kukuvad sügisel maha.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pagar",
+  "word": "pagar",
+  "sentence": "Pagar küpsetab leiba.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pagari",
+  "word": "pagari",
+  "sentence": "Pagari käed on jahused.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pagarit",
+  "word": "pagarit",
+  "sentence": "Pagariäri vajab uut pagarit.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "naba",
+  "word": "naba",
+  "sentence": "Naba on kõhu keskel.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nabad",
+  "word": "nabad",
+  "sentence": "Kõigil inimestel on nabad.",
+  "flag": "rare",
+  "note": "Mitmust kasutatakse harva, igal inimesel on üks naba."
+ },
+ {
+  "id": "loki",
+  "word": "loki",
+  "sentence": "Juuksur lõikas ühe loki ära.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "lokki",
+  "word": "lokki",
+  "sentence": "Ta keerutab sõrmega lokki.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "ribi",
+  "word": "ribi",
+  "sentence": "Ribi on kõver luu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "ribid",
+  "word": "ribid",
+  "sentence": "Ribid kaitsevad südant ja kopse.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n6ges",
+  "word": "nõges",
+  "sentence": "Nõges kõrvetab paljast jalga.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n6gese",
+  "word": "nõgese",
+  "sentence": "Nõgese lehed on karvased.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n6gest",
+  "word": "nõgest",
+  "sentence": "Ära puutu nõgest!",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "magu",
+  "word": "magu",
+  "sentence": "Magu seedib toitu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "makku",
+  "word": "makku",
+  "sentence": "Toit liigub kurgust makku.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "mage",
+  "word": "mage",
+  "sentence": "Supp on liiga mage.",
+  "flag": "ok",
+  "note": "Lapsed kasutavad sama sõna ka slängis (mage = igav, nõme)."
+ },
+ {
+  "id": "mageda",
+  "word": "mageda",
+  "sentence": "Ma panin mageda supi sisse soola.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "magedat",
+  "word": "magedat",
+  "sentence": "Ma ei taha magedat suppi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kabe",
+  "word": "kabe",
+  "sentence": "Kabe on lõbus mäng.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kabet",
+  "word": "kabet",
+  "sentence": "Me mängime õhtul kabet.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tuka",
+  "word": "tuka",
+  "sentence": "Ema lõikas mu tuka lühemaks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tukka",
+  "word": "tukka",
+  "sentence": "Ma ei taha tukka lõigata.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "m2ger",
+  "word": "mäger",
+  "sentence": "Mäger elab maa all urus.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "peki",
+  "word": "peki",
+  "sentence": "Vanaema lõikas peki tükkideks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pekki",
+  "word": "pekki",
+  "sentence": "Tihased söövad talvel pekki.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sadul",
+  "word": "sadul",
+  "sentence": "Sadul on hobuse seljas.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sadula",
+  "word": "sadula",
+  "sentence": "Isa pani sadula hobusele selga.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sadulat",
+  "word": "sadulat",
+  "sentence": "Poiss puhastab hobuse sadulat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kade",
+  "word": "kade",
+  "sentence": "Vend on mu peale kade.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kadeda",
+  "word": "kadeda",
+  "sentence": "Kadeda lapsega pole lõbus mängida.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kadedat",
+  "word": "kadedat",
+  "sentence": "Keegi ei taha kadedat sõpra.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vapper",
+  "word": "vapper",
+  "sentence": "Väike rüütel oli väga vapper.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nukker",
+  "word": "nukker",
+  "sentence": "Täna on ta natuke nukker.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tige",
+  "word": "tige",
+  "sentence": "Naabri koer on tige.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tigeda",
+  "word": "tigeda",
+  "sentence": "Ma kardan tigeda koera haukumist.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tigedat",
+  "word": "tigedat",
+  "sentence": "Ära ärrita tigedat koera!",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "r2pane",
+  "word": "räpane",
+  "sentence": "Pärast mängu oli särk räpane.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "r2pase",
+  "word": "räpase",
+  "sentence": "Panin räpase särgi pesukorvi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "r2past",
+  "word": "räpast",
+  "sentence": "Ema pesi räpast põrandat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "jutukas",
+  "word": "jutukas",
+  "sentence": "Mu sõber on väga jutukas.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "jutuka",
+  "word": "jutuka",
+  "sentence": "Jutuka poisiga ei hakka igav.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "jutukat",
+  "word": "jutukat",
+  "sentence": "Õpetaja kuulas jutukat last.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "luti",
+  "word": "luti",
+  "sentence": "Ema pesi luti puhtaks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "lutti",
+  "word": "lutti",
+  "sentence": "Väike õde imeb lutti.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vigur",
+  "word": "vigur",
+  "sentence": "See oli lõbus vigur.",
+  "flag": "ok",
+  "note": "Veidi vanamoodne sõna, aga lastele tuttav (vigureid tegema)."
+ },
+ {
+  "id": "viguri",
+  "word": "viguri",
+  "sentence": "Ta tegi ühe naljaka viguri.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vigurit",
+  "word": "vigurit",
+  "sentence": "Ta ei teinud mingit vigurit.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n2gus",
+  "word": "nägus",
+  "sentence": "Vanaema maja on väga nägus.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n2gusa",
+  "word": "nägusa",
+  "sentence": "Ta ehitas nägusa liivalossi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n2gusat",
+  "word": "nägusat",
+  "sentence": "Ma nägin nägusat lindu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "l6bu",
+  "word": "lõbu",
+  "sentence": "Mängust oli palju lõbu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "l6bud",
+  "word": "lõbud",
+  "sentence": "Talvised lõbud algavad esimese lumega.",
+  "flag": "ok",
+  "note": "Mitmus esineb peamiselt väljendites (talvelõbud, suvelõbud)."
+ },
+ {
+  "id": "mutter",
+  "word": "mutter",
+  "sentence": "Ratta mutter on lahti.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pidur",
+  "word": "pidur",
+  "sentence": "Jalgratta pidur on katki.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "piduri",
+  "word": "piduri",
+  "sentence": "Ta vajutas piduri põhja.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "pidurit",
+  "word": "pidurit",
+  "sentence": "Ma vajutasin kõvasti pidurit.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kyki",
+  "word": "küki",
+  "sentence": "Ma tegin ühe sügava küki.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kykki",
+  "word": "kükki",
+  "sentence": "Laps laskus kükki.",
+  "flag": "ok",
+  "note": "Lauses on vorm sisseütlev (laskus kükki), mis on osastavaga ühesugune."
+ },
+ {
+  "id": "tobe",
+  "word": "tobe",
+  "sentence": "See oli üks tobe nali.",
+  "flag": "ok",
+  "note": "Tavakeeles öeldakse pigem asja kohta (tobe nali, tobe mõte) kui inimese kohta."
+ },
+ {
+  "id": "tobeda",
+  "word": "tobeda",
+  "sentence": "Tobeda nalja peale ei naernud keegi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tobedat",
+  "word": "tobedat",
+  "sentence": "Ära räägi tobedat juttu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nigel",
+  "word": "nigel",
+  "sentence": "Ilm oli täna üsna nigel.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nigela",
+  "word": "nigela",
+  "sentence": "Nigela ilma tõttu jäi matk ära.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nigelat",
+  "word": "nigelat",
+  "sentence": "Nigelat ilma ei taha keegi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kibe",
+  "word": "kibe",
+  "sentence": "See rohi on väga kibe.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kibeda",
+  "word": "kibeda",
+  "sentence": "Jõin kibeda rohu kiiresti ära.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kibedat",
+  "word": "kibedat",
+  "sentence": "Ma ei taha kibedat rohtu.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vibu",
+  "word": "vibu",
+  "sentence": "Vana vibu seisab kuuris.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "vibud",
+  "word": "vibud",
+  "sentence": "Vibud ja nooled on valmis.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tuti",
+  "word": "tuti",
+  "sentence": "Ema tegi mu juustesse tuti.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tutti",
+  "word": "tutti",
+  "sentence": "Ma ei taha juustesse tutti.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "k2gu",
+  "word": "kägu",
+  "sentence": "Kägu kukub metsas.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "redis",
+  "word": "redis",
+  "sentence": "Redis kasvab peenras.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "redise",
+  "word": "redise",
+  "sentence": "Redise maitse on natuke terav.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "redist",
+  "word": "redist",
+  "sentence": "Ma söön hea meelega redist.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kaku",
+  "word": "kaku",
+  "sentence": "Vanaema küpsetas ahjus kaku.",
+  "flag": "confusing",
+  "note": "Laps mõtleb pigem sõnale kakk = öökull (kakk, kaku, kakku); leivakakk on tänapäeva lapsele harv sõna."
+ },
+ {
+  "id": "kakku",
+  "word": "kakku",
+  "sentence": "Ma sõin sooja kakku.",
+  "flag": "confusing",
+  "note": "Laps mõtleb pigem sõnale kakk = öökull (kakk, kaku, kakku); leivakakk on tänapäeva lapsele harv sõna."
+ },
+ {
+  "id": "krabi",
+  "word": "krabi",
+  "sentence": "Krabi kõnnib rannal külili.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "krabid",
+  "word": "krabid",
+  "sentence": "Krabid elavad meres.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "k2pik",
+  "word": "käpik",
+  "sentence": "Mu käpik on villane.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "k2piku",
+  "word": "käpiku",
+  "sentence": "Ta pani käpiku kätte.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "k2pikut",
+  "word": "käpikut",
+  "sentence": "Ma ei leia teist käpikut.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "kabi",
+  "word": "kabi",
+  "sentence": "Hobuse kabi on kõva.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sepik",
+  "word": "sepik",
+  "sentence": "Värske sepik lõhnab hästi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sepiku",
+  "word": "sepiku",
+  "sentence": "Ema lõikas sepiku viiludeks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sepikut",
+  "word": "sepikut",
+  "sentence": "Ma söön hommikul sepikut.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "tragi",
+  "word": "tragi",
+  "sentence": "Meie kutsikas on väga tragi.",
+  "flag": "ok",
+  "note": "Harvem sõna, aga koolis kiitusena tuttav (tragi laps)."
+ },
+ {
+  "id": "tragid",
+  "word": "tragid",
+  "sentence": "Tragid lapsed aitasid ema.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sitikas",
+  "word": "sitikas",
+  "sentence": "Must sitikas ronib üle tee.",
+  "flag": "ok",
+  "note": "Tavaline putukanimi, laste raamatutes kasutusel."
+ },
+ {
+  "id": "sitika",
+  "word": "sitika",
+  "sentence": "Sitika selg läigib.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "sitikat",
+  "word": "sitikat",
+  "sentence": "Poiss uuris sitikat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "mutukas",
+  "word": "mutukas",
+  "sentence": "Väike mutukas ronib lehel.",
+  "flag": "ok",
+  "note": "Kõnekeelne lastesõna (putukas)."
+ },
+ {
+  "id": "mutuka",
+  "word": "mutuka",
+  "sentence": "Mutuka tiivad on läbipaistvad.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "mutukat",
+  "word": "mutukat",
+  "sentence": "Ära karda seda mutukat.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nupukas",
+  "word": "nupukas",
+  "sentence": "Mu õde on väga nupukas.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nupuka",
+  "word": "nupuka",
+  "sentence": "Nupuka lapse jaoks on see kerge.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "nupukat",
+  "word": "nupukat",
+  "sentence": "Õpetaja kiitis nupukat õpilast.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "mopi",
+  "word": "mopi",
+  "sentence": "Ema väänas mopi kuivaks.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "moppi",
+  "word": "moppi",
+  "sentence": "Kasuta põranda pesemiseks moppi.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n2pits",
+  "word": "näpits",
+  "sentence": "Näpits hoiab pesu nööri küljes.",
+  "flag": "ok",
+  "note": "Lapsele tuttavam liitsõnana pesunäpits (ka pesulõks)."
+ },
+ {
+  "id": "n2pitsa",
+  "word": "näpitsa",
+  "sentence": "Ta pani näpitsa nööri külge.",
+  "flag": "ok",
+  "note": ""
+ },
+ {
+  "id": "n2pitsat",
+  "word": "näpitsat",
+  "sentence": "Ma ei leia ühtegi näpitsat.",
+  "flag": "ok",
+  "note": ""
+ }
+]

@@ -1,0 +1,306 @@
+<title>Kirjutaja häälte test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#fdfdfa; --ink:#1d2f4f; --ink-soft:#5a6a82; --rule:#9fbde6; --rule-soft:#d3e1f3; --edge:#c3d4ea;
+  --accent:#ffd166; --accent-ink:#3a2c00; --ok:#1d7f53; --ok-bg:#e3f5ec; --bad:#b8432d; --bad-bg:#fbe9e4;
+  --btn:#ffffff; --btn-hover:#f3f7fd;
+  --display:"Fredoka",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  background-color:var(--paper);
+  /* eesti keele vihik: igas reas ülemine abijoon, x-kõrguse joon ja põhijoon */
+  background-image:repeating-linear-gradient(to bottom,
+    transparent 0 14px, var(--rule-soft) 14px 15px,
+    transparent 15px 28px, var(--rule-soft) 28px 29px,
+    transparent 29px 42px, var(--rule) 42px 43px,
+    transparent 43px 56px);
+  background-size:100% 56px;
+  padding-inline:16px;padding-block:24px 40px}
+.sheet{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding-bottom:4px}
+h1{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.1;margin:0;text-wrap:balance}
+h1 em{font-style:normal;background:linear-gradient(transparent 55%,var(--accent) 55% 92%,transparent 92%);padding-inline:2px}
+p{margin:0;max-width:62ch}
+.lead{color:var(--ink-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-weight:700;color:var(--ink);background:var(--btn);border:1.5px solid var(--edge);border-radius:999px;padding:8px 16px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:#e9b93f}
+.field{display:flex;flex-direction:column;gap:10px}
+.primary{font-family:var(--display);font-weight:600;font-size:20px;background:var(--accent);color:var(--accent-ink);border:1.5px solid #e9b93f;border-radius:14px;padding:12px 28px;cursor:pointer;align-self:flex-start}
+.primary:disabled{opacity:.45;cursor:default}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.progress{display:flex;align-items:center;gap:12px}
+.track{flex:1;height:6px;border-radius:3px;background:var(--rule-soft);overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink);border-radius:3px;transition:width .3s}
+.count{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;color:var(--ink-soft)}
+.stage{display:flex;flex-direction:column;align-items:center;gap:22px;padding-block:8px}
+.listen{width:92px;height:92px;border-radius:50%;border:2px solid var(--ink);background:var(--accent);color:var(--ink);cursor:pointer;display:grid;place-items:center;box-shadow:0 3px 0 var(--ink)}
+.listen:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.listen.playing{background:#ffe29c}
+.word{font-family:var(--display);font-weight:500;font-size:clamp(48px,14vw,72px);letter-spacing:.02em;line-height:1.1;background:var(--paper);padding-inline:12px}
+.gap{display:inline-block;min-width:1.3em;border-bottom:4px solid var(--ink);text-align:center;margin-inline:.04em}
+.gap.filled{background:var(--accent);border-bottom-color:var(--accent-ink)}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%}
+.opt{font-family:var(--display);font-weight:600;font-size:34px;color:var(--ink);background:var(--btn);border:2px solid var(--edge);border-radius:16px;padding-block:12px;cursor:pointer;transition:background .15s,border-color .15s}
+.opt:hover:not(:disabled){background:var(--btn-hover)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.lit{border-color:#e9b93f;background:#fff4d4}
+.opt small{display:block;font-family:var(--body);font-size:13px;font-weight:700;color:var(--ink-soft);margin-top:2px}
+.feedback{min-height:28px;font-weight:800;text-align:center;background:var(--paper);padding-inline:8px}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.ghost{font:inherit;font-weight:700;color:var(--ink);background:var(--btn);border:1.5px solid var(--edge);border-radius:12px;padding:10px 18px;cursor:pointer}
+.ghost:disabled{opacity:.6;cursor:default}
+.voices{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.vcard{border:1.5px solid var(--edge);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--btn)}
+.vname{font-family:var(--display);font-size:22px;font-weight:600}
+.stat{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.stat b{font-family:var(--mono);font-weight:600}
+.verdict{font-weight:800}
+.verdict.pass{color:var(--ok)} .verdict.fail{color:var(--bad)}
+.miss{font-size:14px;color:var(--ink-soft)}
+.note{font-size:14px;color:var(--ink-soft)}
+.intro{background:var(--paper);display:flex;flex-direction:column;gap:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="sheet">
+  <header>
+    <div>
+      <div class="label">Harjutaja · Kirjutaja</div>
+      <h1>Häälte <em>test</em></h1>
+    </div>
+    <div class="count" id="hdrCount"></div>
+  </header>
+
+  <section id="s-start" class="field" style="gap:22px">
+    <div class="intro"><p>Mäng loeb ette ühe sõna. Kuula ja vali, mis tähed käivad lünka. <span id="voiceNote">Hääli on kaks. Kumb hääl parasjagu räägib, seda ei öelda — nii on test aus.</span></p>
+    <p class="lead">Kõige tähtsam on vahe <b>kapi</b> ja <b>kappi</b> vahel. Kui see on kuulda, sobib hääl Kirjutajasse.</p></div>
+    <div class="field">
+      <span class="label" id="lblWho">Kes kuulab?</span>
+      <div class="chips" role="group" aria-labelledby="lblWho" id="who">
+        <button class="chip" id="who-silver" data-v="Silver" aria-pressed="false">Silver</button>
+        <button class="chip" id="who-mia" data-v="Mia" aria-pressed="false">Mia</button>
+        <button class="chip" id="who-other" data-v="Keegi teine" aria-pressed="false">Keegi teine</button>
+      </div>
+    </div>
+    <div class="field" id="lenField">
+      <span class="label" id="lblLen">Mitu sõna?</span>
+      <div class="chips" role="group" aria-labelledby="lblLen" id="len">
+        <button class="chip" id="len-20" data-v="20" aria-pressed="true">20 sõna · umbes 3 min</button>
+        <button class="chip" id="len-all" data-v="all" aria-pressed="false" data-total>Kõik</button>
+      </div>
+    </div>
+    <button class="primary" id="startBtn" disabled>Alusta</button>
+  </section>
+
+  <section id="s-q" hidden>
+    <div class="progress"><div class="track"><i id="bar" style="width:0"></i></div><span class="count" id="qCount">1 / 20</span></div>
+    <div class="stage">
+      <button class="listen" id="listenBtn" aria-label="Kuula uuesti">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      </button>
+      <div class="word" id="word" aria-live="polite"></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="fb" aria-live="polite"></div>
+      <div class="row" id="after" hidden>
+        <button class="ghost" id="allBtn">Kuula kõiki variante</button>
+        <button class="ghost" id="oddBtn">Kõlas hoopis muu sõna</button>
+        <button class="primary" id="nextBtn" style="align-self:center">Edasi</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-res" hidden style="display:flex;flex-direction:column;gap:20px">
+    <p id="resLead"></p>
+    <div class="voices" id="voices"></div>
+    <p class="note" id="saved"></p>
+    <div class="row" style="justify-content:flex-start"><button class="primary" id="againBtn">Tee uuesti</button></div>
+  </section>
+
+</div>
+<script>
+const DATA = /*DATA*/null;
+const AUDIO = /*AUDIO*/null;
+const VOW = "aeiouõäöü";
+const $ = id => document.getElementById(id);
+const S = { who: null, len: "20", round: [], i: 0, answers: [], cur: null, audio: null };
+
+const slug = w => w.replace(/õ/g, "6").replace(/ä/g, "2").replace(/ö/g, "7").replace(/ü/g, "y");
+const split = w => ({ pre: w.pre, post: w.post });
+const critical = w => !["g","b","d"].includes(w.answer);
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const has = (voice, id) => !!(AUDIO[voice] && AUDIO[voice][id]);
+
+function buildRound(){
+  let items = [];
+  for (const v of DATA.voices){
+    const ws = DATA.items.filter(w => has(v, w.id));
+    let pick;
+    if (S.len === "all") pick = ws;
+    else {
+      const per = Math.max(4, Math.round(20 / DATA.voices.length)), q1 = Math.max(1, Math.floor(per * 0.25));
+      pick = shuffle(ws.filter(critical)).slice(0, per - q1).concat(shuffle(ws.filter(w => !critical(w))).slice(0, q1));
+    }
+    items = items.concat(pick.map(w => ({ voice: v, w })));
+  }
+  shuffle(items);
+  for (let k = 1; k < items.length; k++){
+    if (items[k].w.word === items[k-1].w.word){
+      const s = items.findIndex((x, idx) => idx > k && x.w.word !== items[k-1].w.word);
+      if (s > 0) [items[k], items[s]] = [items[s], items[k]];
+    }
+  }
+  return items;
+}
+
+function play(voice, id, onend){
+  if (S.audio){ S.audio.pause(); S.audio.onended = null; }
+  const a = new Audio(AUDIO[voice][id]); S.audio = a;
+  $("listenBtn").classList.add("playing");
+  a.onended = () => { $("listenBtn").classList.remove("playing"); if (onend) onend(); };
+  a.play().catch(() => $("listenBtn").classList.remove("playing"));
+}
+
+function show(){
+  const it = S.round[S.i]; S.cur = { ...it, replays: 0, done: false };
+  const p = split(it.w);
+  $("word").innerHTML = "";
+  $("word").append(p.pre, Object.assign(document.createElement("span"), { className: "gap", textContent: " " }), p.post);
+  const opts = $("opts"); opts.innerHTML = "";
+  it.w.options.forEach((o, k) => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.id = "opt-" + k; b.textContent = o; b.dataset.o = o;
+    b.onclick = () => answer(o);
+    opts.append(b);
+  });
+  $("fb").textContent = ""; $("fb").className = "feedback"; $("after").hidden = true;
+  $("oddBtn").textContent = "Kõlas hoopis muu sõna"; $("oddBtn").disabled = false;
+  $("qCount").textContent = (S.i + 1) + " / " + S.round.length;
+  $("bar").style.width = (100 * S.i / S.round.length) + "%";
+  play(it.voice, it.w.id);
+}
+
+function answer(o){
+  const c = S.cur; if (c.done) return; c.done = true;
+  const ok = o === c.w.answer;
+  [...$("opts").children].forEach(b => {
+    b.disabled = true;
+    if (b.dataset.o === c.w.answer) b.classList.add("right");
+    else if (b.dataset.o === o) b.classList.add("wrong");
+  });
+  const g = $("word").querySelector(".gap"); g.textContent = c.w.answer; g.classList.add("filled");
+  $("fb").textContent = ok ? "Õige!" : "Tegelikult oli " + c.w.word + ".";
+  $("fb").className = "feedback " + (ok ? "ok" : "bad");
+  S.answers.push({ voice: c.voice, id: c.w.id, word: c.w.word, answer: c.w.answer, chosen: o, ok, critical: critical(c.w), replays: c.replays });
+  $("after").hidden = false; $("nextBtn").focus();
+}
+
+function playAll(){
+  const c = S.cur; const p = split(c.w);
+  const btns = [...$("opts").children];
+  const seq = btns.map(b => {
+    const word = p.pre + b.dataset.o + p.post;
+    const id = slug(word);
+    return { b, word, id: has(c.voice, id) ? id : null };
+  });
+  seq.forEach(s => {
+    let sm = s.b.querySelector("small");
+    if (!sm){ sm = document.createElement("small"); s.b.append(sm); }
+    sm.textContent = s.id ? s.word : s.word + " · heli puudub";
+  });
+  let k = 0;
+  const next = () => {
+    btns.forEach(b => b.classList.remove("lit"));
+    while (k < seq.length && !seq[k].id) k++;
+    if (k >= seq.length) return;
+    const s = seq[k++]; s.b.classList.add("lit");
+    play(c.voice, s.id, () => setTimeout(next, 350));
+  };
+  next();
+}
+
+function results(){
+  $("s-q").hidden = true; $("s-res").hidden = false; $("s-res").style.display = "flex";
+  const out = {};
+  for (const v of DATA.voices){
+    const a = S.answers.filter(x => x.voice === v);
+    const cr = a.filter(x => x.critical), q1 = a.filter(x => !x.critical);
+    out[v] = { critical: [cr.filter(x => x.ok).length, cr.length], q1: [q1.filter(x => x.ok).length, q1.length],
+               misses: a.filter(x => !x.ok).map(x => x.word + " → " + x.chosen), odd: a.filter(x => x.odd).map(x => x.word) };
+  }
+  $("resLead").textContent = S.who + " kuulas " + S.answers.length + " sõna. Kapi/kappi vahe loeb kõige rohkem: vähemalt 9 kümnest tähendab, et hääl sobib.";
+  const box = $("voices"); box.innerHTML = "";
+  for (const v of DATA.voices){
+    const r = out[v]; const pct = r.critical[1] ? r.critical[0] / r.critical[1] : 0;
+    const card = document.createElement("div"); card.className = "vcard";
+    card.innerHTML = '<div class="vname"></div>' +
+      '<div class="stat"><span>pikk või ülipikk (kapi / kappi)</span><b></b></div>' +
+      '<div class="stat"><span>lühike (kabi)</span><b></b></div>' +
+      '<div class="verdict"></div><div class="miss"></div>';
+    card.querySelector(".vname").textContent = (DATA.names && DATA.names[v]) || v;
+    const bs = card.querySelectorAll("b");
+    bs[0].textContent = r.critical[0] + " / " + r.critical[1];
+    bs[1].textContent = r.q1[0] + " / " + r.q1[1];
+    const vd = card.querySelector(".verdict");
+    vd.textContent = pct >= 0.9 ? "Vahe on kuulda — sobib" : "Kapi ja kappi vahe ei ole selge";
+    vd.className = "verdict " + (pct >= 0.9 ? "pass" : "fail");
+    card.querySelector(".miss").textContent = (r.misses.length ? "Valesti kuuldud: " + r.misses.join(", ") : "Kõik õigesti.") + (r.odd.length ? " Kõlas muu sõna: " + r.odd.join(", ") + "." : "");
+    box.append(card);
+  }
+  save(out);
+}
+
+async function save(summary){
+  $("saved").textContent = "Salvestan tulemust…";
+  try {
+    const db = window.claude && await window.claude.use("db");
+    if (!db) throw new Error("no db");
+    await db.collection("results").add({ who: S.who, at: new Date().toISOString(), len: S.answers.length, summary, answers: S.answers });
+    $("saved").textContent = "Tulemus on salvestatud — Claude näeb seda.";
+  } catch (e) {
+    $("saved").textContent = "Tulemust ei õnnestunud salvestada. Kirjuta Claude'ile numbrid üles.";
+  }
+}
+
+function chips(groupId, key, onchange){
+  $(groupId).addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    [...$(groupId).children].forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    S[key] = b.dataset.v; if (onchange) onchange();
+  });
+}
+chips("who", "who", () => { $("startBtn").disabled = false; });
+chips("len", "len");
+$("startBtn").onclick = () => {
+  S.round = buildRound(); S.i = 0; S.answers = [];
+  $("s-start").hidden = true; $("s-q").hidden = false; show();
+};
+$("listenBtn").onclick = () => { if (S.cur){ S.cur.replays++; play(S.cur.voice, S.cur.w.id); } };
+$("allBtn").onclick = playAll;
+$("oddBtn").onclick = () => { const a = S.answers[S.answers.length - 1]; if (a){ a.odd = true; $("oddBtn").textContent = "Märgitud"; $("oddBtn").disabled = true; } };
+(function setup(){
+  const total = DATA.voices.reduce((n, v) => n + Object.keys(AUDIO[v] || {}).length, 0);
+  if (DATA.note) $("voiceNote").textContent = DATA.note;
+  else if (DATA.voices.length === 1) $("voiceNote").textContent = "Seekord on üks hääl, " + DATA.voices[0] + ". Teine hääl tuleb järgmises testis.";
+  if (total <= 40){ $("lenField").hidden = true; S.len = "all"; }
+  $("len-all").textContent = "Kõik " + DATA.voices.reduce((n, v) => n + DATA.items.filter(w => has(v, w.id)).length, 0);
+})();
+$("nextBtn").onclick = () => { S.i++; if (S.i < S.round.length) show(); else results(); };
+$("againBtn").onclick = () => { $("s-res").hidden = true; $("s-res").style.display = ""; $("s-start").hidden = false; };
+document.addEventListener("keydown", e => {
+  if ($("s-q").hidden) return;
+  if (e.key === " " && !S.cur.done){ e.preventDefault(); $("listenBtn").click(); }
+  if (e.key === "Enter" && S.cur.done){ e.preventDefault(); $("nextBtn").click(); }
+  const n = parseInt(e.key, 10); if (n >= 1 && n <= 3 && !S.cur.done) answer(S.cur.w.options[n-1]);
+});
+</script>

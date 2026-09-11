@@ -1,0 +1,132 @@
+<title>Kirjutaja sõnavara</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#fdfdfa; --ink:#1d2f4f; --ink-soft:#5a6a82; --rule:#9fbde6; --rule-soft:#d3e1f3; --edge:#c3d4ea;
+  --accent:#ffd166; --accent-ink:#3a2c00; --drop:#b8432d; --drop-bg:#fbe9e4; --card:#ffffff;
+  --display:"Fredoka",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace; color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;background:var(--paper);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 14px,var(--rule-soft) 14px 15px,transparent 15px 28px,var(--rule-soft) 28px 29px,transparent 29px 42px,var(--rule) 42px 43px,transparent 43px 56px);
+  background-size:100% 56px;padding-inline:16px;padding-block:24px 60px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--display);font-weight:600;font-size:30px;line-height:1.1;margin:0}
+h1 em{font-style:normal;background:linear-gradient(transparent 55%,var(--accent) 55% 92%,transparent 92%);padding-inline:2px}
+.intro{background:var(--paper);display:flex;flex-direction:column;gap:10px;max-width:66ch}
+.intro p{margin:0}
+.bar{position:sticky;top:0;z-index:2;background:var(--paper);border-bottom:1.5px solid var(--edge);padding-block:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font:inherit;font-weight:700;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:999px;padding:6px 14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:#e9b93f}
+.count{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.lemma{background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.lh{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.lh b{font-family:var(--display);font-weight:600;font-size:21px}
+.lh span{color:var(--ink-soft);font-size:14px}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;padding-block:6px;border-top:1px dashed var(--rule-soft)}
+.item.dropped{opacity:.55}
+.item.dropped .w{text-decoration:line-through;text-decoration-color:var(--drop)}
+.w{font-family:var(--display);font-weight:500;font-size:22px;min-width:5.5em}
+.w mark{background:var(--accent);color:var(--accent-ink);border-radius:3px;padding-inline:1px}
+.meta{font-size:12px;color:var(--ink-soft);font-family:var(--mono)}
+.sent{grid-column:2;font:inherit;color:var(--ink);background:transparent;border:1px solid transparent;border-radius:8px;padding:3px 6px;width:100%}
+.sent:hover{border-color:var(--rule-soft)} .sent:focus{border-color:var(--rule);outline:none;background:#fff}
+.sent.edited{background:#fff8e1}
+.tog{grid-row:1 / span 2;grid-column:3;font:inherit;font-weight:700;font-size:14px;background:var(--card);color:var(--ink);border:1.5px solid var(--edge);border-radius:10px;padding:6px 10px;cursor:pointer;white-space:nowrap}
+.item.dropped .tog{background:var(--drop-bg);border-color:var(--drop);color:var(--drop)}
+.why{grid-column:2;font-size:13px;color:var(--drop);font-weight:700}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.status{font-size:13px;color:var(--ink-soft)}
+@media (max-width:520px){.item{grid-template-columns:1fr auto}.w{grid-column:1}.meta{grid-column:1}.sent,.why{grid-column:1 / span 2}.tog{grid-row:1;grid-column:2}}
+</style>
+<div class="wrap">
+  <header>
+    <div class="label">Harjutaja · Kirjutaja · samm 1</div>
+    <h1>Kirjutaja <em>sõnavara</em></h1>
+  </header>
+  <div class="intro">
+    <p>Need on sõnad, mida Kirjutaja küsib. Iga sõna juures on lünk (kollasega), mis tähed sinna käivad, ja lause, mis ekraanile tuleb.</p>
+    <p>Vajuta <b>Jäta välja</b>, kui sõna ei sobi. Lauset saad parandada, kui sellele klõpsad. Kõik muudatused salvestuvad kohe ja Claude näeb neid.</p>
+    <p class="status" id="status">Punasega märgitud sõnad jättis Fable juba välja (harv vorm või mõni variant kõlab nagu roppsõna). Neid saad tagasi võtta.</p>
+  </div>
+  <div class="bar" role="group" aria-label="Filter">
+    <button class="chip" id="f-all" data-f="all" aria-pressed="true">Kõik</button>
+    <button class="chip" id="f-keep" data-f="keep" aria-pressed="false">Alles</button>
+    <button class="chip" id="f-drop" data-f="drop" aria-pressed="false">Välja jäetud</button>
+    <span class="count" id="count"></span>
+  </div>
+  <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
+</div>
+<script>
+const ITEMS = /*ITEMS*/null;
+const $ = id => document.getElementById(id);
+const state = {};  // id -> {drop, sentence}
+let db = null, filter = "all";
+ITEMS.forEach(it => state[it.id] = { drop: !!it.auto_drop, sentence: it.sentence, edited: false });
+const LEN = { "lühike": "lühike", "pikk": "pikk", "ülipikk": "ülipikk" };
+
+function render(){
+  const list = $("list"); list.innerHTML = "";
+  const byLemma = new Map();
+  ITEMS.forEach(it => { if (!byLemma.has(it.lemma)) byLemma.set(it.lemma, []); byLemma.get(it.lemma).push(it); });
+  let shown = 0;
+  for (const [lemma, its] of byLemma){
+    const vis = its.filter(it => filter === "all" || (filter === "drop") === state[it.id].drop);
+    if (!vis.length) continue;
+    const box = document.createElement("section"); box.className = "lemma";
+    const h = document.createElement("div"); h.className = "lh";
+    const b = document.createElement("b"); b.textContent = lemma;
+    const m = document.createElement("span"); m.textContent = its[0].meaning || "";
+    h.append(b, m); box.append(h);
+    for (const it of vis){
+      shown++;
+      const st = state[it.id];
+      const row = document.createElement("div"); row.className = "item" + (st.drop ? " dropped" : "");
+      const w = document.createElement("div"); w.className = "w";
+      const mk = document.createElement("mark"); mk.textContent = it.answer;
+      w.append(it.pre, mk, it.post);
+      const meta = document.createElement("div"); meta.className = "meta"; meta.textContent = it.morph_et + " · " + LEN[it.length];
+      const tog = document.createElement("button"); tog.className = "tog"; tog.id = "t-" + it.id;
+      tog.textContent = st.drop ? "Välja jäetud" : "Jäta välja";
+      tog.onclick = () => { st.drop = !st.drop; save(it.id); render(); };
+      const inp = document.createElement("input"); inp.className = "sent" + (st.edited ? " edited" : ""); inp.id = "s-" + it.id;
+      inp.value = st.sentence || ""; inp.setAttribute("aria-label", "Lause sõnaga " + it.word);
+      inp.onchange = () => { st.sentence = inp.value.trim(); st.edited = st.sentence !== it.sentence; inp.classList.toggle("edited", st.edited); save(it.id); };
+      row.append(w, tog, meta, inp);
+      if (st.drop && it.auto_drop){ const y = document.createElement("div"); y.className = "why"; y.textContent = "Fable: " + it.auto_drop; row.append(y); }
+      box.append(row);
+    }
+    list.append(box);
+  }
+  const kept = ITEMS.filter(it => !state[it.id].drop).length;
+  $("count").textContent = kept + " alles · " + (ITEMS.length - kept) + " välja";
+}
+
+async function save(id){
+  if (!db) return;
+  const st = state[id];
+  try { await db.doc("decisions/" + id).set({ drop: st.drop, sentence: st.sentence, edited: st.edited, at: new Date().toISOString() }); }
+  catch (e) { $("status").textContent = "Salvestamine ei õnnestunud — muudatused on ainult selles aknas."; }
+}
+
+async function load(){
+  try {
+    db = window.claude && await window.claude.use("db");
+    if (!db) return;
+    const snap = await db.collection("decisions").get();
+    snap.forEach(d => { const v = d.data(); if (state[d.id]) Object.assign(state[d.id], { drop: !!v.drop, sentence: v.sentence ?? state[d.id].sentence, edited: !!v.edited }); });
+    render();
+  } catch (e) {}
+}
+
+document.querySelector(".bar").addEventListener("click", e => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  document.querySelectorAll(".bar .chip").forEach(x => x.setAttribute("aria-pressed", x === c ? "true" : "false"));
+  filter = c.dataset.f; render();
+});
+render(); load();
+</script>

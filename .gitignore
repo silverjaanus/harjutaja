@@ -1,0 +1,14 @@
+# suured või genereeritud vahefailid
+tools/wordbank/data/lemmafreq-min5.csv
+tools/wordbank/data/ekilex_forms.json
+tools/wordbank/fetch.log
+tools/tts_test/out/
+tools/tts_test/out2/
+tools/tts_test/*.log
+tools/audio/*.log
+tools/audio/*.err
+kirjutaja/audio_raw/
+**/_to_delete/
+**/*.part.mp3
+__pycache__/
+Claude outputs/
