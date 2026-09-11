@@ -18,11 +18,15 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**Häälte test on läbi (samm 0 tehtud).** Kolmas voor, Silver 11. sept: Kore ühtlustatud pausiga, 32/32 õigesti (pikk/ülipikk 23/23, lühike 9/9). Otsus: **hääl on Gemini Kore + `normalize_closure.py`** (pikk 160 ms, ülipikk 380 ms). Iga sõna eraldi päringuga, kõik variandid ka mittesõnadena.
+**Samm 0 (hääl) tehtud:** Gemini Kore + `normalize_closure.py`, kuulamistest 32/32.
 
-Järeldus mängu jaoks: Gemini ülipikk on ise liiga lühike, seega kuuldav vihje peab olema ühtlustatud **üksiksõna**. Lause jääb ekraanile tekstina (tähendus ja grammatika), lauset ette ei loeta — lause sees ei saa pausi usaldusväärselt ühtlustada.
+**Samm 1 (sõnapank) peaaegu tehtud:** `tools/wordbank/`: `candidates.py` (sagedusloend → 2383 kandidaati) → käsitsi valitud 166 lapsele tuttavat lemmat `data/lemmas.txt` → `fetch_forms.py` (Ekilex: vormid, välte märgid, tähendus; `data/ekilex_forms.json`) → `extract.py` (lünk 1./2. silbi piiril, välde kontrollitud Ekilexi `\``-märgiga, 0 vastuolu) → Fable kirjutas igale vormile lause ja märgistas harvad/segadusse ajavad (`data/review_out*.json`), Fable kontrollis 936 varianti roppsõnade suhtes (`data/variants_flagged.json`) → `finalize.py` → `data/items_reviewed.json` (381 vormi, 23 auto-väljas; lemmad kakk, kepp, lipp, sitikas, sukk välja roppsõnade kõla tõttu; pakane jäi, „pagane“ on leebe) ja `data/variants.json` (900 heliklippi).
 
-**Järgmine täpne tegevus:** plaani samm 1 — sõnapank. Vaja Silveri Ekilexi API-võtit Windowsi kasutaja keskkonnamuutujas `EKILEX_API_KEY`. Siis skript Windowsis: põhisõnavara (`psv`) sõnad + paradigmad Ekilexist → kandidaatide filter (lünk 1. ja 2. silbi piiril, lühikese täishääliku järel, sulghäälik) → Fable kontrollib reegleid ja roppsõnu → Silver vaatab nimekirja üle.
+**Silveri ülevaatus käib:** artifakt „Kirjutaja sõnavara“ (https://claude.ai/code/artifact/c1f3ae72-0275-4e05-8729-8e5bc3108b4a), otsused andmebaasi kogus `decisions` (doc id = vormi id: drop, sentence, edited). Loe `read_db`-ga ja rakenda enne heli genereerimist.
+
+**Samm 3 (heli) blokeeritud päevalimiidiga:** `gemini-3.1-flash-tts` tasulisel Tier 1 tasemel on **100 päringut päevas** (projekti ja mudeli kohta), minutis ~10. 11. sept kulus kõik ära (tehtud 21 klippi kaustas `kirjutaja/audio`). Lahendus: partiid ~12 sõna päringus + n−1 pikima vaikuse lõikus + automaatne kontroll (partii heli transkribeeritakse eraldi tekstimudeliga, võrreldakse sõnade kaashäälikuskeletti) → 900 klippi ~80 päringuga, mahub ühe päeva limiiti.
+
+**Järgmine täpne tegevus:** (1) loe Silveri otsused, uuenda `variants.json`; (2) kirjuta `tools/audio/gen_audio.py` partiireziimi ümber koos kontrolliga; (3) käivita pärast limiidi lähtestumist. Paralleelselt: GitHubi repo `harjutaja` (Windowsis on `gh` olemas) ja Verceli projekt; siis Squarespace DNS CNAME `harjutaja` → Verceli antud väärtus (korrutaja on `e25cb360d0a03c56.vercel-dns-017.com`, projektipõhine). Squarespace küsib kirje lisamisel e-posti koodi — Silver sisestab ise.
 
 ## Key Context
 

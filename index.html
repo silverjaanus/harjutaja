@@ -4,20 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Harjutaja</title>
+<meta name="theme-color" content="#fdfdfa">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/kirjutaja-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
 <style>
-body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1d2f4f;background:#fdfdfa;
-background-image:repeating-linear-gradient(to bottom,transparent 0 14px,#d3e1f3 14px 15px,transparent 15px 28px,#d3e1f3 28px 29px,transparent 29px 42px,#9fbde6 42px 43px,transparent 43px 56px);padding:24px 16px}
-main{background:#fdfdfa;max-width:420px;text-align:center;display:flex;flex-direction:column;gap:14px;padding:12px}
-h1{margin:0;font-size:36px}
-a{display:block;padding:14px 20px;border-radius:14px;border:1.5px solid #e9b93f;background:#ffd166;color:#3a2c00;font-weight:700;text-decoration:none;font-size:18px}
-p{margin:0;color:#5a6a82}
+:root{--paper:#fdfdfa;--ink:#1d2f4f;--ink-soft:#5a6a82;--rule:#9fbde6;--rule-soft:#d3e1f3;--edge:#c3d4ea;--accent:#ffd166;--accent-edge:#e9b93f;--accent-ink:#3a2c00;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Nunito",system-ui,sans-serif;background:var(--paper);
+background-image:repeating-linear-gradient(to bottom,transparent 0 14px,var(--rule-soft) 14px 15px,transparent 15px 28px,var(--rule-soft) 28px 29px,transparent 29px 42px,var(--rule) 42px 43px,transparent 43px 56px);background-size:100% 56px;padding-inline:16px;padding-block:32px}
+main{max-width:460px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{font-family:"Fredoka",ui-rounded,system-ui,sans-serif;font-weight:600;font-size:40px;margin:0;text-align:center;background:var(--paper)}
+p{margin:0;text-align:center;color:var(--ink-soft);background:var(--paper)}
+a.mod{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:18px;border:1.5px solid var(--edge);background:var(--card);color:var(--ink);text-decoration:none}
+a.mod:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+a.mod img,a.mod .ico{width:64px;height:64px;border-radius:14px;flex:none}
+a.mod .ico{display:grid;place-items:center;background:#1f5c99;color:#fff;font:600 40px "Fredoka",system-ui,sans-serif}
+a.mod b{display:block;font-family:"Fredoka",system-ui,sans-serif;font-weight:600;font-size:24px}
+a.mod span{color:var(--ink-soft);font-size:15px}
+a.mod.new{border-color:var(--accent-edge);box-shadow:0 3px 0 var(--accent-edge)}
 </style>
 </head>
 <body>
 <main>
 <h1>Harjutaja</h1>
-<p>Kirjutaja tuleb varsti. Seniks saab harjutada korrutamist.</p>
-<a href="https://korrutaja.silverjaanus.com">Mine Korrutajasse</a>
+<p>Vali, mida täna harjutad.</p>
+<a class="mod new" href="kirjutaja/"><img src="icons/kirjutaja-192.png" alt=""><div><b>Kirjutaja</b><span>Kuula sõna ja vali õiged tähed: g, k või kk?</span></div></a>
+<a class="mod" href="https://korrutaja.silverjaanus.com"><span class="ico">×</span><div><b>Korrutaja</b><span>Korrutustabel ja jagamine</span></div></a>
 </main>
 </body>
 </html>
