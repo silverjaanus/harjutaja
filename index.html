@@ -19,9 +19,8 @@ body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--body);font-siz
   padding-inline:16px;padding-block:30px 36px;-webkit-tap-highlight-color:transparent}
 main{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
 
-.hero{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.hero{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 h1{font-family:var(--display);font-weight:600;font-size:clamp(40px,12vw,52px);line-height:1.05;margin:0}
-.guide{width:min(320px,86%);height:14px;display:block;margin:2px 0 6px}
 .sub{margin:0;color:var(--ink-soft);max-width:30ch}
 
 .mods{display:flex;flex-direction:column;gap:12px}
@@ -32,6 +31,9 @@ a.mod:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .face svg{width:100%;height:auto;display:block;overflow:visible}
 .mod-kirjutaja .face{background:#eaf2fc;border-color:#cfe0f4}
 .mod-korrutaja .face{background:#eceefc;border-color:#d4d9f7}
+/* pead on eri kõrgusega (robotil on antenn) — ühtlustame nii, et näod tunduvad ühesuurused */
+.mod-kirjutaja .face svg{width:130%;transform:translateY(3px)}
+.mod-korrutaja .face svg{width:94%}
 a.mod b{display:block;font-family:var(--display);font-weight:600;font-size:26px;line-height:1.15}
 a.mod span{display:block;color:var(--ink-soft);font-size:15.5px;line-height:1.35;margin-top:2px}
 a.mod.new{border-color:var(--accent-edge);box-shadow:0 3px 0 var(--accent-edge)}
@@ -59,12 +61,6 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
 <main>
   <header class="hero">
     <h1>Harjutaja</h1>
-    <svg class="guide" viewBox="0 0 320 14" aria-hidden="true">
-      <line x1="10" y1="7" x2="310" y2="7" stroke="#9fbde6" stroke-width="1.6" stroke-dasharray="5 6"/>
-      <circle cx="160" cy="7" r="5" fill="none" stroke="#e9b93f" stroke-width="1.8"/>
-      <line x1="154" y1="7" x2="166" y2="7" stroke="#e9b93f" stroke-width="1.8"/>
-      <line x1="160" y1="1" x2="160" y2="13" stroke="#e9b93f" stroke-width="1.8"/>
-    </svg>
     <p class="sub">Eestikeelsed õppemängud. Vali, mida täna harjutad.</p>
   </header>
 
