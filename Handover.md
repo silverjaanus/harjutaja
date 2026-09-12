@@ -17,6 +17,8 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 - Projekti ülevaade kogu skoobiga: Claude'i projektis `claude/harjutaja-ulevaade.md`.
 - **Maskoti valik (12. sept):** kuus varianti kõrvuti võrdluslehel (artifakt „Kirjutaja robotivalik“) — Silver valis **plekkroboti**: kandiline neetidega pea, valge ekraannägu tumedate silmadega, vedrukael, numbrilaud ja tuled kõhul, haaratsitega käed. `kirjutaja/robot.js` on selle peale ümber kirjutatud; API (`KRobot(mood, {head})`) ja animatsiooniklassid (`kr-body`, `kr-eyes`, `kr-arm kr-l/kr-r`, `kr-spark`) on samad, seega `app.js` ja `kirjutaja.css` ei muutunud.
 
+- **Avaleht (12. sept, commit `25fe8fe`):** `index.html` on nüüd päris avaleht — robot tervitab (lehvitab, klikile hüppab), Kirjutaja ja Korrutaja kaardid, „Tulekul“ nimekiri (Kell, Teisendaja, Keel) ja jalus. Manifesti `start_url` on `./` (varem `./kirjutaja/`), `sw.js` versioon `h-202609121720`. Eesti keel üle vaadatud Fable'iga. **Lahtine:** Harjutajal endal ei ole veel ikooni ega sõnamärki — avaleht kasutab faviconina Kirjutaja ikooni.
+
 ## In Progress
 
 **Kirjutaja v1 on täies mahus live (12. sept):** https://harjutaja.silverjaanus.com/kirjutaja/ — commit `4611fa9`, mängus **371 sõna 373-st**, heliklippe 919/921.
