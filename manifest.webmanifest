@@ -2,7 +2,7 @@
   "name": "Harjutaja",
   "short_name": "Harjutaja",
   "description": "Eestikeelsed õppemängud lastele",
-  "start_url": "./kirjutaja/",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#fdfdfa",
