@@ -172,7 +172,7 @@
       HSfx.bad();
       $("fb").textContent = "Õige on " + it.word + ".";
       $("fb").className = "feedback bad";
-      $("hint").innerHTML = hintText(it); $("hint").hidden = false;
+      $("hint").innerHTML = KRobot("kind", { head: true }) + '<div class="hinttext">' + hintText(it) + "</div>"; $("hint").hidden = false;
       $("after").hidden = false;
       setTimeout(playAll, 600);
     }
@@ -203,11 +203,12 @@
     D.rounds.push({ t: Date.now(), n: G.n, ok: G.ok, set: cell ? cell.s + "-" + cell.l : set });
     if (D.rounds.length > 20) D.rounds.shift();
     save();
-    let title, sub = "";
-    if (G.n < 5) { title = "Hea algus!"; }
-    else if (pct >= 0.9) { title = "Suurepärane!"; HSfx.tada(); }
-    else if (pct >= 0.7) { title = "Hästi tehtud!"; }
-    else { title = "Hästi harjutatud!"; sub = "Vead näitavad, mida veel harjutada – nii see pähe jääbki."; }
+    let title, sub = "", mood = "happy";
+    if (G.n < 5) { title = "Hea algus!"; mood = "wave"; }
+    else if (pct >= 0.9) { title = "Suurepärane!"; mood = "cheer"; HSfx.tada(); }
+    else if (pct >= 0.7) { title = "Hästi tehtud!"; mood = newly.length ? "cheer" : "happy"; }
+    else { title = "Hästi harjutatud!"; mood = "kind"; sub = "Vead näitavad, mida veel harjutada – nii see pähe jääbki."; }
+    $("resRobot").innerHTML = KRobot(mood);
     $("resTitle").textContent = title; $("resSub").textContent = sub; $("resSub").hidden = !sub;
     const stats = $("resStats"); stats.innerHTML = "";
     const add = (big, small) => { const d = document.createElement("div"); d.className = "stat"; const b = document.createElement("b"); b.textContent = big; const s = document.createElement("span"); s.textContent = small; d.append(b, s); stats.append(d); };
@@ -243,6 +244,11 @@
   });
   document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); });
 
+  $("mascot").innerHTML = KRobot("wave");
+  $("mascot").onclick = () => {
+    HSfx.unlock(); HSfx.ok();
+    const svg = $("mascot").querySelector("svg"); svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
+  };
   renderMap(); renderCount();
   if ("serviceWorker" in navigator) { navigator.serviceWorker.register("../sw.js").catch(() => {}); }
 })();

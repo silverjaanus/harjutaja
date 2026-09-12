@@ -21,7 +21,7 @@
     <button class="icon-btn" id="sfxBtn" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
   </header>
   <div class="hero">
-    <img src="../icons/kirjutaja-192.png" alt="" width="72" height="72" class="logo">
+    <button class="mascot" id="mascot" aria-label="Robot"></button>
     <h1>Kirjutaja</h1>
     <p class="sub">Kuula sõna ja vali, mis tähed lünka käivad.</p>
   </div>
@@ -64,8 +64,9 @@
 </section>
 
 <section id="s-result" class="screen" hidden>
-  <div class="hero">
-    <h1 id="resTitle"></h1>
+  <div class="res-hero">
+    <div class="bubble" id="resTitle"></div>
+    <div id="resRobot"></div>
     <p class="sub" id="resSub"></p>
   </div>
   <div class="stats" id="resStats"></div>
@@ -84,6 +85,7 @@
 <script src="../core/sfx.js"></script>
 <script src="../core/engine.js"></script>
 <script src="data.js"></script>
+<script src="robot.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
