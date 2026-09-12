@@ -25,7 +25,7 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 **Kvoodi õppetund:** `gemini-3.1-flash-tts` päevalimiit (Tier 1: 100 päringut) lähtestub **Vaikse ookeani südaööl ehk 10:00 Eesti aja järgi**, mitte keskööl. Minutis ~10 päringut.
 
-**Järgmised sammud (v1.1):** Silveri sõnavara ülevaatuse otsuste sisselugemine (artifakti „Kirjutaja sõnavara“ andmebaas → `tools/wordbank/data/decisions.json` → build), täishäälikud (a/aa) ning l/ll, s/ss, „s-i ja h-i kõrval k, p, t“, Korrutaja kolimine Harjutajasse, roboti nimi.
+**Järgmised sammud (v1.1):** Silveri sõnavara ülevaatuse otsuste sisselugemine (artifakti „Kirjutaja sõnavara“ andmebaas → `tools/wordbank/data/decisions.json` → build), täishäälikud (a/aa) ning l/ll, s/ss, „s-i ja h-i kõrval k, p, t“, Korrutaja kolimine Harjutajasse. **Maskotid jäävad nimeta** (Silveri otsus 12. sept — ka pandal ei ole nime).
 
 ## Key Context
 
