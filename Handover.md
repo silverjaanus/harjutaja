@@ -1,6 +1,6 @@
 # Handover — Harjutaja
 
-Uuendatud: 11. september 2026
+Uuendatud: 12. september 2026
 
 ## Current Goal
 
@@ -15,22 +15,17 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 - Arhitektuur: valik A — uus repo `harjutaja`, Korrutaja jääb praegu oma repos puutumata ja kolib hiljem.
 - Häälte test kolmes voorus (`tools/tts_test/`: tts_test.py, normalize_closure.py, make_round2.py, page/). Testileht: artifakt „Kirjutaja häälte test“, tulemused selle andmebaasis `results`.
 - Projekti ülevaade kogu skoobiga: Claude'i projektis `claude/harjutaja-ulevaade.md`.
+- **Maskoti valik (12. sept):** kuus varianti kõrvuti võrdluslehel (artifakt „Kirjutaja robotivalik“) — Silver valis **plekkroboti**: kandiline neetidega pea, valge ekraannägu tumedate silmadega, vedrukael, numbrilaud ja tuled kõhul, haaratsitega käed. `kirjutaja/robot.js` on selle peale ümber kirjutatud; API (`KRobot(mood, {head})`) ja animatsiooniklassid (`kr-body`, `kr-eyes`, `kr-arm kr-l/kr-r`, `kr-spark`) on samad, seega `app.js` ja `kirjutaja.css` ei muutunud.
 
 ## In Progress
 
-**Kirjutaja v1 on live (11. sept õhtul):** https://harjutaja.silverjaanus.com/kirjutaja/ — commit `4f7b38f`. Mängus praegu 32 sõna 373-st (need, mille kõigil variantidel on juba heli: häälte testi Kore klipid + 11. sept tehtud 21 klippi). Ülejäänud lisanduvad automaatselt, kui heli on olemas ja `tools/build_kirjutaja.py` uuesti jookseb.
+**Kirjutaja v1 on täies mahus live (12. sept):** https://harjutaja.silverjaanus.com/kirjutaja/ — commit `4611fa9`, mängus **371 sõna 373-st**, heliklippe 919/921.
 
-**Järgmine täpne tegevus (ajastatud 12. sept 07:30 Tallinna aja järgi):** Windowsis `python tools\audio_gen.py --max-requests 95` (taustal, logi `tools\audio_gen.log`) → `python tools\build_kirjutaja.py` → git commit + push → kontrolli `kirjutaja/data.js` sõnade arvu. Gemini TTS päevalimiit 100 päringut, lähtestub ~03:00 Tallinna aja järgi.
+**Heli tehtud:** `tools/audio_gen.py` partiidena 12 sõna päringus, iga partii kontrollitud transkriptsiooniga (`gemini-2.5-flash`, kaashäälikuskelett, täpitähed normaliseeritud). 852 klippi ~80 TTS-päringuga umbes 45 minutiga. Kontroll töötas: üksikud valesti kuuldud sõnad (nägus → „Nogus“, pidur → „tittur“) läksid järgmisesse partiisse. Puudu jäid ainult mittesõnad `hope` ja `rotu` — Gemini loeb neid järjekindlalt „hõppe“ ja „ruttu“ —, seega on kaks vormi mängust väljas.
 
-**`tools/audio_gen.py`:** 12 sõna ühe TTS-päringuga, lõikus n−1 pikima vaikuse järgi, kontroll tekstimudeliga (`gemini-2.5-flash`, eraldi limiit): iga sõna kaashäälikuskelett (topelttähed kokku, g→k, b→p, d→t) peab klappima. Kuni 2 üksikut viga → ülejäänud salvestatakse, kahtlased lähevad hilisemasse partiisse (max 2 korda). Rohkem vigu → partii uuesti, siis poolikutena. Testis leidis kontroll „appi“ asemel „pappi“ — töötab. Pikkust (kapi/kappi) kontroll ei hinda, selle eest hoolitseb sulu ühtlustus.
+**Kvoodi õppetund:** `gemini-3.1-flash-tts` päevalimiit (Tier 1: 100 päringut) lähtestub **Vaikse ookeani südaööl ehk 10:00 Eesti aja järgi**, mitte keskööl. Minutis ~10 päringut.
 
-**Äpi ülesehitus:** `index.html` (Harjutaja avaleht: Kirjutaja + link Korrutajasse), `core/` (store.js — localStorage; sfx.js — WebAudio helid; engine.js — kohanduv kordamine: vale tuleb 3–6 küsimuse pärast tagasi, kuni 2 korda ringis, ring max 2× pikkus), `kirjutaja/` (index.html, kirjutaja.css — valge vihik abijoontega, app.js, data.js — genereeritud, audio/*.mp3), `sw.js` (rakendus võrgust-enne, heli vahemälust; versioon build'is), `manifest.webmanifest`, `icons/` (kollane blueprint-K). Andmed brauseris võtme `kirjutaja_v1` all: stats[id] = {n, ok, streak, lastOk, t}, sfx, rounds.
-
-**Mängu käik:** ring 15 küsimust (valitud hulgas vähemalt 6); lause ekraanil lüngaga, kõlab ühtlustatud üksiksõna; õige → „Õige!“ jms ja edasi 1,1 s pärast; vale → õige vastus, reeglivihje (lühike ja nõrk / pikk, üks täht / ülipikk, kaks tähte) ja kõik kolm varianti loetakse ette nuppude süttimisega; „Edasi“. Häälikukaart 3×3 (k/p/t-rida × lühike/pikk/ülipikk), ruudu puudutus = harjuta ainult neid. Tulemus: pealkiri protsendi järgi, õigete arv, „sõna sai selgeks“, „Järgmisel korral harjutame“. Tekstid kontrollis Fable.
-
-**Maskott (11. sept õhtul):** joonestusrobot `kirjutaja/robot.js` — `KRobot(mood, {head})`, ilmed happy, wave, cheer, kind, teach; antenn on kuldne sulepea, kõhul vihikuleht, sinine keha (#1f5c99), kollased käed. Kodulehel lehvitab (puudutus → hüpe + piiks), vale vastuse vihjekastis pea „kind“, tulemuste ekraanil suurelt jutumulliga (≥90% cheer, ≥70% happy/cheer, alla selle kind). Küsimuse ajal teda pole. Nime pole — Mia võib panna.
-
-**Veel tegemata (v1.1):** Silveri sõnavara ülevaatuse otsuste sisselugemine (`decisions.json` artifakti andmebaasist → build), täishäälikud ja l/ll, s/ss, Korrutaja kolimine Harjutajasse.
+**Järgmised sammud (v1.1):** Silveri sõnavara ülevaatuse otsuste sisselugemine (artifakti „Kirjutaja sõnavara“ andmebaas → `tools/wordbank/data/decisions.json` → build), täishäälikud (a/aa) ning l/ll, s/ss, „s-i ja h-i kõrval k, p, t“, Korrutaja kolimine Harjutajasse, roboti nimi.
 
 ## Key Context
 
