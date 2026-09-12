@@ -30,9 +30,13 @@ def log(msg):
     open(LOG, "a", encoding="utf-8").write(line + "\n")
 
 
-def skeleton(w):
+def skeleton(w, loose=False):
+    """Kaashäälikuskelett võrdlemiseks: väiketähed, topelttähed kokku, g→k, b→p, d→t.
+    loose=True kaotab ka täpitähed — transkriptsioon kirjutab ä/õ vahel ilma täppideta."""
     w = w.lower().strip(" .,!?;:\"'")
     w = w.replace("g", "k").replace("b", "p").replace("d", "t")
+    if loose:
+        w = w.replace("ä", "a").replace("õ", "o").replace("ö", "o").replace("ü", "u")
     return re.sub(r"(.)\1+", r"\1", w)
 
 
@@ -91,12 +95,19 @@ def do_batch(batch, key, ffmpeg, limit):
         heard = transcribe(pcm, len(batch), key)
         if not heard or len(heard) != len(batch):
             log("  kontroll: kuulis %s sõna (katse %d)" % (len(heard) if heard else "0", attempt)); continue
-        bad = [(v["word"], h) for v, h in zip(batch, heard) if skeleton(v["word"]) != skeleton(h)]
+        bad = [i for i, (v, h) in enumerate(zip(batch, heard))
+               if skeleton(v["word"], True) != skeleton(h, True)]
+        # Nihe (üks sõna vahele jäänud või pooleks lõigatud) rikuks kõik järgmised sõnad.
+        # Kui valesti on kuni 2 üksikut sõna, on joondus õige: salvesta ülejäänud, need jäävad hilisemaks.
+        if len(bad) > 2:
+            log("  kontroll ei klapi %d sõnal (katse %d)" % (len(bad), attempt)); continue
         if bad:
-            log("  kontroll ei klapi: %s (katse %d)" % (bad, attempt)); continue
-        for v, (a, b) in zip(batch, segs):
-            save(v, T.cut(pcm, a, b), ffmpeg)
-        return batch
+            log("  kontroll: jätan hilisemaks %s" % [(batch[i]["word"], heard[i]) for i in bad])
+        ok = []
+        for i, (v, (a, b)) in enumerate(zip(batch, segs)):
+            if i not in bad:
+                save(v, T.cut(pcm, a, b), ffmpeg); ok.append(v)
+        return ok
     return []
 
 
@@ -110,6 +121,7 @@ def main():
     os.makedirs(RAW, exist_ok=True); os.makedirs(OUT, exist_ok=True)
     variants = json.load(open(os.path.join(ROOT, "tools", "wordbank", "data", "variants.json"), encoding="utf-8"))
     todo = [v for v in variants if not T.valid_mp3(os.path.join(OUT, v["id"] + ".mp3"), ffmpeg)]
+    tries = {}
     random.Random(1).shuffle(todo)
     log("teha %d / %d, partii %d, päringuid kuni %d" % (len(todo), len(variants), a.batch, a.max_requests))
     done = 0
@@ -118,7 +130,13 @@ def main():
         while i < len(todo):
             batch = todo[i:i + a.batch]; i += a.batch
             ok = do_batch(batch, key, ffmpeg, a.max_requests)
-            if not ok and len(batch) > 3:
+            left = [v for v in batch if v not in ok]
+            if ok and left:
+                for v in left:
+                    tries[v["id"]] = tries.get(v["id"], 0) + 1
+                    if tries[v["id"]] <= 2:
+                        todo.append(v)                 # üksikud kahtlased sõnad uuesti järgmises partiis
+            elif not ok and len(batch) > 3:
                 half = len(batch) // 2          # kaks väiksemat partiid
                 ok = do_batch(batch[:half], key, ffmpeg, a.max_requests) + do_batch(batch[half:], key, ffmpeg, a.max_requests)
             done += len(ok)

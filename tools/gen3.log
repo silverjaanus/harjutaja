@@ -1,0 +1,119 @@
+10:20:58 teha 852 / 921, partii 12, päringuid kuni 95
+10:21:25   tehtud 12 (TTS päringuid 1)
+10:22:01   tehtud 24 (TTS päringuid 2)
+10:22:33   kontroll: jätan hilisemaks [('põtter', 'põttar')]
+10:22:35   tehtud 35 (TTS päringuid 3)
+10:23:07   tehtud 47 (TTS päringuid 4)
+10:23:37   kontroll: jätan hilisemaks [('nokka', 'nukka'), ('hõpe', 'hüpe')]
+10:23:39   tehtud 57 (TTS päringuid 5)
+10:24:10   tehtud 69 (TTS päringuid 6)
+10:24:41   kontroll: jätan hilisemaks [('otav', 'kõtav'), ('tüttart', 'tüttert')]
+10:24:43   tehtud 79 (TTS päringuid 7)
+10:25:14   kontroll: jätan hilisemaks [('mattal', 'mastal')]
+10:25:16   tehtud 90 (TTS päringuid 8)
+10:25:47   kontroll: jätan hilisemaks [('rõttu', 'Ruttu')]
+10:25:49   tehtud 101 (TTS päringuid 9)
+10:26:20   tehtud 113 (TTS päringuid 10)
+10:26:55   tehtud 125 (TTS päringuid 11)
+10:27:22   kontroll: jätan hilisemaks [('katteda', 'Kattedada')]
+10:27:24   tehtud 136 (TTS päringuid 12)
+10:27:58   tehtud 148 (TTS päringuid 13)
+10:28:35   kontroll: jätan hilisemaks [('rõtu', 'rittu'), ('kaku', 'kokku')]
+10:28:37   tehtud 158 (TTS päringuid 14)
+10:29:09   tehtud 170 (TTS päringuid 15)
+10:29:38   tehtud 182 (TTS päringuid 16)
+10:30:11   tehtud 194 (TTS päringuid 17)
+10:30:45   kontroll: jätan hilisemaks [('nubukas', 'Nupikas')]
+10:30:47   tehtud 205 (TTS päringuid 18)
+10:31:19   tehtud 217 (TTS päringuid 19)
+10:31:50   kontroll: jätan hilisemaks [('jõkki', 'Jükki')]
+10:31:52   tehtud 228 (TTS päringuid 20)
+10:32:24   tehtud 240 (TTS päringuid 21)
+10:32:54   tehtud 252 (TTS päringuid 22)
+10:33:26   kontroll: jätan hilisemaks [('pappi', 'Poppi')]
+10:33:28   tehtud 263 (TTS päringuid 23)
+10:34:00   kontroll: jätan hilisemaks [('käpid', 'Kepdid')]
+10:34:02   tehtud 274 (TTS päringuid 24)
+10:34:35   tehtud 286 (TTS päringuid 25)
+10:35:07   tehtud 298 (TTS päringuid 26)
+10:35:48   tehtud 310 (TTS päringuid 27)
+10:36:19   kontroll: jätan hilisemaks [('nõges', 'Nükkeš'), ('jõge', 'Jüge')]
+10:36:20   tehtud 320 (TTS päringuid 28)
+10:36:54   tehtud 332 (TTS päringuid 29)
+10:37:18   tehtud 344 (TTS päringuid 30)
+10:38:04   tehtud 356 (TTS päringuid 31)
+10:38:34   tehtud 368 (TTS päringuid 32)
+10:39:04   kontroll: jätan hilisemaks [('makkusa', 'makkuosa'), ('käkku', 'kekku')]
+10:39:05   tehtud 378 (TTS päringuid 33)
+10:39:39   tehtud 390 (TTS päringuid 34)
+10:40:26   kontroll: jätan hilisemaks [('pakkar', 'akka')]
+10:40:27   tehtud 401 (TTS päringuid 35)
+10:40:53   kontroll: jätan hilisemaks [('retteli', 'rätteli')]
+10:40:55   tehtud 412 (TTS päringuid 36)
+10:41:25   kontroll: jätan hilisemaks [('rõtud', 'Rütud'), ('putelit', 'Puttalit')]
+10:41:27   tehtud 422 (TTS päringuid 37)
+10:42:01   tehtud 434 (TTS päringuid 38)
+10:42:34   kontroll: jätan hilisemaks [('lõppusa', 'Lõpuosa'), ('sattulat', 'Sottulat')]
+10:42:36   tehtud 444 (TTS päringuid 39)
+10:43:05   tehtud 456 (TTS päringuid 40)
+10:43:34   tehtud 468 (TTS päringuid 41)
+10:44:05   tehtud 480 (TTS päringuid 42)
+10:44:33   kontroll: jätan hilisemaks [('pitturi', 'pikturi')]
+10:44:35   tehtud 491 (TTS päringuid 43)
+10:45:09   tehtud 503 (TTS päringuid 44)
+10:45:43   tehtud 515 (TTS päringuid 45)
+10:46:19   tehtud 527 (TTS päringuid 46)
+10:46:56   tehtud 539 (TTS päringuid 47)
+10:47:30   tehtud 551 (TTS päringuid 48)
+10:48:02   tehtud 563 (TTS päringuid 49)
+10:48:35   kontroll: jätan hilisemaks [('tikedat', 'Tikekat')]
+10:48:37   tehtud 574 (TTS päringuid 50)
+10:48:48   lõikus ei klapi (katse 1)
+10:49:09   tehtud 586 (TTS päringuid 52)
+10:49:37   tehtud 598 (TTS päringuid 53)
+10:50:05   kontroll: jätan hilisemaks [('lõkket', 'lõkkelt')]
+10:50:07   tehtud 609 (TTS päringuid 54)
+10:50:39   kontroll: jätan hilisemaks [('nägus', 'Nõgus')]
+10:50:41   tehtud 620 (TTS päringuid 55)
+10:51:10   kontroll: jätan hilisemaks [('hõbedat', 'Hüpetatt')]
+10:51:11   tehtud 631 (TTS päringuid 56)
+10:51:46   kontroll: jätan hilisemaks [('jõgi', 'Jugi')]
+10:51:48   tehtud 642 (TTS päringuid 57)
+10:52:18   kontroll: jätan hilisemaks [('jõke', 'Jukke'), ('kappet', 'Kopett')]
+10:52:20   tehtud 652 (TTS päringuid 58)
+10:52:50   tehtud 664 (TTS päringuid 59)
+10:53:16   kontroll: jätan hilisemaks [('reppase', 'Räpase'), ('vetela', 'Vätela')]
+10:53:18   tehtud 674 (TTS päringuid 60)
+10:53:43   kontroll: jätan hilisemaks [('otavat', 'Uutavat')]
+10:53:44   tehtud 685 (TTS päringuid 61)
+10:54:18   kontroll: jätan hilisemaks [('lippedat', 'lõppedat')]
+10:54:20   tehtud 696 (TTS päringuid 62)
+10:54:47   kontroll: jätan hilisemaks [('sõpper', 'Süpper')]
+10:54:48   tehtud 707 (TTS päringuid 63)
+10:55:23   tehtud 719 (TTS päringuid 64)
+10:56:01   tehtud 731 (TTS päringuid 65)
+10:56:30   kontroll: jätan hilisemaks [('treppi', 'Trippi')]
+10:56:31   tehtud 742 (TTS päringuid 66)
+  heli puudub (finishReason=SAFETY), proovin uuesti 30 s pärast
+10:57:52   tehtud 754 (TTS päringuid 67)
+10:58:27   kontroll: jätan hilisemaks [('pipart', 'Piprat')]
+10:58:29   tehtud 765 (TTS päringuid 68)
+10:59:02   tehtud 777 (TTS päringuid 69)
+10:59:31   kontroll: jätan hilisemaks [('pitur', 'tittur')]
+10:59:32   tehtud 788 (TTS päringuid 70)
+11:00:06   tehtud 800 (TTS päringuid 71)
+11:00:36   tehtud 812 (TTS päringuid 72)
+11:01:01   kontroll ei klapi 3 sõnal (katse 1)
+11:01:20   kontroll ei klapi 3 sõnal (katse 2)
+11:01:35   kontroll: jätan hilisemaks [('hõpe', 'hüppe'), ('tüttart', 'tüttert')]
+  heli puudub (finishReason=SAFETY), proovin uuesti 30 s pärast
+11:02:29   kontroll ei klapi 3 sõnal (katse 1)
+11:02:44   kontroll ei klapi 3 sõnal (katse 2)
+11:02:44   tehtud 816 (TTS päringuid 77)
+11:03:13   kontroll: jätan hilisemaks [('nõges', 'nõgeš')]
+11:03:15   tehtud 827 (TTS päringuid 78)
+11:03:45   kontroll: jätan hilisemaks [('tikedat', 'tikket'), ('jõke', 'jüke')]
+11:03:46   tehtud 837 (TTS päringuid 79)
+11:04:06   kontroll: jätan hilisemaks [('sõpper', 'Super')]
+11:04:07   tehtud 843 (TTS päringuid 80)
+11:05:08 PUUDU 9: hõpe jõkki kaku katteda nubukas rõttu rõtu sõpper tüttart
