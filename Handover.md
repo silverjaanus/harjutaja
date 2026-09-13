@@ -27,6 +27,20 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**LIVE-VIGA LEITUD: klassiga liitumine on tootebaasis katki (13. sept). Parandus `supabase/migration-7.sql` ootab Run'i.** `create_group` vastab 404-ga: `function gen_random_bytes(integer) does not exist`. Migratsioon 4 kirjutas `gen_code` ümber pgcrypto peale, aga jättis funktsioonile `search_path`'i määramata; Supabase'is elab pgcrypto skeemis **`extensions`**, mitte `public`, ja kutsujad on `security definer ... set search_path = public`. `gen_code` teeb nii klassikoodi kui mängija taastekoodi, seega on katki **ka `join_class`** — ükski uus laps ei saa Mia klassiga liituda ja äpp näitab talle „Võrku pole või server ei vasta", sest PostgREST vastab sellele veale 404-ga. Vana mängija saab edasi mängida, nii et keegi ei märganud.
+
+**Õppetund, mis kehtib igale edasisele migratsioonile:** kohalik Postgres ei jäljenda Supabase'i skeemipaigutust. Kui funktsioon kasutab laienduse funktsiooni (pgcrypto, uuid jne), pane talle **oma `set search_path = public, extensions`** — olematu skeem search_path'is on lihtsalt tühi koht, seega see töötab mõlemal pool. Testimisel saab Supabase'i olukorda jäljendada nii: `create schema extensions; alter extension pgcrypto set schema extensions;`.
+
+**ETAPP 3 TEHTUD: Kirjutaja võistlus, ühine liitumisekraan ja edetabel (13. sept, commit `69d94ba`, live).**
+
+- **Võistlus** (Silveri reeglid): **20 juhuslikku sõna kogu pangast, 10 sekundit igaüks, üks kord Eesti kalendripäevas.** Sama lemma ei tule kaks korda. Vihjeid, reeglikaarti ega variantide etteütlust ei ole; `‹` ja `?` on peidus. Heli tohib **üks kord** korrata, aeg jookseb edasi. **Taimer käivitub alles siis, kui sõna on ette loetud** — kuulamine ei söö aega. Aja lõppemine loeb valeks vastuseks. Enne alustamist küsib nupp kinnitust, ja ka võistluse katkestamine (`✕`) küsib kinnitust, sest pooleli ring läheb ikka kirja ja päev on siis kasutatud.
+- **`core/klass.js` kasvas**: `create`, `board(module)`, `report(payload)` ja **ise joonistuv liitumisekraan `openJoin({code, onDone})`** koos oma CSS-iga — moodul ei pea selle jaoks HTML-i ega laadi hoidma. Sama ekraan teenindab liitumist koodiga, konto taastamist ja uue klassi loomist. Kell saab selle tasuta. **Korrutajal on veel oma vana klassiekraan** — teadlik dubleerimine, koristatakse hiljem.
+- **`core/config.js`** genereeritakse `tools/build_kirjutaja.py`-ga `korrutaja/config.json`-ist, et staatilised moodulid saaksid Supabase'i seaded kätte.
+- **Edetabel Kirjutajas**: Nädal · Selged sõnad · Rekord · Kool · Eesti, „Kutsu sõber klassi" ja kutselink `#k=KOOD` (töötab ka siis, kui leht on juba lahti — `hashchange`). Võrguta jääb tulemus `outbox`'i ja edetabel näitab viimast seisu.
+- Testitud pilve Playwrightiga: `tools/test_voistlus.py` (40 kontrolli) ja `tools/test_klass.py` (20 kontrolli), mõlemad läbi. Serveeri repo juurest `python3 -m http.server 8898` ja jooksuta.
+
+**Eesti keele ülevaatus (Fable, 13. sept)** tõi välja ka ühe vana vea Korrutajas: **„Laen…" on vale** — see on laenamisest, laadimise vorm on „Laadin…". Parandatud mõlemas moodulis. Muud: „Klassikoodis on kuus märki" (mitte „kood on märki"), „Internetti pole" asemel „Võrku pole", „täida" → „sisesta"/„kirjuta", ja sõna „klassiaste" asendatud edetabeli selgitustes lapsele arusaadava vormiga („Sinu kooli teised 3. klassid"). Ühe ja mitme vormid on eristatud: „1 võistluspäev" / „2 võistluspäeva".
+
 **ETAPP 1 TEHTUD: klassi identiteet on kõigi moodulite ühine (13. sept, commit `e38716a`, live).** Uus `core/klass.js` hoiab identiteeti omaette localStorage võtmes **`harjutaja_id_v1`** — `{player_id, secret, class_id, class_name, code, nick}` — ja pakub ka `rpc`, `join`, `restore` ning ühised veateated, et järgmine moodul ei peaks neid uuesti kirjutama. Korrutaja loeb ja kirjutab nüüd sedasama võtit (`HKlass.sync` pärast `load()`, `HKlass.set` `setCls`-is, `HKlass.clear` kolmes kohas, kus klass maha võetakse); **vana koht `korrutaja_v1.cls` jääb alles ja saab edasi kirja** — see on tagasitee. Kirjutaja näitab avalehel rida „Sinu klass: …"; võistlus ja edetabel tulevad etapiga 3.
 
 **Reegel, mis siit välja tuli:** kui ühine võti ja mooduli oma koopia lähevad lahku, **võidab ühine võti**. Just see teebki ühes moodulis liitumisest kõigi moodulite liikmesuse.
@@ -73,21 +87,22 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 
 ### Vajab Silveri otsust
 
-- **Migratsioon 6 tuleb Silveril ise Supabase'is käivitada.** Vt „In Progress" ülal. Kuni see pole tehtud, ei saa etappi 3 (Kirjutaja võistlus) alustada.
+- **MIGRATSIOON 7 TULEB KÄIVITADA — klassiga liitumine on seni katki.** Vt „In Progress" ülal. See on kõige kiirem asi nimekirjas: ilma selleta ei saa ükski uus laps Mia klassiga liituda.
 
-- **Plaan kinnitatud (Silver, 13. sept).** Claude'i projektis `claude/jargmine-etapp-plaan.md`. Viis etappi: (1) ühine klassi identiteet — **tehtud**, (2) andmebaasi migratsioon 6 — **kood valmis, Run tegemata**, (3) Kirjutaja võistlus, (4) Kell, (5) Kirjutaja uued teemad üks rühm korraga (pikad häälikud → i ja j → ülejäänud). **Võistlusreegel otsustatud (Silver, 13. sept): Kirjutaja võistlus on 20 sõna, 10 sekundit igaüks** (kuni 3 min; Korrutajal 25 × 6 s). Heli tohib võistluses üks kord korrata, aeg jookseb edasi. Plaan muudab ka varasemat reeglit „uus moodul alles siis, kui eelmist kasutatakse" — Kell tuleb enne Kirjutaja v1.1.
+- **Plaan kinnitatud (Silver, 13. sept).** Claude'i projektis `claude/jargmine-etapp-plaan.md`. Viis etappi: (1) ühine klassi identiteet — **tehtud**, (2) andmebaasi migratsioon 6 — **tehtud**, (3) Kirjutaja võistlus — **tehtud**, (4) **Kell — järgmine**, (5) Kirjutaja uued teemad üks rühm korraga (pikad häälikud → i ja j → ülejäänud). **Võistlusreegel otsustatud (Silver, 13. sept): Kirjutaja võistlus on 20 sõna, 10 sekundit igaüks** (kuni 3 min; Korrutajal 25 × 6 s). Heli tohib võistluses üks kord korrata, aeg jookseb edasi. Plaan muudab ka varasemat reeglit „uus moodul alles siis, kui eelmist kasutatakse" — Kell tuleb enne Kirjutaja v1.1.
 
 - **„Midagi on valesti" märked jäävad seadmesse.** Kirjutaja `?` nupp märgib sõna ära, aga märge jääb sellesse brauserisse ja on näha ainult selle avalehel. Kui Mia harjutab oma telefonis, ei jõua märge Silverini. Lahendus nõuab võrguotsa — Supabase on Korrutaja tõttu projektis juba olemas, aga Kirjutajal ei ole praegu ühtegi serveripoolset kutset. Otsustamata: kas teha ja kui, siis kas oma RPC või lihtsam vorm.
 
 ### Tehniline võlg
 
 - **`core/panda.js` on topeltkoopia.** Originaal elab endiselt `korrutaja/korrutaja.src.html`-is funktsioonis `panda()`. Kolimisel jäeti see teadlikult tegemata, et kolimise risk väiksem oleks. Nüüd on mõlemad failid samas repos ja dubleerimise saab ohutult ära koristada: Korrutaja peab hakkama `core/panda.js`-i kasutama ja `panda()` lähtefailist kaduma.
+- **Korrutajal on oma klassiekraan, Kirjutajal `core/klass.js` oma.** Pärast etappi 3 on liitumise loogika kahes kohas. Korrutaja võiks minna üle `HKlass.openJoin`-ile ja oma `s-class` ekraani ära kaotada — aga Korrutaja oma oskab ka koolinime soovitada (`school_suggest`), mida ühises ekraanis veel ei ole. Koristamisel tuleb see kaasa võtta.
 - **`icons/kirjutaja-*` on kasutuseta.** Kalligraafiline K sinikoopial, sõnamark, 192 ja 512 PNG — vana plaani jäänuk, kus igal moodulil pidi olema oma kalligraafiline täht. Ikoonireegel muutus 13. sept (üks logo, moodulitel maskotid). Võib kustutada.
 
 ### Järgmine funktsionaalsus
 
-- **Kirjutaja v1.1:** täishäälikud (a/aa) ning l/ll, s/ss, „s-i ja h-i kõrval k, p, t". Sõnavara otsused on tehtud (vt „In Progress").
-- **Uued moodulid** (Kell, Teisendaja, Keel) alles siis, kui Kirjutajat päriselt kasutatakse.
+- **Kell on järgmine moodul** (plaani etapp 4). Oma kaust `kell/`, ühine tuum ja ühine klassi identiteet algusest peale. Heli ega korpust vaja ei ole, kell joonistub SVG-na. Kaks ülesandetüüpi: „Mis kell on?" ja „Näita kell kolmveerand neli". Sisuline tuum on **eestikeelne kellaütlemine** („pool neli" = 15.30, „kolmveerand neli" = 15.45), mitte numbrid. Oma maskott, pandast ja robotist eristatav. Võistlus käib sama mootoriga, mis etappides 2–3 valmis sai.
+- **Kirjutaja uued teemad** (plaani etapp 5), üks rühm korraga: pikad häälikud (a/aa, l/ll, s/ss) → i ja j → ülejäänud. Õppekava uuring 2.–5. klassi kohta on failis `claude/jargmine-etapp-plaan.md`. **Uus asi arhitektuuris:** i/j, kaashäälikuühend, algustäht ja -gi/-ki on **reegliülesanded**, mitte kuulamisülesanded — heli on vaja ainult õigel sõnal, mitte igal variandil, ja Kirjutajasse tuleb teema mõiste.
 
 ### Korrutajas
 
