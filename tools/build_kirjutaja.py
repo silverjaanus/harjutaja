@@ -31,6 +31,16 @@ stamp = time.strftime("%Y%m%d%H%M")
 js = "window.KIRJUTAJA_DATA = " + json.dumps({"version": stamp, "total": total, "items": keep}, ensure_ascii=False) + ";\n"
 open(P("kirjutaja", "data.js"), "w", encoding="utf-8").write(js)
 
+# core/config.js: Supabase URL ja avalik võti kõigile moodulitele ühest kohast.
+# Korrutaja saab need build.py kaudu otse index.html-i sisse; Kirjutaja ja
+# järgmised moodulid on staatilised failid ja loevad selle skripti.
+cfg_src = P("korrutaja", "config.json")
+if os.path.exists(cfg_src):
+    cfg = json.load(open(cfg_src, encoding="utf-8"))
+    open(P("core", "config.js"), "w", encoding="utf-8").write(
+        "/* Genereeritud: python tools/build_kirjutaja.py. Ära muuda käsitsi. */\n"
+        "window.HARJUTAJA_SB = " + json.dumps({"url": cfg.get("url", ""), "key": cfg.get("key", "")}) + ";\n")
+
 sw_path = P("sw.js")
 sw = open(sw_path, encoding="utf-8").read()
 sw = re.sub(r"const VERSION = '[^']*';", "const VERSION = 'h-%s';" % stamp, sw)

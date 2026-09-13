@@ -35,8 +35,21 @@
       <button class="chip" data-set="t" aria-pressed="false">d · t · tt</button>
     </div>
   </div>
-  <button class="primary big" id="startBtn">Harjuta</button>
-  <p class="count-note" id="klassNote" hidden></p>
+  <div class="two">
+    <button class="primary big" id="startBtn">Harjuta</button>
+    <button class="compete big" id="competeBtn">Võistle</button>
+  </div>
+  <p class="count-note" id="competeNote"></p>
+
+  <div class="block" id="klassBlock">
+    <span class="label">Klass</span>
+    <p class="klass-line" id="klassNote"></p>
+    <div class="row">
+      <button class="ghost" id="joinBtn">Liitu klassiga</button>
+      <button class="ghost" id="boardBtn" hidden>Edetabel</button>
+    </div>
+  </div>
+
   <div class="block">
     <span class="label">Häälikukaart</span>
     <div class="map" id="map" role="grid" aria-label="Häälikukaart"></div>
@@ -80,6 +93,7 @@
     <button class="icon-btn" id="flagBtn" aria-label="Midagi on valesti">?</button>
   </header>
   <div class="stage">
+    <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <button class="listen" id="listenBtn" aria-label="Kuula uuesti">
       <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
     </button>
@@ -121,8 +135,33 @@
   </div>
 </section>
 
+<section id="s-board" class="screen" hidden>
+  <header class="top">
+    <button class="icon-btn" id="bBack" aria-label="Tagasi">‹</button>
+    <div class="track"></div>
+    <button class="icon-btn" id="bRefresh" aria-label="Värskenda">⟳</button>
+  </header>
+  <div class="block">
+    <span class="label">Edetabel</span>
+    <p class="klass-line" id="bClass"></p>
+    <div class="chips" role="group" aria-label="Mida võrdleme" id="bTabs">
+      <button class="chip" data-t="week" aria-pressed="true">Nädal</button>
+      <button class="chip" data-t="sure" aria-pressed="false">Selged sõnad</button>
+      <button class="chip" data-t="best" aria-pressed="false">Rekord</button>
+      <button class="chip" data-t="school" aria-pressed="false">Kool</button>
+      <button class="chip" data-t="country" aria-pressed="false">Eesti</button>
+    </div>
+    <p class="hint-small" id="bHint"></p>
+    <ol class="board" id="bList"></ol>
+    <p class="count-note" id="bStatus"></p>
+  </div>
+  <button class="ghost" id="bInvite">Kutsu sõber klassi</button>
+  <p class="hint-small" id="bInviteNote" hidden></p>
+</section>
+
 </main>
 <script src="../core/store.js"></script>
+<script src="../core/config.js"></script>
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
 <script src="../core/engine.js"></script>
