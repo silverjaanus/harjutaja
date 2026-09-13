@@ -28,7 +28,15 @@
   </div>
 
   <div class="block">
-    <span class="label" id="lblLevel">Mida harjutad?</span>
+    <span class="label" id="lblOpp">Mida harjutad?</span>
+    <div class="chips" role="group" aria-labelledby="lblOpp" id="modes">
+      <button class="chip" data-o="lugemine" aria-pressed="true">Loen kella</button>
+      <button class="chip" data-o="tekst" aria-pressed="false">Arvutan aega</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <span class="label" id="lblLevel">Kui täpselt?</span>
     <div class="chips" role="group" aria-labelledby="lblLevel" id="levels"></div>
   </div>
 
@@ -47,10 +55,15 @@
     </div>
   </div>
 
-  <div class="block">
+  <div class="block" id="mapBlock">
     <span class="label">Kellaajad</span>
     <div class="map" id="map"></div>
     <p class="hint-small">Ruut läheb roheliseks siis, kui oled selle kellaaja kaks korda järjest õigesti öelnud.</p>
+  </div>
+
+  <div class="block" id="tekstBlock" hidden>
+    <span class="label">Ajaarvutus</span>
+    <p class="hint-small" id="tekstStat"></p>
   </div>
 
   <div class="block nowbox">
@@ -89,6 +102,7 @@
   <div class="stage">
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <div id="askClock" class="askclock"></div>
+    <p class="story" id="lugu" hidden></p>
     <p class="ask" id="askText" aria-live="polite"></p>
     <div class="opts" id="opts"></div>
     <div class="feedback" id="fb" aria-live="polite"></div>
@@ -148,6 +162,7 @@
 <script src="../core/engine.js"></script>
 <script src="aeg.js"></script>
 <script src="sihverplaat.js"></script>
+<script src="tekst.js"></script>
 <script src="tegelane.js"></script>
 <script src="app.js"></script>
 </body>

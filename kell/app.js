@@ -11,6 +11,9 @@
   D.lastCompete = D.lastCompete || "";
   D.outbox = D.outbox || [];
   D.board = D.board || null;
+  /* Mida laps harjutab: kella lugemist või ajaarvutust tekstülesannetega. */
+  D.opp = D.opp === "tekst" ? "tekst" : "lugemine";
+  D.tekstStat = D.tekstStat || { n: 0, ok: 0 };
   HSfx.enabled = D.sfx !== false;
   const save = () => HStore.save(KEY, D);
   const $ = id => document.getElementById(id);
@@ -135,15 +138,41 @@
     return out;
   }
 
+  /* ---------- tekstülesannete ring ----------
+     Lood on eluliselt sõnastatud ja osa neist kahesammulised: esimene küsimus
+     annab sündmuse alguse, teine küsib, mis kell tuleb kodust välja minna. */
+  function TekstRound(samm, mitu) {
+    this.items = [];
+    let kaitse = 0;
+    while (this.items.length < mitu && kaitse++ < 60) {
+      const lugu = HTekst.loo(samm);
+      lugu.sammud.forEach((s, i) => this.items.push({
+        id: "tekst", lemma: "tekst", tekst: true, step: s, osa: i + 1, kokku: lugu.sammud.length, samm
+      }));
+    }
+    this.length = this.items.length; this.asked = 0; this.due = [];
+  }
+  TekstRound.prototype.next = function () {
+    if (this.asked >= this.length) return null;
+    return { item: this.items[this.asked++], repeat: false };
+  };
+  TekstRound.prototype.record = function (it, ok) {
+    D.tekstStat.n++; if (ok) D.tekstStat.ok++;
+  };
+
   /* ---------- mäng ---------- */
   function start(mode) {
     HSfx.unlock();
     const test = mode === "test";
+    const tekst = !test && D.opp === "tekst";
     const mins = test ? COMPETE_MINS : tase().mins;
-    const p = test ? võistluspakk() : pakk(mins);
-    if (!p.length) return;
-    round = test ? new TestRound(p) : new HEngine.Round(p, D.stats, ROUND_LEN);
-    G = { mode: test ? "test" : "train", n: 0, ok: 0, wrong: [], mins, t0: Date.now() };
+    const samm = tase().mins.length > 1 ? tase().mins[1] : 60;
+    const p = test ? võistluspakk() : (tekst ? null : pakk(mins));
+    if (tekst) round = new TekstRound(samm, 10);
+    else if (test) round = new TestRound(p);
+    else round = new HEngine.Round(p, D.stats, ROUND_LEN);
+    if (!tekst && !p.length) return;
+    G = { mode: test ? "test" : "train", tekst, n: 0, ok: 0, wrong: [], mins, t0: Date.now() };
     show("s-game");
     next();
   }
@@ -156,7 +185,7 @@
     cur = q.item; cur.done = false;
     /* Kaks ülesannet vaheldumisi: iga kolmas on tagurpidi. Võistluses sama
        jaotus, et formaat oleks kõigil ühesugune. */
-    cur.tyyp = (round.asked % 3 === 0) ? "vali-kell" : "mis-kell";
+    cur.tyyp = cur.tekst ? "tekst" : ((round.asked % 3 === 0) ? "vali-kell" : "mis-kell");
     renderQuestion(cur);
     const total = round.length + round.due.length;
     $("bar").style.width = Math.min(100, 100 * (round.asked - 1) / Math.max(total, 1)) + "%";
@@ -165,22 +194,55 @@
 
   function renderQuestion(it) {
     const mins = G.mins;
-    const kõik = sega([{ h: it.h, m: it.m }].concat(eksitajad(it.h, it.m, mins)));
     const opts = $("opts");
     opts.innerHTML = "";
     $("fb").textContent = ""; $("fb").className = "feedback";
     $("hint").hidden = true; $("after").hidden = true;
+    $("lugu").hidden = true;
+
+    /* Tekstülesanne: lugu jääb ekraanile, küsimus on eraldi rea peal. */
+    if (it.tyyp === "tekst") {
+      const s = it.step;
+      $("askClock").hidden = true;
+      $("lugu").textContent = s.lugu + (it.kokku > 1 ? "  (" + it.osa + "/" + it.kokku + ")" : "");
+      $("lugu").hidden = false;
+      $("askText").textContent = s.kysimus;
+      opts.className = "opts sonad";
+      let variandid, silt, võtmed;
+      if (s.tyyp === "kestus") {
+        variandid = sega([s.vastus].concat(HTekst.kestusEksitajad(s.vastus, it.samm)));
+        silt = v => HTekst.kestus(v);
+        võtmed = v => "d:" + v;
+        it.oigeK = "d:" + s.vastus;
+      } else {
+        variandid = sega([s.vastus].concat(eksitajad(s.vastus.h, s.vastus.m, mins)));
+        silt = v => HAeg.utle(v.h, v.m);
+        võtmed = v => võti(v);
+        it.oigeK = võti(s.vastus);
+      }
+      variandid.forEach(v => {
+        const b = document.createElement("button");
+        b.className = "opt"; b.textContent = silt(v);
+        b.dataset.k = võtmed(v);
+        b.onclick = () => answer(b.dataset.k);
+        opts.append(b);
+      });
+      return;
+    }
+
+    const kõik = sega([{ h: it.h, m: it.m }].concat(eksitajad(it.h, it.m, mins)));
+    it.oigeK = võti({ h: it.h, m: it.m });
 
     if (it.tyyp === "mis-kell") {
       $("askClock").innerHTML = HSihverplaat.svg(it.h, it.m, { size: 210 });
       $("askClock").hidden = false;
       $("askText").textContent = "Mis kell on?";
-      opts.className = "opts sõnad";
+      opts.className = "opts sonad";
       kõik.forEach(t => {
         const b = document.createElement("button");
         b.className = "opt"; b.textContent = HAeg.utle(t.h, t.m);
-        b.onclick = () => answer(t);
         b.dataset.k = võti(t);
+        b.onclick = () => answer(b.dataset.k);
         opts.append(b);
       });
     } else {
@@ -191,8 +253,8 @@
         const b = document.createElement("button");
         b.className = "opt kellopt"; b.innerHTML = HSihverplaat.svg(t.h, t.m, { size: 130 });
         b.setAttribute("aria-label", "kell " + HAeg.utle(t.h, t.m));
-        b.onclick = () => answer(t);
         b.dataset.k = võti(t);
+        b.onclick = () => answer(b.dataset.k);
         opts.append(b);
       });
     }
@@ -208,19 +270,24 @@
     return "Pikk osuti on juba üle poole: loeme, kui palju on järgmise tunnini <b>puudu</b>. Kell on <b>" + j + "</b>.";
   }
 
-  function answer(valik) {
+  /* `valitud` on nupu võti (aeg „3:15" või kestus „d:20"); null = aeg sai otsa. */
+  function answer(valitud) {
     const it = cur; if (!it || it.done) return; it.done = true;
     stopTimer();
     const test = G.mode === "test";
-    const õige = võti({ h: it.h, m: it.m });
-    const ok = !!valik && võti(valik) === õige;
+    const õige = it.oigeK;
+    const ok = !!valitud && valitud === õige;
     round.record(it, ok); save();
-    G.n++; if (ok) G.ok++; else if (!G.wrong.some(w => w.id === it.id)) G.wrong.push(it);
+    G.n++;
+    if (ok) G.ok++;
+    else if (it.tekst) { if (G.wrong.length < 6) G.wrong.push(it); }
+    else if (!G.wrong.some(w => w.id === it.id && w.h === it.h && w.m === it.m)) G.wrong.push(it);
 
+    let õigeSilt = "";
     [...$("opts").children].forEach(b => {
       b.disabled = true;
-      if (b.dataset.k === õige) b.classList.add("right");
-      else if (valik && b.dataset.k === võti(valik)) b.classList.add("wrong");
+      if (b.dataset.k === õige) { b.classList.add("right"); õigeSilt = b.textContent; }
+      else if (valitud && b.dataset.k === valitud) b.classList.add("wrong");
     });
 
     if (ok) {
@@ -231,13 +298,15 @@
       return;
     }
     HSfx.bad();
-    $("fb").textContent = (valik === null ? "Aeg sai otsa. " : "") + "Kell on " + HAeg.utle(it.h, it.m) + ".";
+    $("fb").textContent = (valitud === null ? "Aeg sai otsa. " : "") +
+      (it.tekst ? "Õige vastus on " + õigeSilt + "." : "Kell on " + HAeg.utle(it.h, it.m) + ".");
     $("fb").className = "feedback bad";
     if (test) {
       advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, 1400);
       return;
     }
-    $("hint").innerHTML = KKagu("kind", { head: true }) + '<div class="hinttext">' + vihje(it) + "</div>";
+    $("hint").innerHTML = KKagu("kind", { head: true }) + '<div class="hinttext">' +
+      (it.tekst ? it.step.vihje : vihje(it)) + "</div>";
     $("hint").hidden = false;
     $("after").hidden = false;
   }
@@ -275,9 +344,14 @@
     const nb = $("resNext"); nb.innerHTML = "";
     G.wrong.slice(0, 6).forEach(it => {
       const s = document.createElement("span");
-      s.className = "vaeg";
-      s.innerHTML = HSihverplaat.svg(it.h, it.m, { size: 54, numbers: false }) +
-        "<small>" + HAeg.utle(it.h, it.m) + "</small>";
+      if (it.tekst) {
+        s.className = "vaeg lugu";
+        s.innerHTML = "<b>" + it.step.kysimus + "</b><small>" + it.step.lugu + "</small>";
+      } else {
+        s.className = "vaeg";
+        s.innerHTML = HSihverplaat.svg(it.h, it.m, { size: 54, numbers: false }) +
+          "<small>" + HAeg.utle(it.h, it.m) + "</small>";
+      }
       nb.append(s);
     });
     $("resNextBlock").hidden = !G.wrong.length;
@@ -334,9 +408,25 @@
       const b = document.createElement("button");
       b.className = "chip"; b.textContent = t.nimi;
       b.setAttribute("aria-pressed", t.id === D.level ? "true" : "false");
-      b.onclick = () => { D.level = t.id; save(); renderTasemed(); renderKaart(); };
+      b.onclick = () => { D.level = t.id; save(); renderTasemed(); renderModes(); renderKaart(); };
       box.append(b);
     });
+  }
+
+  function renderModes() {
+    document.querySelectorAll("#modes .chip").forEach(c => {
+      c.setAttribute("aria-pressed", c.dataset.o === D.opp ? "true" : "false");
+      c.onclick = () => { D.opp = c.dataset.o; save(); renderModes(); renderKaart(); };
+    });
+    const tekst = D.opp === "tekst";
+    $("mapBlock").hidden = tekst;
+    $("tekstBlock").hidden = !tekst;
+    $("lblLevel").textContent = tekst ? "Kui täpsete aegadega?" : "Kui täpselt?";
+    $("startBtn").textContent = tekst ? "Arvuta" : "Harjuta";
+    const s = D.tekstStat;
+    $("tekstStat").textContent = s.n
+      ? "Tehtud " + s.n + " ülesannet, õigesti " + s.ok + "."
+      : "Elulised ülesanded: mis kell film lõpeb, kui kaua trenn kestab, mis kell pead kodust välja minema.";
   }
 
   /* Väike kaart: iga minutimuster ja kui selge see on. */
@@ -490,7 +580,7 @@
     stopTimer(); clearTimeout(advanceTimer); advanceTimer = null;
     cur = null;
     $("againBtn").textContent = "Harjuta veel";
-    renderTasemed(); renderKaart(); renderKlass(); show("s-home");
+    renderTasemed(); renderModes(); renderKaart(); renderKlass(); show("s-home");
   }
 
   /* ---------- sündmused ---------- */
@@ -552,7 +642,7 @@
     $("nowText").textContent = "Praegu on kell " + HAeg.utle(n.getHours(), n.getMinutes()) + ".";
   })();
 
-  renderTasemed(); renderKaart(); renderKlass();
+  renderTasemed(); renderModes(); renderKaart(); renderKlass();
   flushOutbox();
 
   function maybeInvite() {
