@@ -611,13 +611,17 @@
   renderMap(); renderCount(); renderReports(); renderKlass();
   flushOutbox();
 
-  /* Kutselink kujul #k=KOOD avab liitumise juba täidetud koodiga. */
-  (function () {
+  /* Kutselink kujul #k=KOOD avab liitumise juba täidetud koodiga. Kuulame ka
+     hashchange't: kui laps on leht juba lahti ja klõpsab kutselingil, ei laadi
+     brauser lehte uuesti ja ilma selleta ei juhtuks midagi. */
+  function maybeInvite() {
     const m = /[#&]k=([A-Za-z0-9]{4,8})/.exec(location.hash || "");
     if (!m || !window.HKlass) return;
     history.replaceState(null, "", location.pathname);
     HKlass.openJoin({ code: m[1].toUpperCase(), onDone: () => { renderKlass(); openBoard(); } });
-  })();
+  }
+  window.addEventListener("hashchange", maybeInvite);
+  maybeInvite();
 
   if ("serviceWorker" in navigator) { navigator.serviceWorker.register("../sw.js").catch(() => {}); }
 })();
