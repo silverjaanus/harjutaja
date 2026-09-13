@@ -3,7 +3,7 @@
   const DATA = window.KIRJUTAJA_DATA || { items: [], total: 0 };
   const KEY = "kirjutaja_v1";
   const D = HStore.load(KEY, { stats: {}, sfx: true, rounds: [] });
-  D.stats = D.stats || {}; D.rounds = D.rounds || [];
+  D.stats = D.stats || {}; D.rounds = D.rounds || []; D.reports = D.reports || [];
   HSfx.enabled = D.sfx !== false;
   const save = () => HStore.save(KEY, D);
   const $ = id => document.getElementById(id);
@@ -19,6 +19,7 @@
 
   let set = "all", cell = null;
   let round = null, cur = null, audio = null, G = null, advanceTimer = null;
+  let pendingAdvance = false, flagTimer = null;
 
   const slug = w => w.replace(/õ/g, "6").replace(/ä/g, "2").replace(/ö/g, "7").replace(/ü/g, "y");
   const src = w => "audio/" + slug(w) + ".mp3";
@@ -60,7 +61,7 @@
     });
     let cls = "";
     if (n >= 3) cls = (mastered / its.length >= 0.7) ? "g" : (ok / n >= 0.6 ? "y" : "r");
-    return { total: its.length, mastered, cls };
+    return { total: its.length, seen, mastered, cls };
   }
   function renderMap() {
     const m = $("map"); m.innerHTML = "";
@@ -76,8 +77,15 @@
         b.disabled = !info.total;
         b.innerHTML = "";
         b.append(CELL_LETTERS[s][i]);
-        const sm = document.createElement("small"); sm.textContent = info.total ? info.mastered + " / " + info.total : "–"; b.append(sm);
-        b.setAttribute("aria-label", CELL_LETTERS[s][i] + ", " + LEN_LABEL[l] + ": selgeks " + info.mastered + " sõna " + info.total + "-st");
+        const sm = document.createElement("small"); sm.textContent = info.total ? info.seen + " / " + info.total : "–"; b.append(sm);
+        if (info.total) {
+          const bar = document.createElement("i"); bar.className = "fill";
+          bar.style.setProperty("--seen", Math.round(100 * info.seen / info.total) + "%");
+          bar.style.setProperty("--sure", Math.round(100 * info.mastered / info.total) + "%");
+          b.append(bar);
+        }
+        b.setAttribute("aria-label", CELL_LETTERS[s][i] + ", " + LEN_LABEL[l] + ": harjutatud " + info.seen
+          + " sõna " + info.total + "-st, neist selge " + info.mastered);
         b.onclick = () => {
           cell = (cell && cell.s === s && cell.l === l) ? null : { s, l };
           if (cell) setChips(null); else setChips("all");
@@ -94,10 +102,55 @@
   function renderCount() {
     const n = pool().length;
     let t = "";
-    if (DATA.items.length < DATA.total) t = "Praegu saab harjutada " + DATA.items.length + " sõna " + DATA.total + "-st. Ülejäänud sõnad tulevad mängu varsti. ";
-    if (cell || set !== "all") t += "Valitud: " + n + " sõna.";
+    if (cell || set !== "all") t = "Valitud: " + n + " sõna.";
     $("countNote").textContent = t;
     $("startBtn").disabled = !n;
+  }
+
+  /* ---------- eelmine sõna ---------- */
+  function renderPrevBtn() {
+    const b = $("prevBtn"); if (!b) return;
+    b.disabled = !(G && G.history.length);
+  }
+  function openPrev() {
+    if (!G || !G.history.length) return;
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
+    const it = G.history[G.history.length - 1];
+    $("prevWord").textContent = it.word;
+    $("prevSentence").textContent = it.sentence || it.word;
+    $("prevPlay").onclick = () => play(it.word);
+    $("prevBox").hidden = false;
+    play(it.word);
+  }
+  function closePrev() {
+    $("prevBox").hidden = true;
+    if (pendingAdvance) { pendingAdvance = false; next(); }
+  }
+
+  /* ---------- midagi on valesti ---------- */
+  function flagCurrent() {
+    const it = cur; if (!it) return;
+    if (!D.reports.some(r => r.id === it.id)) {
+      D.reports.push({ id: it.id, word: it.word, sentence: it.sentence || "", at: new Date().toISOString() });
+      save();
+    }
+    const f = $("flagNote");
+    f.textContent = "Märkisin sõna „" + it.word + "“. Aitäh!";
+    f.hidden = false;
+    clearTimeout(flagTimer);
+    flagTimer = setTimeout(() => { f.hidden = true; }, 2200);
+  }
+  function renderReports() {
+    const box = $("reports"); if (!box) return;
+    box.hidden = !D.reports.length;
+    if (!D.reports.length) return;
+    const list = $("reportList"); list.innerHTML = "";
+    D.reports.forEach(r => {
+      const li = document.createElement("li");
+      li.innerHTML = "<b>" + r.word + "</b>" + (r.sentence ? " — " + r.sentence : "");
+      list.append(li);
+    });
+    $("reportCount").textContent = D.reports.length;
   }
 
   /* ---------- mäng ---------- */
@@ -106,7 +159,8 @@
     const p = pool(); if (!p.length) return;
     const st0 = {}; p.forEach(it => { st0[it.id] = HEngine.mastered(D.stats[it.id]); });
     round = new HEngine.Round(p, D.stats, Math.min(ROUND_LEN, Math.max(6, p.length)));
-    G = { n: 0, ok: 0, wrong: [], st0, pool: p };
+    G = { n: 0, ok: 0, wrong: [], st0, pool: p, history: [] };
+    renderPrevBtn();
     show("s-game");
     next();
   }
@@ -157,6 +211,7 @@
     const ok = o === it.answer;
     round.record(it, ok); save();
     G.n++; if (ok) G.ok++; else if (!G.wrong.some(w => w.id === it.id)) G.wrong.push(it);
+    G.history.push(it); renderPrevBtn();
     [...$("opts").children].forEach(b => {
       b.disabled = true;
       if (b.dataset.o === it.answer) b.classList.add("right");
@@ -167,7 +222,7 @@
       HSfx.ok();
       $("fb").textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
       $("fb").className = "feedback ok";
-      advanceTimer = setTimeout(next, 1100);
+      advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, 1100);
     } else {
       HSfx.bad();
       $("fb").textContent = "Õige on " + it.word + ".";
@@ -220,7 +275,11 @@
     show("s-result");
   }
 
-  function goHome() { stop(); clearTimeout(advanceTimer); cur = null; renderMap(); renderCount(); show("s-home"); }
+  function goHome() {
+    stop(); clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = false;
+    $("prevBox").hidden = true; $("flagNote").hidden = true;
+    cur = null; renderMap(); renderCount(); renderReports(); show("s-home");
+  }
 
   /* ---------- sündmused ---------- */
   $("sets").addEventListener("click", e => {
@@ -234,6 +293,10 @@
   $("allBtn").onclick = playAll;
   $("nextBtn").onclick = next;
   $("quitBtn").onclick = () => { if (G && G.n) finish(); else goHome(); };
+  $("prevBtn").onclick = openPrev;
+  $("prevClose").onclick = closePrev;
+  $("flagBtn").onclick = flagCurrent;
+  $("reportClear").onclick = () => { D.reports = []; save(); renderReports(); };
   $("againBtn").onclick = start;
   $("homeBtn").onclick = goHome;
   document.addEventListener("keydown", e => {
@@ -249,6 +312,6 @@
     HSfx.unlock(); HSfx.ok();
     const svg = $("mascot").querySelector("svg"); svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
   };
-  renderMap(); renderCount();
+  renderMap(); renderCount(); renderReports();
   if ("serviceWorker" in navigator) { navigator.serviceWorker.register("../sw.js").catch(() => {}); }
 })();

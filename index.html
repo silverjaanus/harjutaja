@@ -51,7 +51,21 @@ a.mod.new{border-color:var(--accent-edge);box-shadow:0 3px 0 var(--accent-edge)}
 .soon li+li{border-top:1.5px dashed var(--edge)}
 .soon b{font-family:var(--display);font-weight:600;font-size:19px;color:var(--ink-soft)}
 .soon span{color:var(--ink-soft);font-size:15px}
-footer{color:var(--ink-soft);font-size:14.5px;text-align:center;padding:0 6px}
+footer{color:var(--ink-soft);font-size:14.5px;text-align:center;padding:0 6px;display:flex;flex-direction:column;gap:10px}
+.credit{font-size:13.5px}
+.credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.credit a:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
+
+/* kuidas tootab */
+.help{border:1.5px solid var(--edge);border-radius:20px;background:var(--card);padding:0 16px}
+.help summary{font-family:var(--display);font-weight:600;font-size:19px;padding:14px 0;cursor:pointer;list-style:none}
+.help summary::-webkit-details-marker{display:none}
+.help summary::after{content:"+";float:right;color:var(--ink-soft);font-size:23px;line-height:1}
+.help[open] summary::after{content:"\2013"}
+.help summary:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:8px}
+.help-body{display:flex;flex-direction:column;gap:11px;padding-bottom:16px;color:var(--ink-soft)}
+.help-body p{margin:0}
+.help-body b{color:var(--ink)}
 
 /* maskotid */
 .krobot .kr-eyes{transform-box:fill-box;transform-origin:center;animation:kr-blink 4.5s infinite}
@@ -91,7 +105,19 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
     </ul>
   </section>
 
-  <footer>Tasuta, ilma reklaamita ja ilma kontota.<br>Kirjutaja töötab ka siis, kui internetti pole.</footer>
+  <details class="help">
+    <summary>Mis see on ja kuidas töötab?</summary>
+    <div class="help-body">
+      <p>Harjutaja on kogum eestikeelseid õppemänge. Iga mäng on oma moodul: <b>Kirjutaja</b> õpetab õigekirja, <b>Korrutaja</b> korrutustabelit. Kell, Teisendaja ja Keel tulevad hiljem.</p>
+      <p>Kõik moodulid töötavad ühtmoodi. Sa harjutad lühikeste ringidena, mitte tundide kaupa. Äpp jätab meelde, mis läks valesti, ja toob need ülesanded ise tagasi — nii kordad seda, mida päriselt vaja on. Vea peale ei juhtu midagi halba: äpp näitab õiget vastust ja seletab, miks see nii on.</p>
+      <p>Igal moodulil on oma tegelane, kes sind saadab. Edenemine jääb sellesse seadmesse, kontot ei ole vaja.</p>
+    </div>
+  </details>
+
+  <footer>
+    Tasuta, ilma reklaamita ja ilma kontota.<br>Kirjutaja töötab ka siis, kui internetti pole.
+    <span class="credit">Teinud Silver Jaanus · <a href="https://github.com/silverjaanus/harjutaja">lähtekood GitHubis</a></span>
+  </footer>
 </main>
 <script src="kirjutaja/robot.js"></script>
 <script src="core/panda.js"></script>

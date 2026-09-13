@@ -39,15 +39,44 @@
   <div class="block">
     <span class="label">Häälikukaart</span>
     <div class="map" id="map" role="grid" aria-label="Häälikukaart"></div>
-    <p class="hint-small" id="mapHint">Roheline tähendab, et need sõnad on juba selged. Puuduta ruutu, kui tahad harjutada ainult selle ruudu sõnu.</p>
+    <p class="hint-small" id="mapHint">Number näitab, mitut selle ruudu sõna oled juba harjutanud. Ruut läheb roheliseks siis, kui need sõnad on sul käes. Puuduta ruutu, kui tahad harjutada ainult selle ruudu sõnu.</p>
   </div>
   <p class="count-note" id="countNote"></p>
+
+  <details class="help">
+    <summary>Kuidas see käib?</summary>
+    <div class="help-body">
+      <p>Sa kuuled sõna ja näed lauset, kus ühe tähe koht on tühi. Vali kolme variandi seast see, mis sinna käib. Kui vastad valesti, loeb äpp kõik kolm varianti ette, et kuuleksid vahet — see ongi kõige tähtsam koht.</p>
+      <p>Sõna läheb <b>selgeks</b> siis, kui vastad talle kaks korda järjest õigesti. Äpp toob raskemad sõnad ise tagasi, nii et sa ei pea ise valima, mida korrata.</p>
+      <span class="label">Nipid</span>
+      <ul>
+        <li>Ütle sõna endale poolvaljult ette ja kuula, kui kaua häälik venib. <b>kabi – kapi – kappi</b>: kolm eri pikkust.</li>
+        <li>Kui häälik on nõrk ja libiseb kiiresti mööda, on see <b>g, b, d</b>.</li>
+        <li>Kui saad häälikut venitada nii kaua kui tahad, on neid tähti kaks: <b>kk, pp, tt</b>.</li>
+        <li>Parem viis korraks päevas kui pikk seanss korra nädalas.</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="block reports" id="reports" hidden>
+    <span class="label">Märgitud sõnad (<span id="reportCount"></span>)</span>
+    <ul class="report-list" id="reportList"></ul>
+    <p class="hint-small">Need on sõnad, mille juures vajutasid „?“. Märked jäävad siia seadmesse — näita neid täiskasvanule, siis saab lause või heli ära parandada.</p>
+    <button class="ghost" id="reportClear">Kustuta märked</button>
+  </div>
+
+  <footer class="credit">
+    Teinud Silver Jaanus · <a href="https://github.com/silverjaanus/harjutaja">lähtekood GitHubis</a><br>
+    Sõnavormid ja välted: Eesti Keele Instituudi Ekilex.
+  </footer>
 </section>
 
 <section id="s-game" class="screen" hidden>
   <header class="top">
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
+    <button class="icon-btn" id="prevBtn" aria-label="Kuula eelmist sõna" disabled>‹</button>
     <div class="track"><i id="bar"></i></div>
+    <button class="icon-btn" id="flagBtn" aria-label="Midagi on valesti">?</button>
   </header>
   <div class="stage">
     <button class="listen" id="listenBtn" aria-label="Kuula uuesti">
@@ -60,6 +89,16 @@
     <div class="row" id="after" hidden>
       <button class="ghost" id="allBtn">Kuula kõiki</button>
       <button class="primary" id="nextBtn">Edasi</button>
+    </div>
+    <p class="flag-note" id="flagNote" role="status" hidden></p>
+  </div>
+  <div class="prevbox" id="prevBox" hidden>
+    <span class="label">Eelmine sõna</span>
+    <p class="prev-word" id="prevWord"></p>
+    <p class="prev-sentence" id="prevSentence"></p>
+    <div class="row">
+      <button class="ghost" id="prevPlay">Kuula uuesti</button>
+      <button class="primary" id="prevClose">Tagasi</button>
     </div>
   </div>
 </section>
