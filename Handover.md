@@ -4,7 +4,9 @@ Uuendatud: 13. september 2026
 
 ## Current Goal
 
-Harjutaja on eestikeelne õppemängude äpp lastele. Esimene kasutaja on Mia, kes käib 3. klassis. Äpis on moodulid: Korrutaja (live), Kirjutaja (ehitamisel), Kell ja Keel (plaanis). Praegune eesmärk on Kirjutaja v1 — õigekirjamäng, kus laps kuulab lauset ja valib lünka õige tähe (g / k / kk, b / p / pp, d / t / tt).
+Harjutaja on eestikeelne õppemängude äpp lastele. Esimene kasutaja on Mia, kes käib 3. klassis. Moodulid: **Korrutaja ja Kirjutaja v1 on live**, Kell, Teisendaja ja Keel on plaanis. Kirjutaja on õigekirjamäng, kus laps kuulab sõna ja valib lünka õige tähe (g / k / kk, b / p / pp, d / t / tt); lause on ekraanil.
+
+**Mis on pooleli ja otsustamata: vt jaotist „Lahtised otsad" allpool.** Seal on kõik ühes kohas.
 
 Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja reeglid failis `claude/kirjutaja-ideed.md`, kogu terviku ülevaade failis `claude/harjutaja-ulevaade.md`.
 
@@ -20,7 +22,6 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 - **Avaleht (12. sept, commit `25fe8fe`):** `index.html` on nüüd päris avaleht — robot tervitab (lehvitab, klikile hüppab), Kirjutaja ja Korrutaja kaardid, „Tulekul“ nimekiri (Kell, Teisendaja, Keel) ja jalus. Manifesti `start_url` on `./` (varem `./kirjutaja/`). Eesti keel üle vaadatud Fable'iga.
 - **Avalehe teine ring (12. sept, commitid `24b8f2a`, `8328f54`):** taust on punktiruudustik (jooneline vihikupaber on Kirjutaja materjal, kogumi leht ei kanna ühe mooduli riideid); kangelasribas tegelast ei ole, **maskotid on moodulikaartidel** — roboti pea Kirjutaja kaardil, panda pea Korrutaja kaardil, kummalgi oma värviga plaat. Otsustatud reegel: **ikoon on igal moodulil kohustuslik, maskott vabatahtlik** ja tuleb siis, kui moodul valmib; kaart näitab maskotti, kui see olemas, muidu ikooni. Logo jääb ikoonipesadesse (favicon, PWA, mooduli päis, jagamispilt), kaardil on nägu. Iga maskott peab olema teistest värvi või siluetiga eristatav. Harjutajale endale tegelast ei tehta.
 - **Logo valitud (13. sept):** neli kriipsu kahes paaris ja lühike tõusev sild nende vahel — loeb korraga kriipsutamise ja H-tähena. Kollane põhi `#f3c445`, kriipsud ja sild tint `#16284a`, joon 8,6, ümarad otsad, ikooni nurgaraadius 22,5%. Neli ringi variante on Claude'i projektis failis `claude/harjutaja-logo.md`. Failid `icons/harjutaja-*`: `ikoon.svg` (täisruut, ikoonipesadesse), `ikoon-ummar.svg` (ümarnurkne, veebi ja favicon), `mark.svg` (ainult märk, `currentColor`), `sonamark.svg` (märk + sõna Fredoka SemiBoldis), PNG-d 512/192/180/32. Manifest ja `index.html` osutavad nüüd neile; avalehe kangelasribasse tuli märk h1 kohale; lisatud og-sildid.
-- **Lahtised otsad:** (1) `core/panda.js` on **ikka veel topeltkoopia** — originaal elab `korrutaja/korrutaja.src.html`-is funktsioonis `panda()`. Kolimisel jäeti see teadlikult tegemata, et risk väiksem oleks; nüüd on mõlemad failid samas repos ja dubleerimise saab eraldi sammuna ära koristada. (2) `icons/kirjutaja-*` (kalligraafiline K sinikoopial, sõnamark, 192 ja 512 PNG) on nüüd kasutuseta — vana plaani jäänuk, kus igal moodulil pidi olema oma kalligraafiline täht. Võib kustutada.
 
 **Ikoonireegel (kehtib, otsustatud 12. sept):** kogu äpil on **üks logo** — Harjutaja märk kollasel — ja see läheb kõigisse ikoonipesadesse: favicon, PWA, mooduli päis, jagamispilt. Moodulit eristab **maskott**, mitte oma ikoon või oma täht. Moodulikaart avalehel näitab maskotti. Vana plaan „iga moodul saab sama kalligraafilise tähe erineva aktsendiga“ on maha maetud koos kalligraafilise logoga.
 
@@ -38,8 +39,6 @@ Kaks asja, mis oleksid asja katki teinud. **(1) Service worker:** Korrutaja vana
 
 **Vana `korrutaja` repo on pargitud.** Seal on alles ainult kolimise teade (`index.html`), üleviimise leht (`vii-ule.html`), enda maha võttev `sw.js` ja vana lähtekood arhiivina; `build.py` keeldub käivitumast. Ära tee seal enam arendustööd — mäng elab `harjutaja/korrutaja/`-s.
 
-**Lahtine:** „midagi on valesti“ märked jäävad **sellesse seadmesse**. Kui Mia harjutab oma telefonis, ei jõua need Silverini — selleks on vaja võrguotsa (nt Supabase, mis on Korrutaja tõttu projektis juba olemas). Otsustamata.
-
 **Töövõte:** iga Kirjutaja kasutajaliidese muudatuse järel tuleb jooksutada `python tools/build_kirjutaja.py`, sest see tõstab `sw.js` versiooni. Ilma selleta serveerib service worker olemasolevatele kasutajatele vana `app.js`-i ja muudatust ei ole näha. Kohalikul testimisel tuleb brauseris service worker ja vahemälu enne käsitsi tühjendada.
 
 **Hoiatus:** ära muuda faile PowerShelli `Get-Content | Set-Content` toruga — PS 5.1 loeb UTF-8 ANSI-na ja kirjutab topeltkodeerituna, mis rikkus 13. sept `Handover.md` täpitähed (parandatud commitis, mis selle rea lisas). Kasuta `edit_block`i või Pythonit.
@@ -56,7 +55,29 @@ Claude luges kõik 375 lauset läbi; peale ülalmainitute oli ülejäänu korras
 
 **Kvoodi õppetund:** `gemini-3.1-flash-tts` päevalimiit (Tier 1: 100 päringut) lähtestub **Vaikse ookeani südaööl ehk 10:00 Eesti aja järgi**, mitte keskööl. Minutis ~10 päringut.
 
-**Järgmised sammud (v1.1):** täishäälikud (a/aa) ning l/ll, s/ss, „s-i ja h-i kõrval k, p, t“. Sõnavara otsused on tehtud (vt eespool). Korrutaja kolimine on tehtud. Sõna `tukke` vana lause („Poiss toetus seljaga tukke.“) oli vigane — *toetuma* ei käi lühikese sisseütlevaga. Silver andis asemele **„Poiss segas ahjuroobiga tuliseid tukke.“**, mis kasutab homonüümi: *tukk : tuki : tukke* tähenduses põlev halg, mitmuse osastav. Sama nipp võib päästa ka teisi harvu vorme — kirjapilt ja vastus jäävad samaks, lause tuleb teisest sõnast. (`items.json` lemma jääb ekslikult `tugi`, aga `app.js` ei kasuta `lemma` ega `meaning` välja.) **Maskotid jäävad nimeta** (Silveri otsus 12. sept — ka pandal ei ole nime).
+**Homonüüminipp (õppetund, mitte lahtine ots):** sõna `tukke` vana lause („Poiss toetus seljaga tukke.“) oli vigane — *toetuma* ei käi lühikese sisseütlevaga. Silver andis asemele **„Poiss segas ahjuroobiga tuliseid tukke.“**, mis kasutab homonüümi: *tukk : tuki : tukke* tähenduses põlev halg, mitmuse osastav. Sama nipp võib päästa ka teisi harvu vorme — kirjapilt ja vastus jäävad samaks, lause tuleb teisest sõnast. (`items.json` lemma jääb ekslikult `tugi`, aga `app.js` ei kasuta `lemma` ega `meaning` välja.) **Maskotid jäävad nimeta** (Silveri otsus 12. sept — ka pandal ei ole nime).
+
+## Lahtised otsad
+
+Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laiali. Uus lahtine ots käib siia; valmis saanu kolib „In Progress" alla või kustub.
+
+### Vajab Silveri otsust
+
+- **„Midagi on valesti" märked jäävad seadmesse.** Kirjutaja `?` nupp märgib sõna ära, aga märge jääb sellesse brauserisse ja on näha ainult selle avalehel. Kui Mia harjutab oma telefonis, ei jõua märge Silverini. Lahendus nõuab võrguotsa — Supabase on Korrutaja tõttu projektis juba olemas, aga Kirjutajal ei ole praegu ühtegi serveripoolset kutset. Otsustamata: kas teha ja kui, siis kas oma RPC või lihtsam vorm.
+
+### Tehniline võlg
+
+- **`core/panda.js` on topeltkoopia.** Originaal elab endiselt `korrutaja/korrutaja.src.html`-is funktsioonis `panda()`. Kolimisel jäeti see teadlikult tegemata, et kolimise risk väiksem oleks. Nüüd on mõlemad failid samas repos ja dubleerimise saab ohutult ära koristada: Korrutaja peab hakkama `core/panda.js`-i kasutama ja `panda()` lähtefailist kaduma.
+- **`icons/kirjutaja-*` on kasutuseta.** Kalligraafiline K sinikoopial, sõnamark, 192 ja 512 PNG — vana plaani jäänuk, kus igal moodulil pidi olema oma kalligraafiline täht. Ikoonireegel muutus 13. sept (üks logo, moodulitel maskotid). Võib kustutada.
+
+### Järgmine funktsionaalsus
+
+- **Kirjutaja v1.1:** täishäälikud (a/aa) ning l/ll, s/ss, „s-i ja h-i kõrval k, p, t". Sõnavara otsused on tehtud (vt „In Progress").
+- **Uued moodulid** (Kell, Teisendaja, Keel) alles siis, kui Kirjutajat päriselt kasutatakse.
+
+### Korrutajas
+
+Korrutaja enda lahtised otsad on `claude/korrutaja-ulevaade.md` lõpus („Seis"): viie võistleja lävi kooli- ja Eesti-võrdlusse, vanade migratsiooniühilduvuste koristus, ja ideed failist `korrutaja-tegelane-ja-kiitus.md` (nädala tähed, kogumisalbum, pandale asjad).
 
 ## Key Context
 
@@ -69,4 +90,4 @@ Claude luges kõik 375 lauset läbi; peale ülalmainitute oli ülejäänu korras
 - Pilvekonteinerist ei pääse ligi Ekilexile, PyPI-le ega TartuNLP-le (proxy 403) — need sammud käivad Windowsis Desktop Commanderiga.
 - Korrutaja: **siinsamas repos kaustas `korrutaja/`**, live harjutaja.silverjaanus.com/korrutaja/. Vana repo `C:\Users\Silver\Documents\GitHub\korrutaja` on pargitud (ainult kolimise teade ja `vii-ule.html`). Git push käib Desktop Commanderiga.
 - Kolme nupu reegel kehtib ainult lühikese täishääliku järel, täishäälikute vahel, 1. ja 2. silbi piiril. Pika täishääliku järel, s/h kõrval, sõna alguses ja lõpus lünka ei tehta.
-- Järgmised sammud plaanist: sõnapank Ekilexi API kaudu (vaja Silveri tasuta API-võtit, keskkonnamuutuja `EKILEX_API_KEY`), laused, heli, äpp, avaldamine harjutaja.silverjaanus.com.
+- Kirjutaja v1 torujuhe on **läbi käidud ja valmis**: sõnapank Ekilexi API kaudu (võti keskkonnamuutujas `EKILEX_API_KEY`) → laused → heli → äpp → avaldamine. Sama teed läheb v1.1 uute häälikurühmadega.
