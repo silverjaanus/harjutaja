@@ -27,7 +27,9 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**LIVE-VIGA LEITUD: klassiga liitumine on tootebaasis katki (13. sept). Parandus `supabase/migration-7.sql` ootab Run'i.** `create_group` vastab 404-ga: `function gen_random_bytes(integer) does not exist`. Migratsioon 4 kirjutas `gen_code` ümber pgcrypto peale, aga jättis funktsioonile `search_path`'i määramata; Supabase'is elab pgcrypto skeemis **`extensions`**, mitte `public`, ja kutsujad on `security definer ... set search_path = public`. `gen_code` teeb nii klassikoodi kui mängija taastekoodi, seega on katki **ka `join_class`** — ükski uus laps ei saa Mia klassiga liituda ja äpp näitab talle „Võrku pole või server ei vasta", sest PostgREST vastab sellele veale 404-ga. Vana mängija saab edasi mängida, nii et keegi ei märganud.
+**PARANDATUD: klassiga liitumine töötab jälle (13. sept, migratsioon 7 tootebaasis).** Kogu ahel on live'is läbi mängitud anon-võtmega: tiim loodud → liitunud → Kirjutaja võistlus kirja → teine kord samal päeval `done_today` → **Korrutaja võistlus samal päeval läheb ikka läbi** (moodulid on päriselt lahus) → Kirjutaja edetabel `week_n=17, best=17`, Korrutaja oma `week_n=22, best=22`. Suitsutesti tiim jäi baasi nimega „Claude suitsutest", kood `Z7V36C` — tiim ei paista üheski klassivõrdluses, aga selle võib millalgi ära koristada. Skript: `C:\Users\Silver\AppData\Local\Temp\live_test.ps1`.
+
+**Mis katki oli:** `create_group` vastas 404-ga, `function gen_random_bytes(integer) does not exist`. Migratsioon 4 kirjutas `gen_code` ümber pgcrypto peale, aga jättis funktsioonile `search_path`'i määramata; Supabase'is elab pgcrypto skeemis **`extensions`**, mitte `public`, ja kutsujad on `security definer ... set search_path = public`. `gen_code` teeb nii klassikoodi kui mängija taastekoodi, seega oli katki **ka `join_class`** — ükski uus laps ei saanud Mia klassiga liituda ja äpp näitas talle „Võrku pole või server ei vasta", sest PostgREST vastab sellele veale 404-ga. Vana mängija sai edasi mängida, nii et keegi ei märganud. Viga elas tootebaasis migratsioonist 4 saati.
 
 **Õppetund, mis kehtib igale edasisele migratsioonile:** kohalik Postgres ei jäljenda Supabase'i skeemipaigutust. Kui funktsioon kasutab laienduse funktsiooni (pgcrypto, uuid jne), pane talle **oma `set search_path = public, extensions`** — olematu skeem search_path'is on lihtsalt tühi koht, seega see töötab mõlemal pool. Testimisel saab Supabase'i olukorda jäljendada nii: `create schema extensions; alter extension pgcrypto set schema extensions;`.
 
@@ -86,8 +88,6 @@ Claude luges kõik 375 lauset läbi; peale ülalmainitute oli ülejäänu korras
 Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laiali. Uus lahtine ots käib siia; valmis saanu kolib „In Progress" alla või kustub.
 
 ### Vajab Silveri otsust
-
-- **MIGRATSIOON 7 TULEB KÄIVITADA — klassiga liitumine on seni katki.** Vt „In Progress" ülal. See on kõige kiirem asi nimekirjas: ilma selleta ei saa ükski uus laps Mia klassiga liituda.
 
 - **Plaan kinnitatud (Silver, 13. sept).** Claude'i projektis `claude/jargmine-etapp-plaan.md`. Viis etappi: (1) ühine klassi identiteet — **tehtud**, (2) andmebaasi migratsioon 6 — **tehtud**, (3) Kirjutaja võistlus — **tehtud**, (4) **Kell — järgmine**, (5) Kirjutaja uued teemad üks rühm korraga (pikad häälikud → i ja j → ülejäänud). **Võistlusreegel otsustatud (Silver, 13. sept): Kirjutaja võistlus on 20 sõna, 10 sekundit igaüks** (kuni 3 min; Korrutajal 25 × 6 s). Heli tohib võistluses üks kord korrata, aeg jookseb edasi. Plaan muudab ka varasemat reeglit „uus moodul alles siis, kui eelmist kasutatakse" — Kell tuleb enne Kirjutaja v1.1.
 
