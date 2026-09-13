@@ -139,15 +139,19 @@
       }] };
     }
 
-    /* vahe: kestus alla tunni, et küsimus „Mitu minutit?" oleks ühemõtteline
-       ja „veerand tundi" ei saaks teiseks õigeks vastuseks. */
-    var kordi = Math.max(1, Math.floor(55 / samm));
-    var k3 = suvaKestus(samm, 1, kordi);
+    /* vahe: neli valikut tulevad kõik samast võrgust, nii et ükski neist ei ole
+       sama pikk aeg teises sõnastuses. Kui mõni valik ulatub tunnini, ei saa
+       küsida „Mitu minutit?" — siis on küsimus „Kui kaua?". */
+    var kand = [];
+    for (var i = 1; i <= 5 && samm * i <= 180; i++) kand.push(samm * i);
+    while (kand.length < 4) kand.push(kand[kand.length - 1] + samm);
+    var k3 = valik(kand);
+    var minutites = kand[kand.length - 1] < 60;
     var a3 = suvaAeg(samm), b3 = T.liida(a3.h, a3.m, k3);
     return { sammud: [{
       lugu: st.n + ' algab ' + aeg(a3.h, a3.m) + ' ja lõpeb ' + aeg(b3.h, b3.m) + '.',
-      kysimus: 'Mitu minutit ' + st.s + ' kestab?',
-      tyyp: 'kestus', vastus: k3,
+      kysimus: (minutites ? 'Mitu minutit ' : 'Kui kaua ') + st.s + ' kestab?',
+      tyyp: 'kestus', vastus: k3, valikud: kand,
       vihje: 'Loe algusest lõpuni: ' + aeg(a3.h, a3.m) + ' → ' + aeg(b3.h, b3.m) +
              ' on <b>' + T.kestus(k3) + '</b>.'
     }] };

@@ -210,7 +210,7 @@
       opts.className = "opts sonad";
       let variandid, silt, võtmed;
       if (s.tyyp === "kestus") {
-        variandid = sega([s.vastus].concat(HTekst.kestusEksitajad(s.vastus, it.samm)));
+        variandid = sega(s.valikud.filter(v => v !== s.vastus).slice(0, 3).concat([s.vastus]));
         silt = v => HTekst.kestus(v);
         võtmed = v => "d:" + v;
         it.oigeK = "d:" + s.vastus;
