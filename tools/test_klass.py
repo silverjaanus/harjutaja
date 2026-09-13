@@ -103,7 +103,8 @@ def run(pw):
     check("Korrutaja avaekraan on olemas", page.locator("#s-home").count() > 0)
     page.goto(BASE + "/kirjutaja/", wait_until="domcontentloaded")
     page.wait_for_timeout(700)
-    check("Kirjutaja klassirida on peidus", page.locator("#klassNote").is_hidden())
+    check("Kirjutaja ütleb, et klassi pole", "pole veel klassis" in page.locator("#klassNote").inner_text(),
+          page.locator("#klassNote").inner_text())
     check("Kirjutaja Harjuta nupp töötab", page.locator("#startBtn").is_enabled())
 
     real = [e for e in errs if "fonts.googleapis" not in e and "Failed to fetch" not in e]
