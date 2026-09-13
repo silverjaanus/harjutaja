@@ -7,8 +7,13 @@
 <meta name="description" content="Eestikeelsed õppemängud lastele: Kirjutaja õpetab õigekirja, Korrutaja korrutustabelit. Tasuta, ilma reklaamita ja ilma kontota.">
 <meta name="theme-color" content="#fdfdfa">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/kirjutaja-192.png">
-<link rel="apple-touch-icon" href="icons/kirjutaja-192.png">
+<link rel="icon" href="icons/harjutaja-ikoon-ummar.svg" type="image/svg+xml">
+<link rel="icon" href="icons/harjutaja-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/harjutaja-180.png">
+<meta property="og:title" content="Harjutaja — eestikeelsed õppemängud">
+<meta property="og:description" content="Kirjutaja õpetab õigekirja, Korrutaja korrutustabelit. Tasuta, ilma reklaamita ja ilma kontota.">
+<meta property="og:image" content="https://harjutaja.silverjaanus.com/icons/harjutaja-512.png">
+<meta property="og:type" content="website">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
 <style>
 :root{--paper:#fdfdfa;--ink:#1d2f4f;--ink-soft:#5a6a82;--dot:#c6d6ea;--edge:#c3d4ea;--accent:#ffd166;--accent-edge:#e9b93f;--card:#fff;
@@ -20,6 +25,7 @@ body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--body);font-siz
 main{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
 
 .hero{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.hero .logo{width:76px;height:76px;display:block;margin-bottom:-2px}
 h1{font-family:var(--display);font-weight:600;font-size:clamp(40px,12vw,52px);line-height:1.05;margin:0}
 .sub{margin:0;color:var(--ink-soft);max-width:30ch}
 
@@ -60,6 +66,7 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
 <body>
 <main>
   <header class="hero">
+    <img class="logo" src="icons/harjutaja-ikoon-ummar.svg" alt="" width="76" height="76">
     <h1>Harjutaja</h1>
     <p class="sub">Eestikeelsed õppemängud. Vali, mida täna harjutad.</p>
   </header>
