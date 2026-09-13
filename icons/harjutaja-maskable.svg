@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Harjutaja">
+  <title>Harjutaja</title>
+  <rect width="100" height="100" fill="#f3c445"/>
+  <path d="M32.4 29.2V70.8M40.4 29.2V70.8M59.6 29.2V70.8M67.6 29.2V70.8" fill="none" stroke="#16284a" stroke-width="6.88" stroke-linecap="round"/>
+  <path d="M40.4 54.8L59.6 45.2" fill="none" stroke="#16284a" stroke-width="6.88" stroke-linecap="round"/>
+</svg>
