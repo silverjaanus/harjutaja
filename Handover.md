@@ -4,7 +4,7 @@ Uuendatud: 13. september 2026
 
 ## Current Goal
 
-Harjutaja on eestikeelne õppemängude äpp lastele. Esimene kasutaja on Mia, kes käib 3. klassis. Moodulid: **Korrutaja ja Kirjutaja v1 on live**, Kell, Teisendaja ja Keel on plaanis. Kirjutaja on õigekirjamäng, kus laps kuulab sõna ja valib lünka õige tähe (g / k / kk, b / p / pp, d / t / tt); lause on ekraanil.
+Harjutaja on eestikeelne õppemängude äpp lastele. Esimene kasutaja on Mia, kes käib 3. klassis. Moodulid: **Korrutaja, Kirjutaja ja Kell on live** (Kellas nii kella lugemine kui ajaarvutus), Teisendaja ja Keel on plaanis. Kirjutaja on õigekirjamäng, kus laps kuulab sõna ja valib lünka õige tähe (g / k / kk, b / p / pp, d / t / tt); lause on ekraanil.
 
 **Mis on pooleli ja otsustamata: vt jaotist „Lahtised otsad" allpool.** Seal on kõik ühes kohas.
 
@@ -26,6 +26,18 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 **Ikoonireegel (kehtib, otsustatud 12. sept):** kogu äpil on **üks logo** — Harjutaja märk kollasel — ja see läheb kõigisse ikoonipesadesse: favicon, PWA, mooduli päis, jagamispilt. Moodulit eristab **maskott**, mitte oma ikoon või oma täht. Moodulikaart avalehel näitab maskotti. Vana plaan „iga moodul saab sama kalligraafilise tähe erineva aktsendiga“ on maha maetud koos kalligraafilise logoga.
 
 ## In Progress
+
+**KELLA TEINE RING TEHTUD: ajaarvutus ja elulised tekstülesanded (13. sept, merge `b768702`).** Kella avalehel on nüüd valik „Mida harjutad?" — **Loen kella** või **Arvutan aega**. Tekstülesanded on Silveri tellimus: *„kui kell on praegu 12 ja kolme poole tunni pärast lähme kinno siis mis kell lähme? ja kui sinna veel minekuaeg ka juurde panna siis mis kell peab minema hakkama?"*
+
+- **Neli ülesandetüüpi** failis `kell/tekst.js`: **edasi** („Film algab kell kolm ja kestab tund aega. Mis kell film lõpeb?"), **tagasi** („Vahetund kestab 15 minutit ja lõpeb kell üksteist. Mis kell vahetund algab?"), **kestus** („Etendus algab kell pool üks ja lõpeb kell pool kaks. Kui kaua etendus kestab?") ja **kahesammuline** — Silveri näide, kus esimene vastus söödab teise küsimusse: praegu on kell X → sündmus on Y tunni pärast → ja kui juurde tuleb minekuaeg, mis kell tuleb kodust välja minna.
+- **Ajaarvutus käib alati veerandtundide kaupa**, ka siis, kui laps valis „Viie minuti täpsus" (`Math.max(15, lvlSamm)`). Põhjus on keeleline: „Trenn lõpeb kahekümne minuti pärast seitse" loeb 7.20, aga tähendab 6.40. **Viie minuti täpsusega aegu koolis sõnadega ei arvutata.**
+- **Viis keelereeglit on `kell/tekst.js` päises** ja neid peab hoidma iga edasine muudatus: (1) kellaaeg lauses saab sõna „kell" ette; (2) **„N minuti pärast" on tekstülesandes keelatud** — see on sõna-sõnalt sama konstruktsioon kui kellaaja vorm „kahekümne minuti pärast neli"; „N tunni pärast" on ohutu; (3) 15/30/45 minutit võib öelda ka „veerand/pool/kolmveerand tundi", seega neid ei tohi valikvastustes vastandada; (4) **minutid numbritega, tunnid sõnadega** — „45 minutit", „tund aega", „poolteist tundi", „kaks ja pool tundi"; „kestab 1 tund" on kõnekeelne; (5) kestus käib lauses enne lõpuaega.
+- **Elulisus on koodis, mitte juhuses.** Iga stseen ütleb ise, kui kaua ta võib kesta ja mis kellaaegadel ta toimub. Ilma selleta tuli välja „vahetund kell viis" ja „15-minutiline ujumistund" — mõlemad genereeriti päriselt ja Fable leidis nad üles.
+- **Vihje on arvutuslause:** „Lahuta lõpuajast kestus maha. Kolmveerand üksteist miinus üks tund on kolmveerand kümme." Seal käib „üks tund", mitte „tund aega" („miinus tund aega" on kohmakas), ja lause algab suure tähega.
+- **Fable vaatas üle päris genereeritud laused, mitte koodi** — kaks ringi, kokku ~20 parandust. See on töövõte, mida tasub korrata: genereeri 200 ülesannet, saada väljund Fable'ile, paranda, genereeri uuesti.
+- **Uus tööriist: `tools/scan_homoglyphs.py`** — otsib koodist kirillitsat ja muid segadust tekitavaid tähemärke (`python tools/scan_homoglyphs.py kell core kirjutaja korrutaja index.html sw.js manifest.webmanifest`). Lubatud märkide nimekiri on failis; kõik muu üle 127 raporteeritakse. See on see kontroll, mis varem käis käsitsi pärast kirillitsa „а" juhtumit.
+- Testitud: `node kell/aeg.test.js` (1440 aega), `tools/test_kell.py`, `tools/test_voistlus.py`, `tools/test_klass.py` — kõik läbi, konsool puhas.
+- **Kirjutajas parandatud:** „Pooleli ring läheb ikka kirja" → „Pooleli **jäänud** ring…" (sama parandus, mille Fable Kellas juba tegi).
 
 **ETAPP 4 TEHTUD: Kell on live'is (13. sept, commit `4721e40`).** harjutaja.silverjaanus.com/kell/ — kolmas moodul.
 
@@ -115,7 +127,7 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 
 ### Järgmine funktsionaalsus
 
-- **Kella teine ring: ajaarvutus** (Silveri idee 13. sept — „millalgi võib tehteid ka lisada sinna"). Kestuse arvutamine on 3. klassi õppekavas („tegevuse kestuse arvutamine", vt `kell-keelereeglid.md` klassitabel), seega on see loomulik jätk, mitte lisandus. Kolm võimalikku ülesandetüüpi: **edasi** („Kell on pool neli. Mis kell on kahekümne minuti pärast?"), **kestus** („Film algab veerand neli ja lõpeb pool viis. Kui kaua see kestab?") ja **tagasi** („Buss väljub kolmveerand neli. Mis kell pead kodust minema, kui tee võtab 20 minutit?"). Kogu keeleosa on juba olemas — `kell/aeg.js` teeb suvalisest ajast õige vormi, seega on vaja ainult uut küsimusetüüpi ja eksitajate loogikat. **Enne ehitamist küsi Silverilt, kas tehted käivad harjutamise sisse (oma raskusaste) või eraldi nupu alla** — ja kas võistlusformaat muutub, sest see on võistlusreegel.
+- **Kella tekstülesanded võistlusesse?** Praegu on ajaarvutus ainult harjutamises; **võistlus on endiselt 20 kellaaja lugemist 10 sekundiga** ja seda ei muudetud, sest võistlusreegel on Silveri otsus. Kui tekstülesanded kunagi võistlusesse tulevad, on kaks lahtist asja: aeg (10 s on kahesammulise loo jaoks vähe) ja see, kas tulemused jäävad võrreldavaks lastega, kes on seni ainult kella lugenud.
 - **Kirjutaja uued teemad** (plaani etapp 5), üks rühm korraga: pikad häälikud (a/aa, l/ll, s/ss) → i ja j → ülejäänud. Õppekava uuring 2.–5. klassi kohta on failis `claude/jargmine-etapp-plaan.md`. **Uus asi arhitektuuris:** i/j, kaashäälikuühend, algustäht ja -gi/-ki on **reegliülesanded**, mitte kuulamisülesanded — heli on vaja ainult õigel sõnal, mitte igal variandil, ja Kirjutajasse tuleb teema mõiste.
 
 ### Korrutajas
