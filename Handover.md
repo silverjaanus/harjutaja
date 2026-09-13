@@ -28,6 +28,10 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 **Kirjutaja kasutajaliidese pass (13. sept, commit `d11fc31`, live):** häälikukaardi number on nüüd **harjutatud / kokku** (liigub kohe) ja tähe all on täitumisriba: kollane = harjutatud, roheline = selge. Varem näitas ruut ainult selgeks saadute arvu, mis jäi peale tervet seanssi nulli — sõna läheb selgeks alles kahe järjestikuse õige vastuse järel (`HEngine.mastered`). Eemaldatud arendaja jäänuk „Praegu saab harjutada N sõna M-st“. Uus: mängu päises **‹** (eelmise sõna kuulamine, vastust muuta ei saa) ja **?** („midagi on valesti“ — märgib sõna; märgitud sõnad on avalehel oma plokis). Abi: Kirjutajas „Kuidas see käib?“ nippidega, Harjutaja avalehel „Mis see on ja kuidas töötab?“. Autor ja GitHubi link mõlemal lehel. Parandatud viga: eelmise sõna paneeli sulgemine hüppas ühest küsimusest üle (aegunud `advanceTimer` id oli tõeväärtuselt tõene).
 
+**Jaluse reegel (13. sept, commit `8f24a3c`):** nimi on link silverjaanus.com-i ja sõnastus on „Tegi Silver Jaanus“, sama mis Korrutajal. **GitHubi link ainult Harjutaja avalehel**, moodulis on autor (ja Kirjutajas Ekilexi viide). Kirjutaja kaardilt eemaldatud kollane ääris (`mod new`) — silt ilma seletuseta.
+
+**Korrutaja repos (commit `a5acb96`):** avalehe ülaserva lisatud „‹ Harjutaja“ link. See on esimene muudatus `korrutaja` repos pärast Harjutaja alustamist — muidu jääb see repo kolimiseni puutumata.
+
 **Lahtine:** „midagi on valesti“ märked jäävad **sellesse seadmesse**. Kui Mia harjutab oma telefonis, ei jõua need Silverini — selleks on vaja võrguotsa (nt Supabase, mis on Korrutaja tõttu projektis juba olemas). Otsustamata.
 
 **Töövõte:** iga Kirjutaja kasutajaliidese muudatuse järel tuleb jooksutada `python tools/build_kirjutaja.py`, sest see tõstab `sw.js` versiooni. Ilma selleta serveerib service worker olemasolevatele kasutajatele vana `app.js`-i ja muudatust ei ole näha. Kohalikul testimisel tuleb brauseris service worker ja vahemälu enne käsitsi tühjendada.
