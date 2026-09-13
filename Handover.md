@@ -27,6 +27,19 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**ETAPP 4 TEHTUD: Kell on live'is (13. sept, commit `4721e40`).** harjutaja.silverjaanus.com/kell/ — kolmas moodul.
+
+- **Keel on mooduli tuum, mitte numbrid.** `kell/aeg.js` teeb suvalisest kellaajast õige eestikeelse vormi. Reeglid tulevad ÕS 2018-st, EKSS-ist ja Sõnaveebist (Fable'i ülevaatus koos allikatega, Claude'i projektis `claude/kell-keelereeglid.md`). Peamine: eesti keel loeb **järgmise täistunni poole** („pool neli" = 15.30); 1–29 min on „viis minutit kolm läbi", 31–59 min „kahekümne minuti pärast neli". **„viis minutit pool neli läbi" on kõnekeelne ja mitmetähenduslik — seda ei kasutata ei vastusena ega eksitajana.** Kellaaeg kirjutatakse punktiga (3.45).
+- **`node kell/aeg.test.js`** kontrollib kõik 1440 kellaaega ja Fable'i tabeli 15.00–15.55. Jookseb Windowsis, Playwrightit ei vaja.
+- **Kaks ülesannet** (Silveri valik): „Mis kell on?" (kell ekraanil, neli sõnalist vastust) ja tagurpidi „Kell on pool neli. Milline kell seda näitab?" (neli sihverplaati). Iga kolmas küsimus on tagurpidi. Osutite lohistamist ei ole — puuteekraanil on see tülikas ja kõige suurem tükk tööd.
+- **Eksitajad on alati mõne teise aja õige vorm**, mitte sama aja teine ütlemisviis. Eelistatakse vigu, mida laps päriselt teeb: tunninihe (pool neli ↔ pool kolm) ja peegeldus (veerand ↔ kolmveerand).
+- **Neli raskusastet:** Täistunnid → Ja pooled → Ja veerandid → Viie minuti täpsus. Minuti täpsust sõnadega ei õpeta keegi (Fable'i ainekavade ülevaatus), seega seda astet ei ole.
+- **Osutid on teadlikult erinevad:** tunniosuti lühike ja tume, minutiosuti pikk ja roheline. Sama vahet seletab abitekst — nende segiajamine on lapse kõige sagedasem viga.
+- **Maskott: kägu** (`kell/tegelane.js`), soe oranž. Panda on must-valge, robot sinihall — kolmik on värvi järgi eristatav ka väikeselt moodulikaardilt. Nime ei ole.
+- **Võistlus: 20 kellaaega, 10 sekundit igaüks, üks kord päevas.** Võistlus kasutab **alati viie minuti täpsust**, olenemata harjutamiseks valitud astmest — muidu poleks tulemused võrreldavad. **Need reeglid vajavad veel Silveri kinnitust** (vt „Lahtised otsad").
+- **Viga, mis peaaegu läbi läks:** HEngine kirjutab statistika `stats[it.id]`, mitte `stats[it.lemma]`. Kella puhul on õpitav oskus **minutimuster** („pool", „kolmveerand"), mitte konkreetne kellaaeg, seega peavad `id` ja `lemma` olema mõlemad minut. Enne parandust ei läinud kaart kunagi roheliseks ega jõudnud selged kellaajad edetabelisse. Test `tools/test_kell.py` valvab seda nüüd.
+- Testitud: `tools/test_kell.py` (38 kontrolli) ning regressioonina `tools/test_klass.py` ja `tools/test_voistlus.py` — kõik läbi. Serveeri repo juurest `python3 -m http.server 8897`.
+
 **PARANDATUD: klassiga liitumine töötab jälle (13. sept, migratsioon 7 tootebaasis).** Kogu ahel on live'is läbi mängitud anon-võtmega: tiim loodud → liitunud → Kirjutaja võistlus kirja → teine kord samal päeval `done_today` → **Korrutaja võistlus samal päeval läheb ikka läbi** (moodulid on päriselt lahus) → Kirjutaja edetabel `week_n=17, best=17`, Korrutaja oma `week_n=22, best=22`. Suitsutesti tiim jäi baasi nimega „Claude suitsutest", kood `Z7V36C` — tiim ei paista üheski klassivõrdluses, aga selle võib millalgi ära koristada. Skript: `C:\Users\Silver\AppData\Local\Temp\live_test.ps1`.
 
 **Mis katki oli:** `create_group` vastas 404-ga, `function gen_random_bytes(integer) does not exist`. Migratsioon 4 kirjutas `gen_code` ümber pgcrypto peale, aga jättis funktsioonile `search_path`'i määramata; Supabase'is elab pgcrypto skeemis **`extensions`**, mitte `public`, ja kutsujad on `security definer ... set search_path = public`. `gen_code` teeb nii klassikoodi kui mängija taastekoodi, seega oli katki **ka `join_class`** — ükski uus laps ei saanud Mia klassiga liituda ja äpp näitas talle „Võrku pole või server ei vasta", sest PostgREST vastab sellele veale 404-ga. Vana mängija sai edasi mängida, nii et keegi ei märganud. Viga elas tootebaasis migratsioonist 4 saati.
@@ -89,7 +102,9 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 
 ### Vajab Silveri otsust
 
-- **Plaan kinnitatud (Silver, 13. sept).** Claude'i projektis `claude/jargmine-etapp-plaan.md`. Viis etappi: (1) ühine klassi identiteet — **tehtud**, (2) andmebaasi migratsioon 6 — **tehtud**, (3) Kirjutaja võistlus — **tehtud**, (4) **Kell — järgmine**, (5) Kirjutaja uued teemad üks rühm korraga (pikad häälikud → i ja j → ülejäänud). **Võistlusreegel otsustatud (Silver, 13. sept): Kirjutaja võistlus on 20 sõna, 10 sekundit igaüks** (kuni 3 min; Korrutajal 25 × 6 s). Heli tohib võistluses üks kord korrata, aeg jookseb edasi. Plaan muudab ka varasemat reeglit „uus moodul alles siis, kui eelmist kasutatakse" — Kell tuleb enne Kirjutaja v1.1.
+- **Kella võistlusreeglid vajavad kinnitust.** Praegu ehitatud: **20 kellaaega, 10 sekundit igaüks, üks kord päevas, alati viie minuti täpsusega.** Viie minuti täpsus on valitud sellepärast, et võistlus peab olema kõigil ühesugune — kui iga laps võistleks oma valitud astmel, ei mõõdaks edetabel midagi. Alternatiiv oleks kergem komplekt (ainult täistunnid, pooled ja veerandid), mis sobiks nooremale lapsele, aga annaks headel mängijatel kõigil 20/20.
+
+- **Plaan kinnitatud (Silver, 13. sept).** Claude'i projektis `claude/jargmine-etapp-plaan.md`. Viis etappi: (1) ühine klassi identiteet — **tehtud**, (2) andmebaasi migratsioon 6 — **tehtud**, (3) Kirjutaja võistlus — **tehtud**, (4) Kell — **tehtud**, (5) **Kirjutaja uued teemad — järgmine**, üks rühm korraga (pikad häälikud → i ja j → ülejäänud). **Võistlusreegel otsustatud (Silver, 13. sept): Kirjutaja võistlus on 20 sõna, 10 sekundit igaüks** (kuni 3 min; Korrutajal 25 × 6 s). Heli tohib võistluses üks kord korrata, aeg jookseb edasi. Plaan muudab ka varasemat reeglit „uus moodul alles siis, kui eelmist kasutatakse" — Kell tuleb enne Kirjutaja v1.1.
 
 - **„Midagi on valesti" märked jäävad seadmesse.** Kirjutaja `?` nupp märgib sõna ära, aga märge jääb sellesse brauserisse ja on näha ainult selle avalehel. Kui Mia harjutab oma telefonis, ei jõua märge Silverini. Lahendus nõuab võrguotsa — Supabase on Korrutaja tõttu projektis juba olemas, aga Kirjutajal ei ole praegu ühtegi serveripoolset kutset. Otsustamata: kas teha ja kui, siis kas oma RPC või lihtsam vorm.
 
@@ -101,8 +116,7 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 
 ### Järgmine funktsionaalsus
 
-- **Kell on järgmine moodul** (plaani etapp 4). Oma kaust `kell/`, ühine tuum ja ühine klassi identiteet algusest peale. Heli ega korpust vaja ei ole, kell joonistub SVG-na. Kaks ülesandetüüpi: „Mis kell on?" ja „Näita kell kolmveerand neli". Sisuline tuum on **eestikeelne kellaütlemine** („pool neli" = 15.30, „kolmveerand neli" = 15.45), mitte numbrid. Oma maskott, pandast ja robotist eristatav. Võistlus käib sama mootoriga, mis etappides 2–3 valmis sai.
-- **Kirjutaja uued teemad** (plaani etapp 5), üks rühm korraga: pikad häälikud (a/aa, l/ll, s/ss) → i ja j → ülejäänud. Õppekava uuring 2.–5. klassi kohta on failis `claude/jargmine-etapp-plaan.md`. **Uus asi arhitektuuris:** i/j, kaashäälikuühend, algustäht ja -gi/-ki on **reegliülesanded**, mitte kuulamisülesanded — heli on vaja ainult õigel sõnal, mitte igal variandil, ja Kirjutajasse tuleb teema mõiste.
+- **Kirjutaja uued teemad on järgmine töö** (plaani etapp 5), üks rühm korraga: pikad häälikud (a/aa, l/ll, s/ss) → i ja j → ülejäänud. Õppekava uuring 2.–5. klassi kohta on failis `claude/jargmine-etapp-plaan.md`. **Uus asi arhitektuuris:** i/j, kaashäälikuühend, algustäht ja -gi/-ki on **reegliülesanded**, mitte kuulamisülesanded — heli on vaja ainult õigel sõnal, mitte igal variandil, ja Kirjutajasse tuleb teema mõiste.
 
 ### Korrutajas
 
