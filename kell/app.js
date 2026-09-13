@@ -433,7 +433,7 @@
     $("startBtn").textContent = tekst ? "Arvuta" : "Harjuta";
     const s = D.tekstStat;
     const peen = tekst && D.level === 4
-      ? " Ajaarvutus käib veerandtundide kaupa — täpsemaid aegu koolis sõnadega ei arvutata."
+      ? " Ajaarvutus käib veerandtundide kaupa – nii nagu kellaaega sõnadega öeldakse (veerand, pool, kolmveerand)."
       : "";
     $("tekstStat").textContent = (s.n
       ? "Tehtud " + s.n + " ülesannet, õigesti " + s.ok + "."
