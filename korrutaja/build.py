@@ -23,7 +23,9 @@ if os.path.exists(cfg_path):
 head_extra = ('<link rel="manifest" href="../manifest.webmanifest">\n'
               '<link rel="icon" href="../icons/harjutaja-ikoon-ummar.svg" type="image/svg+xml">\n'
               '<link rel="icon" href="../icons/harjutaja-32.png" sizes="32x32">\n'
-              '<link rel="apple-touch-icon" href="../icons/harjutaja-180.png">\n')
+              '<link rel="apple-touch-icon" href="../icons/harjutaja-180.png">\n'
+              # Klassi identiteet on koigi moodulite uhine. Peab laadima enne mangu skripti.
+              '<script src="../core/klass.js"></script>\n')
 
 cut = frag.index('</style>') + len('</style>')
 html = ('<!doctype html>\n<html lang="et">\n<head>\n<meta charset="utf-8">\n'

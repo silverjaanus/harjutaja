@@ -107,6 +107,17 @@
     $("startBtn").disabled = !n;
   }
 
+  /* Klass on kogu Harjutaja ühine: liitud ühes moodulis, kehtib kõigis.
+     Praegu ainult näitame, et see kohale jõuab — võistlus ja edetabel
+     tulevad Kirjutajasse järgmise etapiga. */
+  function renderKlass() {
+    const el = $("klassNote");
+    const c = window.HKlass ? HKlass.current() : null;
+    if (!c || !c.class_name) { el.hidden = true; return; }
+    el.textContent = "Sinu klass: " + c.class_name + " · " + (c.nick || "");
+    el.hidden = false;
+  }
+
   /* ---------- eelmine sõna ---------- */
   function renderPrevBtn() {
     const b = $("prevBtn"); if (!b) return;
@@ -312,6 +323,6 @@
     HSfx.unlock(); HSfx.ok();
     const svg = $("mascot").querySelector("svg"); svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
   };
-  renderMap(); renderCount(); renderReports();
+  renderMap(); renderCount(); renderReports(); renderKlass();
   if ("serviceWorker" in navigator) { navigator.serviceWorker.register("../sw.js").catch(() => {}); }
 })();
