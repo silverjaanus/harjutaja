@@ -1,5 +1,5 @@
 /* Harjutaja service worker: rakenduse failid vahemällu, heli vahemällu esimesel kuulamisel. */
-const VERSION = 'h-202609131748';
+const VERSION = 'h-202609131757';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js',
   'kirjutaja/', 'kirjutaja/index.html', 'kirjutaja/kirjutaja.css', 'kirjutaja/app.js', 'kirjutaja/robot.js', 'kirjutaja/data.js',
   'icons/kirjutaja-192.png'];
