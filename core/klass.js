@@ -104,16 +104,16 @@
   /* Veateated ühes kohas, et igas moodulis ei kirjutataks neid uuesti. */
   var ERR = {
     code: 'Sellist koodi pole.',
-    nick: 'Nimi peab olema 2–16 märki.',
+    nick: 'Nimes peab olema 2–16 märki.',
     taken: 'See nimi on juba võetud. Vali teine.',
-    name: 'Nimi peab olema vähemalt 2 märki.',
+    name: 'Nimes peab olema vähemalt 2 märki.',
     school: 'Kooli nimi peab olema vähemalt 2 märki.',
     grade: 'Vali klassiaste.',
     letter: 'Klassi täht peab olema üks täht, näiteks A.',
     auth: 'Kood, nimi või taastekood ei klapi.',
     done_today: 'Tänane võistlus on juba tehtud.',
     input: 'Midagi oli vormis valesti.',
-    net: 'Võrku pole või server ei vasta.'
+    net: 'Internetti pole või server ei vasta.'
   };
 
   /* Uue klassi või tiimi loomine. Loob ainult grupi — liitumine käib eraldi,
@@ -204,7 +204,7 @@
 
     card.appendChild(el('h2', null, 'Liitu klassiga'));
     card.appendChild(el('p', 'hk-lead',
-      'Klassikood on kuus märki. Selle annab õpetaja või sõber. Sama klass kehtib kõigis Harjutaja mängudes.'));
+      'Klassikoodis on kuus märki. Selle annab õpetaja või sõber. Sama klass on sul kõigis Harjutaja mängudes.'));
 
     var code = field('Klassikood', { maxlength: '6', autocapitalize: 'characters', autocomplete: 'off', spellcheck: 'false' });
     var nick = field('Sinu hüüdnimi', { maxlength: '16', autocomplete: 'off' });
@@ -230,7 +230,7 @@
     go.onclick = function () {
       err.hidden = true;
       var c = code.input.value.trim().toUpperCase(), n = nick.input.value.trim();
-      if (c.length !== 6) return fail('Kood on kuus märki.');
+      if (c.length !== 6) return fail('Koodis peab olema kuus märki.');
       if (n.length < 2) return fail(ERR.nick);
       busy(true, go, 'Liitu');
       join(c, n).then(function (r) {
@@ -244,7 +244,7 @@
     var d1 = el('details', 'hk-more');
     d1.appendChild(el('summary', null, 'Mul oli konto juba olemas'));
     var sec = field('Taastekood (8 märki)', { maxlength: '8', autocapitalize: 'characters', autocomplete: 'off' });
-    d1.appendChild(el('p', 'hk-lead', 'Kirjuta üles klassikood, hüüdnimi ja taastekood. Taastekoodi näeb mängu seadetes.'));
+    d1.appendChild(el('p', 'hk-lead', 'Kirjuta siia klassikood, hüüdnimi ja taastekood. Taastekoodi näeb mängu seadetes.'));
     d1.appendChild(sec.label);
     var go1 = el('button', 'hk-go', 'Taasta konto');
     d1.appendChild(go1);
@@ -253,7 +253,7 @@
     go1.onclick = function () {
       err.hidden = true;
       var c = code.input.value.trim().toUpperCase(), n = nick.input.value.trim(), s = sec.input.value.trim().toUpperCase();
-      if (c.length !== 6 || n.length < 2 || s.length !== 8) return fail('Täida klassikood, hüüdnimi ja 8-märgiline taastekood.');
+      if (c.length !== 6 || n.length < 2 || s.length !== 8) return fail('Sisesta klassikood, hüüdnimi ja 8-märgiline taastekood.');
       busy(true, go1, 'Taasta konto');
       restore(c, n, s).then(function (r) {
         busy(false, go1, 'Taasta konto');
@@ -269,12 +269,12 @@
     var school = field('Kooli nimi', { maxlength: '60', autocomplete: 'off' });
     d2.appendChild(school.label);
     var row = el('div', 'hk-row');
-    var gl = el('label', null, 'Klassiaste');
+    var gl = el('label', null, 'Klass');
     var gsel = document.createElement('select');
     for (var i = 1; i <= 12; i++) gsel.appendChild(new Option(i + '. klass', String(i)));
     gsel.value = '3';
     gl.appendChild(gsel);
-    var letter = field('Täht', { maxlength: '1', autocapitalize: 'characters', autocomplete: 'off' });
+    var letter = field('Klassi täht (nt A)', { maxlength: '1', autocapitalize: 'characters', autocomplete: 'off' });
     row.appendChild(gl);
     row.appendChild(letter.label);
     d2.appendChild(row);
@@ -286,14 +286,14 @@
       err.hidden = true;
       var n = nick.input.value.trim();
       if (school.input.value.trim().length < 2) return fail(ERR.school);
-      if (n.length < 2) return fail('Täida ka oma hüüdnimi ülal.');
+      if (n.length < 2) return fail('Kirjuta ülal ka oma hüüdnimi.');
       busy(true, go2, 'Loo klass ja liitu');
       create('class', school.input.value.trim(), parseInt(gsel.value, 10), letter.input.value.trim(), null)
         .then(function (r) {
           if (r && r.error) { busy(false, go2, 'Loo klass ja liitu'); return fail(ERR[r.error] || 'Ei õnnestunud.'); }
           return join(r.code, n).then(function (j) {
             busy(false, go2, 'Loo klass ja liitu');
-            if (j && j.error) return fail(ERR[j.error] || 'Klass tehti, aga liitumine ei õnnestunud.');
+            if (j && j.error) return fail(ERR[j.error] || 'Klass on loodud, aga liitumine ei õnnestunud.');
             done(read());
           });
         })
@@ -301,7 +301,7 @@
     };
 
     card.appendChild(el('p', 'hk-note',
-      'Edetabelikoht hoitakse selles brauseris. Kui brauseri andmed kustutada, on klassiliikmesus läinud — seepärast kirjuta taastekood üles.'));
+      'Sinu koht klassis on salvestatud sellesse brauserisse. Kui brauseri andmed kustutatakse, kaob ka sinu koht klassis — seepärast kirjuta taastekood üles.'));
 
     function close() {
       document.removeEventListener('keydown', onKey);

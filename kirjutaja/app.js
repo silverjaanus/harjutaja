@@ -310,7 +310,7 @@
       return;
     }
     HSfx.bad();
-    $("fb").textContent = o === null ? "Aeg sai otsa. Õige on " + it.word + "." : "Õige on " + it.word + ".";
+    $("fb").textContent = (o === null ? "Aeg sai otsa. Õige on \u201E" : "Õige on \u201E") + it.word + "\u201C.";
     $("fb").className = "feedback bad";
     if (test) {
       // Võistluses ei õpetata: ei vihjet, ei variantide etteütlust. Ainult õige sõna.
@@ -381,7 +381,7 @@
     else if (record) { title = "Uus rekord!"; mood = "cheer"; HSfx.tada(); }
     else if (pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
     else if (pct >= 0.5) { title = "Tubli võistlus!"; mood = "happy"; }
-    else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saab uuesti."; }
+    else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saad uuesti võistelda."; }
     if (!sub) sub = "Uus võistlus on homme.";
     $("resRobot").innerHTML = KRobot(mood);
     $("resTitle").textContent = title; $("resSub").textContent = sub; $("resSub").hidden = false;
@@ -424,7 +424,7 @@
       $("joinBtn").textContent = "Vaheta klassi";
       $("boardBtn").hidden = false;
     } else {
-      note.textContent = "Sa pole veel klassis. Klassiga saab võistelda sõprade vastu.";
+      note.textContent = "Sa pole veel klassis. Klassis saad võistelda sõpradega.";
       $("joinBtn").textContent = "Liitu klassiga";
       $("boardBtn").hidden = true;
     }
@@ -443,7 +443,7 @@
     }
     b.disabled = false;
     b.textContent = "Võistle";
-    n.textContent = COMPETE_N + " juhuslikku sõna, " + COMPETE_SEC + " sekundit igaüks. Vihjeid ei näidata.";
+    n.textContent = COMPETE_N + " juhuslikku sõna, igale " + COMPETE_SEC + " sekundit. Vihjeid ei näidata.";
   }
 
   function onCompete() {
@@ -471,7 +471,7 @@
 
   function loadBoard() {
     if (!window.HKlass || !HKlass.current()) return;
-    $("bStatus").textContent = "Laen…";
+    $("bStatus").textContent = "Laadin…";
     return HKlass.board(MODULE).then(r => {
       if (r && r.error === "auth") { HKlass.clear(); D.board = null; save(); renderKlass(); show("s-home"); return; }
       if (!r || r.error) { $("bStatus").textContent = "Ei õnnestunud."; return; }
@@ -481,33 +481,40 @@
       $("bStatus").textContent = "";
     }).catch(() => {
       renderBoard();
-      $("bStatus").textContent = D.board ? "Võrku pole. Näitan viimast seisu." : "Võrku pole.";
+      $("bStatus").textContent = D.board ? "Internetti pole. Näitan viimast seisu." : "Internetti pole.";
     });
   }
 
-  const B_HINT = {
-    week: "Nädalapunktid on viie parima võistluspäeva õigete vastuste summa. Nädalavahetusel ei pea mängima.",
-    sure: "Selge sõna on see, millele oled kaks korda järjest õigesti vastanud.",
-    best: "Parim üksik võistlus. Igas võistluses on " + COMPETE_N + " sõna.",
-    school: "Sama kooli sama klassiastme klassid. Võrdleme punkte ühe võistleja kohta, mitte kogusummat.",
-    country: "Sama klassiaste üle Eesti, punktid ühe võistleja kohta."
-  };
+  /* Kui klassiaste on teada, ütleme selle välja („3. klassid") — see on lapsele
+     palju selgem kui sõna „klassiaste". */
+  function boardHint(tab, grade) {
+    const g = grade ? grade + ". klassid" : "sama astme klassid";
+    if (tab === "week") return "Nädalapunktid on sinu viie parima päeva õiged vastused kokku. Nädalavahetusel ei pea mängima.";
+    if (tab === "sure") return "Selge sõna on see, mille oled kaks korda järjest õigesti kirjutanud.";
+    if (tab === "best") return "Sinu kõige parem võistlus. Igas võistluses on " + COMPETE_N + " sõna.";
+    if (tab === "school") return "Sinu kooli teised " + g + ". Võrdleme punkte ühe võistleja kohta, mitte kogusummat.";
+    return "Kõik Eesti " + g + ". Punktid ühe võistleja kohta.";
+  }
 
   function renderBoard() {
     const b = D.board;
     const c = window.HKlass ? HKlass.current() : null;
     $("bClass").textContent = b && b.class ? b.class.name : (c ? c.class_name : "");
-    $("bHint").textContent = B_HINT[boardTab] || "";
+    $("bHint").textContent = boardHint(boardTab, b && b.class && b.class.grade);
     document.querySelectorAll("#bTabs .chip").forEach(x => x.setAttribute("aria-pressed", x.dataset.t === boardTab ? "true" : "false"));
     const list = $("bList"); list.innerHTML = "";
-    if (!b) { $("bStatus").textContent = $("bStatus").textContent || "Edetabel laeb…"; return; }
+    if (!b) { $("bStatus").textContent = $("bStatus").textContent || "Laadin edetabelit…"; return; }
+
+    /* Ühe ja mitme puhul on eesti keeles eri vorm: 1 võistluspäev, 2 võistluspäeva. */
+    const days = n => !n ? "" : (n === 1 ? "1 võistluspäev" : n + " võistluspäeva");
+    const players = n => n === 1 ? "1 võistleja" : (n || 0) + " võistlejat";
 
     let rows = [];
-    if (boardTab === "week") rows = (b.players || []).map(p => ({ name: p.nick, v: p.week_n, sub: p.days ? p.days + " võistluspäeva" : "", me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "sure") rows = (b.players || []).map(p => ({ name: p.nick, v: p.greens, sub: "sõna selge", me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "best") rows = (b.players || []).map(p => ({ name: p.nick, v: p.best_test, sub: "parim ring", me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "school") rows = (b.siblings || []).map(g => ({ name: g.name, v: g.per_player, sub: g.active + " võistlejat", me: b.class && g.id === b.class.id }));
-    else rows = (b.peers || []).map(g => ({ name: g.name, v: g.per_player, sub: (g.school || "") , me: b.class && g.id === b.class.id }));
+    if (boardTab === "week") rows = (b.players || []).map(p => ({ name: p.nick, v: p.week_n, sub: days(p.days), me: p.id === b.me })).sort((x, y) => y.v - x.v);
+    else if (boardTab === "sure") rows = (b.players || []).map(p => ({ name: p.nick, v: p.greens, sub: "selgeks saanud sõna", me: p.id === b.me })).sort((x, y) => y.v - x.v);
+    else if (boardTab === "best") rows = (b.players || []).map(p => ({ name: p.nick, v: p.best_test, sub: "õiget parimas võistluses", me: p.id === b.me })).sort((x, y) => y.v - x.v);
+    else if (boardTab === "school") rows = (b.siblings || []).map(g => ({ name: g.name, v: g.per_player, sub: players(g.active), me: b.class && g.id === b.class.id }));
+    else rows = (b.peers || []).map(g => ({ name: g.name, v: g.per_player, sub: (g.school || ""), me: b.class && g.id === b.class.id }));
 
     if (!rows.length) {
       const li = document.createElement("li");
@@ -540,7 +547,7 @@
     if (navigator.share) { navigator.share({ text }).catch(() => {}); return; }
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(() => {
-        note.textContent = "Kutse on lõikelaual — kleebi see sõbrale.";
+        note.textContent = "Kutse on kopeeritud — kleebi see sõbrale sõnumisse.";
         note.hidden = false;
       }).catch(() => { note.textContent = "Klassikood on " + c.code + "."; note.hidden = false; });
       return;
