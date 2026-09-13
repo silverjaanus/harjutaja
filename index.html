@@ -37,6 +37,8 @@ a.mod:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .face svg{width:100%;height:auto;display:block;overflow:visible}
 .mod-kirjutaja .face{background:#eaf2fc;border-color:#cfe0f4}
 .mod-korrutaja .face{background:#eceefc;border-color:#d4d9f7}
+.mod-kell .face{background:#fbead9;border-color:#f0cfae}
+.mod-kell .face svg{width:104%}
 /* pead on eri kõrgusega (robotil on antenn) — ühtlustame nii, et näod tunduvad ühesuurused */
 .mod-kirjutaja .face svg{width:130%;transform:translateY(3px)}
 .mod-korrutaja .face svg{width:94%}
@@ -94,12 +96,15 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
       <span class="face" id="faceP"></span>
       <div><b>Korrutaja</b><span>Korrutustabel ja jagamine. Harjuta üksi või võistle sõpradega.</span></div>
     </a>
+    <a class="mod mod-kell" href="kell/">
+      <span class="face" id="faceKell"></span>
+      <div><b>Kell</b><span>Mis kell on? Osutitega kella lugemine eesti keeles.</span></div>
+    </a>
   </nav>
 
   <section class="soon">
     <h2 class="label">Tulekul</h2>
     <ul>
-      <li><b>Kell</b> <span>Osutitega kella lugemine</span></li>
       <li><b>Teisendaja</b> <span>Meetrid, grammid ja liitrid</span></li>
       <li><b>Keel</b> <span>Inglise sõnad: kuula ja ütle järele</span></li>
     </ul>
@@ -108,7 +113,7 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
   <details class="help">
     <summary>Mis see on ja kuidas töötab?</summary>
     <div class="help-body">
-      <p>Harjutaja on kogum eestikeelseid õppemänge. Iga mäng on oma moodul: <b>Kirjutaja</b> õpetab õigekirja, <b>Korrutaja</b> korrutustabelit. Kell, Teisendaja ja Keel tulevad hiljem.</p>
+      <p>Harjutaja on kogum eestikeelseid õppemänge. Iga mäng on oma moodul: <b>Kirjutaja</b> õpetab õigekirja, <b>Korrutaja</b> korrutustabelit ja <b>Kell</b> osutitega kella lugemist. Teisendaja ja Keel tulevad hiljem.</p>
       <p>Kõik moodulid töötavad ühtmoodi. Sa harjutad lühikeste ringidena, mitte tundide kaupa. Äpp jätab meelde, mis läks valesti, ja toob need ülesanded ise tagasi — nii kordad seda, mida päriselt vaja on. Vea peale ei juhtu midagi halba: äpp näitab õiget vastust ja seletab, miks see nii on.</p>
       <p>Igal moodulil on oma tegelane, kes sind saadab. Edenemine jääb sellesse seadmesse, kontot ei ole vaja.</p>
     </div>
@@ -121,9 +126,11 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
 </main>
 <script src="kirjutaja/robot.js"></script>
 <script src="core/panda.js"></script>
+<script src="kell/tegelane.js"></script>
 <script>
   document.getElementById("faceK").innerHTML = KRobot("happy", { head: true });
   document.getElementById("faceP").innerHTML = KPanda("happy", true);
+  document.getElementById("faceKell").innerHTML = KKagu("happy", { head: true });
 </script>
 </body>
 </html>
