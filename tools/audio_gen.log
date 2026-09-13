@@ -132,3 +132,11 @@
 11:14:06   kontroll: jätan hilisemaks [('rõtu', 'Ruttu'), ('hõpe', 'Hüppe')]
 11:14:06   tehtud 0 (TTS päringuid 1)
 11:15:03 PUUDU 2: hõpe rõtu
+16:23:43 teha 8 / 927, partii 12, päringuid kuni 95
+16:24:03   kontroll: jätan hilisemaks [('rõtu', 'Rütu'), ('hõpe', 'Hüpe')]
+16:24:04   tehtud 6 (TTS päringuid 1)
+16:25:07 PUUDU 2: hõpe rõtu
+16:57:03 teha 5 / 924, partii 12, päringuid kuni 95
+16:57:17   kontroll: jätan hilisemaks [('hõpe', 'Hüppe')]
+16:57:18   tehtud 4 (TTS päringuid 1)
+16:58:19 PUUDU 1: hõpe

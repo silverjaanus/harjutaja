@@ -4,7 +4,7 @@
   "word": "kodu",
   "lemma": "kodu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ko",
   "post": "u",
   "options": [
@@ -60,7 +60,7 @@
   "length": "pikk",
   "meaning": "ajaline või ruumiline piir, mis katkestab millegi kestmise või ulatuse, kus miski saab läbi või otsa",
   "displayForm": "lõpu",
-  "sentence": "Loeme õhtul raamatu lõpu läbi.",
+  "sentence": "Loeme õhtul raamatu lõpu uuesti läbi.",
   "flag": "ok",
   "note": "",
   "auto_drop": null
@@ -70,7 +70,7 @@
   "word": "lõppu",
   "lemma": "lõpp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "lõ",
   "post": "u",
   "options": [
@@ -114,7 +114,7 @@
   "word": "pikka",
   "lemma": "pikk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "pi",
   "post": "a",
   "options": [
@@ -158,7 +158,7 @@
   "word": "juttu",
   "lemma": "jutt",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ju",
   "post": "u",
   "options": [
@@ -180,7 +180,7 @@
   "word": "abi",
   "lemma": "abi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "a",
   "post": "i",
   "options": [
@@ -246,7 +246,7 @@
   "word": "tegu",
   "lemma": "tegu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "te",
   "post": "u",
   "options": [
@@ -268,7 +268,7 @@
   "word": "lugu",
   "lemma": "lugu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "lu",
   "post": "u",
   "options": [
@@ -302,7 +302,7 @@
   "length": "ülipikk",
   "meaning": "juhtunud asi või omavahel seotud sündmuste kogum (ka suulises või kirjalikus esituses)",
   "displayForm": "l`ukku",
-  "sentence": "Ära sega ennast võõrasse lukku.",
+  "sentence": "Pane uks lukku.",
   "flag": "confusing",
   "note": "Laps mõtleb sõnale lukk (pane uks lukku); lugu sisseütlev on tavaliselt 'loosse', vorm 'lukku' on ka iseenesest harv.",
   "auto_drop": null
@@ -378,7 +378,7 @@
   "word": "vaba",
   "lemma": "vaba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "va",
   "post": "a",
   "options": [
@@ -444,7 +444,7 @@
   "word": "viga",
   "lemma": "viga",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "vi",
   "post": "a",
   "options": [
@@ -488,7 +488,7 @@
   "word": "tuba",
   "lemma": "tuba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "tu",
   "post": "a",
   "options": [
@@ -532,7 +532,7 @@
   "word": "nägu",
   "lemma": "nägu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "nä",
   "post": "u",
   "options": [
@@ -642,7 +642,7 @@
   "word": "rada",
   "lemma": "rada",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ra",
   "post": "a",
   "options": [
@@ -752,7 +752,7 @@
   "word": "sõda",
   "lemma": "sõda",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "sõ",
   "post": "a",
   "options": [
@@ -796,7 +796,7 @@
   "word": "rida",
   "lemma": "rida",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ri",
   "post": "a",
   "options": [
@@ -972,7 +972,7 @@
   "word": "tükki",
   "lemma": "tükk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "tü",
   "post": "i",
   "options": [
@@ -1236,7 +1236,7 @@
   "word": "tõde",
   "lemma": "tõde",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "tõ",
   "post": "e",
   "options": [
@@ -1302,7 +1302,7 @@
   "word": "kotti",
   "lemma": "kott",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ko",
   "post": "i",
   "options": [
@@ -1390,7 +1390,7 @@
   "word": "õde",
   "lemma": "õde",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "õ",
   "post": "e",
   "options": [
@@ -1412,7 +1412,7 @@
   "word": "luba",
   "lemma": "luba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "lu",
   "post": "a",
   "options": [
@@ -1446,10 +1446,10 @@
   "length": "lühike",
   "meaning": "kelleltki saadud suuline või kirjalik nõusolek millekski",
   "displayForm": "lube",
-  "sentence": "Ema ei anna selliseid lube.",
+  "sentence": "Auto juhtimiseks on vaja lube.",
   "flag": "rare",
   "note": "Mitmuse osastav 'lube' on igapäevakõnes harv; laps kasutab ainsust.",
-  "auto_drop": "harv vorm"
+  "auto_drop": null
  },
  {
   "id": "hobune",
@@ -1588,7 +1588,7 @@
   "word": "häda",
   "lemma": "häda",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "hä",
   "post": "a",
   "options": [
@@ -1666,7 +1666,7 @@
   "length": "lühike",
   "meaning": "laevade, paatide vm veesõiduvahendite randumiseks ja peatumiseks kohandatud veeala koos selle juurde kuuluva hoonete ja kaldaalaga",
   "displayForm": "sadama",
-  "sentence": "Sadama ääres seisid suured laevad.",
+  "sentence": "Vihma hakkas sadama.",
   "flag": "confusing",
   "note": "Laps mõtleb tegusõnale sadama (hakkab vihma sadama).",
   "auto_drop": null
@@ -1691,7 +1691,7 @@
   "sentence": "Me vaatasime laevalt sadamat.",
   "flag": "ok",
   "note": "",
-  "auto_drop": null
+  "auto_drop": "Silveri otsus"
  },
  {
   "id": "tipu",
@@ -1720,7 +1720,7 @@
   "word": "tippu",
   "lemma": "tipp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ti",
   "post": "u",
   "options": [
@@ -1764,7 +1764,7 @@
   "word": "nuppu",
   "lemma": "nupp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "nu",
   "post": "u",
   "options": [
@@ -1808,7 +1808,7 @@
   "word": "pakki",
   "lemma": "pakk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "pa",
   "post": "i",
   "options": [
@@ -1952,7 +1952,7 @@
   "length": "lühike",
   "meaning": "vähe raha maksev, madala hinnaga",
   "displayForm": "odava[t",
-  "sentence": "Otsime poest odavat mänguasja.",
+  "sentence": "Tahtsime odavat asja osta.",
   "flag": "ok",
   "note": "",
   "auto_drop": null
@@ -2050,7 +2050,7 @@
   "word": "lippu",
   "lemma": "lipp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "li",
   "post": "u",
   "options": [
@@ -2128,10 +2128,10 @@
   "length": "ülipikk",
   "meaning": "ese, mille najal miski püsib püsti, ülal või muus soovitavas asendis",
   "displayForm": "t`ukke",
-  "sentence": "Poiss toetus seljaga tukke.",
+  "sentence": "Poiss segas ahjuroobiga tuliseid tukke.",
   "flag": "rare",
   "note": "Lühike sisseütlev 'tukke' on väga harv (tavaliselt 'toe vastu', 'toele'); sama kuju on ka sõna tukk (põlev halg) mitmuse osastav.",
-  "auto_drop": "harv vorm"
+  "auto_drop": null
  },
  {
   "id": "jube",
@@ -2446,7 +2446,7 @@
   "word": "pidu",
   "lemma": "pidu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "pi",
   "post": "u",
   "options": [
@@ -2512,7 +2512,7 @@
   "word": "kappi",
   "lemma": "kapp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ka",
   "post": "i",
   "options": [
@@ -2556,7 +2556,7 @@
   "word": "näppu",
   "lemma": "näpp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "nä",
   "post": "u",
   "options": [
@@ -2710,7 +2710,7 @@
   "word": "saba",
   "lemma": "saba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "sa",
   "post": "a",
   "options": [
@@ -2744,10 +2744,10 @@
   "length": "ülipikk",
   "meaning": "loomade tagumine kehaosa, mis esineb selgroo painduva pikendusena (imetajatel), pikkade sulgedena (lindudel) või tagakeha lülidena (putukatel)",
   "displayForm": "s`appa",
-  "sentence": "Kutsikas hammustas kassile sappa.",
+  "sentence": "Võtke üksteise järel sappa.",
   "flag": "rare",
   "note": "Lühike sisseütlev 'sappa' on harv, esineb peamiselt väljendis 'järjekorra sappa'; laps ütleks 'saba sisse' või 'sabast'.",
-  "auto_drop": "harv vorm"
+  "auto_drop": null
  },
  {
   "id": "rikas",
@@ -2842,7 +2842,7 @@
   "word": "potti",
   "lemma": "pott",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "po",
   "post": "i",
   "options": [
@@ -2930,7 +2930,7 @@
   "word": "siga",
   "lemma": "siga",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "si",
   "post": "a",
   "options": [
@@ -2996,7 +2996,7 @@
   "word": "treppi",
   "lemma": "trepp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "tre",
   "post": "i",
   "options": [
@@ -3040,7 +3040,7 @@
   "word": "nippi",
   "lemma": "nipp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ni",
   "post": "i",
   "options": [
@@ -3084,7 +3084,7 @@
   "word": "suppi",
   "lemma": "supp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "su",
   "post": "i",
   "options": [
@@ -3128,7 +3128,7 @@
   "word": "tekki",
   "lemma": "tekk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "te",
   "post": "i",
   "options": [
@@ -3172,7 +3172,7 @@
   "word": "sokki",
   "lemma": "sokk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "so",
   "post": "i",
   "options": [
@@ -3216,7 +3216,7 @@
   "word": "rotti",
   "lemma": "rott",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ro",
   "post": "i",
   "options": [
@@ -3238,7 +3238,7 @@
   "word": "nuga",
   "lemma": "nuga",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "nu",
   "post": "a",
   "options": [
@@ -3304,7 +3304,7 @@
   "word": "ketti",
   "lemma": "kett",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ke",
   "post": "i",
   "options": [
@@ -3392,7 +3392,7 @@
   "word": "tädi",
   "lemma": "tädi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "tä",
   "post": "i",
   "options": [
@@ -3502,7 +3502,7 @@
   "word": "häbi",
   "lemma": "häbi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "hä",
   "post": "i",
   "options": [
@@ -3546,7 +3546,7 @@
   "word": "rõdu",
   "lemma": "rõdu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "rõ",
   "post": "u",
   "options": [
@@ -3612,7 +3612,7 @@
   "word": "nukku",
   "lemma": "nukk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "nu",
   "post": "u",
   "options": [
@@ -3656,7 +3656,7 @@
   "word": "kokka",
   "lemma": "kokk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ko",
   "post": "a",
   "options": [
@@ -3700,7 +3700,7 @@
   "word": "madu",
   "lemma": "madu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ma",
   "post": "u",
   "options": [
@@ -3766,7 +3766,7 @@
   "word": "udu",
   "lemma": "udu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "u",
   "post": "u",
   "options": [
@@ -3832,7 +3832,7 @@
   "word": "käppa",
   "lemma": "käpp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "kä",
   "post": "a",
   "options": [
@@ -4052,7 +4052,7 @@
   "word": "prügi",
   "lemma": "prügi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "prü",
   "post": "i",
   "options": [
@@ -4096,7 +4096,7 @@
   "word": "riba",
   "lemma": "riba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ri",
   "post": "a",
   "options": [
@@ -4316,7 +4316,7 @@
   "word": "pappi",
   "lemma": "papp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "pa",
   "post": "i",
   "options": [
@@ -4360,7 +4360,7 @@
   "word": "täppi",
   "lemma": "täpp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "tä",
   "post": "i",
   "options": [
@@ -4514,7 +4514,7 @@
   "word": "tibu",
   "lemma": "tibu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ti",
   "post": "u",
   "options": [
@@ -4580,7 +4580,7 @@
   "word": "nuttu",
   "lemma": "nutt",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "nu",
   "post": "u",
   "options": [
@@ -4624,7 +4624,7 @@
   "word": "latti",
   "lemma": "latt",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "la",
   "post": "i",
   "options": [
@@ -4668,7 +4668,7 @@
   "word": "lakka",
   "lemma": "lakk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "la",
   "post": "a",
   "options": [
@@ -4690,7 +4690,7 @@
   "word": "jope",
   "lemma": "jope",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "jo",
   "post": "e",
   "options": [
@@ -4800,7 +4800,7 @@
   "word": "muda",
   "lemma": "muda",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "mu",
   "post": "a",
   "options": [
@@ -4844,7 +4844,7 @@
   "word": "uba",
   "lemma": "uba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "u",
   "post": "a",
   "options": [
@@ -4910,7 +4910,7 @@
   "word": "keppi",
   "lemma": "kepp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ke",
   "post": "i",
   "options": [
@@ -4932,7 +4932,7 @@
   "word": "pragu",
   "lemma": "pragu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "pra",
   "post": "u",
   "options": [
@@ -4998,7 +4998,7 @@
   "word": "seppa",
   "lemma": "sepp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "se",
   "post": "a",
   "options": [
@@ -5042,7 +5042,7 @@
   "word": "lappi",
   "lemma": "lapp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "la",
   "post": "i",
   "options": [
@@ -5152,7 +5152,7 @@
   "word": "kukke",
   "lemma": "kukk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ku",
   "post": "e",
   "options": [
@@ -5174,7 +5174,7 @@
   "word": "pada",
   "lemma": "pada",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "pa",
   "post": "a",
   "options": [
@@ -5240,7 +5240,7 @@
   "word": "hapu",
   "lemma": "hapu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ha",
   "post": "u",
   "options": [
@@ -5306,7 +5306,7 @@
   "word": "nokka",
   "lemma": "nokk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "no",
   "post": "a",
   "options": [
@@ -5328,7 +5328,7 @@
   "word": "higi",
   "lemma": "higi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "hi",
   "post": "i",
   "options": [
@@ -5460,7 +5460,7 @@
   "word": "tikku",
   "lemma": "tikk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ti",
   "post": "u",
   "options": [
@@ -5504,7 +5504,7 @@
   "word": "jakki",
   "lemma": "jakk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ja",
   "post": "i",
   "options": [
@@ -5812,7 +5812,7 @@
   "word": "sukka",
   "lemma": "sukk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "su",
   "post": "a",
   "options": [
@@ -6098,7 +6098,7 @@
   "word": "tigu",
   "lemma": "tigu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ti",
   "post": "u",
   "options": [
@@ -6120,7 +6120,7 @@
   "word": "käbi",
   "lemma": "käbi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "kä",
   "post": "i",
   "options": [
@@ -6230,7 +6230,7 @@
   "word": "naba",
   "lemma": "naba",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "na",
   "post": "a",
   "options": [
@@ -6264,10 +6264,10 @@
   "length": "lühike",
   "meaning": "ümmargune süvend või väljasopistis kõhu eesseina keskosas",
   "displayForm": "naba[d",
-  "sentence": "Kõigil inimestel on nabad.",
+  "sentence": "Kõik nabad pole ühesugused.",
   "flag": "rare",
   "note": "Mitmust kasutatakse harva, igal inimesel on üks naba.",
-  "auto_drop": "harv vorm"
+  "auto_drop": null
  },
  {
   "id": "loki",
@@ -6296,7 +6296,7 @@
   "word": "lokki",
   "lemma": "lokk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "lo",
   "post": "i",
   "options": [
@@ -6318,7 +6318,7 @@
   "word": "ribi",
   "lemma": "ribi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ri",
   "post": "i",
   "options": [
@@ -6428,7 +6428,7 @@
   "word": "magu",
   "lemma": "magu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ma",
   "post": "u",
   "options": [
@@ -6538,7 +6538,7 @@
   "word": "kabe",
   "lemma": "kabe",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "ka",
   "post": "e",
   "options": [
@@ -6604,7 +6604,7 @@
   "word": "tukka",
   "lemma": "tukk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "tu",
   "post": "a",
   "options": [
@@ -6670,7 +6670,7 @@
   "word": "pekki",
   "lemma": "pekk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "pe",
   "post": "i",
   "options": [
@@ -7088,7 +7088,7 @@
   "word": "lutti",
   "lemma": "lutt",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "lu",
   "post": "i",
   "options": [
@@ -7242,7 +7242,7 @@
   "word": "lõbu",
   "lemma": "lõbu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "lõ",
   "post": "u",
   "options": [
@@ -7396,7 +7396,7 @@
   "word": "kükki",
   "lemma": "kükk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "kü",
   "post": "i",
   "options": [
@@ -7616,7 +7616,7 @@
   "word": "vibu",
   "lemma": "vibu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "vi",
   "post": "u",
   "options": [
@@ -7682,7 +7682,7 @@
   "word": "tutti",
   "lemma": "tutt",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "tu",
   "post": "i",
   "options": [
@@ -7704,7 +7704,7 @@
   "word": "kägu",
   "lemma": "kägu",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "kä",
   "post": "u",
   "options": [
@@ -7814,7 +7814,7 @@
   "word": "kakku",
   "lemma": "kakk",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "ka",
   "post": "u",
   "options": [
@@ -7836,7 +7836,7 @@
   "word": "krabi",
   "lemma": "krabi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "kra",
   "post": "i",
   "options": [
@@ -8034,7 +8034,7 @@
   "word": "tragi",
   "lemma": "tragi",
   "morph": "SgN",
-  "morph_et": "ainsuse nimetav / ainsuse omastav / ainsuse osastav",
+  "morph_et": "ainsuse nimetav",
   "pre": "tra",
   "post": "i",
   "options": [
@@ -8298,7 +8298,7 @@
   "word": "moppi",
   "lemma": "mopp",
   "morph": "SgP",
-  "morph_et": "ainsuse osastav / lühike sisseütlev",
+  "morph_et": "ainsuse osastav",
   "pre": "mo",
   "post": "i",
   "options": [

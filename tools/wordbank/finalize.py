@@ -11,6 +11,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 D = lambda n: os.path.join(HERE, "data", n)
 items = json.load(open(D("items.json"), encoding="utf-8"))["items"]
 rev = {r["id"]: r for n in (0, 1) for r in json.load(open(D("review_out%d.json" % n), encoding="utf-8"))}
+# Silveri otsused ülevaatuse lehelt (artifakt „Kirjutaja sõnavara“): {id: {drop, sentence}}.
+# Need käivad automaatikast üle — nii satuvad tagasi võetud sõnad ka heli nimekirja.
+dec = json.load(open(D("decisions.json"), encoding="utf-8")) if os.path.exists(D("decisions.json")) else {}
 MILD_OK = {"pagane"}  # „pagan“ on leebe hüüatus, mitte roppsõna — pakane jääb alles
 flagged = {f["string"] for f in json.load(open(D("variants_flagged.json"), encoding="utf-8"))["flagged"]} - MILD_OK
 KEEP_CONFUSING = {"sadama", "lukku"}
@@ -35,6 +38,11 @@ for it in items:
         reason = "harv vorm" if it["flag"] == "rare" else "sobimatu"
     elif it["flag"] == "confusing" and it["word"] not in KEEP_CONFUSING:
         reason = "segadusse ajav"
+    d = dec.get(it["id"])
+    if d is not None:
+        reason = (reason or "Silveri otsus") if d.get("drop") else None
+        if d.get("sentence"):
+            it["sentence"] = d["sentence"]
     it["auto_drop"] = reason
     out.append(it)
 kept = [i for i in out if not i["auto_drop"]]

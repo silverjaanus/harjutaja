@@ -1,0 +1,54 @@
+{
+ "h2bid": {
+  "drop": true,
+  "sentence": "Väikesed häbid unustatakse ruttu."
+ },
+ "higid": {
+  "drop": true,
+  "sentence": "Hirmust tulid tal külmad higid peale."
+ },
+ "nabad": {
+  "drop": false,
+  "sentence": "Kõik nabad pole ühesugused."
+ },
+ "prygid": {
+  "drop": true,
+  "sentence": "Kõik prügid tuleb kokku korjata."
+ },
+ "sappa": {
+  "drop": false,
+  "sentence": "Võtke üksteise järel sappa."
+ },
+ "tukke": {
+  "drop": false,
+  "sentence": "Poiss segas ahjuroobiga tuliseid tukke.",
+  "note": "Silveri lause 13. sept. Vorm on siin sõna tukk (põlev halg) mitmuse osastav, mitte tugi lyhike sisseütlev — items.json lemma jääb 'tugi', aga äpp lemmat ei kasuta."
+ },
+ "l6pu": {
+  "drop": false,
+  "sentence": "Loeme õhtul raamatu lõpu uuesti läbi."
+ },
+ "lube": {
+  "drop": false,
+  "sentence": "Auto juhtimiseks on vaja lube.",
+  "note": "Silver võttis tagasi 13. sept ja andis loomuliku lause mitmuse osastavale."
+ },
+ "lukku": {
+  "drop": false,
+  "sentence": "Pane uks lukku.",
+  "note": "Silveri lause 13. sept. Vorm on siin sõna lukk (lukustus) lühike sisseütlev, mitte lugu — items.json lemma jääb 'lugu'."
+ },
+ "odavat": {
+  "drop": false,
+  "sentence": "Tahtsime odavat asja osta."
+ },
+ "sadama": {
+  "drop": false,
+  "sentence": "Vihma hakkas sadama.",
+  "note": "Silveri lause 13. sept. Vorm on siin tegusõna sadama (vihma sadama), mitte sadam omastav — items.json lemma jääb 'sadam'."
+ },
+ "sadamat": {
+  "drop": true,
+  "sentence": "Me vaatasime laevalt sadamat."
+ }
+}

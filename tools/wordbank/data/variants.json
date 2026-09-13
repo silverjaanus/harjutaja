@@ -1220,6 +1220,11 @@
   "kind": "lyhike"
  },
  {
+  "word": "lube",
+  "id": "lube",
+  "kind": "lyhike"
+ },
+ {
   "word": "ludi",
   "id": "ludi",
   "kind": "lyhike"
@@ -1275,8 +1280,18 @@
   "kind": "pikk"
  },
  {
+  "word": "lupe",
+  "id": "lupe",
+  "kind": "pikk"
+ },
+ {
   "word": "luppa",
   "id": "luppa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "luppe",
+  "id": "luppe",
   "kind": "ylipikk"
  },
  {
@@ -1745,13 +1760,28 @@
   "kind": "lyhike"
  },
  {
+  "word": "nabad",
+  "id": "nabad",
+  "kind": "lyhike"
+ },
+ {
   "word": "napa",
   "id": "napa",
   "kind": "pikk"
  },
  {
+  "word": "napad",
+  "id": "napad",
+  "kind": "pikk"
+ },
+ {
   "word": "nappa",
   "id": "nappa",
+  "kind": "ylipikk"
+ },
+ {
+  "word": "nappad",
+  "id": "nappad",
   "kind": "ylipikk"
  },
  {
@@ -3210,11 +3240,6 @@
   "kind": "lyhike"
  },
  {
-  "word": "sadamat",
-  "id": "sadamat",
-  "kind": "lyhike"
- },
- {
   "word": "sadul",
   "id": "sadul",
   "kind": "lyhike"
@@ -3250,11 +3275,6 @@
   "kind": "pikk"
  },
  {
-  "word": "satamat",
-  "id": "satamat",
-  "kind": "pikk"
- },
- {
   "word": "sattam",
   "id": "sattam",
   "kind": "ylipikk"
@@ -3262,11 +3282,6 @@
  {
   "word": "sattama",
   "id": "sattama",
-  "kind": "ylipikk"
- },
- {
-  "word": "sattamat",
-  "id": "sattamat",
   "kind": "ylipikk"
  },
  {
