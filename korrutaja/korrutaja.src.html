@@ -690,6 +690,10 @@ var SYM={mul:'×',div:':'};
 var DEF={name:'',op:'mul',limit:6,round:3,calm:false,tables:[],sfx:true,music:false};
 
 var D=load();
+/* Klassi identiteet on nüüd kogu Harjutaja ühine (core/klass.js): ühes moodulis
+   liitumine kehtib kõigis. Vana koht D.cls-is jääb alles ja saab edasi kirja —
+   see on tagasitee, kui ühise võtmega peaks midagi valesti minema. */
+if(window.HKlass){HKlass.setup(SB);D.cls=HKlass.sync(D.cls);save();}
 function fresh(){return {v:1,settings:clone(DEF),q:0,stats:{mul:{},div:{}},days:{},tests:[],total:{n:0,ok:0},cls:null,outbox:[],board:null,lastCompete:'',warmup:{lastDay:'',rot:0},introduced:{mul:{},div:{}},rounds:[]};}
 function clone(o){return JSON.parse(JSON.stringify(o));}
 function load(){
@@ -1688,7 +1692,7 @@ function renderSettings(){
 var leaveArmed=false;
 $('btnLeave').onclick=function(){
   if(!leaveArmed){leaveArmed=true;this.textContent='Kindel? Vajuta veel kord';return;}
-  D.cls=null;D.outbox=[];D.board=null;save();renderSettings();
+  D.cls=null;D.outbox=[];D.board=null;if(window.HKlass)HKlass.clear();save();renderSettings();
 };
 $('inName').addEventListener('input',function(){D.settings.name=this.value;save();});
 $('segLimit').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.limit=+b.dataset.v;save();seg('segLimit',D.settings.limit);});
@@ -1722,7 +1726,7 @@ function flush(cb){
     p_greens_mul:greenCount('mul'),p_greens_div:greenCount('div'),p_best_test:bestTest(),p_state:D.outbox.length===1?statePayload():null})
   .then(function(r){
     flushing=false;
-    if(r&&r.error==='auth'){D.outbox=[];D.cls=null;D.board=null;save();setSync('Klassi konto ei kehti enam. Liitu uuesti.');renderHome();if(cb)cb();return;}
+    if(r&&r.error==='auth'){D.outbox=[];D.cls=null;D.board=null;if(window.HKlass)HKlass.clear();save();setSync('Klassi konto ei kehti enam. Liitu uuesti.');renderHome();if(cb)cb();return;}
     if(r&&r.error==='done_today'){D.lastCompete=today();}
     D.outbox.shift();save();
     setSync(D.outbox.length?'':'Edetabel uuendatud');
@@ -1737,6 +1741,7 @@ $('jRestoreToggle').onclick=function(){$('jRestore').hidden=!$('jRestore').hidde
 function setCls(r){
   $('jInvite').hidden=true;$('jWarn').hidden=true;$('jNick').value='';
   D.cls={player_id:r.player_id,secret:r.secret,class_id:r.class_id,class_name:r.class_name,code:r.code,nick:r.nick};
+  if(window.HKlass)HKlass.set(D.cls);
   if(!D.settings.name)D.settings.name=r.nick;
   D.board=null;save();
 }
@@ -1883,7 +1888,7 @@ function loadBoard(){
   if(!D.cls)return;
   $('bStatus').textContent='Laen…';
   rpc('class_board',{p_player_id:D.cls.player_id,p_secret:D.cls.secret}).then(function(r){
-    if(r.error==='auth'){D.cls=null;D.board=null;D.outbox=[];save();renderHome();show('s-home');return;}
+    if(r.error==='auth'){D.cls=null;D.board=null;D.outbox=[];if(window.HKlass)HKlass.clear();save();renderHome();show('s-home');return;}
     if(r.error){$('bStatus').textContent='Ei õnnestunud.';return;}
     D.board=r;if(r.competed_today)D.lastCompete=today();save();renderBoard();$('bStatus').textContent='';
   }).catch(function(){renderBoard();$('bStatus').textContent=D.board?'Võrku pole. Näitan viimast seisu.':'Võrku pole.';});
