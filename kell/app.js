@@ -80,11 +80,14 @@
     return arr;
   }
 
-  /* Harjutamise kaardipakk: kõik selle taseme ajad. lemma = minut, nii et
-     kordamismootor ei küsi sama minutimustrit kaks korda järjest. */
+  /* Harjutamise kaardipakk: kõik selle taseme ajad.
+     `id` JA `lemma` on mõlemad minut, mitte kellaaeg — sest õpitav oskus on
+     minutimuster („pool", „kolmveerand"), mitte konkreetne kellaaeg. Tund on
+     ainult variatsioon. HEngine kirjutab statistika `id` järgi, seega just
+     sellest sõltub, kas kaart läheb roheliseks ja mis läheb edetabelisse. */
   function pakk(mins) {
     const out = [];
-    for (let h = 1; h <= 12; h++) for (const m of mins) out.push({ id: h + ":" + m, lemma: String(m), h, m });
+    for (let h = 1; h <= 12; h++) for (const m of mins) out.push({ id: String(m), lemma: String(m), h, m });
     return out;
   }
 

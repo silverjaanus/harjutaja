@@ -88,7 +88,8 @@ def run(pw):
         page.wait_for_timeout(280)
 
     check("ring jõudis tulemuseni", page.locator("#s-result").is_visible())
-    check("ringis oli 12 küsimust", vastuseid == 12, vastuseid)
+    # Ring on 12 küsimust pluss valede kordused (HEngine toob vea ringi lõpus tagasi).
+    check("ringis oli 12–24 küsimust", 12 <= vastuseid <= 24, vastuseid)
     check("tagurpidi ülesanne tuli ette", tagurpidi)
     check("vale vastuse järel näidati vihjet", vihje)
     d = ls(page, "kell_v1")
