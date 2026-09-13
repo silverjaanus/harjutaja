@@ -1886,7 +1886,7 @@ var boardTab='week';
 function openBoard(){renderHome();show('s-board');renderBoard();flush(loadBoard);}
 function loadBoard(){
   if(!D.cls)return;
-  $('bStatus').textContent='Laen…';
+  $('bStatus').textContent='Laadin…';
   rpc('class_board',{p_player_id:D.cls.player_id,p_secret:D.cls.secret}).then(function(r){
     if(r.error==='auth'){D.cls=null;D.board=null;D.outbox=[];if(window.HKlass)HKlass.clear();save();renderHome();show('s-home');return;}
     if(r.error){$('bStatus').textContent='Ei õnnestunud.';return;}

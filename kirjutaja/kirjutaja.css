@@ -133,3 +133,29 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .credit{color:var(--ink-soft);font-size:13.5px;line-height:1.5;text-align:center;padding:4px 6px 0}
 .credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .credit a:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
+
+/* võistlus */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two .big{font-size:22px;padding:15px 10px}
+.compete{font-family:var(--display);font-weight:600;font-size:20px;background:var(--ink);color:#fff;border:1.5px solid var(--ink);border-radius:16px;padding:12px 28px;cursor:pointer;box-shadow:0 3px 0 #14223b}
+.compete:active{transform:translateY(2px);box-shadow:0 1px 0 #14223b}
+.compete[disabled]{background:var(--card);color:var(--ink-soft);border-color:var(--edge);box-shadow:none;cursor:default;transform:none}
+.compete.armed{background:var(--bad);border-color:var(--bad);box-shadow:0 3px 0 #8f3222}
+.klass-line{margin:0;font-weight:800;color:var(--ink)}
+
+/* võistluse taimer */
+.timer{width:100%;max-width:420px;height:8px;margin:0 auto 12px;border-radius:999px;background:var(--rule-soft);overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:var(--ok);border-radius:999px;transition:width .12s linear}
+.timer i.low{background:var(--bad)}
+@media (prefers-reduced-motion:reduce){.timer i{transition:none}}
+
+/* edetabel */
+.board{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.brow{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:10px 12px}
+.brow.me{border-color:var(--accent-edge);background:var(--mid-bg)}
+.brow.empty{display:block;color:var(--ink-soft);font-weight:600;line-height:1.5}
+.brow .pos{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink-soft);min-width:28px;font-variant-numeric:tabular-nums}
+.brow .mid{display:flex;flex-direction:column;flex:1;min-width:0}
+.brow .nm{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brow .mid small{color:var(--ink-soft);font-weight:600;font-size:12px}
+.brow .val{font-family:var(--display);font-weight:600;font-size:24px;font-variant-numeric:tabular-nums}
