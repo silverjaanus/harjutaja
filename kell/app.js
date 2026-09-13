@@ -165,8 +165,16 @@
     HSfx.unlock();
     const test = mode === "test";
     const tekst = !test && D.opp === "tekst";
-    const mins = test ? COMPETE_MINS : tase().mins;
-    const samm = tase().mins.length > 1 ? tase().mins[1] : 60;
+    const lvlSamm = tase().mins.length > 1 ? tase().mins[1] : 60;
+    /* Tekstülesannetes ei minda veerandtunnist peenemaks, ka siis mitte, kui
+       laps on valinud viie minuti täpsuse. Põhjus on keeles: lauses „Trenn
+       lõpeb kahekümne minuti pärast seitse" loeb see nagu 7.20, aga tähendab
+       6.40 — sõnaline „pärast"-vorm ei sobi lauseülesandesse. Viie minuti
+       täpsusega sõnalist ajaarvutust koolis niikuinii ei õpetata. */
+    const samm = tekst ? Math.max(15, lvlSamm) : lvlSamm;
+    const tekstMins = [];
+    for (let m = 0; m < 60; m += samm) tekstMins.push(m);
+    const mins = test ? COMPETE_MINS : (tekst ? tekstMins : tase().mins);
     const p = test ? võistluspakk() : (tekst ? null : pakk(mins));
     if (tekst) round = new TekstRound(samm, 10);
     else if (test) round = new TestRound(p);
@@ -424,9 +432,12 @@
     $("lblLevel").textContent = tekst ? "Kui täpsete aegadega?" : "Kui täpselt?";
     $("startBtn").textContent = tekst ? "Arvuta" : "Harjuta";
     const s = D.tekstStat;
-    $("tekstStat").textContent = s.n
+    const peen = tekst && D.level === 4
+      ? " Ajaarvutus käib veerandtundide kaupa: peenemate aegadega ei arvutata koolis sõnadega."
+      : "";
+    $("tekstStat").textContent = (s.n
       ? "Tehtud " + s.n + " ülesannet, õigesti " + s.ok + "."
-      : "Elulised ülesanded: mis kell film lõpeb, kui kaua trenn kestab, mis kell pead kodust välja minema.";
+      : "Elulised ülesanded: mis kell film lõpeb, kui kaua trenn kestab, mis kell pead kodust välja minema.") + peen;
   }
 
   /* Väike kaart: iga minutimuster ja kui selge see on. */
