@@ -343,8 +343,10 @@
       const s = D.stats[String(m)];
       const d = document.createElement("div");
       d.className = "mcell" + (HEngine.mastered(s) ? " g" : (s && s.n ? " y" : ""));
-      d.innerHTML = HSihverplaat.svg(12, m, { size: 46, numbers: false }) +
-        "<small>" + HAeg.utle(12, m) + "</small>";
+      /* Näide alati kella kolme juures: „kolm, veerand neli, pool neli,
+         kolmveerand neli" on üks selge rida, mitte iga ruut eri tunni pealt. */
+      d.innerHTML = HSihverplaat.svg(3, m, { size: 46, numbers: false }) +
+        "<small>" + HAeg.utle(3, m) + "</small>";
       box.append(d);
     });
   }
