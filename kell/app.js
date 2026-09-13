@@ -200,12 +200,12 @@
 
   function vihje(it) {
     const m = it.m, j = HAeg.utle(it.h, it.m);
-    if (m === 0) return "Kui pikk osuti on kaheteistkümne peal, on täistund. Lühike osuti näitab, mitu — <b>" + j + "</b>.";
-    if (m === 30) return "Pool tundi on veel <b>minemata</b>, seepärast öeldakse järgmise tunni järgi: <b>" + j + "</b>, mitte pool kolm.";
-    if (m === 15) return "Veerand tundi on <b>tehtud</b> ja kolm veerandit veel ees. Eesti keeles öeldakse selle tunni järgi, kuhu jõuame: <b>" + j + "</b>.";
-    if (m === 45) return "Kolm veerandit on tehtud, üks veerand jäänud. Seepärast <b>" + j + "</b> — nimetatakse tundi, kuhu jõuame.";
-    if (m < 30) return "Pikk osuti on alles teel: tund <b>" + HAeg.utle(it.h, 0) + "</b> on läbi ja minuteid on juurde tulnud. <b>" + j + "</b>.";
-    return "Pikk osuti on juba üle poole: loeme, kui palju on järgmise tunnini <b>puudu</b>. <b>" + j + "</b>.";
+    if (m === 0) return "Kui pikk osuti on kaheteistkümne peal, on täistund. Lühike osuti näitab, mis tund on — <b>" + j + "</b>.";
+    if (m === 30) return "Pool tundi on veel <b>ees</b>, seepärast öeldakse järgmise tunni järgi. Kell on <b>" + j + "</b>.";
+    if (m === 15) return "Veerand tundi on <b>tehtud</b> ja kolm veerandit veel ees. Nimetame tundi, kuhu jõuame: kell on <b>" + j + "</b>.";
+    if (m === 45) return "Kolm veerandit on tehtud, üks veerand veel ees. Nimetame tundi, kuhu jõuame: kell on <b>" + j + "</b>.";
+    if (m < 30) return "Pikk osuti on alles teel: kell <b>" + HAeg.utle(it.h, 0) + "</b> on läbi ja minutid tulevad juurde. Kell on <b>" + j + "</b>.";
+    return "Pikk osuti on juba üle poole: loeme, kui palju on järgmise tunnini <b>puudu</b>. Kell on <b>" + j + "</b>.";
   }
 
   function answer(valik) {
@@ -437,10 +437,11 @@
 
     const days = n => !n ? "" : (n === 1 ? "1 võistluspäev" : n + " võistluspäeva");
     const players = n => n === 1 ? "1 võistleja" : (n || 0) + " võistlejat";
+    const selged_ = n => n === 1 ? "selge kellaaeg" : "selget kellaaega";
 
     let rows = [];
     if (boardTab === "week") rows = (b.players || []).map(p => ({ name: p.nick, v: p.week_n, sub: days(p.days), me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "sure") rows = (b.players || []).map(p => ({ name: p.nick, v: p.greens, sub: "selget kellaaega", me: p.id === b.me })).sort((x, y) => y.v - x.v);
+    else if (boardTab === "sure") rows = (b.players || []).map(p => ({ name: p.nick, v: p.greens, sub: selged_(p.greens), me: p.id === b.me })).sort((x, y) => y.v - x.v);
     else if (boardTab === "best") rows = (b.players || []).map(p => ({ name: p.nick, v: p.best_test, sub: "õiget parimas võistluses", me: p.id === b.me })).sort((x, y) => y.v - x.v);
     else if (boardTab === "school") rows = (b.siblings || []).map(g => ({ name: g.name, v: g.per_player, sub: players(g.active), me: b.class && g.id === b.class.id }));
     else rows = (b.peers || []).map(g => ({ name: g.name, v: g.per_player, sub: (g.school || ""), me: b.class && g.id === b.class.id }));
@@ -506,7 +507,7 @@
   $("quitBtn").onclick = () => {
     if (G && G.mode === "test" && G.n && !quitArmed) {
       quitArmed = true;
-      $("fb").textContent = "Kindel? Pooleli ring läheb ikka kirja. Vajuta ✕ veel kord.";
+      $("fb").textContent = "Kindel? Pooleli jäänud ring läheb ikka kirja. Vajuta ✕ veel kord.";
       $("fb").className = "feedback bad";
       setTimeout(() => { quitArmed = false; }, 4000);
       return;
