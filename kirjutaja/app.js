@@ -585,7 +585,20 @@
   };
   $("allBtn").onclick = playAll;
   $("nextBtn").onclick = next;
-  $("quitBtn").onclick = () => { if (G && G.n) finish(); else goHome(); };
+  /* Võistluses küsib ✕ kinnitust: pooleli jäetud ring läheb ikka kirja ja
+     päev on siis kasutatud, nii et eksikombel vajutamine oleks kallis. */
+  let quitArmed = false;
+  $("quitBtn").onclick = () => {
+    if (G && G.mode === "test" && G.n && !quitArmed) {
+      quitArmed = true;
+      $("fb").textContent = "Kindel? Pooleli ring läheb ikka kirja. Vajuta ✕ veel kord.";
+      $("fb").className = "feedback bad";
+      setTimeout(() => { quitArmed = false; }, 4000);
+      return;
+    }
+    quitArmed = false;
+    if (G && G.n) finish(); else goHome();
+  };
   $("prevBtn").onclick = openPrev;
   $("prevClose").onclick = closePrev;
   $("flagBtn").onclick = flagCurrent;
