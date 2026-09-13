@@ -429,11 +429,11 @@
     const tekst = D.opp === "tekst";
     $("mapBlock").hidden = tekst;
     $("tekstBlock").hidden = !tekst;
-    $("lblLevel").textContent = tekst ? "Kui täpsete aegadega?" : "Kui täpselt?";
+    $("lblLevel").textContent = "Kui täpselt?";
     $("startBtn").textContent = tekst ? "Arvuta" : "Harjuta";
     const s = D.tekstStat;
     const peen = tekst && D.level === 4
-      ? " Ajaarvutus käib veerandtundide kaupa: peenemate aegadega ei arvutata koolis sõnadega."
+      ? " Ajaarvutus käib veerandtundide kaupa — täpsemaid aegu koolis sõnadega ei arvutata."
       : "";
     $("tekstStat").textContent = (s.n
       ? "Tehtud " + s.n + " ülesannet, õigesti " + s.ok + "."

@@ -591,7 +591,7 @@
   $("quitBtn").onclick = () => {
     if (G && G.mode === "test" && G.n && !quitArmed) {
       quitArmed = true;
-      $("fb").textContent = "Kindel? Pooleli ring läheb ikka kirja. Vajuta ✕ veel kord.";
+      $("fb").textContent = "Kindel? Pooleli jäänud ring läheb ikka kirja. Vajuta ✕ veel kord.";
       $("fb").className = "feedback bad";
       setTimeout(() => { quitArmed = false; }, 4000);
       return;
