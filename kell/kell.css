@@ -70,7 +70,7 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .askclock svg{display:block}
 .ask{margin:0;text-align:center;font-family:var(--display);font-weight:600;font-size:22px;line-height:1.35}
 .opts{display:grid;gap:10px;width:100%}
-.opts.sõnad{grid-template-columns:1fr}
+.opts.sonad{grid-template-columns:1fr}
 .opts.kellad{grid-template-columns:1fr 1fr}
 .opt{font:inherit;font-weight:800;font-size:18px;color:var(--ink);background:var(--card);border:2px solid var(--edge);border-radius:16px;padding:14px 12px;cursor:pointer;text-align:center}
 .opt.kellopt{padding:8px;display:grid;place-items:center}
@@ -132,3 +132,9 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 @keyframes kk-spark{0%,100%{opacity:.35;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
 @keyframes kk-hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
 @media (prefers-reduced-motion:reduce){.kk-body,.kk-eyes,.kk-wave,.kk-spark,.kk.hop{animation:none}}
+
+/* tekstülesanded */
+.story{margin:0;max-width:26rem;text-align:center;font-weight:700;font-size:17px;line-height:1.5;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:12px 14px}
+.vaeg.lugu{width:100%;align-items:flex-start;text-align:left;gap:2px}
+.vaeg.lugu b{font-size:14px;line-height:1.35}
+.vaeg.lugu small{font-size:12px}
