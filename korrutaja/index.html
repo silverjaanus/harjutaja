@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#FBF7EE">
 <meta name="description" content="Korrutaja – korrutustabeli ja jagamise harjutamise mäng telefonile. Adaptiivne: küsib rohkem seda, mis on raske. Klassikood ja edetabel. Tasuta, ilma reklaamita.">
 <meta property="og:title" content="Korrutaja">
-<meta property="og:description" content="Korrutustabel pähe 3 minutit päevas. Adaptiivne harjutusmäng, klassi edetabel, ilma reklaami ja kontodeta.">
+<meta property="og:description" content="Korrutustabel pähe ühe lühikese ringiga päevas. Adaptiivne harjutusmäng, klassi edetabel, ilma reklaami ja kontodeta.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="et_EE">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap"></noscript>
@@ -367,7 +367,7 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   </div>
   <p class="numhint" id="numHint">Harjutamises küsitakse ainult neid tabeleid. Võistlus on alati kõigist.</p>
   <div class="menu">
-    <button class="btn primary" id="btnTrain">Harjuta <small id="trainMeta">3 min</small></button>
+    <button class="btn primary" id="btnTrain">Harjuta <small id="trainMeta">15 küsimust</small></button>
     <button class="btn" id="btnTest"><span id="testLabel">Võistle</span> <small id="testMeta">25 korrutamist · korra päevas</small></button>
     <div class="row2">
       <button class="btn" id="btnTable">Korrutustabel <small>vaata ja korda</small></button>
@@ -432,7 +432,7 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <section class="screen" id="s-info">
   <header class="top"><button class="back" id="iBack"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Koju</button><h2 class="title">Kuidas see töötab</h2><span style="width:60px"></span></header>
   <div class="info">
-    <p class="lead">Korrutaja on korrutustabeli ja jagamise harjutamise mäng: 3 minutit päevas, telefonis, ilma reklaami ja kontodeta.</p>
+    <p class="lead">Korrutaja on korrutustabeli ja jagamise harjutamise mäng: üks lühike ring päevas, telefonis, ilma reklaami ja kontodeta.</p>
     <p class="lead">Lühike juhend lapsele on avaekraani (i) nupu all. Siin on pikem lugu sellest, kuidas mäng käib ja miks ta nii tehtud on.</p>
 
     <h3>Kaks nuppu: õppimine ja võistlemine</h3>
@@ -511,7 +511,7 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
     <h3>Lapsevanemale ja õpetajale</h3>
     <ul>
-      <li>Üks 3-minutiline ring päevas on rohkem väärt kui pool tundi laupäeval.</li>
+      <li>Üks lühike ring päevas on rohkem väärt kui pool tundi laupäeval.</li>
       <li>Vaata koos soojuskaarti: punased ruudud on need, mida tasub üle rääkida (nt 6 × 8 = 48, „viiskümmend miinus kaks“).</li>
       <li>Ära kasuta mängu karistusena ja ära võrdle lapsi omavahel häälega – edetabel teeb seda niigi, ja Nädal-tabelis võidab see, kes harjutab.</li>
       <li>Kui laps saab võistlusel stabiilselt 23+, on korrutustabel peas. Jagamine tuleb pärast.</li>
@@ -634,7 +634,7 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <header class="top"><button class="back" id="setBack"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Koju</button><h2 class="title">Seaded</h2><span style="width:60px"></span></header>
   <div class="field"><div><label for="inName">Nimi</label></div><input type="text" id="inName" maxlength="16" placeholder="Mia" autocomplete="off"></div>
   <div class="field"><div><label>Aega küsimusele</label><small>sekundit; roheline = alla 3 s</small></div><div class="seg" id="segLimit"><button data-v="4">4</button><button data-v="6">6</button><button data-v="8">8</button><button data-v="10">10</button></div></div>
-  <div class="field"><div><label>Ringi pikkus</label><small>minutit</small></div><div class="seg" id="segRound"><button data-v="2">2</button><button data-v="3">3</button><button data-v="5">5</button></div></div>
+  <div class="field"><div><label>Ringi pikkus</label><small>mitu küsimust ühes ringis</small></div><div class="seg" id="segRound"><button data-v="10">10</button><button data-v="15">15</button><button data-v="20">20</button></div></div>
   <div class="field"><div><label>Rahulik režiim</label><small>ilma taimerita, aeg mõõdetakse siiski</small></div><div class="seg" id="segCalm"><button data-v="0">Väljas</button><button data-v="1">Sees</button></div></div>
   <div class="field"><div><label>Heliefektid</label><small>õige vastuse ja „peas" heli</small></div><div class="seg" id="segSfx"><button data-v="0">Väljas</button><button data-v="1">Sees</button></div></div>
   <div class="field"><div><label>Taustamuusika</label><small>vaikne, ainult harjutamise ajal</small></div><div class="seg" id="segMusic"><button data-v="0">Väljas</button><button data-v="1">Sees</button></div></div>
@@ -660,7 +660,13 @@ var FACTS=[];
 for(var a=1;a<=10;a++)for(var b=a;b<=10;b++)FACTS.push({a:a,b:b,key:a+'x'+b});
 var FMAP={}; FACTS.forEach(function(f){FMAP[f.key]=f;});
 var SYM={mul:'×',div:':'};
-var DEF={name:'',op:'mul',limit:6,round:3,calm:false,tables:[],sfx:true,music:false};
+/* round = harjutusringi pikkus KÜSIMUSTES (Silveri otsus 14. sept). Varem oli
+   see minutites (2/3/5). Ajapõhises ringis katkes kordamisahel keset vigade
+   parandamist, aeglane laps sai vähem küsimusi ja „3 minutiga 23 tehet" ei
+   ütle lapsele arengu kohta midagi, „11/15" ütleb. Vana väärtus teisendatakse
+   load()-is, et telefonis olev seade ei muutuks kolmeküsimuseliseks ringiks. */
+var DEF={name:'',op:'mul',limit:6,round:15,calm:false,tables:[],sfx:true,music:false};
+var ROUND_VANA={2:10,3:15,5:20};
 
 var D=load();
 /* Klassi identiteet on nüüd kogu Harjutaja ühine (core/klass.js): ühes moodulis
@@ -672,6 +678,10 @@ function clone(o){return JSON.parse(JSON.stringify(o));}
 function load(){
   try{var r=localStorage.getItem(LS);if(r){var d=JSON.parse(r);
     d.settings=Object.assign(clone(DEF),d.settings||{});
+    /* Ringi pikkus oli varem minutites: 2/3/5 -> 10/15/20 küsimust. Ilma
+       selleta saaks vana seadega telefon kolmeküsimuselise ringi. */
+    if(ROUND_VANA[d.settings.round])d.settings.round=ROUND_VANA[d.settings.round];
+    if([10,15,20].indexOf(d.settings.round)<0)d.settings.round=DEF.round;
     if(!Array.isArray(d.settings.tables))d.settings.tables=[];
     d.settings.tables=d.settings.tables.filter(function(n){return n>=2&&n<=10;});
     d.stats=d.stats||{mul:{},div:{}};d.stats.mul=d.stats.mul||{};d.stats.div=d.stats.div||{};
@@ -1043,7 +1053,7 @@ function renderHome(){
   $('tStreak').textContent=streakDays();
   var ch=$('opChips').children;for(var i=0;i<ch.length;i++)ch[i].classList.toggle('on',ch[i].dataset.op===D.settings.op);
   renderNumChips();
-  $('trainMeta').textContent=D.settings.round+' min'+(D.settings.calm?' · rahulik':'')+(selTables()?' · tabelid '+selLabel():'');
+  $('trainMeta').textContent=D.settings.round+' küsimust'+(D.settings.calm?' · rahulik':'')+(selTables()?' · tabelid '+selLabel():'');
   var done=competedToday();
   $('btnTest').classList.toggle('done',done);
   $('btnTest').classList.remove('armed');
@@ -1133,8 +1143,8 @@ function makeQuestion(f,op){
   }
   return {f:f,op:op,q:q,ans:ans,typed:'',t0:0};
 }
-/* Ringi kell seisab, kui vihjet loetakse: lugemine ei tohi harjutusaega ära süüa. */
-function roundElapsed(){return (performance.now()-G.start-G.pauseMs)/1000;}
+/* roundElapsed() kadus koos ajapõhise ringiga (14. sept). G.start ja G.pauseMs
+   jäävad alles: pauseMs hoiab vihje lugemise aja vastamisajast väljas. */
 /* F4: kas seda fakti pole veel kordagi ÕIGESTI vastatud (viimase 10 vastuse aknas). */
 function neverCorrect(op,key){var st=gs(op,key);return !st||!st.h.some(function(h){return h.ok;});}
 function nextQuestion(){
@@ -1145,7 +1155,15 @@ function nextQuestion(){
     if(G.qi>=25){return endGame();}
     f=G.testList[G.qi];op='mul';
   }else{
-    if(roundElapsed()>=D.settings.round*60){return endGame();}
+    /* Ring lõpeb küsimuste arvu peal, mitte kella peal. Erand: kui mõni vale
+       vastus ootab veel kordamist, küsitakse see ära — muidu jääks viimastel
+       küsimustel tehtud viga ilma selle kordamiseta, mis on kogu mehaanika
+       mõte. Ülempiir on neli lisaküsimust, et ring ei veniks. */
+    if(G.qi>=D.settings.round){
+      var ootel=false;
+      for(var k=0;k<G.queue.length;k++){if(G.queue[k].due<=G.qi){ootel=true;break;}}
+      if(!ootel||G.qi>=D.settings.round+4){return endGame();}
+    }
     op=sessionOp();
     var due=null;
     for(var i=0;i<G.queue.length;i++){var it=G.queue[i];if(it.due<=G.qi&&G.recent.indexOf(it.key)<0){due=it;G.queue.splice(i,1);break;}}
@@ -1182,7 +1200,7 @@ function tick(){
     $('stage').classList.toggle('late',el>=lim-Math.min(5,lim/2));
     if(el>=lim){return answer(null,lim);}
   }
-  if(G.mode==='train'){$('roundBar').style.width=clamp(roundElapsed()/(D.settings.round*60)*100,0,100)+'%';}
+  if(G.mode==='train'){$('roundBar').style.width=clamp(G.qi/D.settings.round*100,0,100)+'%';}
   raf=requestAnimationFrame(tick);
 }
 function typeKey(k){
