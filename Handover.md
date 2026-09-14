@@ -27,7 +27,17 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**HARU `klassiekraan` OOTAB MERGE'I (14. sept).** Kolm asja tehtud ja testitud, aga **live'i ei ole midagi läinud** — Silveri otsus, et ootame. Haru on GitHubis olemas (`git push origin klassiekraan` tehtud, Vercel teeb sellest ainult eelvaate, tootmine käib `main`-ist).
+**TEISENDAJA LOOGIKA ON VALMIS JA TESTITUD (14. sept, haru `teisendaja`).** Kasutajaliidest veel ei ole — `teisendaja/yhik.js` on puhas loogika, mida saab node-ist jooksutada.
+
+- **`teisendaja/yhik.js`** hoiab ühikuahelaid, nelja taset, ülesannete generaatorit, vastuse kontrolli, **diagnoosi** ja vihjeid. Faili päises on kaheksa reeglit, mis sealt välja ei tohi kaduda (tase järgib õppekava, koma alles tasemel 4, pindala ja ruumala alles tasemel 4, aeg kahes eraldi ahelas, tähised ei käändu aga sõnaga ühikud käänduvad, koma mitte punkt, vale vastus diagnoositakse, id ja lemma on oskus mitte üksik ülesanne).
+- **Kuus ülesandetüüpi:** `teisenda`, `koma` (ainult tase 4), `nimega` (2 km 350 m ↔ 2350 m, kahes suunas), `ylekanne` (3 h 65 min = 4 h 5 min), `vordle` (Kumb on suurem?) ja `yhik` (Milline ühik sobib? — 27 elulist fakti).
+- **`node teisendaja/yhik.test.js` — 11 537 kontrolli, kõik läbi.** Valvab: teisendus on matemaatiliselt õige, tase 2 ei tekita kogemata koma ega pindala, tase 1 ei anna nimega arve, diagnoos tunneb ära kõik levinud vead, id = lemma ilma arvuta, sõnaga ühik käändub igas lauses.
+- **Kaks päris viga tulid välja väljundit lugedes, mitte koodi lugedes** (sama töövõte mis Kellas): genereeritud küsimustes seisis „5 sajand" ja „43 kuu" — sõnaga ühikud (ööpäev, nädal, kuu, aasta, sajand, sent) **käänduvad** arvu järel, tähised (km, kg) mitte; ja vihje ütles „Ühes tonnist on 1000 kilogrammi". Vihje on nüüd tähistega võrrand ilma kääneteta: **„1 t = 1000 kg. 4 × 1000 = 4000 kg."** Näidised saab `node tools/teisendaja_naited.js 45 <fail>`.
+- **`tools/scan_homoglyphs.py` sai lubatud märkide hulka `²` ja `³`** — pindala- ja ruumalaühikud kirjutatakse ülaindeksiga (EKI reegel), seega need ei ole enam kahtlased märgid. Skann ütleb „PUHAS".
+- **Järgmine:** `core/klahvistik.js` (mängu oma numbriklahvistik), ühikuredel SVG-na, maskott, mäng, CSS, avalehe kaart, Playwright-test, Fable'i ülevaatus genereeritud ülesannete peal.
+- **Kaks asja, mida UI ehitamisel meeles pidada:** `genereeri()` võib anda kaks korda järjest sama `yhik`-fakti — kordust väldib mäng, mitte generaator; ja tasemel 3 tuleb vahel ebaeluline suurus („75 ööpäeva = 108 000 min"), mis on matemaatiliselt õige, aga väärt Fable'iga üle vaadata.
+
+**HARU `klassiekraan` ON MERGE'ITUD (14. sept, Silver, PR #1 → `main` `f16246f`).** Korrutaja vana klassiekraan on kadunud, kõik moodulid kasutavad `core/klass.js` oma. Kolm asja tehtud ja testitud; **live läheb sellest järgmisel deployl**.
 
 - **Tehniline võlg koristatud:** panda ühest failist, kasutuseta ikoonid maha, üks liitumisekraan kõigile moodulitele. Vt „Tehniline võlg" allpool — kõik kolm kirjet on nüüd läbi kriipsutatud koos põhjendustega.
 - **Kirjutaja robot istus valgel plokil (commit `231dc79`).** `.hero` oli läbipaistmatu paberitaust, mis joonelisel lehel luges valge kastina roboti ümber. Nüüd käib paberilaik ainult pealkirja ja alateksti alla ja jooned jooksevad roboti taha — robot on lehele joonistatud, mitte kleebitud. Sama parandus `.res-hero`-s. **Reegel, mis siit välja tuli:** joonelisel taustal tohib läbipaistmatu laik olla ainult teksti all; maskott ja muu joonistus jäävad otse lehele.
