@@ -27,6 +27,12 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**HARU `klassiekraan` OOTAB MERGE'I (14. sept).** Kolm asja tehtud ja testitud, aga **live'i ei ole midagi läinud** — Silveri otsus, et ootame. Haru on GitHubis olemas (`git push origin klassiekraan` tehtud, Vercel teeb sellest ainult eelvaate, tootmine käib `main`-ist).
+
+- **Tehniline võlg koristatud:** panda ühest failist, kasutuseta ikoonid maha, üks liitumisekraan kõigile moodulitele. Vt „Tehniline võlg" allpool — kõik kolm kirjet on nüüd läbi kriipsutatud koos põhjendustega.
+- **Kirjutaja robot istus valgel plokil (commit `231dc79`).** `.hero` oli läbipaistmatu paberitaust, mis joonelisel lehel luges valge kastina roboti ümber. Nüüd käib paberilaik ainult pealkirja ja alateksti alla ja jooned jooksevad roboti taha — robot on lehele joonistatud, mitte kleebitud. Sama parandus `.res-hero`-s. **Reegel, mis siit välja tuli:** joonelisel taustal tohib läbipaistmatu laik olla ainult teksti all; maskott ja muu joonistus jäävad otse lehele.
+- **Testitud:** `tools/test_klass.py`, `tools/test_voistlus.py`, `tools/test_kell.py` ja `node kell/aeg.test.js` — kõik läbi pilvekonteineris haru koopial. Serverid: klass 8899, võistlus 8898, kell 8897 (igal testil oma port, muidu `ERR_CONNECTION_REFUSED`). Lisaks päris liitumine brauseripaanis tootebaasi vastu: tiimiga „Claude suitsutest" (`Z7V36C`) liitumine läheb läbi, identiteet kirjutatakse nii ühisesse võtmesse kui vanasse `korrutaja_v1.cls` kohta, edetabel avaneb, kutselink `#k=` avab ekraani eeltäidetud koodiga. Tiimi jäi testmängija „Proov5530" — võib koristada.
+
 **KELLA KOLMAS RING TEHTUD: numbritega ajaarvutus ehk bussilugu (14. sept, commit `039bd2f`).** Silveri tellimus: *„meil on hommikul kodus sagedane vestlus see, mis kell ta peab toast välja minema, et 8.28 bussile jõuda. siis ta vaatab mis kell parajasti on ja mitu minutit tal veel aega on."*
 
 - **Miks minuti täpsus siin tohib olla, kui sõnadega ülesannetes ei tohi:** kogu lõks on konstruktsioon „N minuti pärast" (päisereegel 2). Numbritega aegades seda ei teki — „Kell on 8.06. Buss väljub kell 8.28." ja vastus „22 minutit". Nii käib see päris elus ka; bussiplaan ei ütle „kahekümne kaheksa minuti pärast kaheksa".
@@ -145,7 +151,7 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 ### Tehniline võlg
 
 - **~~`core/panda.js` on topeltkoopia~~ — TEHTUD 14. sept (commit `a88e93e`).** `korrutaja/index.html` laeb nüüd `../core/panda.js` ja lähtefaili jääb ainult vahendaja `function panda(mood,head){return window.KPanda?KPanda(mood,head):'';}`. Joonistus oli kahes failis identne, ainult `core` oma paneb SVG-le ka `class="panda"` — Korrutajas on see pesastatud ümbrise `div.panda` sisse ja midagi ei muutu (kontrollitud brauseris: avaekraan, päeva nipp ja kõik viis ilmet nii tervikuna kui peana).
-- **Korrutajal on oma klassiekraan, Kirjutajal `core/klass.js` oma.** Pärast etappi 3 on liitumise loogika kahes kohas. Korrutaja võiks minna üle `HKlass.openJoin`-ile ja oma `s-class` ekraani ära kaotada — aga Korrutaja oma oskab ka koolinime soovitada (`school_suggest`), mida ühises ekraanis veel ei ole. Koristamisel tuleb see kaasa võtta.
+- **~~Korrutajal on oma klassiekraan~~ — TEHTUD 14. sept, harus `klassiekraan` (commitid `9d5a6f1` ja `b689f49`), live'i veel läinud ei ole.** Vaatamine näitas, et Korrutaja ekraan ei olnud ühise vaesem koopia, vaid **rikkam**: koolinime soovitused, nime eelvaade, tiimi valik, kutsekaart, hoiatus vana grupi kohta ja jagamisnupp olid ainult seal. Seepärast käis koristus vastupidi — need kuus asja kolisid `core/klass.js`-i ja Korrutajast kadus `s-class` ekraan koos oma CSS-i ja JS-iga (−176 rida). Kirjutaja ja Kell said kõik uue ilma ühegi muudatuseta, sest `openJoin` API jäi samaks; juurde tuli ainult `onDone(cls, r)` teine argument (serveri vastus, kust Korrutaja võtab taastamisel seisu) ja valikuline `app` (mooduli nimi seesütlevas jagamistekstis).
 - **~~`icons/kirjutaja-*` on kasutuseta~~ — KUSTUTATUD 14. sept (commit `31afeb9`).** Neli faili (kalligraafiline K, sõnamärk, 192 ja 512 PNG). Kontrollitud enne kustutamist: ühtegi viidet neile repos ei olnud. Git-is on need ajaloos alles.
 
 ### Järgmine funktsionaalsus
