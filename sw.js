@@ -1,9 +1,10 @@
 /* Harjutaja service worker: rakenduse failid vahemällu, heli vahemällu esimesel kuulamisel. */
-const VERSION = 'h-202609141506';
-const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js',
+const VERSION = 'h-202609141745';
+const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js', 'core/klahvistik.js',
   'kirjutaja/', 'kirjutaja/index.html', 'kirjutaja/kirjutaja.css', 'kirjutaja/app.js', 'kirjutaja/robot.js', 'kirjutaja/data.js',
   'korrutaja/', 'korrutaja/index.html',
   'kell/', 'kell/index.html', 'kell/kell.css', 'kell/app.js', 'kell/aeg.js', 'kell/sihverplaat.js', 'kell/tekst.js', 'kell/tegelane.js',
+  'teisendaja/', 'teisendaja/index.html', 'teisendaja/teisendaja.css', 'teisendaja/app.js', 'teisendaja/yhik.js', 'teisendaja/redel.js', 'teisendaja/tegelane.js',
   'icons/harjutaja-ikoon-ummar.svg', 'icons/harjutaja-192.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open('app-' + VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));

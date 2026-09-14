@@ -1,0 +1,212 @@
+/* Teisendaja — Harjutaja ühine palett, aktsent roheline (mõõdulint). Aluseks kell.css. */
+:root{
+  --paper:#fdfdfa; --ink:#1d2f4f; --ink-soft:#5a6a82; --edge:#c3d4ea; --rule-soft:#d3e1f3;
+  --accent:#7fd0a8; --accent-edge:#49a982; --accent-ink:#10331f;
+  --warm:#2f7a5e; --warm-soft:#e3f3ea;
+  --ok:#1d7f53; --ok-bg:#e3f5ec; --bad:#b8432d; --bad-bg:#fbe9e4; --mid-bg:#fff4d4; --card:#fff;
+  --display:"Fredoka",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;font-family:var(--body);font-weight:700;color:var(--ink);background:var(--paper);
+  background-image:radial-gradient(circle at 50% -10%, var(--warm-soft) 0%, transparent 55%);
+  background-repeat:no-repeat;-webkit-text-size-adjust:100%;
+}
+.app{max-width:520px;margin:0 auto;padding:14px 16px 40px;display:flex;flex-direction:column;gap:18px}
+.screen{display:flex;flex-direction:column;gap:18px}
+.top{display:flex;align-items:center;gap:10px;min-height:44px}
+.back{color:var(--ink-soft);text-decoration:none;font-weight:800;font-size:15px}
+.icon-btn{width:44px;height:44px;flex:0 0 auto;display:grid;place-items:center;font:inherit;font-size:18px;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:14px;cursor:pointer}
+.icon-btn[aria-pressed="false"] .wave{display:none}
+.icon-btn[aria-pressed="true"] .off{display:none}
+.top .back{margin-right:auto}
+.track{flex:1;height:10px;border-radius:999px;background:var(--rule-soft);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .25s ease}
+
+.hero{text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.mascot{border:0;background:none;padding:0;cursor:pointer;width:150px}
+.mascot svg{width:100%;height:auto}
+h1{font-family:var(--display);font-weight:600;font-size:40px;margin:0}
+.sub{margin:0;color:var(--ink-soft);font-weight:600;line-height:1.45}
+
+.block{display:flex;flex-direction:column;gap:10px}
+.label{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);align-self:flex-start}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:999px;padding:8px 16px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent-edge)}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two .big{font-size:22px;padding:15px 10px}
+.primary{font-family:var(--display);font-weight:600;font-size:20px;background:var(--accent);color:var(--accent-ink);border:1.5px solid var(--accent-edge);border-radius:16px;padding:12px 28px;cursor:pointer;box-shadow:0 3px 0 var(--accent-edge)}
+.primary:active{transform:translateY(2px);box-shadow:0 1px 0 var(--accent-edge)}
+.primary.big{font-size:26px;padding:16px 28px}
+.compete{font-family:var(--display);font-weight:600;font-size:20px;background:var(--ink);color:#fff;border:1.5px solid var(--ink);border-radius:16px;padding:12px 28px;cursor:pointer;box-shadow:0 3px 0 #14223b}
+.compete:active{transform:translateY(2px);box-shadow:0 1px 0 #14223b}
+.compete[disabled]{background:var(--card);color:var(--ink-soft);border-color:var(--edge);box-shadow:none;cursor:default;transform:none}
+.compete.armed{background:var(--bad);border-color:var(--bad);box-shadow:0 3px 0 #8f3222}
+.ghost{font:inherit;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:12px 18px;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.count-note,.hint-small{margin:0;color:var(--ink-soft);font-weight:600;font-size:13px;line-height:1.5}
+.klass-line{margin:0;font-weight:800}
+
+/* kellaaegade kaart */
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.mcell{background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.mcell.y{background:var(--mid-bg);border-color:var(--accent-edge)}
+.mcell.g{background:var(--ok-bg);border-color:var(--ok)}
+.mcell small{font-size:11px;font-weight:700;color:var(--ink-soft);line-height:1.25}
+.nowrow{display:flex;align-items:center;gap:14px}
+.now-text{margin:0;font-family:var(--display);font-weight:600;font-size:20px;line-height:1.3}
+
+/* mäng */
+.stage{display:flex;flex-direction:column;align-items:center;gap:14px}
+.timer{width:100%;max-width:420px;height:8px;border-radius:999px;background:var(--rule-soft);overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:var(--ok);border-radius:999px;transition:width .12s linear}
+.timer i.low{background:var(--bad)}
+@media (prefers-reduced-motion:reduce){.timer i{transition:none}}
+.askclock svg{display:block}
+.ask{margin:0;text-align:center;font-family:var(--display);font-weight:600;font-size:22px;line-height:1.35}
+.opts{display:grid;gap:10px;width:100%}
+.opts.sonad{grid-template-columns:1fr}
+.opts.kellad{grid-template-columns:1fr 1fr}
+.opt{font:inherit;font-weight:800;font-size:18px;color:var(--ink);background:var(--card);border:2px solid var(--edge);border-radius:16px;padding:14px 12px;cursor:pointer;text-align:center}
+.opt.kellopt{padding:8px;display:grid;place-items:center}
+.opt.kellopt svg{width:100%;height:auto;max-width:150px}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt[disabled]{cursor:default}
+.feedback{min-height:26px;font-family:var(--display);font-weight:600;font-size:20px;text-align:center}
+.feedback.ok{color:var(--ok)}
+.feedback.bad{color:var(--bad)}
+.hintcard{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:12px 14px;width:100%}
+.hintcard svg{width:52px;flex:0 0 auto}
+.hinttext{font-weight:600;line-height:1.5;font-size:15px}
+.hinttext b{font-weight:800}
+
+/* tulemus */
+.res-hero{display:flex;flex-direction:column;align-items:center;gap:6px}
+.res-hero svg{width:170px;height:auto}
+.bubble{font-family:var(--display);font-weight:600;font-size:28px;background:var(--card);border:1.5px solid var(--edge);border-radius:18px;padding:10px 20px}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.stat{background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:10px 16px;text-align:center;min-width:110px}
+.stat b{display:block;font-family:var(--display);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;font-weight:700;color:var(--ink-soft)}
+.words{display:flex;flex-wrap:wrap;gap:10px}
+.vaeg{display:flex;flex-direction:column;align-items:center;gap:2px;width:86px;text-align:center}
+.vaeg small{font-size:11px;font-weight:700;color:var(--ink-soft);line-height:1.25}
+
+/* edetabel */
+.board{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.brow{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:10px 12px}
+.brow.me{border-color:var(--accent-edge);background:var(--mid-bg)}
+.brow.empty{display:block;color:var(--ink-soft);font-weight:600;line-height:1.5}
+.brow .pos{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink-soft);min-width:28px;font-variant-numeric:tabular-nums}
+.brow .mid{display:flex;flex-direction:column;flex:1;min-width:0}
+.brow .nm{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brow .mid small{color:var(--ink-soft);font-weight:600;font-size:12px}
+.brow .val{font-family:var(--display);font-weight:600;font-size:24px;font-variant-numeric:tabular-nums}
+
+/* abi ja jalus */
+.help{background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:12px 14px}
+.help summary{cursor:pointer;font-weight:800}
+.help-body{font-weight:600;line-height:1.55;font-size:15px}
+.help-body p{margin:10px 0}
+.help-body ul{margin:8px 0;padding-left:20px}
+.help-body li{margin:4px 0}
+.credit{color:var(--ink-soft);font-weight:600;font-size:13px;text-align:center;line-height:1.6}
+.credit a{color:var(--ink)}
+
+/* kägu */
+.kk{width:100%;height:auto}
+.kk-body{transform-origin:60px 108px;animation:kk-sway 4s ease-in-out infinite}
+/* transform-box/origin EI TOHI puududa: ilma nendeta skaleerib SVG rühma
+   kujundi (0,0) suhtes ja silmad lendavad pilgutades peast välja. Mia märkas.
+   Robotil (.kr-eyes) ja pandal (.pe) on sama rida — käol oli see unustatud. */
+.kk-eyes{transform-box:fill-box;transform-origin:center;animation:kk-blink 5.5s infinite}
+.kk-wave{transform-origin:78px 84px;animation:kk-wave 1.6s ease-in-out infinite}
+.kk-spark{animation:kk-spark 1.4s ease-in-out infinite}
+.kk.hop{animation:kk-hop .5s ease}
+@keyframes kk-sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+@keyframes kk-blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes kk-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
+@keyframes kk-spark{0%,100%{opacity:.35;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes kk-hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){.kk-body,.kk-eyes,.kk-wave,.kk-spark,.kk.hop{animation:none}}
+
+/* tekstülesanded */
+.story{margin:0;max-width:26rem;text-align:center;font-weight:700;font-size:17px;line-height:1.5;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:12px 14px}
+.vaeg.lugu{width:100%;align-items:flex-start;text-align:left;gap:2px}
+.vaeg.lugu b{font-size:14px;line-height:1.35}
+.vaeg.lugu small{font-size:12px}
+/* --- veast teada andmine ---
+   Nupp on lause all ja tekstiga: kusimark paisereal ei utle kellelegi midagi. */
+.flag-note{margin:10px 0 0;text-align:center;color:var(--ok);font-weight:700}
+.flagbtn{margin:18px auto 0;display:block;font:inherit;font-size:14px;font-weight:700;
+  color:var(--ink-soft);background:none;border:0;border-bottom:1.5px dotted var(--ink-soft);
+  padding:2px 0;cursor:pointer}
+.flagbtn:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.flagwrap{position:fixed;inset:0;z-index:8;background:rgba(29,47,79,.45);
+  display:flex;align-items:flex-end;justify-content:center}
+.flagcard{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;
+  padding:18px 16px 22px;display:flex;flex-direction:column;gap:8px;
+  box-shadow:0 -8px 24px rgba(29,47,79,.18)}
+.flagcard h3{margin:0;font-family:var(--display);font-weight:600;font-size:22px}
+.flag-sent{margin:0 0 4px;color:var(--ink-soft)}
+.flagopts{display:flex;flex-direction:column;gap:8px}
+.flagopts .ghost{text-align:left}
+.flag-cancel{margin-top:6px;align-self:center}
+
+/* ---------- Teisendaja oma osad ---------- */
+
+/* Küsimus on siin lause, mitte pilt: „3 km = ___ m". Suur ja tabelnumbritega,
+   et arv ja ühik oleksid selgesti loetavad. */
+.ask{font-family:var(--display);font-weight:600;font-size:30px;line-height:1.25;margin:6px 0 2px;text-align:center;font-variant-numeric:tabular-nums}
+.opts{grid-template-columns:1fr 1fr}
+.opt{font-variant-numeric:tabular-nums}
+
+/* Sisestusväljad ja klahvistik. Väli on päris input, aga inputmode="none"
+   hoiab telefoni süsteemiklaviatuuri kinni — mängul on oma klahvistik. */
+.padhost{width:100%;display:flex;flex-direction:column;gap:12px;align-items:center}
+.kl-valjad{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.kl-vali{display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--edge);border-radius:16px;padding:8px 12px}
+.kl-vali:focus-within{border-color:var(--accent-edge);box-shadow:0 0 0 3px var(--warm-soft)}
+.kl-vali input{
+  font:inherit;font-family:var(--display);font-weight:600;font-size:30px;color:var(--ink);
+  background:none;border:0;outline:none;width:4.2ch;text-align:right;font-variant-numeric:tabular-nums;
+}
+.kl-vali input:disabled{color:var(--ink-soft)}
+.kl-silt{font-family:var(--display);font-weight:600;font-size:22px;color:var(--ink-soft);min-width:2.2ch}
+.kl-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:330px}
+.kl-nupp{
+  font:inherit;font-family:var(--display);font-weight:600;font-size:26px;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--edge);border-radius:14px;
+  padding:12px 0;cursor:pointer;min-height:52px;
+}
+.kl-nupp:active{background:var(--warm-soft)}
+.kl-tyhi{visibility:hidden;cursor:default}
+.kl-kustuta,.kl-koma{font-size:22px;color:var(--ink-soft)}
+.kl-vastan{
+  font:inherit;font-family:var(--display);font-weight:600;font-size:22px;
+  color:var(--accent-ink);background:var(--accent);border:1.5px solid var(--accent-edge);
+  border-radius:16px;padding:13px 26px;cursor:pointer;width:100%;max-width:330px;
+}
+.klahvistik.lukus .kl-pad,.klahvistik.lukus .kl-vastan{opacity:.45;pointer-events:none}
+
+/* Ühikuredel: vihjekaardil ja avalehel. Kitsal ekraanil kerib külgsuunas. */
+.redelbox{width:100%;overflow-x:auto;padding:2px 0}
+.redelbox svg.redel{display:block;min-width:280px;max-width:100%;height:auto}
+
+/* Oskuste kaart: paar ja tegur. */
+.mcell b{font-family:var(--display);font-weight:600;font-size:15px;display:block}
+.mcell{gap:2px}
+
+/* Vihjekaardi diagnoos on kõige tähtsam lause — see ütleb, MILLISE vea laps tegi. */
+.hinttext .diag{margin:0 0 6px;font-weight:800;color:var(--ink)}
+.hinttext p{margin:0 0 6px}
+.hinttext .redelbox{margin-top:8px}
+
+/* Tulemuse vealoend: küsimus ja õige vastus. */
+.vaeg b{font-family:var(--display);font-weight:600;font-size:16px;display:block;font-variant-numeric:tabular-nums}
