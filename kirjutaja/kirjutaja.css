@@ -63,6 +63,12 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
 .opt.lit{border-color:var(--accent-edge);background:#fff4d4;box-shadow:0 0 0 3px rgba(255,209,102,.5)}
 .opt small{display:block;font-family:var(--body);font-size:14px;font-weight:700;color:var(--ink-soft);margin-top:2px}
+/* Kuulamisabi: nupp on vastusenuppudest vaiksem, sest abi on pakkumine, mitte kutse.
+   Mängimise ajal süttib ta samamoodi kui kõlar. */
+#cmpBtn{font-size:15px;padding:9px 16px;border-radius:12px}
+#cmpBtn.playing{background:#ffe29c;border-color:var(--accent-edge)}
+.cmpnote{margin:8px auto 0;max-width:24em;text-align:center;font-size:14px;font-weight:700;
+  color:var(--ink-soft);background:var(--paper);padding:2px 8px}
 .feedback{min-height:28px;font-weight:800;font-size:20px;text-align:center;background:var(--paper);padding-inline:8px}
 .feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
 .hintcard{width:100%;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:14px 16px;font-size:17px}

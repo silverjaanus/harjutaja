@@ -7,6 +7,10 @@ Pikkust (kapi/kappi) transkriptsioon ei kontrolli — selle eest hoolitseb sulu 
 
 Sisend: tools/wordbank/data/variants.json. Väljund: kirjutaja/audio_raw/<id>.mp3, kirjutaja/audio/<id>.mp3.
 Kasutus: python tools/audio_gen.py [--max-requests 95] [--batch 12]
+
+Teine hääl võrdlusklippidele (kuulamisabi): --voice Charon --out audio2 --raw audio2_raw.
+Küsimuse hääl ja võrdluse hääl peavad olema eri salvestused, muidu saab laps vastata
+klipi äratundmisega, mitte välte kuulmisega.
 """
 import argparse, base64, io, json, os, random, re, shutil, sys, time, wave
 import requests
@@ -112,10 +116,18 @@ def do_batch(batch, key, ffmpeg, limit):
 
 
 def main():
+    global VOICE, RAW, OUT
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-requests", type=int, default=95)
     ap.add_argument("--batch", type=int, default=12)
+    ap.add_argument("--voice", default="Kore")
+    ap.add_argument("--out", default="audio", help="kaust kirjutaja/ all")
+    ap.add_argument("--raw", default="audio_raw", help="kaust kirjutaja/ all")
     a = ap.parse_args()
+    VOICE = a.voice
+    RAW = os.path.join(ROOT, "kirjutaja", a.raw)
+    OUT = os.path.join(ROOT, "kirjutaja", a.out)
+    log("hääl %s, väljund kirjutaja/%s" % (VOICE, a.out))
     ffmpeg = shutil.which("ffmpeg") or sys.exit("ffmpeg puudub")
     key = T.get_key()
     os.makedirs(RAW, exist_ok=True); os.makedirs(OUT, exist_ok=True)

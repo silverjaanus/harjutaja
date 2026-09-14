@@ -8,6 +8,9 @@ tools/tts_test/*.log
 tools/audio/*.log
 tools/audio/*.err
 kirjutaja/audio_raw/
+kirjutaja/audio2_raw/
+tools/audio2_run.txt
+tools/audio2_done.txt
 **/_to_delete/
 **/*.part.mp3
 __pycache__/
