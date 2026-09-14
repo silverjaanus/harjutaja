@@ -152,11 +152,29 @@
   }
 
   /* ---------- midagi on valesti ---------- */
+  /* Märge jääb alati sellesse seadmesse ja läheb lisaks serverisse, et
+     Silver seda päriselt näeks. Ilma serverita on märge olemas ainult
+     lapse enda telefonis - sellest ei ole viga parandades kasu. */
+  function sendReports() {
+    if (!window.HKlass || !HKlass.online() || !HKlass.issue) return Promise.resolve();
+    const q = D.reports.filter(r => !r.sent);
+    if (!q.length) return Promise.resolve();
+    const ver = (window.KIRJUTAJA_DATA && KIRJUTAJA_DATA.version) || null;
+    return q.reduce((chain, r) => chain.then(() =>
+      HKlass.issue({
+        module: MODULE, kind: "sona", item: r.id,
+        detail: r.word + (r.sentence ? " / " + r.sentence : ""), version: ver
+      }).then(res => { if (res && res.ok) { r.sent = true; save(); } })
+        .catch(() => { })
+    ), Promise.resolve());
+  }
+
   function flagCurrent() {
     const it = cur; if (!it) return;
     if (!D.reports.some(r => r.id === it.id)) {
-      D.reports.push({ id: it.id, word: it.word, sentence: it.sentence || "", at: new Date().toISOString() });
+      D.reports.push({ id: it.id, word: it.word, sentence: it.sentence || "", at: new Date().toISOString(), sent: false });
       save();
+      sendReports();
     }
     const f = $("flagNote");
     f.textContent = "Märkisin sõna „" + it.word + "“. Aitäh!";
@@ -630,6 +648,7 @@
   };
   renderMap(); renderCount(); renderReports(); renderKlass();
   flushOutbox();
+  sendReports();   /* võrguta jäänud märked lähevad teele, kui võrk on tagasi */
 
   /* Kutselink kujul #k=KOOD avab liitumise juba täidetud koodiga. Kuulame ka
      hashchange't: kui laps on leht juba lahti ja klõpsab kutselingil, ei laadi

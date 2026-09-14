@@ -144,6 +144,21 @@
     });
   }
 
+  /* „Midagi on valesti" – lapse märge mängu seest.
+     Kontekst tuleb kaasa ise, sest laps ei kirjelda viga ise. Mängija
+     identiteet on valikuline: ka klassita laps peab saama märkida.
+     p = {module, kind: 'sona'|'ulesanne'|'muu', item, detail, note, version} */
+  function issue(p) {
+    if (!online()) return Promise.resolve({ error: 'net' });
+    var c = current();
+    return rpc('report_issue', {
+      p_module: p.module, p_kind: p.kind || 'muu',
+      p_item: p.item || null, p_detail: p.detail || null, p_note: p.note || null,
+      p_player_id: c ? c.player_id : null, p_secret: c ? c.secret : null,
+      p_version: p.version || null
+    });
+  }
+
   /* ---------- liitumisekraan ----------
      Joonistab end ise ja toob oma laadi kaasa, nii et moodul ei pea selle
      jaoks HTML-i ega CSS-i hoidma. Sama ekraan teenindab kõiki mooduleid:
@@ -496,6 +511,6 @@
     sync: sync, current: current, adopt: adopt,
     setup: setup, online: online, rpc: rpc,
     join: join, restore: restore, create: create, invite: invite,
-    board: board, report: report, openJoin: openJoin, ERR: ERR
+    board: board, report: report, issue: issue, openJoin: openJoin, ERR: ERR
   };
 })();

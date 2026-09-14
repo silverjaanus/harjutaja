@@ -9,6 +9,19 @@ Harjutaja kasutab Supabase'i klasside, mängijate ja edetabelite jaoks. Kliendil
 | Fail | Mida teeb |
 |---|---|
 | `migration-6.sql` | Andmebaas hakkab mooduleid eristama: `sessions.module`, tabel `player_modules`, ning `competed_today` / `report_session` / `class_board` saavad `p_module` parameetri vaikeväärtusega `'korrutaja'`. |
+| `migration-7.sql` | Parandus: `gen_code` sai oma `search_path = public, extensions`. Ilma selleta ei leidnud ta Supabase'is pgcrypto funktsiooni ja **klassiga liitumine oli kuid katki**. |
+| `migration-8.sql` | Tagasiside: tabel `issues` ja funktsioon `report_issue`. Lapse „midagi on valesti" märge jõuab serverisse koos kontekstiga (moodul, sõna, lause, versioon). Mängija on valikuline — klassita laps saab samuti märkida. |
+
+## Kuidas märkeid vaadata
+
+Märked elavad tabelis `issues`, kliendil sinna ligipääsu ei ole. Supabase'i SQL Editoris:
+
+```sql
+select created_at, module, kind, item, detail, nick, class_name
+  from issues where done = false order by created_at desc;
+```
+
+Kui viga on parandatud, märgi rida tehtuks: `update issues set done = true where id = <id>;`
 
 ## Kuidas migratsiooni rakendada
 
