@@ -146,7 +146,12 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 
 - **Plaan kinnitatud (Silver, 13. sept).** Claude'i projektis `claude/jargmine-etapp-plaan.md`. Viis etappi: (1) ühine klassi identiteet — **tehtud**, (2) andmebaasi migratsioon 6 — **tehtud**, (3) Kirjutaja võistlus — **tehtud**, (4) Kell — **tehtud**, (5) **Kirjutaja uued teemad — järgmine**, üks rühm korraga (pikad häälikud → i ja j → ülejäänud). **Võistlusreegel otsustatud (Silver, 13. sept): Kirjutaja võistlus on 20 sõna, 10 sekundit igaüks** (kuni 3 min; Korrutajal 25 × 6 s). Heli tohib võistluses üks kord korrata, aeg jookseb edasi. Plaan muudab ka varasemat reeglit „uus moodul alles siis, kui eelmist kasutatakse" — Kell tuleb enne Kirjutaja v1.1.
 
-- **„Midagi on valesti" märked jäävad seadmesse.** Kirjutaja `?` nupp märgib sõna ära, aga märge jääb sellesse brauserisse ja on näha ainult selle avalehel. Kui Mia harjutab oma telefonis, ei jõua märge Silverini. Lahendus nõuab võrguotsa — Supabase on Korrutaja tõttu projektis juba olemas, aga Kirjutajal ei ole praegu ühtegi serveripoolset kutset. Otsustamata: kas teha ja kui, siis kas oma RPC või lihtsam vorm.
+- **~~„Midagi on valesti" märked jäävad seadmesse~~ — TEHTUD 14. sept (commit `95b398e`), aga OOTAB SILVERI RUN'I.** `supabase/migration-8.sql` on valmis ja läbi testitud, tootebaasis seda veel **ei ole** — kuni Silver selle Run'ib, vastab `report_issue` 404-ga, märge jääb seadmesse ja proovib uuesti järgmisel avamisel. Äpis on kõik olemas: `HKlass.issue()` ja Kirjutaja `?` nupp saadavad märke koos kontekstiga.
+  - **Miks server, mitte e-post:** laps ei kirjuta kirja ega täida vormi. Märge peab olema üks puudutus ja kontekst (moodul, sõna, lause, andmeversioon) peab tulema kaasa ise. Torustik oli juba olemas — anon-võti, RPC-muster, offline-outbox.
+  - **Mängija on valikuline.** Klassita laps saab samuti märkida; siis läheb märge nimeta kirja. Vale salakood ei ole viga, vaid sama nimeta kirje — lapse tagasiside on tähtsam kui tema tuvastamine.
+  - **Kiiruspiirang:** mängija kohta 50 märget päevas, nimeta märkeid 100 tunnis. Sama mooduli sama `item` ei tekita teist lahtist rida.
+  - **Märkeid vaatab Silver Supabase'i SQL Editoris** (`select … from issues where done = false`), vt `supabase/README.md`. Eraldi lehte veel ei ole.
+  - **Lahtine:** Kellale ja Korrutajale `?` nuppu veel ei ole. Kellal oleks sellest kõige rohkem kasu, sest seal on ülesanded genereeritud — just seal tuleb imelik lause välja. Täiskasvanu tagasiside (e-posti link abilehel) ootab Silveri otsust aadressi kohta.
 
 ### Tehniline võlg
 
