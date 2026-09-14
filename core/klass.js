@@ -240,7 +240,7 @@
     if (opts.code) {
       var inv = el('div', 'hk-invite');
       inv.appendChild(el('h3', null, opts.name ? ('Kutse klassi „' + opts.name + '“') : 'Kutse klassiga liituma'));
-      inv.appendChild(el('p', null, 'Kood on all juba täidetud. Kirjuta oma hüüdnimi ja vajuta „Liitu“. Vale klass? Kirjuta kood lihtsalt üle.'));
+      inv.appendChild(el('p', null, 'Kood on all juba kirjas. Kirjuta oma hüüdnimi ja vajuta „Liitu“. Vale klass? Kustuta kood ja kirjuta uus.'));
       card.appendChild(inv);
     }
 
@@ -259,7 +259,7 @@
       var warn = el('p', 'hk-warn');
       warn.appendChild(document.createTextNode('Oled juba grupis '));
       warn.appendChild(el('b', null, cur.class_name));
-      warn.appendChild(document.createTextNode('. Uue grupiga liitumine alustab seal nullist ja siinsed nädalapunktid jäävad vanasse gruppi. Seni õpitu ja rekord tulevad kaasa. Vana grupi juurde saad tagasi taastekoodiga '));
+      warn.appendChild(document.createTextNode('. Uues grupis alustad nullist: selle nädala punktid jäävad vanasse gruppi, aga seni õpitu ja rekord tulevad kaasa. Vanasse gruppi saad tagasi taastekoodiga '));
       warn.appendChild(el('b', null, cur.secret));
       warn.appendChild(document.createTextNode(' – kirjuta see üles.'));
       card.appendChild(warn);
@@ -284,15 +284,15 @@
       busy(true, go, 'Liitu');
       join(c, n).then(function (r) {
         busy(false, go, 'Liitu');
-        if (r && r.error) return fail(ERR[r.error] || 'Ei õnnestunud.');
+        if (r && r.error) return fail(ERR[r.error] || 'Midagi läks valesti. Proovi uuesti.');
         done(r);
       }).catch(function () { busy(false, go, 'Liitu'); fail(ERR.net); });
     };
 
     /* Taastamine teises brauseris */
     var d1 = el('details', 'hk-more');
-    d1.appendChild(el('summary', null, 'Mul oli konto juba olemas'));
-    d1.appendChild(el('p', 'hk-lead', 'Kirjuta siia klassikood, hüüdnimi ja taastekood. Taastekoodi näeb mängu seadetes.'));
+    d1.appendChild(el('summary', null, 'Mul on juba konto'));
+    d1.appendChild(el('p', 'hk-lead', 'Kirjuta siia klassikood, hüüdnimi ja taastekood. Taastekoodi leiad mängu seadetest.'));
     var sec = field('Taastekood (8 märki)', { maxlength: '8', autocapitalize: 'characters', autocomplete: 'off' });
     d1.appendChild(sec.label);
     var go1 = el('button', 'hk-go', 'Taasta konto');
@@ -302,11 +302,11 @@
     go1.onclick = function () {
       err.hidden = true;
       var c = code.input.value.trim().toUpperCase(), n = nick.input.value.trim(), s = sec.input.value.trim().toUpperCase();
-      if (c.length !== 6 || n.length < 2 || s.length !== 8) return fail('Sisesta klassikood, hüüdnimi ja 8-märgiline taastekood.');
+      if (c.length !== 6 || n.length < 2 || s.length !== 8) return fail('Kirjuta klassikood, hüüdnimi ja 8-märgiline taastekood.');
       busy(true, go1, 'Taasta konto');
       restore(c, n, s).then(function (r) {
         busy(false, go1, 'Taasta konto');
-        if (r && r.error) return fail(ERR[r.error] || 'Ei õnnestunud.');
+        if (r && r.error) return fail(ERR[r.error] || 'Midagi läks valesti. Proovi uuesti.');
         done(r);
       }).catch(function () { busy(false, go1, 'Taasta konto'); fail(ERR.net); });
     };
@@ -334,7 +334,7 @@
     sug.hidden = true;
     fClass.appendChild(sug);
     var row = el('div', 'hk-row');
-    var gl = el('label', null, 'Klass');
+    var gl = el('label', null, 'Klassi number');
     var gsel = document.createElement('select');
     for (var i = 1; i <= 12; i++) gsel.appendChild(new Option(i + '. klass', String(i)));
     gsel.value = '3';
@@ -349,7 +349,7 @@
     fTeam.hidden = true;
     var tname = field('Tiimi nimi', { maxlength: '40', autocomplete: 'off' });
     fTeam.appendChild(tname.label);
-    fTeam.appendChild(el('p', 'hk-lead', 'Tiim võistleb ainult omavahel. Kooli- ja Eesti-võrdlusse ta ei lähe.'));
+    fTeam.appendChild(el('p', 'hk-lead', 'Tiimi liikmed võistlevad ainult omavahel. Kooli ja kogu Eesti võrdlusse tiim ei lähe.'));
     d2.appendChild(fTeam);
 
     var prev = el('p', 'hk-preview');
@@ -361,7 +361,7 @@
     doneBox.hidden = true;
     var codeBig = el('div', 'hk-code');
     doneBox.appendChild(codeBig);
-    doneBox.appendChild(el('p', 'hk-lead', 'Jaga see kood klassile. Kood on nüüd ka ülal liitumise lahtris.'));
+    doneBox.appendChild(el('p', 'hk-lead', 'Jaga see kood klassile. Kood on nüüd ka üleval klassikoodi lahtris.'));
     var share = el('button', 'hk-go', 'Jaga kutset');
     var shBox = document.createElement('input');
     shBox.readOnly = true;
@@ -440,7 +440,7 @@
       busy(true, go2, 'Loo');
       create(kindArg, sc, gr, lt, nm).then(function (r) {
         busy(false, go2, 'Loo');
-        if (r && r.error) return fail(ERR[r.error] || 'Ei õnnestunud.');
+        if (r && r.error) return fail(ERR[r.error] || 'Midagi läks valesti. Proovi uuesti.');
         madeCode = r.code;
         madeName = r.name || '';
         codeBig.textContent = r.code;
@@ -458,7 +458,7 @@
         shBox.hidden = false;
         shBox.value = inv2.url;
         try { shBox.focus(); shBox.setSelectionRange(0, inv2.url.length); } catch (e) {}
-        flash('Kopeeri link all');
+        flash('Kopeeri allolev link');
       }
       if (navigator.share) { navigator.share({ title: 'Harjutaja', text: inv2.text, url: inv2.url }).catch(function () {}); return; }
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -469,7 +469,7 @@
     };
 
     card.appendChild(el('p', 'hk-note',
-      'Sinu koht klassis on salvestatud sellesse brauserisse. Kui brauseri andmed kustutatakse, kaob ka sinu koht klassis — seepärast kirjuta taastekood üles.'));
+      'Sinu koht klassis on salvestatud sellesse brauserisse. Kui brauseri andmed kustutatakse, kaob ka sinu koht – seepärast kirjuta taastekood üles.'));
 
     function close() {
       document.removeEventListener('keydown', onKey);
