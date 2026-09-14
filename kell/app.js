@@ -11,6 +11,7 @@
   D.lastCompete = D.lastCompete || "";
   D.outbox = D.outbox || [];
   D.board = D.board || null;
+  D.reports = D.reports || [];   /* „midagi on valesti" märked, kuni need on saadetud */
   /* Mida laps harjutab: kella lugemist või ajaarvutust tekstülesannetega. */
   D.opp = D.opp === "tekst" ? "tekst" : "lugemine";
   D.tekstStat = D.tekstStat || { n: 0, ok: 0 };
@@ -186,13 +187,57 @@
     else round = new HEngine.Round(p, D.stats, ROUND_LEN);
     if (!tekst && !p.length) return;
     G = { mode: test ? "test" : "train", tekst, n: 0, ok: 0, wrong: [], mins, t0: Date.now() };
+    $("flagBtn").hidden = test;   /* võistluses ei märgita, seal mõõdetakse */
     show("s-game");
     next();
+  }
+
+  /* ---------- midagi on valesti ----------
+     Kella ülesanded on genereeritud, seega just siin tuleb imelik lause
+     välja. Märge jääb seadmesse ja läheb serverisse; kontekst (lugu ja
+     küsimus, nii nagu laps neid ekraanil nägi) tuleb kaasa ise. */
+  let flagTimer = null;
+
+  function reportKey(it) {
+    if (!it) return null;
+    if (it.tyyp === "tekst") {
+      const s = it.step || {};
+      return { item: "tekst-" + (s.tyyp || "?") + "-" + (s.kysimus || "").slice(0, 60),
+               detail: ((s.lugu || "") + " " + (s.kysimus || "")).trim() };
+    }
+    return { item: "kell-" + it.tyyp + "-" + it.h + "." + (it.m < 10 ? "0" : "") + it.m,
+             detail: (it.tyyp === "vali-kell" ? "Milline kell näitab: " : "Mis kell on: ") + HAeg.utle(it.h, it.m) };
+  }
+
+  function sendReports() {
+    if (!window.HKlass || !HKlass.online() || !HKlass.issue) return Promise.resolve();
+    const q = D.reports.filter(r => !r.sent);
+    if (!q.length) return Promise.resolve();
+    return q.reduce((chain, r) => chain.then(() =>
+      HKlass.issue({ module: MODULE, kind: "ulesanne", item: r.item, detail: r.detail })
+        .then(res => { if (res && res.ok) { r.sent = true; save(); } })
+        .catch(() => { })
+    ), Promise.resolve());
+  }
+
+  function flagCurrent() {
+    const k = reportKey(cur); if (!k) return;
+    if (!D.reports.some(r => r.item === k.item)) {
+      D.reports.push({ item: k.item, detail: k.detail, at: new Date().toISOString(), sent: false });
+      save();
+      sendReports();
+    }
+    const f = $("flagNote");
+    f.textContent = "Märkisin selle ülesande ära. Aitäh!";
+    f.hidden = false;
+    clearTimeout(flagTimer);
+    flagTimer = setTimeout(() => { f.hidden = true; }, 2200);
   }
 
   function next() {
     clearTimeout(advanceTimer);
     stopTimer();
+    $("flagNote").hidden = true;
     const q = round.next();
     if (!q) return finish();
     cur = q.item; cur.done = false;
@@ -619,6 +664,7 @@
   $("startBtn").onclick = () => start("train");
   $("competeBtn").onclick = onCompete;
   $("nextBtn").onclick = next;
+  $("flagBtn").onclick = flagCurrent;
 
   let quitArmed = false;
   $("quitBtn").onclick = () => {
@@ -671,6 +717,7 @@
 
   renderTasemed(); renderModes(); renderKaart(); renderKlass();
   flushOutbox();
+  sendReports();   /* võrguta jäänud märked lähevad teele, kui võrk on tagasi */
 
   function maybeInvite() {
     const m = /[#&]k=([A-Za-z0-9]{4,8})/.exec(location.hash || "");

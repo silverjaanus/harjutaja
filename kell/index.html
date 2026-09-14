@@ -86,6 +86,7 @@
         <li><b>kolmveerand neli</b> — kolm veerandit tehtud, üks ees (3.45)</li>
       </ul>
       <p>Kui pikk osuti pole veel poole peal, loeme <b>möödunud</b> minuteid: „viis minutit kolm läbi". Kui on juba üle poole, loeme, kui palju on järgmise tunnini <b>puudu</b>: „kümne minuti pärast neli".</p>
+      <p>Kui mõni ülesanne tundub imelik, vajuta mängu ajal <b>?</b> nuppu — märge jõuab kohale ja ülesanne vaadatakse üle. Vanemale või õpetajale: pikema mõtte saab saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Kell">e-kirjaga</a>.</p>
     </div>
   </details>
 
@@ -98,6 +99,7 @@
   <header class="top">
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
     <div class="track"><i id="bar"></i></div>
+    <button class="icon-btn" id="flagBtn" aria-label="Midagi on valesti">?</button>
   </header>
   <div class="stage">
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
@@ -110,6 +112,7 @@
     <div class="row" id="after" hidden>
       <button class="primary" id="nextBtn">Edasi</button>
     </div>
+    <p class="flag-note" id="flagNote" role="status" hidden></p>
   </div>
 </section>
 

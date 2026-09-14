@@ -141,3 +141,4 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .vaeg.lugu{width:100%;align-items:flex-start;text-align:left;gap:2px}
 .vaeg.lugu b{font-size:14px;line-height:1.35}
 .vaeg.lugu small{font-size:12px}
+.flag-note{margin:10px 0 0;text-align:center;color:var(--ok);font-weight:700}
