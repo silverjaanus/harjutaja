@@ -167,10 +167,12 @@
     const tekst = !test && D.opp === "tekst";
     const lvlSamm = tase().mins.length > 1 ? tase().mins[1] : 60;
     /* Tekstülesannetes ei minda veerandtunnist peenemaks, ka siis mitte, kui
-       laps on valinud viie minuti täpsuse. Põhjus on keeles: lauses „Trenn
-       lõpeb kahekümne minuti pärast seitse" loeb see nagu 7.20, aga tähendab
-       6.40 — sõnaline „pärast"-vorm ei sobi lauseülesandesse. Viie minuti
-       täpsusega sõnalist ajaarvutust koolis niikuinii ei õpetata. */
+       laps on valinud viie minuti täpsuse. Põhjus on keeles: kestust „20 minuti
+       pärast" ei saa lauses öelda, sest täpselt sama sõnadega algab kellaaeg
+       „kahekümne minuti pärast seitse" (6.40) — laps jääb ootama tunninime.
+       Tundidega seda muret ei ole: kellaaega ei öelda kunagi „kolme tunni
+       pärast". Vt kell/tekst.js päist, reegel 2. Ja viie minuti täpsusega
+       sõnalist ajaarvutust koolis niikuinii ei õpetata. */
     const samm = tekst ? Math.max(15, lvlSamm) : lvlSamm;
     const tekstMins = [];
     for (let m = 0; m < 60; m += samm) tekstMins.push(m);
