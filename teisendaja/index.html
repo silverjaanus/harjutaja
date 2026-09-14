@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teisendaja</title>
+<meta name="theme-color" content="#fdfdfa">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icons/harjutaja-ikoon-ummar.svg" type="image/svg+xml">
+<link rel="icon" href="../icons/harjutaja-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../icons/harjutaja-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="teisendaja.css">
+</head>
+<body>
+<main class="app">
+
+<section id="s-home" class="screen">
+  <header class="top">
+    <a class="back" href="../">‹ Harjutaja</a>
+    <button class="icon-btn" id="sfxBtn" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
+  </header>
+  <div class="hero">
+    <button class="mascot" id="mascot" aria-label="Mõõdulint"></button>
+    <h1>Teisendaja</h1>
+    <p class="sub">Kirjuta, mitu väiksemat ühikut suuremas peitub.</p>
+  </div>
+
+  <div class="block">
+    <span class="label" id="lblKat">Mida harjutad?</span>
+    <div class="chips" role="group" aria-labelledby="lblKat" id="kats"></div>
+  </div>
+
+  <div class="block">
+    <span class="label" id="lblLevel">Kui raske?</span>
+    <div class="chips" role="group" aria-labelledby="lblLevel" id="levels"></div>
+    <p class="hint-small" id="levelNote"></p>
+  </div>
+
+  <div class="two">
+    <button class="primary big" id="startBtn">Harjuta</button>
+    <button class="compete big" id="competeBtn">Võistle</button>
+  </div>
+  <p class="count-note" id="competeNote"></p>
+
+  <div class="block" id="klassBlock">
+    <span class="label">Klass</span>
+    <p class="klass-line" id="klassNote"></p>
+    <div class="row">
+      <button class="ghost" id="joinBtn">Liitu klassiga</button>
+      <button class="ghost" id="boardBtn" hidden>Edetabel</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <span class="label">Sinu oskused</span>
+    <div class="map" id="map"></div>
+    <p class="hint-small">Ruut läheb roheliseks siis, kui oled selle teisenduse kaks korda järjest õigesti teinud.</p>
+  </div>
+
+  <div class="block">
+    <span class="label">Ühikuredel</span>
+    <div class="redelbox" id="homeRedel"></div>
+    <p class="hint-small" id="homeRedelNote"></p>
+  </div>
+
+  <details class="help">
+    <summary>Kuidas see käib?</summary>
+    <div class="help-body">
+      <p>Teisendamine tähendab, et <b>kogus jääb samaks, aga ühik muutub</b>. 3 km ja 3000 m on täpselt sama pikk tee, ainult kirjutatud kahel viisil.</p>
+      <span class="label">Kõige tähtsam nipp</span>
+      <p>Vaata, kumb ühik on <b>väiksem</b>. Väiksemaid läheb rohkem, seega arv läheb <b>suuremaks</b>. Suuremaid läheb vähem, seega arv läheb <b>väiksemaks</b>.</p>
+      <ul>
+        <li>3 km = 3000 m — meeter on väiksem, arv kasvab</li>
+        <li>3000 m = 3 km — kilomeeter on suurem, arv kahaneb</li>
+        <li>2 km 350 m = 2350 m — kõigepealt kilomeetrid meetriteks, siis liida</li>
+      </ul>
+      <p>Aeg on ainus rida, mis ei ole kümnendsüsteemis: tunnis on 60 minutit, mitte 100. Seepärast on 1 h 30 min <b>mitte</b> 1,30 tundi.</p>
+      <p>Mängu ajal on ülesande all nupp <b>„Anna veast teada“</b>. Kui mõni ülesanne tundub imelik, vajuta seda ja vali, mis täpselt viga on. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Teisendaja">e-kirjaga</a>.</p>
+    </div>
+  </details>
+
+  <footer class="credit">
+    Tegi <a href="https://silverjaanus.com" target="_blank" rel="noopener">Silver Jaanus</a>
+  </footer>
+</section>
+
+<section id="s-game" class="screen" hidden>
+  <header class="top">
+    <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
+    <div class="track"><i id="bar"></i></div>
+  </header>
+  <div class="stage">
+    <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
+    <p class="ask" id="askText" aria-live="polite"></p>
+    <div class="padhost" id="pad"></div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="fb" aria-live="polite"></div>
+    <div class="hintcard" id="hint" hidden></div>
+    <div class="row" id="after" hidden>
+      <button class="primary" id="nextBtn">Edasi</button>
+    </div>
+    <p class="flag-note" id="flagNote" role="status" hidden></p>
+    <button class="flagbtn" id="flagBtn">Anna veast teada</button>
+  </div>
+
+  <!-- Veateate aken. Laps valib, mis on valesti – nii saab viga ka üles otsida. -->
+  <div class="flagwrap" id="flagBox" hidden>
+    <div class="flagcard" role="dialog" aria-modal="true" aria-labelledby="flagTitle">
+      <h3 id="flagTitle">Anna veast teada</h3>
+      <p class="flag-sent" id="flagSentence"></p>
+      <span class="label">Mis on valesti?</span>
+      <div class="flagopts" id="flagOpts">
+        <button class="ghost" data-why="ulesanne">Ülesanne on imelik</button>
+        <button class="ghost" data-why="vastus">Mäng näitab valet vastust</button>
+        <button class="ghost" data-why="raske">Ei saa aru, mida küsitakse</button>
+        <button class="ghost" data-why="muu">Midagi muud</button>
+      </div>
+      <button class="ghost flag-cancel" id="flagCancel">Sulge</button>
+    </div>
+  </div>
+</section>
+
+<section id="s-result" class="screen" hidden>
+  <div class="res-hero">
+    <div class="bubble" id="resTitle"></div>
+    <div id="resLint"></div>
+    <p class="sub" id="resSub"></p>
+  </div>
+  <div class="stats" id="resStats"></div>
+  <div class="block" id="resNextBlock" hidden>
+    <span class="label">Need läksid valesti</span>
+    <div class="words" id="resNext"></div>
+  </div>
+  <div class="row">
+    <button class="primary big" id="againBtn">Harjuta veel</button>
+    <button class="ghost" id="homeBtn">Koju</button>
+  </div>
+</section>
+
+<section id="s-board" class="screen" hidden>
+  <header class="top">
+    <button class="icon-btn" id="bBack" aria-label="Tagasi">‹</button>
+    <div class="track"></div>
+    <button class="icon-btn" id="bRefresh" aria-label="Värskenda">⟳</button>
+  </header>
+  <div class="block">
+    <span class="label">Edetabel</span>
+    <p class="klass-line" id="bClass"></p>
+    <div class="chips" role="group" aria-label="Mida võrdleme" id="bTabs">
+      <button class="chip" data-t="week" aria-pressed="true">Nädal</button>
+      <button class="chip" data-t="sure" aria-pressed="false">Selged</button>
+      <button class="chip" data-t="best" aria-pressed="false">Rekord</button>
+      <button class="chip" data-t="school" aria-pressed="false">Kool</button>
+      <button class="chip" data-t="country" aria-pressed="false">Eesti</button>
+    </div>
+    <p class="hint-small" id="bHint"></p>
+    <ol class="board" id="bList"></ol>
+    <p class="count-note" id="bStatus"></p>
+  </div>
+  <button class="ghost" id="bInvite">Kutsu sõber klassi</button>
+  <p class="hint-small" id="bInviteNote" hidden></p>
+</section>
+
+</main>
+<script src="../core/store.js"></script>
+<script src="../core/config.js"></script>
+<script src="../core/klass.js"></script>
+<script src="../core/sfx.js"></script>
+<script src="../core/engine.js"></script>
+<script src="../core/klahvistik.js"></script>
+<script src="yhik.js"></script>
+<script src="redel.js"></script>
+<script src="tegelane.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

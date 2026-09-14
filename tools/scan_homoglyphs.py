@@ -15,6 +15,8 @@ import unicodedata
 LUBATUD = set("äöüõšžÄÖÜÕŠŽ")          # eesti tähed
 LUBATUD |= set("…„“”‚’‘—–·•→←↑↓×÷−°€±≈≤≥")  # kirjavahemärgid ja sümbolid stringides
 LUBATUD |= set("✕‹›⟳✓★☆  ")      # nuppude ikoonid ja kitsas tühik
+LUBATUD |= set(chr(178)+chr(179))        # pindala- ja ruumalauhikud (cm2, dm3) Teisendajas
+LUBATUD |= set(chr(0x232B))              # kustutusklahvi ikoon Teisendaja klahvistikul
 LAIENDID = (".js", ".html", ".css", ".json", ".webmanifest")
 VAHELE = ("node_modules", ".git", "__pycache__", "tools\\audio", "tools/audio")
 
