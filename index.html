@@ -125,7 +125,7 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
   </details>
 
   <footer>
-    Tasuta, ilma reklaamita ja ilma kontota.<br>Kirjutaja töötab ka siis, kui internetti pole.
+    Tasuta, ilma reklaamita ja ilma kontota.<br>Kõik mängud töötavad ka siis, kui internetti pole.
     <span class="credit">Tegi <a href="https://silverjaanus.com" target="_blank" rel="noopener">Silver Jaanus</a> · <a href="https://github.com/silverjaanus/harjutaja" target="_blank" rel="noopener">kood GitHubis</a></span>
   </footer>
 </main>
@@ -138,6 +138,11 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
   document.getElementById("faceP").innerHTML = KPanda("happy", true);
   document.getElementById("faceKell").innerHTML = KKagu("happy", { head: true });
   document.getElementById("faceLint").innerHTML = KLint("happy", { head: true });
+
+  /* Avaleht registreerib service workeri ise. Varem tegid seda ainult mängud,
+     nii et laps, kes ainult vaatas avalehte või mängis Korrutajat, ei saanud
+     midagi vahemällu — ja jaluses on lubadus, et äpp töötab ilma internetita. */
+  if ("serviceWorker" in navigator) { navigator.serviceWorker.register("sw.js").catch(() => {}); }
 </script>
 </body>
 </html>

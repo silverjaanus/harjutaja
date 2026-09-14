@@ -39,7 +39,10 @@
 
   let round = null, cur = null, G = null, kb = null;
   let advanceTimer = null, tickTimer = null, deadline = 0;
-  let boardTab = "week", competeArmed = false;
+  let boardTab = "week";
+  /* Viimase ringi vead: "Harjuta neid teisendusi" peab päriselt neid
+     harjutama, mitte lihtsalt uut ringi alustama. */
+  let lastWrong = [];
 
   const today = (d) => { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const competedToday = () => D.lastCompete === today();
@@ -100,12 +103,24 @@
   }
 
   /* ---------- ring ---------- */
-  function start(mode) {
+  function start(mode, focus) {
     HSfx.unlock();
     const test = mode === "test";
     const tase = test ? COMPETE_TASE : D.level;
     const kat = test ? "koik" : D.kat;
-    const items = pakk(tase, kat, test ? COMPETE_N : 40);
+    let items = pakk(tase, kat, test ? COMPETE_N : 40);
+    /* Sihitud ring: valed teisendused ees, aga mitte üksi — üht ülesannet
+       kaksteist korda järjest ei ole kellelegi vaja. */
+    if (!test && focus && focus.length) {
+      const seen = {}, out = focus.slice();
+      out.forEach(q => { seen[q.kysimus] = 1; });
+      const rest = items.slice().sort(() => Math.random() - 0.5);
+      for (const q of rest) {
+        if (out.length >= 8) break;
+        if (!seen[q.kysimus]) { seen[q.kysimus] = 1; out.push(q); }
+      }
+      items = out;
+    }
     if (!items.length) return;
     round = test ? new TestRound(items) : new HEngine.Round(items, D.stats, ROUND_LEN);
     G = { mode, n: 0, ok: 0, wrong: [], t0: Date.now(), tase };
@@ -174,6 +189,8 @@
 
   function answer(vastus) {
     const q = cur; if (!q || q.done) return; q.done = true;
+    /* Vastamine on teadlik jätkamine: ✕ ootel olek kaob siin. */
+    quitArm.disarm();
     stopTimer();
     if (kb) kb.lukusta();
     const test = G.mode === "test";
@@ -244,8 +261,18 @@
     $("resNextBlock").hidden = !G.wrong.length;
   }
 
+  /* Tulemuse ekraani esmane nupp: kui vigu oli, harjutab see päriselt neid
+     teisendusi. Vigadeta ringil ei ole "neid" olemas. */
+  function setAgain() {
+    lastWrong = G.wrong.slice();
+    $("againBtn").textContent = lastWrong.length ? "Harjuta neid teisendusi" : "Harjuta veel";
+  }
+
   function finish() {
-    stopTimer();
+    /* Ootel edasiliikumine tuleb tühistada: ilma selleta võis ✕ vahetult
+       pärast vastust jätta käima next()-i, mis jooksis juba tulemuse peal. */
+    stopTimer(); clearTimeout(advanceTimer); advanceTimer = null;
+    quitArm.disarm();
     const pct = G.n ? G.ok / G.n : 0;
     if (G.mode === "test") return finishCompete(pct);
     D.rounds.push({ t: Date.now(), n: G.n, ok: G.ok, level: D.level });
@@ -262,7 +289,7 @@
     const stats = $("resStats"); stats.innerHTML = "";
     statKast(stats, G.ok + " / " + G.n, "õigesti");
     naitaVead();
-    $("againBtn").textContent = "Harjuta veel";
+    setAgain();
     show("s-result");
   }
 
@@ -290,7 +317,7 @@
     statKast(stats, G.ok + " / " + G.n, "õigesti");
     statKast(stats, String(bestTest()), record ? "uus rekord" : "sinu rekord");
     naitaVead();
-    $("againBtn").textContent = "Harjuta neid teisendusi";
+    setAgain();
     show("s-result");
   }
 
@@ -443,7 +470,6 @@
 
   function renderCompete() {
     const b = $("competeBtn"), n = $("competeNote");
-    competeArmed = false;
     b.classList.remove("armed");
     if (competedToday()) {
       b.textContent = "Võistlus tehtud";
@@ -456,19 +482,15 @@
     n.textContent = COMPETE_N + " ülesannet, igale " + COMPETE_SEC + " sekundit. Võistluses on alati naaberühikud ja täisarvud, et tulemused oleksid võrreldavad.";
   }
 
-  function onCompete() {
-    if (competedToday()) return;
-    if (!competeArmed) {
-      competeArmed = true;
-      $("competeBtn").textContent = "Alustame?";
-      $("competeBtn").classList.add("armed");
-      $("competeNote").textContent = "Tulemus läheb kirja ka siis, kui ring läheb halvasti. Vajuta veel kord.";
-      return;
-    }
-    competeArmed = false;
-    $("competeBtn").classList.remove("armed");
-    start("test");
-  }
+  const competeArm = HArm($("competeBtn"), {
+    idleText: "Võistle",
+    armedText: "Alustame?",
+    note: $("competeNote"),
+    message: HArm.COMPETE_MSG,
+    enabled: () => !competedToday(),
+    action: () => start("test"),
+    onDisarm: renderCompete
+  });
 
   /* ---------- edetabel ---------- */
   function openBoard() { show("s-board"); renderBoard(); flushOutbox().then(loadBoard); }
@@ -560,6 +582,7 @@
 
   function goHome() {
     stopTimer(); clearTimeout(advanceTimer); advanceTimer = null;
+    quitArm.disarm();
     cur = null;
     $("againBtn").textContent = "Harjuta veel";
     renderTasemed(); renderKatid(); renderKaart(); renderRedel(); renderKlass();
@@ -573,7 +596,6 @@
     $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
   };
   $("startBtn").onclick = () => start("train");
-  $("competeBtn").onclick = onCompete;
   $("nextBtn").onclick = next;
   $("flagBtn").onclick = openFlag;
   $("flagCancel").onclick = closeFlag;
@@ -583,20 +605,17 @@
     sendFlag(b.dataset.why);
   });
 
-  let quitArmed = false;
-  $("quitBtn").onclick = () => {
-    if (G && G.mode === "test" && G.n && !quitArmed) {
-      quitArmed = true;
-      $("fb").textContent = "Kindel? Pooleli jäänud ring läheb ikka kirja. Vajuta ✕ veel kord.";
-      $("fb").className = "feedback bad";
-      setTimeout(() => { quitArmed = false; }, 4000);
-      return;
-    }
-    quitArmed = false;
-    if (G && G.n) finish(); else goHome();
-  };
+  /* Võistluses küsib ✕ kinnitust: pooleli jäetud ring läheb ikka kirja ja
+     päev on siis kasutatud. Kinnitust hoiab core/arm.js — nupp ise läheb
+     nähtavalt ootele ja hoiatus saab oma rea. */
+  const quitArm = HArm($("quitBtn"), {
+    note: $("quitNote"),
+    message: HArm.quitMsg("Teisendajas"),
+    needsConfirm: () => !!(G && G.mode === "test" && G.n),
+    action: () => { if (G && G.n) finish(); else goHome(); }
+  });
 
-  $("againBtn").onclick = () => start("train");
+  $("againBtn").onclick = () => start("train", lastWrong);
   $("homeBtn").onclick = goHome;
   $("joinBtn").onclick = () => HKlass.openJoin({ app: "Teisendajas", onDone: () => { renderKlass(); openBoard(); } });
   $("boardBtn").onclick = openBoard;

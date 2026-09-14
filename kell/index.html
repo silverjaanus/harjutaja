@@ -100,6 +100,9 @@
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
     <div class="track"><i id="bar"></i></div>
   </header>
+  <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
+       järgmine küsimus hoiatuse üle. -->
+  <p class="quitnote" id="quitNote" role="status" hidden></p>
   <div class="stage">
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <div id="askClock" class="askclock"></div>
@@ -160,7 +163,7 @@
     <p class="klass-line" id="bClass"></p>
     <div class="chips" role="group" aria-label="Mida võrdleme" id="bTabs">
       <button class="chip" data-t="week" aria-pressed="true">Nädal</button>
-      <button class="chip" data-t="sure" aria-pressed="false">Selged</button>
+      <button class="chip" data-t="sure" aria-pressed="false">Selged kellaajad</button>
       <button class="chip" data-t="best" aria-pressed="false">Rekord</button>
       <button class="chip" data-t="school" aria-pressed="false">Kool</button>
       <button class="chip" data-t="country" aria-pressed="false">Eesti</button>
@@ -179,6 +182,7 @@
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
 <script src="../core/engine.js"></script>
+<script src="../core/arm.js"></script>
 <script src="aeg.js"></script>
 <script src="sihverplaat.js"></script>
 <script src="tekst.js"></script>

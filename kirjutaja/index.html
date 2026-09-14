@@ -92,6 +92,9 @@
     <button class="icon-btn" id="prevBtn" aria-label="Kuula eelmist sõna" disabled>‹</button>
     <div class="track"><i id="bar"></i></div>
   </header>
+  <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
+       järgmine küsimus hoiatuse üle. -->
+  <p class="quitnote" id="quitNote" role="status" hidden></p>
   <div class="stage">
     <div class="reviewbar" id="reviewBar" hidden>
       <span id="reviewWhich">Vaatad eelmist sõna</span>
@@ -184,6 +187,7 @@
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
 <script src="../core/engine.js"></script>
+<script src="../core/arm.js"></script>
 <script src="data.js"></script>
 <script src="robot.js"></script>
 <script src="app.js"></script>

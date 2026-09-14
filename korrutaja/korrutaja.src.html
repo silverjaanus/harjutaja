@@ -39,6 +39,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .backlink:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
 .icon{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center}
 .icon svg{width:22px;height:22px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon svg [fill="currentColor"]{fill:var(--ink2)}
+.icon .off{display:none} .icon[aria-pressed="false"] .off{display:inline} .icon[aria-pressed="false"] .wave{display:none}
 .back{background:none;border:0;padding:8px 0;font:800 15px var(--fb);color:var(--acc);display:flex;align-items:center;gap:6px}
 .back svg{width:18px;height:18px;stroke:var(--acc);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 h2.title{font-family:var(--fd);font-weight:600;font-size:clamp(18px,5.8vw,26px);margin:0;text-wrap:balance;flex:1;text-align:center;min-width:0}
@@ -67,6 +69,12 @@ h2.title{font-family:var(--fd);font-weight:600;font-size:clamp(18px,5.8vw,26px);
 
 /* game */
 .gtop{display:flex;flex-direction:column;gap:8px;padding-top:4px}
+.gtopbar{display:flex;align-items:center;gap:12px}
+.gtopbar .bar{flex:1}
+.icon.x{font:800 20px var(--fb);color:var(--ink2)}
+/* Ootel ✕: laps vaatab oma sõrme, seega peab muutuma nupp ise. */
+.icon.armed{background:var(--bad);border-color:var(--bad);color:#fff}
+.quitnote{margin:0;padding:10px 12px;border-radius:12px;background:var(--bad-soft);border:1.5px solid var(--bad);color:var(--bad-ink);font:700 15px var(--fb);line-height:1.4}
 .bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:var(--acc);border-radius:4px;transition:width .25s linear}
 .gmeta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--ink2);font-weight:800}
@@ -306,6 +314,9 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <header class="top">
     <div class="brand">Korrutaja</div>
     <div class="hbtns">
+    <!-- Heliefektide lüliti on päises nagu teistes moodulites. Seadetes on ta
+         alles: seal saab eraldi ka taustamuusika, mida mujal ei ole. -->
+    <button class="icon" id="btnSfx" aria-pressed="true" aria-label="Heliefektid"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
     <button class="icon" id="btnInfo" aria-label="Kuidas see töötab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></button>
     <button class="icon" id="btnSettings" aria-label="Seaded"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
@@ -342,7 +353,7 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <p class="numhint" id="numHint">Harjutamises küsitakse ainult neid tabeleid. Võistlus on alati kõigist.</p>
   <div class="menu">
     <button class="btn primary" id="btnTrain">Harjuta <small id="trainMeta">3 min</small></button>
-    <button class="btn" id="btnTest">Võistle <small id="testMeta">25 korrutamist · korra päevas</small></button>
+    <button class="btn" id="btnTest"><span id="testLabel">Võistle</span> <small id="testMeta">25 korrutamist · korra päevas</small></button>
     <div class="row2">
       <button class="btn" id="btnTable">Korrutustabel <small>vaata ja korda</small></button>
       <button class="btn" id="btnHeat">Vaata tulemusi <small>mis on peas</small></button>
@@ -501,8 +512,16 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <!-- GAME -->
 <section class="screen" id="s-game">
   <div class="gtop">
-    <div class="bar"><i id="roundBar"></i></div>
-    <div class="gmeta"><span>Punkte <b id="gScore">0</b></span><span>Seeria <b id="gStreak">0</b></span><button class="quit" id="gQuit">Lõpeta</button></div>
+    <!-- Ringi lõpetamine on ✕ päises vasakul, nagu Kirjutajas, Kellas ja
+         Teisendajas. Varem oli siin allajoonitud tekstlink punktiloenduri
+         kõrval: kitsas puutesihtmärk täpselt seal, kuhu laps punkte vaadates
+         sõrme viib. -->
+    <div class="gtopbar">
+      <button class="icon x" id="gQuit" aria-label="Lõpeta ring">✕</button>
+      <div class="bar"><i id="roundBar"></i></div>
+    </div>
+    <p class="quitnote" id="quitNote" role="status" hidden></p>
+    <div class="gmeta"><span>Punkte <b id="gScore">0</b></span><span>Seeria <b id="gStreak">0</b></span></div>
   </div>
   <div class="stage" id="stage">
     <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-bg" cx="60" cy="60" r="54"/><circle class="ring-fg" id="ringFg" cx="60" cy="60" r="54"/></svg>
@@ -1012,8 +1031,9 @@ function renderHome(){
   $('trainMeta').textContent=D.settings.round+' min'+(D.settings.calm?' · rahulik':'')+(selTables()?' · tabelid '+selLabel():'');
   var done=competedToday();
   $('btnTest').classList.toggle('done',done);
+  $('btnTest').classList.remove('armed');
+  $('testLabel').textContent='Võistle';
   $('testMeta').textContent=done?'tehtud · homme uuesti':'25 korrutamist · korra päevas';
-  testArmed=false;
   $('btnBoard').hidden=!(sbOn()&&D.cls);
   $('btnJoin').hidden=!(sbOn()&&!D.cls);
   if(D.cls)$('boardMeta').textContent=D.cls.class_name+(D.outbox.length?' · saatmata '+D.outbox.length:'');
@@ -1050,19 +1070,19 @@ $('wmGo').onclick=function(){
   startGame('train');
 };
 function competedToday(){return D.lastCompete===today();}
-var testArmed=false;
-$('btnTest').onclick=function(){
-  if(competedToday()){
-    $('testMeta').textContent='Tänane võistlus on tehtud. Homme saad uuesti.';
-    return;
-  }
-  if(!testArmed){
-    testArmed=true;
-    $('testMeta').textContent='Tulemus läheb kirja. Vajuta veel kord';
-    return;
-  }
-  testArmed=false;startGame('test');
-};
+/* Võistluse alustamine käib sama kinnitusmustriga nagu teistes moodulites:
+   nupu silt muutub „Alustame?" ja selgitus tuleb nupu alla. */
+var testArm=HArm($('btnTest'),{
+  label:$('testLabel'),
+  idleText:'Võistle',
+  armedText:'Alustame?',
+  note:$('testMeta'),
+  message:HArm.COMPETE_MSG,
+  enabled:function(){return !competedToday();},
+  onBlocked:function(){$('testMeta').textContent='Tänane võistlus on juba tehtud. Homme saad uuesti.';},
+  action:function(){startGame('test');},
+  onDisarm:renderHome
+});
 
 /* ---------- game ---------- */
 var G=null,raf=null;
@@ -1079,7 +1099,7 @@ function startGame(mode){
     G.testList=pool.slice(0,25);
   }
   $('gScore').textContent='0';$('gStreak').textContent='0';$('roundBar').style.width='0%';
-  quitArmed=false;$('gQuit').textContent='Lõpeta';
+  quitArm.disarm();
   $('stage').classList.toggle('calm',isCalm());
   show('s-game');
   if(mode==='train'&&D.settings.music)musicOn();
@@ -1125,7 +1145,7 @@ function nextQuestion(){
   }
   G.cur=makeQuestion(f,op);
   G.recent.push(f.key);if(G.recent.length>2)G.recent.shift();
-  if(quitArmed){quitArmed=false;$('gQuit').textContent='Lõpeta';}
+  quitArm.disarm();   /* uus tehe = laps otsustas jätkata */
   var st=$('stage');st.classList.remove('ok','bad','late');
   $('tipmsg').classList.remove('on');
   $('qText').textContent=G.cur.q;
@@ -1219,7 +1239,7 @@ function showIntro(f,op){
   if(raf)cancelAnimationFrame(raf);
   G.introFact=f;G.introOp=op;G.lastIntroQi=G.qi;
   G.recent.push(f.key);if(G.recent.length>2)G.recent.shift();
-  if(quitArmed){quitArmed=false;$('gQuit').textContent='Lõpeta';}
+  quitArm.disarm();   /* uus tehe = laps otsustas jätkata */
   var st=$('stage');st.classList.remove('ok','bad','late');
   var ans;
   if(op==='div'){
@@ -1269,19 +1289,21 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='Backspace')typeKey('bs');
   else if(e.key==='Escape')quitGame();
 });
-var quitArmed=false;
-function quitGame(){
+/* Kinnitust hoiab core/arm.js, sama mis teistes moodulites: nupp ise läheb
+   nähtavalt ootele ja hoiatus saab oma rea. Ootel olek kaob siis, kui laps
+   vastab järgmisele tehtele — vt nextQuestion(). */
+function quitNow(){
   if(!G){renderHome();show('s-home');return;}
-  if(G.mode==='test'&&G.n>0&&!quitArmed){
-    quitArmed=true;
-    $('gQuit').textContent='Kindel? Lõpeta';
-    $('fbmsg').textContent='Poolik tulemus läheb kirja – täna uut ei saa.';
-    return;
-  }
   if(raf)cancelAnimationFrame(raf);
   if(G.n>0){endGame();}else{musicOff();G=null;renderHome();show('s-home');}
 }
-$('gQuit').onclick=quitGame;
+var quitArm=HArm($('gQuit'),{
+  note:$('quitNote'),
+  message:HArm.quitMsg('Korrutajas'),
+  needsConfirm:function(){return !!(G&&G.mode==='test'&&G.n>0);},
+  action:quitNow
+});
+function quitGame(){ $('gQuit').click(); }
 document.addEventListener('visibilitychange',function(){
   if(!G||!$('s-game').classList.contains('on'))return;
   if(document.hidden){
@@ -1486,8 +1508,11 @@ function showResults(R,P){
   $('rOk').textContent=R.ok+' / '+R.n;
   $('rPts').textContent=R.score;
   $('rAvg').textContent=(R.n?fmt(R.tsum/R.n):'0')+' s';
-  $('rAgain').textContent=test?'Harjuta veel':'Veel üks ring';
-  $('rAgain').onclick=function(){startGame(test?'train':R.mode);};
+  /* Sama silt kõigis moodulites. Sihitud silti („Harjuta neid tehteid") siin
+     ei ole: Korrutaja harjutusring on ajapõhine ja toob raskeid tehteid ise
+     tagasi, seega lubaks selline silt midagi, mida nupp ei tee. */
+  $('rAgain').textContent='Harjuta veel';
+  $('rAgain').onclick=function(){startGame('train');};
   $('rSync').textContent='';
   show('s-result');
   if((milestone&&!test)||record||(test&&R.ok===25)){confetti();sfxTada();}
@@ -1603,7 +1628,14 @@ $('inName').addEventListener('input',function(){D.settings.name=this.value;save(
 $('segLimit').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.limit=+b.dataset.v;save();seg('segLimit',D.settings.limit);});
 $('segRound').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.round=+b.dataset.v;save();seg('segRound',D.settings.round);});
 $('segCalm').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.calm=b.dataset.v==='1';save();seg('segCalm',D.settings.calm?1:0);});
-$('segSfx').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.sfx=b.dataset.v==='1';save();seg('segSfx',D.settings.sfx?1:0);if(D.settings.sfx)sfxCorrect();});
+$('btnSfx').setAttribute('aria-pressed',D.settings.sfx?'true':'false');
+$('btnSfx').onclick=function(){
+  D.settings.sfx=!D.settings.sfx;save();
+  $('btnSfx').setAttribute('aria-pressed',D.settings.sfx?'true':'false');
+  seg('segSfx',D.settings.sfx?1:0);
+  if(D.settings.sfx)sfxCorrect();
+};
+$('segSfx').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.sfx=b.dataset.v==='1';save();seg('segSfx',D.settings.sfx?1:0);$('btnSfx').setAttribute('aria-pressed',D.settings.sfx?'true':'false');if(D.settings.sfx)sfxCorrect();});
 $('segMusic').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;D.settings.music=b.dataset.v==='1';save();seg('segMusic',D.settings.music?1:0);if(D.settings.music){if(G&&G.mode==='train')musicOn();else{var c=ac();if(c){musicOn();setTimeout(musicOff,8000);}}}else musicOff();});
 var resetArmed=false;
 $('btnReset').onclick=function(){
@@ -1766,5 +1798,11 @@ renderHome();
 if(invite&&sbOn()&&!(D.cls&&D.cls.code===invite.code))openClass(invite);
 if(sbOn()&&D.cls&&D.outbox.length)flush();
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&sbOn()&&D.cls&&D.outbox.length)flush();});
+
+/* Juure service worker. Oma sw-d Korrutajal ei ole ega tohi olla (vt build.py),
+   aga registreerida ta selle tuleb: varem tegid seda ainult Kirjutaja ja Kell
+   ning laps, kes mängis ainult Korrutajat, ei saanud midagi vahemällu — äpp
+   oli võrgu kadumisel läbi. Juure sw.js hoiab kõiki mooduleid. */
+if('serviceWorker' in navigator){navigator.serviceWorker.register('../sw.js').catch(function(){});}
 })();
 </script>

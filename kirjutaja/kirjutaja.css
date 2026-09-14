@@ -18,6 +18,10 @@ body{margin:0;color:var(--ink);font-family:var(--body);font-size:17px;line-heigh
 .back{color:var(--ink);font-weight:800;text-decoration:none;background:var(--paper);padding:6px 4px}
 .icon-btn{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--edge);background:var(--card);color:var(--ink);font:inherit;font-size:20px;display:grid;place-items:center;cursor:pointer}
 #s-game .icon-btn{margin-left:0}
+/* Ootel ✕: laps vaatab oma sõrme, seega peab muutuma nupp ise, mitte ainult
+   tekst mujal ekraanil. */
+.icon-btn.armed{background:var(--bad);border-color:var(--bad);color:#fff}
+.quitnote{margin:0 0 4px;padding:10px 12px;border-radius:12px;background:var(--bad-bg);border:1.5px solid var(--bad);color:var(--bad);font-weight:700;font-size:15.5px;line-height:1.4}
 .icon-btn .off{display:none} .icon-btn[aria-pressed="false"] .off{display:inline} .icon-btn[aria-pressed="false"] .wave{display:none}
 /* Robot on joonelisele lehele joonistatud, seega tema taha jooned jaavad.
    Paberilaik kaib ainult teksti alla, et jooned tahtedest labi ei jookseks. */
