@@ -152,10 +152,8 @@ h2.title{font-family:var(--fd);font-weight:600;font-size:clamp(18px,5.8vw,26px);
 .card h3{font-family:var(--fd);font-weight:600;font-size:20px;margin:0 0 10px}
 .card p{margin:0 0 10px}
 .in{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:700 17px var(--fb);color:var(--ink);background:var(--card);margin-bottom:10px;-webkit-user-select:text;user-select:text}
-.in.code{font-family:var(--fd);letter-spacing:.18em;text-transform:uppercase;font-size:24px;text-align:center;font-weight:600}
 .btn.small{padding:14px 16px;font-size:17px;width:100%}
 .err{color:var(--bad-ink);font-weight:700;font-size:14px;min-height:20px;margin:0 0 8px}
-.codebig{font-family:var(--fd);font-size:44px;letter-spacing:.2em;text-align:center;color:var(--acc);margin:12px 0 6px;font-weight:600}
 .link{background:none;border:0;color:var(--acc);font:800 15px var(--fb);padding:10px 0 2px;text-decoration:underline}
 .tabs{display:flex;gap:6px;margin-bottom:10px}
 .tab{flex:1;border:0;background:var(--line);border-radius:10px;padding:10px 0;font:800 14px var(--fb);color:var(--ink2)}
@@ -201,20 +199,12 @@ h2.title{font-family:var(--fd);font-weight:600;font-size:clamp(18px,5.8vw,26px);
 .info .lead{font-size:16px;color:var(--ink2);margin-top:4px}
 .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px}
 
-.card.invite{background:var(--acc-soft);border-color:var(--acc)}
-.card.invite h3{color:var(--acc);margin-bottom:6px}
 .card .note{background:var(--warn-soft);color:var(--warn-ink);border-radius:12px;padding:12px 14px;font-weight:700;font-size:14px;line-height:1.5;margin:0 0 12px}
 .card .note b{font-weight:800}
 .in.shbox{font-family:var(--fb);font-size:13px;font-weight:600;letter-spacing:0;text-align:left;color:var(--ink2)}
 .row2 .btn{font-size:16px;padding:14px 12px}
 .row2 .btn>span{white-space:nowrap}
-.gradeRow{display:grid;grid-template-columns:1fr 90px;gap:10px}
-.gradeRow select.in,.gradeRow input.in{margin-bottom:0}
 select.in{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235A5D78' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:36px}
-.suggest{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 10px}
-.suggest button{border:1.5px solid var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:999px;padding:7px 12px;font:700 14px var(--fb);text-align:left}
-.preview{color:var(--ink2);font-weight:700;font-size:14px;margin:0 0 10px;min-height:20px}
-.preview b{color:var(--acc);font-family:var(--fd);font-weight:600;font-size:16px}
 .btn.done{opacity:.55}
 .lead2{color:var(--ink2);font-weight:600;font-size:14px;line-height:1.5;margin:0 0 12px}
 .quick{padding-bottom:12px}
@@ -562,57 +552,6 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button class="btn" id="rHome">Koju</button>
   </div>
   <p class="sync" id="rSync"></p>
-</section>
-
-<!-- CLASS: join / create -->
-<section class="screen" id="s-class">
-  <header class="top"><button class="back" id="cBack"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Koju</button><h2 class="title">Klass</h2><span style="width:60px"></span></header>
-  <div class="card invite" id="jInvite" hidden>
-    <h3 id="jInviteName">Kutse klassiga liituma</h3>
-    <p class="muted" style="margin:0">Kood on all juba täidetud. Kirjuta oma nimi ja vajuta „Liitu“. Vale klass? Kirjuta kood lihtsalt üle.</p>
-  </div>
-  <div class="card">
-    <h3>Liitu klassiga</h3>
-    <p class="note" id="jWarn" hidden></p>
-    <input class="in code" id="jCode" maxlength="6" placeholder="KOOD" autocapitalize="characters" autocomplete="off" spellcheck="false" inputmode="text">
-    <input class="in" id="jNick" maxlength="16" placeholder="Sinu nimi või hüüdnimi" autocomplete="off">
-    <p class="err" id="jErr"></p>
-    <button class="btn primary small" id="jGo">Liitu</button>
-    <button class="link" id="jRestoreToggle">Mul on juba konto teises telefonis</button>
-    <div id="jRestore" hidden>
-      <p class="muted">Sisesta ülal klassikood ja hüüdnimi ning siia vana telefoni seadetes olev taastekood.</p>
-      <input class="in code" id="jSecret" maxlength="8" placeholder="TAASTEKOOD" autocapitalize="characters" autocomplete="off" spellcheck="false">
-      <button class="btn small" id="jRestoreGo">Taasta konto</button>
-    </div>
-  </div>
-  <div class="card">
-    <h3>Loo uus</h3>
-    <p class="muted">Õpetajale või lapsevanemale. Saad koodi, mille jagad teistele.</p>
-    <div class="chips" id="cKind" style="margin-bottom:14px">
-      <button class="chip on" data-kind="class">Kooliklass</button>
-      <button class="chip" data-kind="team">Tiim</button>
-    </div>
-    <div id="cClassFields">
-      <input class="in" id="cSchool" maxlength="60" placeholder="Kooli nimi" autocomplete="off">
-      <div class="suggest" id="cSuggest" hidden></div>
-      <div class="gradeRow">
-        <select class="in" id="cGrade"></select>
-        <input class="in" id="cLetter" maxlength="1" placeholder="A" autocapitalize="characters" autocomplete="off" spellcheck="false" style="text-align:center">
-      </div>
-    </div>
-    <div id="cTeamFields" hidden>
-      <input class="in" id="cName" maxlength="40" placeholder="nt Mia sõbrad" autocomplete="off">
-      <p class="muted" style="font-size:14px">Tiim võistleb ainult omavahel. Kooli- ja klassivõrdlusse ta ei lähe.</p>
-    </div>
-    <p class="preview" id="cPreview"></p>
-    <p class="err" id="cErr"></p>
-    <button class="btn small" id="cGo">Loo</button>
-    <div id="cDone" hidden><div class="codebig" id="cCode"></div><p class="muted" style="text-align:center">Jaga see kood klassile. Kood on nüüd ka ülal liitumise lahtris.</p>
-      <button class="btn small share" id="cShare"><svg viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M12 3v13M8 7l4-4 4 4"/></svg>Jaga kutset</button>
-      <input class="in shbox" id="cShareBox" readonly hidden style="margin-top:8px">
-    </div>
-  </div>
-  <p class="hint">Edetabelisse läheb ainult hüüdnimi ja harjutamise arv. Päris nime, e-posti ega parooli ei küsita.</p>
 </section>
 
 <!-- LEADERBOARD -->
@@ -1700,110 +1639,29 @@ function flush(cb){
   })
   .catch(function(){flushing=false;setSync('Võrku pole – saadan hiljem, kui võrk on tagasi.');renderHome();if(cb)cb();});
 }
-var ERR={code:'Sellist koodi pole.',nick:'Nimi peab olema 2–16 märki.',taken:'See nimi on juba võetud. Vali teine.',name:'Nimi peab olema vähemalt 2 märki.',school:'Kooli nimi peab olema vähemalt 2 märki.',grade:'Vali klassiaste.',letter:'Klassi täht peab olema üks täht, näiteks A.',auth:'Kood, nimi või taastekood ei klapi.',done_today:'Tänane võistlus on juba tehtud.',net:'Võrku pole või server ei vasta.'};
-$('btnJoin').onclick=function(){openClass(null);};
-$('cBack').onclick=function(){renderHome();show('s-home');};
-$('jRestoreToggle').onclick=function(){$('jRestore').hidden=!$('jRestore').hidden;};
+/* Klassiga liitumine, konto taastamine ja uue grupi loomine elavad ühises
+   core/klass.js-is (HKlass.openJoin) – sama ekraan on Kirjutajas ja Kellas.
+   Korrutaja oma jäi siia ainult selles osas, mis on tal päriselt oma:
+   kuhu tulemus jõuab ja kuidas taastatud seis üle võetakse. */
 function setCls(r){
-  $('jInvite').hidden=true;$('jWarn').hidden=true;$('jNick').value='';
   D.cls={player_id:r.player_id,secret:r.secret,class_id:r.class_id,class_name:r.class_name,code:r.code,nick:r.nick};
   if(window.HKlass)HKlass.set(D.cls);
   if(!D.settings.name)D.settings.name=r.nick;
   D.board=null;save();
 }
-$('jGo').onclick=function(){
-  var code=$('jCode').value.trim().toUpperCase(),nick=$('jNick').value.trim(),b=this;
-  $('jErr').textContent='';
-  if(code.length!==6){$('jErr').textContent='Kood on 6 märki.';return;}
-  if(nick.length<2){$('jErr').textContent=ERR.nick;return;}
-  b.disabled=true;
-  rpc('join_class',{p_code:code,p_nick:nick}).then(function(r){
-    b.disabled=false;
-    if(r.error){$('jErr').textContent=ERR[r.error]||'Ei õnnestunud.';return;}
-    setCls(r);openBoard();
-  }).catch(function(){b.disabled=false;$('jErr').textContent=ERR.net;});
-};
-$('jRestoreGo').onclick=function(){
-  var code=$('jCode').value.trim().toUpperCase(),nick=$('jNick').value.trim(),sec=$('jSecret').value.trim().toUpperCase(),b=this;
-  $('jErr').textContent='';
-  if(code.length!==6||nick.length<2||sec.length!==8){$('jErr').textContent='Täida klassikood, hüüdnimi ja 8-märgiline taastekood.';return;}
-  b.disabled=true;
-  rpc('restore_player',{p_code:code,p_nick:nick,p_secret:sec}).then(function(r){
-    b.disabled=false;
-    if(r.error){$('jErr').textContent=ERR[r.error]||'Ei õnnestunud.';return;}
-    setCls(r);
-    if(r.state&&r.state.total&&(r.state.total.n||0)>(D.total.n||0)){applyState(r.state);save();}
-    openBoard();
-  }).catch(function(){b.disabled=false;$('jErr').textContent=ERR.net;});
-};
-var cKind='class';
-(function(){
-  var g=$('cGrade');
-  for(var i=1;i<=12;i++){var o=document.createElement('option');o.value=i;o.textContent=i+'. klass';g.appendChild(o);}
-  g.value=3;
-})();
-$('cKind').addEventListener('click',function(e){
-  var b=e.target.closest('.chip');if(!b)return;
-  cKind=b.dataset.kind;
-  var ch=this.children;for(var i=0;i<ch.length;i++)ch[i].classList.toggle('on',ch[i].dataset.kind===cKind);
-  $('cClassFields').hidden=cKind!=='class';
-  $('cTeamFields').hidden=cKind==='class';
-  $('cErr').textContent='';cPreview();
-});
-function cPreview(){
-  var p=$('cPreview');
-  if(cKind==='team'){var n=$('cName').value.trim();p.innerHTML=n?'Nimeks tuleb <b>'+esc(n)+'</b>':'';return;}
-  var sc=$('cSchool').value.trim().replace(/\s+/g,' '),gr=$('cGrade').value,lt=$('cLetter').value.trim().toUpperCase();
-  p.innerHTML=sc.length>=2?('Nimeks tuleb <b>'+esc(sc+' '+gr+lt)+'</b>'):'';
+function openClass(inv){
+  if(!window.HKlass)return;
+  HKlass.openJoin({
+    code:inv?inv.code:'',name:inv?inv.name:'',app:'Korrutajas',
+    onDone:function(cls,r){
+      setCls(r);
+      /* Taastamine toob kaasa vana telefoni seisu, kui see on siinsest suurem. */
+      if(r&&r.state&&r.state.total&&(r.state.total.n||0)>(D.total.n||0)){applyState(r.state);save();}
+      openBoard();
+    }
+  });
 }
-['cSchool','cLetter','cName'].forEach(function(id){$(id).addEventListener('input',cPreview);});
-$('cGrade').addEventListener('change',cPreview);
-$('cLetter').addEventListener('input',function(){this.value=this.value.toUpperCase();});
-
-var sugT=null;
-$('cSchool').addEventListener('input',function(){
-  var q=this.value.trim();
-  if(sugT)clearTimeout(sugT);
-  if(q.length<2||!sbOn()){$('cSuggest').hidden=true;return;}
-  sugT=setTimeout(function(){
-    rpc('school_suggest',{p_q:q}).then(function(list){
-      var box=$('cSuggest');box.innerHTML='';
-      if(!list||!list.length){box.hidden=true;return;}
-      list.forEach(function(nm){
-        var b=document.createElement('button');b.type='button';b.textContent=nm;
-        b.onclick=function(){$('cSchool').value=nm;box.hidden=true;cPreview();};
-        box.appendChild(b);
-      });
-      box.hidden=false;
-    }).catch(function(){$('cSuggest').hidden=true;});
-  },300);
-});
-document.addEventListener('click',function(e){
-  var box=$('cSuggest');
-  if(box&&!box.hidden&&e.target!==$('cSchool')&&!e.target.closest('#cSuggest'))box.hidden=true;
-});
-
-$('cGo').onclick=function(){
-  var b=this;$('cErr').textContent='';
-  var args;
-  if(cKind==='team'){
-    var name=$('cName').value.trim();
-    if(name.length<2){$('cErr').textContent=ERR.name;return;}
-    args={p_kind:'team',p_school:null,p_grade:null,p_letter:null,p_name:name};
-  }else{
-    var sc=$('cSchool').value.trim();
-    if(sc.length<2){$('cErr').textContent=ERR.school;return;}
-    args={p_kind:'class',p_school:sc,p_grade:parseInt($('cGrade').value,10),p_letter:$('cLetter').value.trim(),p_name:null};
-  }
-  b.disabled=true;
-  rpc('create_group',args).then(function(r){
-    b.disabled=false;
-    if(r.error){$('cErr').textContent=ERR[r.error]||'Ei õnnestunud.';return;}
-    $('cCode').textContent=r.code;$('cDone').hidden=false;$('jCode').value=r.code;$('cSuggest').hidden=true;
-    $('cShare').dataset.gname=r.name;
-  }).catch(function(){b.disabled=false;$('cErr').textContent=ERR.net;});
-};
-
+$('btnJoin').onclick=function(){openClass(null);};
 /* ---------- jagamine: kutselink ---------- */
 function inviteUrl(code,name){return location.origin+location.pathname+'#k='+encodeURIComponent(code)+(name?'&n='+encodeURIComponent(name):'');}
 function inviteText(code,name){return 'Tule harjuta minuga korrutustabelit Korrutajas!'+(name?'\nKlass: '+name:'')+'\nKlassikood: '+code;}
@@ -1822,7 +1680,6 @@ function armShare(id,boxId,get){
   b.onclick=function(){var v=get();doShare(b,boxId,v.code,v.name);};
 }
 armShare('bShare','bShareBox',function(){return D.cls?{code:D.cls.code,name:D.cls.class_name}:{code:'',name:''};});
-armShare('cShare','cShareBox',function(){return {code:$('cCode').textContent.trim(),name:$('cShare').dataset.gname||''};});
 
 function readInvite(){
   var h=location.hash||'';var m=h.match(/[#&]k=([A-Za-z0-9]{4,8})/);
@@ -1831,23 +1688,6 @@ function readInvite(){
   if(n){try{name=decodeURIComponent(n[1].replace(/\+/g,' '));}catch(e){name='';}}
   return {code:m[1].toUpperCase(),name:name.slice(0,40)};
 }
-function openClass(inv){
-  $('jErr').textContent='';$('cErr').textContent='';
-  $('bShareBox').hidden=true;$('cShareBox').hidden=true;
-  $('jInvite').hidden=!inv;
-  if(inv){
-    $('jCode').value=inv.code;
-    $('jInviteName').textContent=inv.name?('Kutse klassi „'+inv.name+'“'):'Kutse klassiga liituma';
-  }
-  var w=$('jWarn');
-  if(D.cls){
-    w.hidden=false;
-    w.innerHTML='Oled juba grupis <b>'+esc(D.cls.class_name)+'</b>. Uuega liitumine alustab seal nullist ja siinsed nädalapunktid jäävad vanasse. Peas olevad tehted ja rekord tulevad kaasa. Tagasi pääsed taastekoodiga <b>'+esc(D.cls.secret)+'</b> – kirjuta see üles.';
-  }else{w.hidden=true;w.innerHTML='';}
-  show('s-class');
-  if(inv)setTimeout(function(){try{$('jNick').focus();}catch(e){}},250);
-}
-
 var boardTab='week';
 function openBoard(){renderHome();show('s-board');renderBoard();flush(loadBoard);}
 function loadBoard(){
