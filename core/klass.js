@@ -113,7 +113,7 @@
     auth: 'Kood, nimi või taastekood ei klapi.',
     done_today: 'Tänane võistlus on juba tehtud.',
     input: 'Midagi oli vormis valesti.',
-    net: 'Internetti pole või server ei vasta.'
+    net: 'Võrku pole või server ei vasta.'
   };
 
   /* Uue klassi või tiimi loomine. Loob ainult grupi — liitumine käib eraldi,
@@ -144,13 +144,32 @@
     });
   }
 
+  /* „Midagi on valesti" – lapse märge mängu seest.
+     Kontekst tuleb kaasa ise, sest laps ei kirjelda viga ise. Mängija
+     identiteet on valikuline: ka klassita laps peab saama märkida.
+     p = {module, kind: 'sona'|'ulesanne'|'muu', item, detail, note, version} */
+  function issue(p) {
+    if (!online()) return Promise.resolve({ error: 'net' });
+    var c = current();
+    return rpc('report_issue', {
+      p_module: p.module, p_kind: p.kind || 'muu',
+      p_item: p.item || null, p_detail: p.detail || null, p_note: p.note || null,
+      p_player_id: c ? c.player_id : null, p_secret: c ? c.secret : null,
+      p_version: p.version || null
+    });
+  }
+
   /* ---------- liitumisekraan ----------
      Joonistab end ise ja toob oma laadi kaasa, nii et moodul ei pea selle
-     jaoks HTML-i ega CSS-i hoidma. Korrutajal on praegu veel oma vana ekraan;
-     see on teadlik dubleerimine, mille saab hiljem ära koristada. */
+     jaoks HTML-i ega CSS-i hoidma. Sama ekraan teenindab kõiki mooduleid:
+     liitumine koodiga, konto taastamine, uue klassi või tiimi loomine ja
+     kutselingi jagamine. Korrutajal oli 14. septembrini oma ekraan; selle
+     head küljed (koolisoovitus, nime eelvaade, kutsekaart, hoiatus vana
+     grupi kohta, jagamisnupp) kolisid siia ja Korrutaja oma kadus. */
   var CSS = [
     '.hk-wrap{position:fixed;inset:0;z-index:60;background:rgba(22,40,74,.45);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px}',
     '.hk-card{background:#fff;color:#16284a;border-radius:18px;max-width:420px;width:100%;margin:auto;padding:22px 20px 20px;position:relative;box-shadow:0 18px 50px rgba(22,40,74,.25);font:inherit}',
+    '.hk-card [hidden]{display:none!important}',
     '.hk-card h2{margin:0 0 6px;font-size:1.25rem}',
     '.hk-lead{margin:0 0 14px;color:#4a5a76;font-size:.92rem;line-height:1.45}',
     '.hk-card label{display:block;margin:10px 0;font-weight:700;font-size:.86rem}',
@@ -163,7 +182,19 @@
     '.hk-err{margin:10px 0 0;color:#b3261e;font-weight:700;font-size:.88rem}',
     '.hk-more{margin-top:14px;border-top:1px solid #eef1f6;padding-top:10px}',
     '.hk-more summary{cursor:pointer;font-weight:700;font-size:.88rem;color:#4a5a76}',
-    '.hk-note{margin:14px 0 0;font-size:.8rem;line-height:1.5;color:#6b7891}'
+    '.hk-note{margin:14px 0 0;font-size:.8rem;line-height:1.5;color:#6b7891}',
+    '.hk-invite{margin:0 0 12px;padding:12px 14px;border:2px solid #f3c445;border-radius:14px;background:#fff7e3}',
+    '.hk-invite h3{margin:0 0 4px;font-size:1rem}',
+    '.hk-invite p{margin:0;font-size:.86rem;line-height:1.45;color:#4a5a76}',
+    '.hk-warn{margin:12px 0 0;padding:11px 12px;border-radius:12px;background:#fff7e3;color:#5b4a1f;font-size:.84rem;line-height:1.5}',
+    '.hk-chips{display:flex;gap:8px;margin:10px 0}',
+    '.hk-chip{flex:1;padding:9px;font:inherit;font-weight:700;font-size:.88rem;border:2px solid #d8dfea;border-radius:11px;background:#fff;color:#16284a;cursor:pointer}',
+    '.hk-chip.on{border-color:#16284a;background:#16284a;color:#fff}',
+    '.hk-sug{margin-top:-4px;border:2px solid #d8dfea;border-radius:11px;background:#fff;max-height:168px;overflow:auto}',
+    '.hk-sug button{display:block;width:100%;padding:9px 12px;font:inherit;font-size:.9rem;text-align:left;border:0;background:none;color:#16284a;cursor:pointer}',
+    '.hk-sug button:hover{background:#eef1f6}',
+    '.hk-preview{margin:10px 0 0;font-size:.86rem;font-weight:700;color:#4a5a76}',
+    '.hk-code{margin:14px 0 6px;text-align:center;font-weight:800;font-size:1.9rem;letter-spacing:.14em;color:#16284a}'
   ].join('');
 
   function styles() {
@@ -189,10 +220,27 @@
     return { label: l, input: i };
   }
 
-  /* openJoin({onDone: fn(cls)}) */
+  /* Kutselink viib samasse moodulisse, kus kutsuja parajasti on.
+     app on mooduli nimi seesütlevas ('Korrutajas'), sest see läheb lausesse. */
+  function invite(code, name, app) {
+    var url = location.origin + location.pathname + '#k=' + encodeURIComponent(code) +
+      (name ? '&n=' + encodeURIComponent(name) : '');
+    var text = 'Tule harjuta minuga ' + (app || 'Harjutajas') + '!' +
+      (name ? '\nGrupp: ' + name : '') + '\nKlassikood: ' + code;
+    return { url: url, text: text };
+  }
+
+  /* openJoin({code, name, app, onDone})
+       code    kutselingist tulnud klassikood, mis pannakse lahtrisse ette
+       name    kutsutud grupi nimi, kui kutselink selle kaasa andis
+       app     mooduli nimi seesütlevas jagamistekstis, nt 'Korrutajas'
+       onDone  fn(cls, r) - cls on salvestatud identiteet, r serveri vastus
+               (taastamisel on seal ka state, mille moodul võib üle võtta) */
   function openJoin(opts) {
     opts = opts || {};
     styles();
+    var app = opts.app || 'Harjutajas';
+    var cur = current();
 
     var wrap = el('div', 'hk-wrap');
     var card = el('div', 'hk-card');
@@ -203,14 +251,34 @@
     card.appendChild(x);
 
     card.appendChild(el('h2', null, 'Liitu klassiga'));
+
+    if (opts.code) {
+      var inv = el('div', 'hk-invite');
+      inv.appendChild(el('h3', null, opts.name ? ('Kutse klassi „' + opts.name + '“') : 'Kutse klassiga liituma'));
+      inv.appendChild(el('p', null, 'Kood on all juba kirjas. Kirjuta oma hüüdnimi ja vajuta „Liitu“. Vale klass? Kustuta kood ja kirjuta uus.'));
+      card.appendChild(inv);
+    }
+
     card.appendChild(el('p', 'hk-lead',
-      'Klassikoodis on kuus märki. Selle annab õpetaja või sõber. Sama klass on sul kõigis Harjutaja mängudes.'));
+      'Klassikoodis on kuus märki. Selle annab õpetaja või sõber. Sama klass kehtib kõigis Harjutaja mängudes.'));
 
     var code = field('Klassikood', { maxlength: '6', autocapitalize: 'characters', autocomplete: 'off', spellcheck: 'false' });
     var nick = field('Sinu hüüdnimi', { maxlength: '16', autocomplete: 'off' });
-    if (opts.code) code.input.value = opts.code;    // kutselingist tulnud kood
+    if (opts.code) code.input.value = opts.code;
     card.appendChild(code.label);
     card.appendChild(nick.label);
+
+    /* Vana grupi hoiatus: uue grupiga liitumine alustab seal nullist ja
+       ainus tee tagasi on taastekood, seega see peab silma jääma. */
+    if (cur && cur.class_name) {
+      var warn = el('p', 'hk-warn');
+      warn.appendChild(document.createTextNode('Oled juba grupis '));
+      warn.appendChild(el('b', null, cur.class_name));
+      warn.appendChild(document.createTextNode('. Uues grupis alustad nullist: selle nädala punktid jäävad vanasse gruppi, aga seni õpitu ja rekord tulevad kaasa. Vanasse gruppi saad tagasi taastekoodiga '));
+      warn.appendChild(el('b', null, cur.secret));
+      warn.appendChild(document.createTextNode(' – kirjuta see üles.'));
+      card.appendChild(warn);
+    }
 
     var err = el('p', 'hk-err');
     err.hidden = true;
@@ -221,11 +289,7 @@
 
     function fail(msg) { err.textContent = msg; err.hidden = false; }
     function busy(b, btn, label) { btn.disabled = b; btn.textContent = b ? 'Hetk…' : label; }
-
-    function done(cls) {
-      close();
-      if (opts.onDone) opts.onDone(cls);
-    }
+    function done(r) { close(); if (opts.onDone) opts.onDone(read(), r); }
 
     go.onclick = function () {
       err.hidden = true;
@@ -235,16 +299,16 @@
       busy(true, go, 'Liitu');
       join(c, n).then(function (r) {
         busy(false, go, 'Liitu');
-        if (r && r.error) return fail(ERR[r.error] || 'Ei õnnestunud.');
-        done(read());
+        if (r && r.error) return fail(ERR[r.error] || 'Midagi läks valesti. Proovi uuesti.');
+        done(r);
       }).catch(function () { busy(false, go, 'Liitu'); fail(ERR.net); });
     };
 
     /* Taastamine teises brauseris */
     var d1 = el('details', 'hk-more');
-    d1.appendChild(el('summary', null, 'Mul oli konto juba olemas'));
+    d1.appendChild(el('summary', null, 'Mul on juba konto'));
+    d1.appendChild(el('p', 'hk-lead', 'Kirjuta siia klassikood, hüüdnimi ja taastekood. Taastekoodi leiad mängu seadetest.'));
     var sec = field('Taastekood (8 märki)', { maxlength: '8', autocapitalize: 'characters', autocomplete: 'off' });
-    d1.appendChild(el('p', 'hk-lead', 'Kirjuta siia klassikood, hüüdnimi ja taastekood. Taastekoodi näeb mängu seadetes.'));
     d1.appendChild(sec.label);
     var go1 = el('button', 'hk-go', 'Taasta konto');
     d1.appendChild(go1);
@@ -253,23 +317,39 @@
     go1.onclick = function () {
       err.hidden = true;
       var c = code.input.value.trim().toUpperCase(), n = nick.input.value.trim(), s = sec.input.value.trim().toUpperCase();
-      if (c.length !== 6 || n.length < 2 || s.length !== 8) return fail('Sisesta klassikood, hüüdnimi ja 8-märgiline taastekood.');
+      if (c.length !== 6 || n.length < 2 || s.length !== 8) return fail('Kirjuta klassikood, hüüdnimi ja 8-märgiline taastekood.');
       busy(true, go1, 'Taasta konto');
       restore(c, n, s).then(function (r) {
         busy(false, go1, 'Taasta konto');
-        if (r && r.error) return fail(ERR[r.error] || 'Ei õnnestunud.');
-        done(read());
+        if (r && r.error) return fail(ERR[r.error] || 'Midagi läks valesti. Proovi uuesti.');
+        done(r);
       }).catch(function () { busy(false, go1, 'Taasta konto'); fail(ERR.net); });
     };
 
-    /* Uue klassi loomine */
+    /* Uue klassi või tiimi loomine. Loob ainult grupi ja näitab koodi;
+       liitumine käib ülalt, sest looja ei pruugi ise mängida. */
     var d2 = el('details', 'hk-more');
-    d2.appendChild(el('summary', null, 'Loo uus klass'));
-    d2.appendChild(el('p', 'hk-lead', 'Seda teeb tavaliselt õpetaja või lapsevanem. Pärast loomist saad koodi, mille teised sisestavad.'));
+    d2.appendChild(el('summary', null, 'Loo uus klass või tiim'));
+    d2.appendChild(el('p', 'hk-lead', 'Seda teeb tavaliselt õpetaja või lapsevanem. Pärast loomist saad koodi, mille jagad teistele.'));
+
+    var chips = el('div', 'hk-chips');
+    var chClass = el('button', 'hk-chip on', 'Kooliklass');
+    var chTeam = el('button', 'hk-chip', 'Tiim');
+    chClass.type = 'button';
+    chTeam.type = 'button';
+    chips.appendChild(chClass);
+    chips.appendChild(chTeam);
+    d2.appendChild(chips);
+    var kind = 'class';
+
+    var fClass = el('div');
     var school = field('Kooli nimi', { maxlength: '60', autocomplete: 'off' });
-    d2.appendChild(school.label);
+    fClass.appendChild(school.label);
+    var sug = el('div', 'hk-sug');
+    sug.hidden = true;
+    fClass.appendChild(sug);
     var row = el('div', 'hk-row');
-    var gl = el('label', null, 'Klass');
+    var gl = el('label', null, 'Klassi number');
     var gsel = document.createElement('select');
     for (var i = 1; i <= 12; i++) gsel.appendChild(new Option(i + '. klass', String(i)));
     gsel.value = '3';
@@ -277,31 +357,134 @@
     var letter = field('Klassi täht (nt A)', { maxlength: '1', autocapitalize: 'characters', autocomplete: 'off' });
     row.appendChild(gl);
     row.appendChild(letter.label);
-    d2.appendChild(row);
-    var go2 = el('button', 'hk-go', 'Loo klass ja liitu');
+    fClass.appendChild(row);
+    d2.appendChild(fClass);
+
+    var fTeam = el('div');
+    fTeam.hidden = true;
+    var tname = field('Tiimi nimi', { maxlength: '40', autocomplete: 'off' });
+    fTeam.appendChild(tname.label);
+    fTeam.appendChild(el('p', 'hk-lead', 'Tiimi liikmed võistlevad ainult omavahel. Kooli ja kogu Eesti võrdlusse tiim ei lähe.'));
+    d2.appendChild(fTeam);
+
+    var prev = el('p', 'hk-preview');
+    d2.appendChild(prev);
+    var go2 = el('button', 'hk-go', 'Loo');
     d2.appendChild(go2);
+
+    var doneBox = el('div');
+    doneBox.hidden = true;
+    var codeBig = el('div', 'hk-code');
+    doneBox.appendChild(codeBig);
+    doneBox.appendChild(el('p', 'hk-lead', 'Jaga see kood klassile. Kood on nüüd ka üleval klassikoodi lahtris.'));
+    var share = el('button', 'hk-go', 'Jaga kutset');
+    var shBox = document.createElement('input');
+    shBox.readOnly = true;
+    shBox.hidden = true;
+    doneBox.appendChild(share);
+    doneBox.appendChild(shBox);
+    d2.appendChild(doneBox);
     card.appendChild(d2);
+
+    function preview() {
+      if (kind === 'team') {
+        var t = tname.input.value.trim();
+        prev.textContent = t.length >= 2 ? ('Nimeks tuleb ' + t) : '';
+        return;
+      }
+      var sc = school.input.value.trim().replace(/\s+/g, ' ');
+      prev.textContent = sc.length >= 2 ? ('Nimeks tuleb ' + sc + ' ' + gsel.value + letter.input.value.trim().toUpperCase()) : '';
+    }
+
+    function setKind(k) {
+      kind = k;
+      chClass.classList.toggle('on', k === 'class');
+      chTeam.classList.toggle('on', k === 'team');
+      fClass.hidden = k !== 'class';
+      fTeam.hidden = k === 'class';
+      err.hidden = true;
+      sug.hidden = true;
+      preview();
+    }
+    chClass.onclick = function () { setKind('class'); };
+    chTeam.onclick = function () { setKind('team'); };
+
+    gsel.onchange = preview;
+    tname.input.oninput = preview;
+    letter.input.oninput = function () { this.value = this.value.toUpperCase(); preview(); };
+
+    /* Koolinime soovitused: sama kool peab saama kõigis klassides sama nime,
+       muidu ei tule koolivõrdlus kokku. */
+    var sugT = null;
+    school.input.oninput = function () {
+      preview();
+      var q = this.value.trim();
+      if (sugT) clearTimeout(sugT);
+      if (q.length < 2 || !online()) { sug.hidden = true; return; }
+      sugT = setTimeout(function () {
+        rpc('school_suggest', { p_q: q }).then(function (list) {
+          while (sug.firstChild) sug.removeChild(sug.firstChild);
+          if (!list || !list.length) { sug.hidden = true; return; }
+          list.forEach(function (nm) {
+            var b = el('button', null, nm);
+            b.type = 'button';
+            b.onclick = function () { school.input.value = nm; sug.hidden = true; preview(); };
+            sug.appendChild(b);
+          });
+          sug.hidden = false;
+        }).catch(function () { sug.hidden = true; });
+      }, 300);
+    };
+
+    var madeCode = '', madeName = '';
 
     go2.onclick = function () {
       err.hidden = true;
-      var n = nick.input.value.trim();
-      if (school.input.value.trim().length < 2) return fail(ERR.school);
-      if (n.length < 2) return fail('Kirjuta ülal ka oma hüüdnimi.');
-      busy(true, go2, 'Loo klass ja liitu');
-      create('class', school.input.value.trim(), parseInt(gsel.value, 10), letter.input.value.trim(), null)
-        .then(function (r) {
-          if (r && r.error) { busy(false, go2, 'Loo klass ja liitu'); return fail(ERR[r.error] || 'Ei õnnestunud.'); }
-          return join(r.code, n).then(function (j) {
-            busy(false, go2, 'Loo klass ja liitu');
-            if (j && j.error) return fail(ERR[j.error] || 'Klass on loodud, aga liitumine ei õnnestunud.');
-            done(read());
-          });
-        })
-        .catch(function () { busy(false, go2, 'Loo klass ja liitu'); fail(ERR.net); });
+      var kindArg, sc = null, gr = null, lt = null, nm = null;
+      if (kind === 'team') {
+        nm = tname.input.value.trim();
+        if (nm.length < 2) return fail(ERR.name);
+        kindArg = 'team';
+      } else {
+        sc = school.input.value.trim();
+        if (sc.length < 2) return fail(ERR.school);
+        gr = parseInt(gsel.value, 10);
+        lt = letter.input.value.trim();
+        kindArg = 'class';
+      }
+      busy(true, go2, 'Loo');
+      create(kindArg, sc, gr, lt, nm).then(function (r) {
+        busy(false, go2, 'Loo');
+        if (r && r.error) return fail(ERR[r.error] || 'Midagi läks valesti. Proovi uuesti.');
+        madeCode = r.code;
+        madeName = r.name || '';
+        codeBig.textContent = r.code;
+        code.input.value = r.code;
+        sug.hidden = true;
+        doneBox.hidden = false;
+      }).catch(function () { busy(false, go2, 'Loo'); fail(ERR.net); });
+    };
+
+    share.onclick = function () {
+      if (!madeCode) return;
+      var inv2 = invite(madeCode, madeName, app);
+      function flash(m) { share.textContent = m; setTimeout(function () { share.textContent = 'Jaga kutset'; }, 2400); }
+      function manual() {
+        shBox.hidden = false;
+        shBox.value = inv2.url;
+        try { shBox.focus(); shBox.setSelectionRange(0, inv2.url.length); } catch (e) {}
+        flash('Kopeeri allolev link');
+      }
+      if (navigator.share) { navigator.share({ title: 'Harjutaja', text: inv2.text, url: inv2.url }).catch(function () {}); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(inv2.text + '\n' + inv2.url).then(function () { flash('Link kopeeritud'); }, manual);
+        return;
+      }
+      manual();
     };
 
     card.appendChild(el('p', 'hk-note',
-      'Sinu koht klassis on salvestatud sellesse brauserisse. Kui brauseri andmed kustutatakse, kaob ka sinu koht klassis — seepärast kirjuta taastekood üles.'));
+      'Sinu koht klassis on salvestatud sellesse brauserisse. Kui brauseri andmed kustutatakse, kaob ka sinu koht – seepärast kirjuta taastekood üles.'));
 
     function close() {
       document.removeEventListener('keydown', onKey);
@@ -310,10 +493,13 @@
     function onKey(e) { if (e.key === 'Escape') close(); }
 
     x.onclick = close;
-    wrap.addEventListener('click', function (e) { if (e.target === wrap) close(); });
+    wrap.addEventListener('click', function (e) {
+      if (e.target === wrap) close();
+      else if (!sug.hidden && e.target !== school.input && e.target.parentNode !== sug) sug.hidden = true;
+    });
     document.addEventListener('keydown', onKey);
     document.body.appendChild(wrap);
-    setTimeout(function () { try { code.input.focus(); } catch (e) {} }, 60);
+    setTimeout(function () { try { (opts.code ? nick.input : code.input).focus(); } catch (e) {} }, 60);
     return { close: close };
   }
 
@@ -324,7 +510,7 @@
     key: KEY, valid: valid, read: read, set: write, clear: clear,
     sync: sync, current: current, adopt: adopt,
     setup: setup, online: online, rpc: rpc,
-    join: join, restore: restore, create: create,
-    board: board, report: report, openJoin: openJoin, ERR: ERR
+    join: join, restore: restore, create: create, invite: invite,
+    board: board, report: report, issue: issue, openJoin: openJoin, ERR: ERR
   };
 })();

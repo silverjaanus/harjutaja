@@ -86,6 +86,7 @@
         <li><b>kolmveerand neli</b> — kolm veerandit tehtud, üks ees (3.45)</li>
       </ul>
       <p>Kui pikk osuti pole veel poole peal, loeme <b>möödunud</b> minuteid: „viis minutit kolm läbi". Kui on juba üle poole, loeme, kui palju on järgmise tunnini <b>puudu</b>: „kümne minuti pärast neli".</p>
+      <p>Mängu ajal on ülesande all nupp <b>„Anna veast teada“</b>. Kui mõni ülesanne tundub imelik, vajuta seda ja vali, mis täpselt viga on — nii saab ülesande üle vaadata. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Kell">e-kirjaga</a>.</p>
     </div>
   </details>
 
@@ -109,6 +110,24 @@
     <div class="hintcard" id="hint" hidden></div>
     <div class="row" id="after" hidden>
       <button class="primary" id="nextBtn">Edasi</button>
+    </div>
+    <p class="flag-note" id="flagNote" role="status" hidden></p>
+    <button class="flagbtn" id="flagBtn">Anna veast teada</button>
+  </div>
+
+  <!-- Veateate aken. Laps valib, mis on valesti – nii saab viga ka üles otsida. -->
+  <div class="flagwrap" id="flagBox" hidden>
+    <div class="flagcard" role="dialog" aria-modal="true" aria-labelledby="flagTitle">
+      <h3 id="flagTitle">Anna veast teada</h3>
+      <p class="flag-sent" id="flagSentence"></p>
+      <span class="label">Mis on valesti?</span>
+      <div class="flagopts" id="flagOpts">
+        <button class="ghost" data-why="lause">Ülesande jutt on imelik</button>
+        <button class="ghost" data-why="vastus">Mäng näitab valet vastust</button>
+        <button class="ghost" data-why="raske">Ei saa aru, mida küsitakse</button>
+        <button class="ghost" data-why="muu">Midagi muud</button>
+      </div>
+      <button class="ghost flag-cancel" id="flagCancel">Sulge</button>
     </div>
   </div>
 </section>

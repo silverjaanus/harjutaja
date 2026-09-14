@@ -69,13 +69,14 @@
         <li>Kui saad häälikut venitada nii kaua kui tahad, on neid tähti kaks: <b>kk, pp, tt</b>.</li>
         <li>Viis minutit iga päev aitab rohkem kui üks pikk seanss nädalas.</li>
       </ul>
+      <p>Mängu ajal on lause all nupp <b>„Anna veast teada“</b>. Kui sõna, hääl või lause tundub vale, vajuta seda ja vali, mis täpselt viga on — nii saab sõna üle vaadata. Päises oleva noolega <b>‹</b> saad minna tagasi ja vaadata, mida sa eelmiste sõnade juures vastasid. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Kirjutaja">e-kirjaga</a>.</p>
     </div>
   </details>
 
   <div class="block reports" id="reports" hidden>
     <span class="label">Märgitud sõnad (<span id="reportCount"></span>)</span>
     <ul class="report-list" id="reportList"></ul>
-    <p class="hint-small">Need on sõnad, mille juures vajutasid „?“. Märked jäävad siia seadmesse — näita neid täiskasvanule, siis saab lause või heli ära parandada.</p>
+    <p class="hint-small">Need on sõnad, mille kohta sa veast teada andsid. Märge läheb ka mängu tegijale, nii et sõna vaadatakse üle. Siit nimekirjast võid need julgelt ära kustutada.</p>
     <button class="ghost" id="reportClear">Kustuta märked</button>
   </div>
 
@@ -90,9 +91,12 @@
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
     <button class="icon-btn" id="prevBtn" aria-label="Kuula eelmist sõna" disabled>‹</button>
     <div class="track"><i id="bar"></i></div>
-    <button class="icon-btn" id="flagBtn" aria-label="Midagi on valesti">?</button>
   </header>
   <div class="stage">
+    <div class="reviewbar" id="reviewBar" hidden>
+      <span id="reviewWhich">Vaatad eelmist sõna</span>
+      <button class="ghost" id="reviewBack">Tagasi mängu</button>
+    </div>
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <button class="listen" id="listenBtn" aria-label="Kuula uuesti">
       <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
@@ -106,14 +110,23 @@
       <button class="primary" id="nextBtn">Edasi</button>
     </div>
     <p class="flag-note" id="flagNote" role="status" hidden></p>
+    <button class="flagbtn" id="flagBtn">Anna veast teada</button>
   </div>
-  <div class="prevbox" id="prevBox" hidden>
-    <span class="label">Eelmine sõna</span>
-    <p class="prev-word" id="prevWord"></p>
-    <p class="prev-sentence" id="prevSentence"></p>
-    <div class="row">
-      <button class="ghost" id="prevPlay">Kuula uuesti</button>
-      <button class="primary" id="prevClose">Tagasi</button>
+
+  <!-- Veateate aken. Laps valib, mis on valesti – nii saab viga ka üles otsida. -->
+  <div class="flagwrap" id="flagBox" hidden>
+    <div class="flagcard" role="dialog" aria-modal="true" aria-labelledby="flagTitle">
+      <h3 id="flagTitle">Anna veast teada</h3>
+      <p class="flag-word" id="flagWord"></p>
+      <p class="flag-sent" id="flagSentence"></p>
+      <span class="label">Mis on valesti?</span>
+      <div class="flagopts" id="flagOpts">
+        <button class="ghost" data-why="haal">Häält ei ole kuulda või see ütleb valesti</button>
+        <button class="ghost" data-why="lause">Lause on imelik</button>
+        <button class="ghost" data-why="vastus">Mäng näitab valet vastust</button>
+        <button class="ghost" data-why="muu">Midagi muud</button>
+      </div>
+      <button class="ghost flag-cancel" id="flagCancel">Sulge</button>
     </div>
   </div>
 </section>

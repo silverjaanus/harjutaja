@@ -19,7 +19,10 @@ body{margin:0;color:var(--ink);font-family:var(--body);font-size:17px;line-heigh
 .icon-btn{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--edge);background:var(--card);color:var(--ink);font:inherit;font-size:20px;display:grid;place-items:center;cursor:pointer}
 #s-game .icon-btn{margin-left:0}
 .icon-btn .off{display:none} .icon-btn[aria-pressed="false"] .off{display:inline} .icon-btn[aria-pressed="false"] .wave{display:none}
-.hero{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;background:var(--paper);padding-block:4px}
+/* Robot on joonelisele lehele joonistatud, seega tema taha jooned jaavad.
+   Paberilaik kaib ainult teksti alla, et jooned tahtedest labi ei jookseks. */
+.hero{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-block:4px}
+.hero h1,.hero .sub{background:var(--paper);padding-inline:8px}
 .logo{border-radius:18px}
 h1{font-family:var(--display);font-weight:600;font-size:38px;line-height:1.05;margin:0;text-wrap:balance}
 .sub{margin:0;color:var(--ink-soft);max-width:34ch}
@@ -91,7 +94,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .mascot{width:130px;height:auto;cursor:pointer;background:none;border:0;padding:0}
 .bubble{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:10px 18px;font-family:var(--display);font-weight:600;font-size:30px;line-height:1.1;text-align:center;max-width:320px}
 .bubble::after{content:"";position:absolute;left:50%;bottom:-11px;width:18px;height:18px;background:var(--card);border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
-.res-hero{display:flex;flex-direction:column;align-items:center;gap:14px;background:var(--paper);padding-block:6px;text-align:center}
+.res-hero{display:flex;flex-direction:column;align-items:center;gap:14px;padding-block:6px;text-align:center}
+.res-hero .sub{background:var(--paper);padding-inline:8px}
 .res-hero .krobot{width:150px;height:auto}
 .hintcard{display:flex;gap:12px;align-items:center}
 .hintcard .krobot{width:58px;flex:none}
@@ -120,13 +124,31 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .report-list li{line-height:1.35}
 .reports .ghost{align-self:flex-start}
 
-/* --- eelmine sona --- */
-.prevbox{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);
-  border-top:1.5px solid var(--edge);border-radius:20px 20px 0 0;padding:16px 16px 20px;
-  display:flex;flex-direction:column;gap:10px;box-shadow:0 -8px 24px rgba(29,47,79,.14)}
-.prevbox[hidden]{display:none}
-.prev-word{margin:0;font-family:var(--display);font-weight:600;font-size:26px}
-.prev-sentence{margin:0;color:var(--ink-soft)}
+/* --- eelmiste sonade vaatamine ---
+   Nool tagasi viib paris eelmise kusimuse juurde, mitte ei mangi ainult heli.
+   Riba utleb, et see ei ole enam kaiv kusimus, ja toob tagasi mangu. */
+.reviewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--accent-soft,#fdf1d2);border:1.5px solid var(--accent-edge);border-radius:14px;
+  padding:8px 10px 8px 14px;font-weight:700;font-size:14.5px}
+.reviewbar .ghost{padding:7px 12px;font-size:14px}
+
+/* --- veast teada andmine --- */
+.flagbtn{margin:18px auto 0;display:block;font:inherit;font-size:14px;font-weight:700;
+  color:var(--ink-soft);background:none;border:0;border-bottom:1.5px dotted var(--ink-soft);
+  padding:2px 0;cursor:pointer}
+.flagbtn:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.flagwrap{position:fixed;inset:0;z-index:8;background:rgba(29,47,79,.45);
+  display:flex;align-items:flex-end;justify-content:center;padding:0}
+.flagwrap[hidden]{display:none}
+.flagcard{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;
+  padding:18px 16px 22px;display:flex;flex-direction:column;gap:8px;
+  box-shadow:0 -8px 24px rgba(29,47,79,.18)}
+.flagcard h3{margin:0;font-family:var(--display);font-weight:600;font-size:22px}
+.flag-word{margin:0;font-family:var(--display);font-weight:600;font-size:26px}
+.flag-sent{margin:0 0 4px;color:var(--ink-soft)}
+.flagopts{display:flex;flex-direction:column;gap:8px}
+.flagopts .ghost{text-align:left}
+.flag-cancel{margin-top:6px;align-self:center}
 .flag-note{margin:10px 0 0;text-align:center;color:var(--ok);font-weight:700}
 
 /* --- autor ja lahtekood --- */
