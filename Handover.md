@@ -144,9 +144,9 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
 
 ### Tehniline võlg
 
-- **`core/panda.js` on topeltkoopia.** Originaal elab endiselt `korrutaja/korrutaja.src.html`-is funktsioonis `panda()`. Kolimisel jäeti see teadlikult tegemata, et kolimise risk väiksem oleks. Nüüd on mõlemad failid samas repos ja dubleerimise saab ohutult ära koristada: Korrutaja peab hakkama `core/panda.js`-i kasutama ja `panda()` lähtefailist kaduma.
+- **~~`core/panda.js` on topeltkoopia~~ — TEHTUD 14. sept (commit `a88e93e`).** `korrutaja/index.html` laeb nüüd `../core/panda.js` ja lähtefaili jääb ainult vahendaja `function panda(mood,head){return window.KPanda?KPanda(mood,head):'';}`. Joonistus oli kahes failis identne, ainult `core` oma paneb SVG-le ka `class="panda"` — Korrutajas on see pesastatud ümbrise `div.panda` sisse ja midagi ei muutu (kontrollitud brauseris: avaekraan, päeva nipp ja kõik viis ilmet nii tervikuna kui peana).
 - **Korrutajal on oma klassiekraan, Kirjutajal `core/klass.js` oma.** Pärast etappi 3 on liitumise loogika kahes kohas. Korrutaja võiks minna üle `HKlass.openJoin`-ile ja oma `s-class` ekraani ära kaotada — aga Korrutaja oma oskab ka koolinime soovitada (`school_suggest`), mida ühises ekraanis veel ei ole. Koristamisel tuleb see kaasa võtta.
-- **`icons/kirjutaja-*` on kasutuseta.** Kalligraafiline K sinikoopial, sõnamark, 192 ja 512 PNG — vana plaani jäänuk, kus igal moodulil pidi olema oma kalligraafiline täht. Ikoonireegel muutus 13. sept (üks logo, moodulitel maskotid). Võib kustutada.
+- **~~`icons/kirjutaja-*` on kasutuseta~~ — KUSTUTATUD 14. sept (commit `31afeb9`).** Neli faili (kalligraafiline K, sõnamärk, 192 ja 512 PNG). Kontrollitud enne kustutamist: ühtegi viidet neile repos ei olnud. Git-is on need ajaloos alles.
 
 ### Järgmine funktsionaalsus
 
