@@ -6,7 +6,7 @@
 Eestikeelseid vorme siin ei kontrollita — seda teeb ammendavalt
 `node kell/aeg.test.js`, mis käib läbi kõik 1440 kellaaega.
 """
-import json, sys, time
+import json, re, sys, time
 from playwright.sync_api import sync_playwright
 
 BASE = "http://127.0.0.1:8897"
@@ -150,7 +150,69 @@ def run(pw):
     page.wait_for_timeout(400)
     check("liitumisaken avanes", page.locator(".hk-card").is_visible())
 
-    print("\n5. Harjutaja avaleht")
+    print("\n5. Ajaarvutus: tase otsustab, kas sõnadega või numbritega")
+    # Tase 4 tekstirežiimis = numbritega (8.28), muud tasemed = sõnadega.
+    def tekstiring(tase):
+        page.goto(BASE + "/kell/", wait_until="domcontentloaded")
+        page.evaluate("t => { var d = JSON.parse(localStorage.getItem('kell_v1') || '{}');"
+                      "d.level = t; d.opp = 'tekst'; d.sfx = false;"
+                      "localStorage.setItem('kell_v1', JSON.stringify(d)); }", tase)
+        page.goto(BASE + "/kell/", wait_until="domcontentloaded")
+        page.wait_for_timeout(500)
+        silt = page.locator("#levels .chip").nth(3).inner_text()
+        selgitus = page.locator("#tekstStat").inner_text()
+        page.locator("#startBtn").click()
+        page.wait_for_timeout(700)
+        lood, kysimused, valikud = [], [], []
+        for _ in range(6):
+            if page.locator("#s-result").is_visible():
+                break
+            if not page.locator("#after").is_hidden():
+                page.locator("#nextBtn").click(); page.wait_for_timeout(300); continue
+            o = page.locator("#opts .opt")
+            if not o.count() or not o.nth(0).is_enabled():
+                page.wait_for_timeout(250); continue
+            lood.append(page.locator("#lugu").inner_text())
+            kysimused.append(page.locator("#askText").inner_text())
+            valikud.append([x.inner_text() for x in o.all()])
+            o.nth(0).click(); page.wait_for_timeout(420)
+        page.locator("#quitBtn").click(); page.wait_for_timeout(400)
+        return silt, selgitus, lood, kysimused, valikud
+
+    silt4, selg4, lood4, kys4, val4 = tekstiring(4)
+    check("tase 4 nupp ütleb „Minuti täpsus\u201c", silt4 == "Minuti täpsus", silt4)
+    check("tase 4 selgitus räägib bussiplaanist", "bussiplaanis" in selg4, selg4[-70:])
+    check("tase 4 lugudes on numbritega kellaaeg",
+          all(re.search(r"\d{1,2}\.\d\d", l) for l in lood4), lood4[:2])
+    check("tase 4 kellaaja ees on sõna „kell\u201c",
+          all(re.search(r"[Kk]ell(?: on)? \d{1,2}\.\d\d", l) for l in lood4), lood4[:2])
+    check("tase 4 vastused on minutites või numbritega kellaaeg",
+          all(all(re.match(r"^\d+ minutit?$|^\d{1,2}\.\d\d$", v) for v in vs) for vs in val4),
+          val4[:2])
+    check("tase 4 ei küsi „Kui kaua\u201c", not any(k.startswith("Kui kaua") for k in kys4), kys4)
+
+    silt2, selg2, lood2, kys2, val2 = tekstiring(2)
+    # Nupu silt käib REŽIIMI, mitte valitud taseme järgi: tekstirežiimis ütleb
+    # neljas nupp alati seda, mida ta annaks, kui ta valida.
+    check("tekstirežiimis jääb neljas nupp „Minuti täpsus“", silt2 == "Minuti täpsus", silt2)
+    check("tase 2 lugudes ei ole numbritega kellaaega",
+          not any(re.search(r"\d{1,2}\.\d\d", l) for l in lood2), lood2[:2])
+    check("tase 2 ütleb, kust minutitäpsuse leiab", "Minuti täpsus" in selg2, selg2[-70:])
+
+    # Kella lugemises tähendab sama nupp viie minuti täpsust.
+    page.goto(BASE + "/kell/", wait_until="domcontentloaded")
+    page.evaluate("() => { var d = JSON.parse(localStorage.getItem('kell_v1') || '{}');"
+                  "d.opp = 'lugemine'; localStorage.setItem('kell_v1', JSON.stringify(d)); }")
+    page.goto(BASE + "/kell/", wait_until="domcontentloaded")
+    page.wait_for_timeout(500)
+    siltL = page.locator("#levels .chip").nth(3).inner_text()
+    check("lugemises on neljas nupp „Viie minuti täpsus“", siltL == "Viie minuti täpsus", siltL)
+
+    # Keelereegel 2: „N minuti pärast" ei tohi tekstülesandes esineda.
+    kokku = " ".join(lood4 + kys4 + lood2 + kys2)
+    check("kusagil ei ole keelatud „minuti pärast\u201c", "minuti pärast" not in kokku)
+
+    print("\n6. Harjutaja avaleht")
     page.goto(BASE + "/", wait_until="domcontentloaded")
     page.wait_for_timeout(500)
     check("Kella kaart on avalehel", page.locator('a.mod[href="kell/"]').count() == 1)
