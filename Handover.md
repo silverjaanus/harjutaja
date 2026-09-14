@@ -151,7 +151,9 @@ Kõik pooleli ja otsustamata asjad on **siin**, mitte teiste jaotiste sisse laia
   - **Mängija on valikuline.** Klassita laps saab samuti märkida; siis läheb märge nimeta kirja. Vale salakood ei ole viga, vaid sama nimeta kirje — lapse tagasiside on tähtsam kui tema tuvastamine.
   - **Kiiruspiirang:** mängija kohta 50 märget päevas, nimeta märkeid 100 tunnis. Sama mooduli sama `item` ei tekita teist lahtist rida.
   - **Märkeid vaatab Silver Supabase'i SQL Editoris** (`select … from issues where done = false`), vt `supabase/README.md`. Eraldi lehte veel ei ole.
-  - **Lahtine:** Kellale ja Korrutajale `?` nuppu veel ei ole. Kellal oleks sellest kõige rohkem kasu, sest seal on ülesanded genereeritud — just seal tuleb imelik lause välja. Täiskasvanu tagasiside (e-posti link abilehel) ootab Silveri otsust aadressi kohta.
+  - **Kellal on nüüd oma `?` nupp (commit `b504950`).** Märge võtab kaasa täpselt selle, mida laps ekraanil nägi: tekstülesandest kogu lugu ja küsimus („Lauamäng algab kell pool üks ja lõpeb kell üks. Kui kaua lauamäng kestab?"), kella lugemisest kellaaeg ja kumb ülesanne see oli. Just seda on vaja, et halb genereeritud lause üles leida. Võistluses on nupp peidus.
+  - **Korrutajale `?` nuppu teadlikult ei tehtud.** Seal on küsimus „7 × 8" — selles ei saa midagi valesti olla. Genereeritud tekst on Kellas ja Kirjutajas, nupp kuulub sinna, kus on mida raporteerida.
+  - **E-posti link on olemas** (`silver.jaanus@gmail.com`, teemarida mooduli järgi) Harjutaja avalehel ja kõigi kolme mooduli abilehel — see on täiskasvanu tee, lapse tee on `?` nupp. Korrutaja „Kes tegi" lõigus sai parandatud ka vana `korrutaja` repo viide.
 
 ### Tehniline võlg
 
