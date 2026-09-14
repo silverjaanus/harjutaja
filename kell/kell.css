@@ -122,7 +122,10 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 /* kägu */
 .kk{width:100%;height:auto}
 .kk-body{transform-origin:60px 108px;animation:kk-sway 4s ease-in-out infinite}
-.kk-eyes{animation:kk-blink 5.5s infinite}
+/* transform-box/origin EI TOHI puududa: ilma nendeta skaleerib SVG rühma
+   kujundi (0,0) suhtes ja silmad lendavad pilgutades peast välja. Mia märkas.
+   Robotil (.kr-eyes) ja pandal (.pe) on sama rida — käol oli see unustatud. */
+.kk-eyes{transform-box:fill-box;transform-origin:center;animation:kk-blink 5.5s infinite}
 .kk-wave{transform-origin:78px 84px;animation:kk-wave 1.6s ease-in-out infinite}
 .kk-spark{animation:kk-spark 1.4s ease-in-out infinite}
 .kk.hop{animation:kk-hop .5s ease}
