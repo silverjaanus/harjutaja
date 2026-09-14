@@ -42,7 +42,14 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
   - Lint genereeritakse Bézier'i keskjoonest, nii et kriipsud, laius ja otsakonks jäävad igas asendis ühtlaseks. Uue ilme lisamiseks piisab nelja punkti lisamisest `lint()`-i tabelisse.
   - **Joonistas Codex**, pärast seda kui Claude'i kolm ringi tagasi lükati. Õppetunnid (nimekatmise test, kontuurjoon, diagnostilised tunnused, „kuri nägu ei ole vanem") on Claude'i projektis failis **`claude/teisendaja-maskott.md`** — loe see enne järgmise joonistuse tegemist.
   - Ilmed on näha ka artifaktis „Mõõdulindi ilmed".
-- **Järgmine:** `core/klahvistik.js` (mängu oma numbriklahvistik), ühikuredel SVG-na, mäng, CSS, avalehe kaart (võtab portreevaate), Playwright-test.
+- **MÄNG ON VALMIS (14. sept, commit `89fa597`).** Live'i ei ole veel läinud, sest haru pole main-is.
+  - **`core/klahvistik.js`** — ühine numbriklahvistik. Väli on päris `<input>`, aga **`inputmode="none"`** hoiab telefoni süsteemiklaviatuuri kinni; arvutis töötab füüsiline klaviatuur (numbrid, koma, Backspace, Enter). Kaks välja nimega arvu jaoks, koma klahv ainult siis, kui `koma:true` (Teisendajas tase 4), pärast vastamist läheb lukku, et tagasiside ja väli ei läheks lahku. Korrutaja võib selle hiljem üle võtta.
+  - **`teisendaja/redel.js`** — ühikuredel SVG-na. Joonistab **alati terve ahela**, mitte ainult kaht ühikut: mõte ongi näidata, kus need kaks teineteise suhtes on. Aeg on kahes ahelas, joonistatakse see, kus küsitud ühikud on.
+  - **`teisendaja/index.html` + `app.js` + `teisendaja.css`** — Kella muster: avaleht (kategooria, tase, oskuste kaart, redel), mäng, tagasiside, tulemus, edetabel, veateate nupp. CSS on `kell.css` koopia rohelise aktsendiga, lõpus Teisendaja oma osad (klahvistik, redel, küsimuse rida).
+  - **Vale vastuse kaart on mooduli mõte:** maskott `kind`-ilmes, siis **diagnoos** („Nulle jäi puudu…"), siis tehe ette, siis redel.
+  - **Testid:** `node teisendaja/yhik.test.js` (12 858 kontrolli) ja **`python3 tools/test_teisendaja.py 8814`** (Playwright, neli testi: avaleht, klahvistik, diagnoos, võistlusreegel) — kõik läbi pilvekonteineris haru koopial.
+  - **Avalehel on Teisendaja kaart** mõõdulindi portreega, „Tulekul" nimekirjas on ainult Keel. `sw.js` VERSION on tõstetud ja uued failid vahemälus.
+- **Enne live'i on veel kaks asja:** `sessions.op` vajab Teisendaja väärtust (`op: "yhik"` — uus migratsioon, sobib samasse jooksu migratsiooniga 8) ja haru `teisendaja` tuleb main-i merge'ida. **Handover.md-s tuleb see merge lahendada käsitsi** — main on vahepeal `kuulamisabi` haruga edasi läinud ja mõlemad on seda faili muutnud.
 - **Üks asi, mida UI ehitamisel meeles pidada:** `genereeri()` võib anda kaks korda järjest sama `yhik`-fakti — kordust väldib mäng, mitte generaator. Fakte on 27, seega ühe kategooria peal käib kordus kiiresti peale.
 
 **HARU `klassiekraan` ON MERGE'ITUD (14. sept, Silver, PR #1 → `main` `f16246f`).** Korrutaja vana klassiekraan on kadunud, kõik moodulid kasutavad `core/klass.js` oma. Kolm asja tehtud ja testitud; **live läheb sellest järgmisel deployl**.

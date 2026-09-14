@@ -93,7 +93,7 @@ def test_vale_vastus_saab_diagnoosi(page):
         vihje = page.locator("#hint").inner_text()
         kontrolli(len(vihje) > 10, "vihjekaardil on teksti")
         kontrolli(page.locator("#hint svg").count() >= 1, "vihjekaardil on maskott või redel")
-        kontrolli(not page.locator("#after").is_hidden(), "„Edasi" nupp tuleb nähtavale")
+        kontrolli(not page.locator("#after").is_hidden(), '„Edasi“ nupp tuleb nähtavale')
 
 
 def test_voistlus(page):
