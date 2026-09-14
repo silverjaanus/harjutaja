@@ -1,6 +1,6 @@
 # Handover — Harjutaja
 
-Uuendatud: 13. september 2026
+Uuendatud: 14. september 2026
 
 ## Current Goal
 
@@ -26,6 +26,18 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 **Ikoonireegel (kehtib, otsustatud 12. sept):** kogu äpil on **üks logo** — Harjutaja märk kollasel — ja see läheb kõigisse ikoonipesadesse: favicon, PWA, mooduli päis, jagamispilt. Moodulit eristab **maskott**, mitte oma ikoon või oma täht. Moodulikaart avalehel näitab maskotti. Vana plaan „iga moodul saab sama kalligraafilise tähe erineva aktsendiga“ on maha maetud koos kalligraafilise logoga.
 
 ## In Progress
+
+**KIRJUTAJA KUULAMISABI ON EHITATUD JA TESTITUD (14. sept, haru `kuulamisabi`, commitid `ea4d71e` ja `5c0861c`).** Silveri tellimus, mis tuli Mia mängimist kõrvalt vaadates: laps peab saama kuulata kõiki kolme pikkust ka **enne vastamist**, mitte ainult pärast viga — nii, et see ei anna vastust ette, vaid aitab häälida. Otsus ja põhjendus on Claude'i projektis failis `claude/kirjutaja-plaan.md` jaotises „Kuulamisabi enne vastamist"; Fable ja ChatGPT küsiti sõltumatult ja mõlemad jõudsid samale järeldusele — tugi, mis hiljem taandub.
+
+- **Nupp „Kuula kolme pikkust"** (`#cmpBtn` reas `#cmpRow`) on lause all kohe nähtav, ilma et peaks enne eksima. Mängib kolm varianti järjest, lühike → pikk → ülipikk, iga kõla ajal süttib vastav täht (`.opt.lit`).
+- **Kolm asja eristavad abi spikrist.** (1) **Õiget ei tähistata ja variantide sõnu ei kirjutata välja** — see on erinevus vea-järgsest `playAll`-ist, mis paneb nuppude alla `<small>`-sildid. Kirjapilt annaks päris sõna ära (kolmest variandist on tavaliselt ainult üks päris sõna), heli mitte. (2) **Võrdlus tuleb teise häälega** — kaust `kirjutaja/audio2/`, Gemini hääl **Charon**; sama klipi äratundmine ei ole välte kuulmine. Kui võrdlusklippi ei ole, kukub `play()` `onerror` kaudu tagasi kausta `audio/`, nii et puuduv fail ei jäta abi vaikselt katki. (3) **Abiga vastatud sõna ei lähe selgeks** (`streak` nulli) **ja tuleb samas ringis 3–6 küsimuse pärast ilma abita tagasi** (`G.usedHelp`, `G.reasked`, lisandub `round.due`-sse). Oskust kontrollitakse alati abita.
+- **Pandalause** „Kuula ja venita sõna ise kaasa. Mis täht sobib?" (`#cmpNote`) ilmub ringis ühe korra, esimesel vajutusel. Sõnastus on Fable'i oma: esialgne „venita ise kaasa" jäi ilma sihitiseta õhku.
+- **Võistluses nuppu ei ole** ja `core/engine.js` jäi puutumata — abi loogika elab ainult `kirjutaja/app.js`-is.
+- **Automaatne hääbumine jäi teadlikult välja.** Mõlemad mudelid soovitasid seda kohe (nupp kaob, kui häälikukaardi lahtris on 80% või 4/5 esmast vastust abita õiged). Lävendid on oletus ja lisavad loogikat, mida hiljem on raske siluda; kordamismehaanika teeb juba põhitöö. Hääbumine tuleb siis, kui näeme päris kasutusnumbrit.
+- **Testitud:** `tools/test_kuulamisabi.py` (port 8896, 29 kontrolli, kõik läbi) pilvekonteineris haru koopial. Test valvab just seda, et abi ei anna vastust ette: enne vastamist ei tohi ühelgi `.opt`-il olla `right`, `wrong`, `disabled` ega `<small>`. Konsool puhas, `scan_homoglyphs.py` ütleb PUHAS.
+- **POOLELI: võrdlusklipid.** Kaustas `kirjutaja/audio2/` on **57 klippi 924-st** — Gemini TTS päevalimiit sai 14. sept kell 16.33 täis. Skript `tools/run_audio2.ps1` (kutsub `audio_gen.py --voice Charon --out audio2 --raw audio2_raw`) jätab olemasolevad vahele ja jätkab. **Ajastatud töö on tehtud: 15. sept kell 10.30**, sest limiit lähtestub 10.00 Eesti aja järgi. `kirjutaja/audio2/` ei ole veel commitis — see tuleb koos lõpetatud komplektiga.
+- **Enne merge'i on vaja Silveri kuulamiskontrolli:** kas Charon eristab välteid sama selgelt kui Kore. Kui ei, jääb võrdlus sama häälega ja `audio2` võetakse maha — kood töötab mõlemal juhul (vt tagasikukkumine ülal).
+- **Mida kolme nädala pärast vaadata:** abi kasutuse osakaal (peab langema); abiga kuulatud sõna täpsus abita kordamisel (üle 75% = kuulamine õpetab, ~50% = ainult sobitamine, siis lisada sundpakkumine „pane esmalt oma arvamus, siis kuula"); p/pp lahter häälikukaardil (ainus koht, kus kuulmine on päriselt raske). Lisaks paar dikteerimist paberil — kas mängus õpitu kandub üle kirjutamisse.
 
 **HARU `klassiekraan` OOTAB MERGE'I (14. sept).** Kolm asja tehtud ja testitud, aga **live'i ei ole midagi läinud** — Silveri otsus, et ootame. Haru on GitHubis olemas (`git push origin klassiekraan` tehtud, Vercel teeb sellest ainult eelvaate, tootmine käib `main`-ist).
 
