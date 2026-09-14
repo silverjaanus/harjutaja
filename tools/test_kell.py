@@ -182,10 +182,14 @@ def run(pw):
     silt4, selg4, lood4, kys4, val4 = tekstiring(4)
     check("tase 4 nupp ütleb „Minuti täpsus\u201c", silt4 == "Minuti täpsus", silt4)
     check("tase 4 selgitus räägib bussiplaanist", "bussiplaanis" in selg4, selg4[-70:])
-    check("tase 4 lugudes on numbritega kellaaeg",
-          all(re.search(r"\d{1,2}\.\d\d", l) for l in lood4), lood4[:2])
+    # Kahesammulise loo TEISES sammus ei olegi numbritega kellaaega
+    # („Bussi väljumiseni on 37 minutit…") — see on teadlik valik, sest
+    # kokkuvõte ei tohi kasutada „pärast"-vormi. Seega: vähemalt üks lugu
+    # peab kandma numbritega aega, ja igas loos, kus see on, käib ette „kell".
+    numbriga = [l for l in lood4 if re.search(r"\d{1,2}\.\d\d", l)]
+    check("tase 4 annab numbritega kellaaegu", len(numbriga) > 0, lood4[:2])
     check("tase 4 kellaaja ees on sõna „kell\u201c",
-          all(re.search(r"[Kk]ell(?: on)? \d{1,2}\.\d\d", l) for l in lood4), lood4[:2])
+          all(re.search(r"[Kk]ell(?: on)? \d{1,2}\.\d\d", l) for l in numbriga), numbriga[:2])
     check("tase 4 vastused on minutites või numbritega kellaaeg",
           all(all(re.match(r"^\d+ minutit?$|^\d{1,2}\.\d\d$", v) for v in vs) for vs in val4),
           val4[:2])
