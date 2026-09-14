@@ -141,11 +141,11 @@
   /* ---------- tekstülesannete ring ----------
      Lood on eluliselt sõnastatud ja osa neist kahesammulised: esimene küsimus
      annab sündmuse alguse, teine küsib, mis kell tuleb kodust välja minna. */
-  function TekstRound(samm, mitu) {
+  function TekstRound(samm, mitu, numbrid) {
     this.items = [];
     let kaitse = 0;
     while (this.items.length < mitu && kaitse++ < 60) {
-      const lugu = HTekst.loo(samm);
+      const lugu = numbrid ? HTekst.looNr() : HTekst.loo(samm);
       lugu.sammud.forEach((s, i) => this.items.push({
         id: "tekst", lemma: "tekst", tekst: true, step: s, osa: i + 1, kokku: lugu.sammud.length, samm
       }));
@@ -167,16 +167,21 @@
     const tekst = !test && D.opp === "tekst";
     const lvlSamm = tase().mins.length > 1 ? tase().mins[1] : 60;
     /* Tekstülesannetes ei minda veerandtunnist peenemaks, ka siis mitte, kui
-       laps on valinud viie minuti täpsuse. Põhjus on keeles: lauses „Trenn
-       lõpeb kahekümne minuti pärast seitse" loeb see nagu 7.20, aga tähendab
-       6.40 — sõnaline „pärast"-vorm ei sobi lauseülesandesse. Viie minuti
-       täpsusega sõnalist ajaarvutust koolis niikuinii ei õpetata. */
+       laps on valinud viie minuti täpsuse. Põhjus on keeles: kestust „20 minuti
+       pärast" ei saa lauses öelda, sest täpselt sama sõnadega algab kellaaeg
+       „kahekümne minuti pärast seitse" (6.40) — laps jääb ootama tunninime.
+       Tundidega seda muret ei ole: kellaaega ei öelda kunagi „kolme tunni
+       pärast". Vt kell/tekst.js päist, reegel 2. Ja viie minuti täpsusega
+       sõnalist ajaarvutust koolis niikuinii ei õpetata. */
+    /* Tase „minuti täpsus" annab tekstirežiimis numbritega ülesanded (8.28),
+       kus „pärast"-lõksu ei ole ja minuti täpsus on päris elu oma. */
+    const numbrid = tekst && D.level === 4;
     const samm = tekst ? Math.max(15, lvlSamm) : lvlSamm;
     const tekstMins = [];
     for (let m = 0; m < 60; m += samm) tekstMins.push(m);
     const mins = test ? COMPETE_MINS : (tekst ? tekstMins : tase().mins);
     const p = test ? võistluspakk() : (tekst ? null : pakk(mins));
-    if (tekst) round = new TekstRound(samm, 10);
+    if (tekst) round = new TekstRound(samm, 10, numbrid);
     else if (test) round = new TestRound(p);
     else round = new HEngine.Round(p, D.stats, ROUND_LEN);
     if (!tekst && !p.length) return;
@@ -219,9 +224,16 @@
       let variandid, silt, võtmed;
       if (s.tyyp === "kestus") {
         variandid = sega(s.valikud.filter(v => v !== s.vastus).slice(0, 3).concat([s.vastus]));
-        silt = v => HTekst.kestus(v);
+        /* Numbritega ülesandes on vastus alati minutites; sõnadega ülesandes
+           „tund aega", „poolteist tundi" jne. */
+        silt = v => (s.numbritega ? HTekst.mitu(v) : HTekst.kestus(v));
         võtmed = v => "d:" + v;
         it.oigeK = "d:" + s.vastus;
+      } else if (s.tyyp === "kellNr") {
+        variandid = sega(s.valikud.filter(v => v !== s.vastus).slice(0, 3).concat([s.vastus]));
+        silt = v => HTekst.kellNr(v);
+        võtmed = v => "n:" + v;
+        it.oigeK = "n:" + s.vastus;
       } else {
         variandid = sega([s.vastus].concat(eksitajad(s.vastus.h, s.vastus.m, mins)));
         silt = v => HAeg.utle(v.h, v.m);
@@ -414,7 +426,10 @@
     const box = $("levels"); box.innerHTML = "";
     TASEMED.forEach(t => {
       const b = document.createElement("button");
-      b.className = "chip"; b.textContent = t.nimi;
+      b.className = "chip";
+      /* Neljas tase tähendab kella lugemises viie minuti, tekstülesannetes
+         minuti täpsust — silt ütleb seda, mis parajasti kehtib. */
+      b.textContent = (t.id === 4 && D.opp === "tekst") ? "Minuti täpsus" : t.nimi;
       b.setAttribute("aria-pressed", t.id === D.level ? "true" : "false");
       b.onclick = () => { D.level = t.id; save(); renderTasemed(); renderModes(); renderKaart(); };
       box.append(b);
@@ -424,7 +439,7 @@
   function renderModes() {
     document.querySelectorAll("#modes .chip").forEach(c => {
       c.setAttribute("aria-pressed", c.dataset.o === D.opp ? "true" : "false");
-      c.onclick = () => { D.opp = c.dataset.o; save(); renderModes(); renderKaart(); };
+      c.onclick = () => { D.opp = c.dataset.o; save(); renderModes(); renderTasemed(); renderKaart(); };
     });
     const tekst = D.opp === "tekst";
     $("mapBlock").hidden = tekst;
@@ -432,9 +447,10 @@
     $("lblLevel").textContent = "Kui täpselt?";
     $("startBtn").textContent = tekst ? "Arvuta" : "Harjuta";
     const s = D.tekstStat;
-    const peen = tekst && D.level === 4
-      ? " Ajaarvutus käib veerandtundide kaupa – nii nagu kellaaega sõnadega öeldakse (veerand, pool, kolmveerand)."
-      : "";
+    const peen = !tekst ? ""
+      : D.level === 4
+        ? " Siin on kellaajad numbritega nagu bussiplaanis (8.28) ja arvutad minuti täpsusega."
+        : " Sõnadega ülesannetes on ajad veerandtundide kaupa (veerand, pool, kolmveerand), nii nagu kellaaega sõnadega öeldakse. Minuti täpsusega arvutamiseks vali „Minuti täpsus“.";
     $("tekstStat").textContent = (s.n
       ? "Tehtud " + s.n + " ülesannet, õigesti " + s.ok + "."
       : "Elulised ülesanded: mis kell film lõpeb, kui kaua trenn kestab, mis kell pead kodust välja minema.") + peen;

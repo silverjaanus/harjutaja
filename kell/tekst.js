@@ -250,3 +250,173 @@
 
   T.loo = loo;
 })();
+
+
+/* ---------- numbritega ajaarvutus ----------
+ *
+ * Silveri tellimus (14. sept): „meil on hommikul kodus sagedane vestlus see,
+ * mis kell ta peab toast välja minema, et 8.28 bussile jõuda. siis ta vaatab
+ * mis kell parajasti on ja mitu minutit tal veel aega on."
+ *
+ * MIKS SIIN TOHIB MINUTI TÄPSUS OLLA, kui sõnadega ülesannetes ei tohi:
+ * kogu keeleline lõks on „N minuti pärast" — vt faili päist, reegel 2. Siin
+ * seda konstruktsiooni ei esine: aeg on kirjas numbritega („kell 8.28") ja
+ * vastus on minutite arv („22 minutit"). Nii käib see päris elus ka —
+ * bussiplaan ei ütle „kahekümne kaheksa minuti pärast kaheksa".
+ *
+ * NUMBRITEGA AJA KEELEREEGLID (Fable'i ülevaatus 14. sept):
+ *  a. Lauses käib numbri ette „kell": „Buss väljub kell 8.39", „Kell on 8.11".
+ *     Ilma selleta on see tabelirida, mitte lause.
+ *  b. Vahemik saab käändelõpu ja sõna „kella": „kella 8.11-st 8.39-ni".
+ *     Mõttekriipsu (16.35–17.55) ei kasuta — näeb välja nagu miinus.
+ *  c. Küsimus on „Mitu minutit …?", mitte „Kui kaua …?" — „kui kaua" lubaks
+ *     vastuse „1 tund ja 20 minutit" ja tekitaks kaks õiget vastust.
+ *  d. „Tund" on kahemõtteline (ajaühik ja koolitund) — kasuta „koolitund".
+ */
+(function () {
+  'use strict';
+  var T = window.HTekst, valik = T.valik, rnd = T.rnd;
+
+  /* `oma` = mitmenda minuti täpsusega see aeg päris elus on. Bussi- ja
+     rongiplaanis on 8.28 tavaline, film ja trenn algavad ümara aja peal. */
+  var MINEK = [
+    { kuni: 'bussi väljumiseni',      algus: 'Buss väljub',                tee: 'bussipeatusesse', aken: [420, 530],  valmis: [10, 15, 20],     oma: 1 },
+    { kuni: 'rongi väljumiseni',      algus: 'Rong väljub',                tee: 'jaama',           aken: [420, 1080], valmis: [15, 20, 25, 30], oma: 1 },
+    { kuni: 'kooli alguseni',         algus: 'Koolitund algab',            tee: 'kooli',           aken: [480, 840],  valmis: [15, 20, 25],     oma: 5 },
+    { kuni: 'trenni alguseni',        algus: 'Trenn algab',                tee: 'trenni',          aken: [900, 1140], valmis: [15, 20, 25, 30], oma: 5 },
+    { kuni: 'filmi alguseni',         algus: 'Film algab kinos',           tee: 'kinno',           aken: [960, 1200], valmis: [20, 25, 30],     oma: 5 },
+    { kuni: 'multika alguseni',       algus: 'Multikas algab sõbra juures', tee: 'sõbra juurde',   aken: [540, 1140], valmis: [10, 15, 20],     oma: 5 },
+    { kuni: 'ujumistunni alguseni',   algus: 'Ujumistund algab',           tee: 'ujulasse',        aken: [540, 1080], valmis: [20, 25, 30],     oma: 5 }
+  ];
+
+  /* Kestuse küsimusel on oma nimekiri: iga sündmusega käib kaasas usutav
+     pikkus, et ei tekiks 65-minutilist koolitundi. */
+  var KESTUSED = [
+    { n: 'Film',       s: 'film',       aken: [960, 1200], lyh: 80, pik: 120 },
+    { n: 'Etendus',    s: 'etendus',    aken: [720, 1140], lyh: 60, pik: 90 },
+    { n: 'Trenn',      s: 'trenn',      aken: [900, 1140], lyh: 45, pik: 90 },
+    { n: 'Ujumistund', s: 'ujumistund', aken: [540, 1080], lyh: 40, pik: 60 },
+    { n: 'Multikas',   s: 'multikas',   aken: [540, 1140], lyh: 20, pik: 40 },
+    { n: 'Matk',       s: 'matk',       aken: [600, 900],  lyh: 60, pik: 120 }
+  ];
+
+  /* Kellaaeg numbritega: 8.06, 16.45. */
+  function kellNr(min) {
+    var h = Math.floor(min / 60) % 24, m = min % 60;
+    return h + '.' + (m < 10 ? '0' + m : m);
+  }
+  function mitu(min) { return min === 1 ? '1 minut' : min + ' minutit'; }
+  function aken(a, samm) {
+    var v = a[0] + rnd(a[1] - a[0] + 1);
+    return Math.round(v / samm) * samm;
+  }
+
+  /* Vahe kahe kellaaja vahel. Tunnipiiri ületamisel annab laps kõige sagedamini
+     alla, seega vihje teeb selle kahes sammus täistunni kaudu. */
+  function vaheVihje(a, b) {
+    var pais = 'Kella ' + kellNr(a) + '-st ' + kellNr(b) + '-ni ';
+    var tais = (Math.floor(a / 60) + 1) * 60;
+    /* Ühe sammuga, kui vahe jääb sama tunni sisse VÕI lõpeb täpselt täistunnil
+       — muidu tuleks vihjesse „kella 10.00-st 10.00-ni 0 minutit". */
+    if (Math.floor(a / 60) === Math.floor(b / 60) || b === tais) {
+      return pais + 'on <b>' + mitu(b - a) + '</b>.';
+    }
+    return 'Loe täistunni kaudu: kella ' + kellNr(a) + '-st ' + kellNr(tais) + '-ni on ' +
+           mitu(tais - a) + ' ja kella ' + kellNr(tais) + '-st ' + kellNr(b) + '-ni ' +
+           mitu(b - tais) + '. Kokku <b>' + mitu(b - a) + '</b>.';
+  }
+
+  /* Neli lähedast vastust. Üks eksitaja on tüüpviga: tunnipiiri valesti
+     lugemine, ehk kella 8.50-st 9.05-ni arvatakse 55 minutit, mitte 15. */
+  function minutiValikud(oige) {
+    var kand = {};
+    [oige + 10, oige - 10, oige + 5, oige - 5, 60 - (oige % 60), oige + 20, oige - 20]
+      .forEach(function (v) { if (v > 0 && v < 200 && v !== oige) kand[v] = 1; });
+    var k = Object.keys(kand).map(Number);
+    k.sort(function (x, y) { return Math.abs(x - oige) - Math.abs(y - oige); });
+    return k.slice(0, 3).concat([oige]);
+  }
+
+  /* Kellaaja eksitajad on tüüpvead: liitis lahutamise asemel, unustas ühe osa. */
+  function aegValikud(oige, algus, kestus) {
+    var kand = {};
+    [algus + kestus, algus, oige - 60, oige + 5, oige - 5]
+      .forEach(function (v) {
+        var x = ((v % 1440) + 1440) % 1440;
+        if (x !== oige) kand[x] = 1;
+      });
+    return Object.keys(kand).map(Number).slice(0, 3).concat([oige]);
+  }
+
+  /* Silveri hommik kahes sammus. Esimene küsib, palju aega sündmuseni on;
+     teine lisab valmistumise ja tee ning küsib, palju vaba aega järele jääb. */
+  function hommik() {
+    var st = valik(MINEK);
+    var syndmus = aken(st.aken, st.oma);
+    var ette = 20 + rnd(41);                 // 20–60 minutit varem
+    var praegu = syndmus - ette;
+    var kulub = valik(st.valmis);
+    var jaab = ette - kulub;
+    if (jaab < 3) return null;               // muidu ei ole teisel küsimusel mõtet
+
+    return { sammud: [
+      {
+        lugu: 'Kell on ' + kellNr(praegu) + '. ' + st.algus + ' kell ' + kellNr(syndmus) + '.',
+        kysimus: 'Mitu minutit on ' + st.kuni + '?',
+        tyyp: 'kestus', numbritega: true, vastus: ette, valikud: minutiValikud(ette),
+        vihje: vaheVihje(praegu, syndmus)
+      },
+      {
+        /* Teine samm peab olema iseseisev: esimese loo tekst on juba ekraanilt
+           läinud. Kokkuvõte EI tohi kasutada „pärast"-vormi — vt päist, reegel 2. */
+        lugu: T.suur(st.kuni) + ' on ' + mitu(ette) + '. Riidesse panemiseks ja ' +
+              st.tee + ' minekuks kulub kokku ' + mitu(kulub) + '.',
+        kysimus: 'Mitu minutit on sul veel vaba aega?',
+        tyyp: 'kestus', numbritega: true, vastus: jaab, valikud: minutiValikud(jaab),
+        vihje: 'Aega on ' + mitu(ette) + ', neist ' + mitu(kulub) + ' kulub ära. Jääb <b>' +
+               mitu(jaab) + '</b>.'
+      }
+    ] };
+  }
+
+  /* Mis kell tuleb välja minna. Vastus on kellaaeg numbritega. */
+  function valjaminek() {
+    var st = valik(MINEK);
+    var syndmus = aken(st.aken, st.oma);
+    var kulub = valik(st.valmis);
+    var valja = syndmus - kulub;
+    return { sammud: [{
+      lugu: st.algus + ' kell ' + kellNr(syndmus) + '. ' + T.suur(st.tee) +
+            ' minekuks kulub ' + mitu(kulub) + '.',
+      kysimus: 'Mis kell pead kodust välja minema?',
+      tyyp: 'kellNr', numbritega: true, vastus: valja, valikud: aegValikud(valja, syndmus, kulub),
+      vihje: 'Lahuta teele kuluv aeg: ' + kellNr(syndmus) + ' miinus ' + mitu(kulub) +
+             ' on <b>' + kellNr(valja) + '</b>.'
+    }] };
+  }
+
+  /* Algus ja lõpp numbritega, küsitakse kestust minutites. */
+  function kuiKaua() {
+    var st = valik(KESTUSED);
+    var algus = aken(st.aken, 5);
+    var kestus = 5 * Math.round((st.lyh + rnd(st.pik - st.lyh + 1)) / 5);
+    var lopp = algus + kestus;
+    return { sammud: [{
+      lugu: st.n + ' algab kell ' + kellNr(algus) + ' ja lõpeb kell ' + kellNr(lopp) + '.',
+      kysimus: 'Mitu minutit ' + st.s + ' kestab?',
+      tyyp: 'kestus', numbritega: true, vastus: kestus, valikud: minutiValikud(kestus),
+      vihje: vaheVihje(algus, lopp)
+    }] };
+  }
+
+  function looNr() {
+    var t = valik(['hommik', 'hommik', 'valja', 'kaua']);   // Silveri lugu sagedamini
+    if (t === 'valja') return valjaminek();
+    if (t === 'kaua') return kuiKaua();
+    return hommik() || valjaminek();
+  }
+
+  T.looNr = looNr;
+  T.kellNr = kellNr;
+  T.mitu = mitu;
+})();
