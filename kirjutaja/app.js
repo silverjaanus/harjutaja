@@ -36,6 +36,9 @@
 
   const slug = w => w.replace(/õ/g, "6").replace(/ä/g, "2").replace(/ö/g, "7").replace(/ü/g, "y");
   const src = w => "audio/" + slug(w) + ".mp3";
+  /* Võrdlushääl on teine salvestus kui küsimuse hääl. Kui laps saaks võrrelda
+     sedasama klippi, vastaks ta klipi äratundmisega, mitte välte kuulmisega. */
+  const cmpSrc = w => "audio2/" + slug(w) + ".mp3";
   const variant = (it, o) => it.pre + o + it.post;
 
   function pool() {
@@ -54,13 +57,20 @@
   function stop() {
     if (audio) { audio.onended = audio.onerror = null; audio.pause(); audio = null; }
     $("listenBtn").classList.remove("playing");
+    $("cmpBtn").classList.remove("playing");
   }
-  function play(word, onend) {
+  /* o.cmp = võrdlushääl (kaust audio2), o.btn = nupp, mis mängimise ajal süttib.
+     Kui võrdlusklippi veel ei ole, kukub mängimine tagasi küsimuse häälele:
+     puuduv fail ei tohi kuulamisabi vaikselt katki jätta. */
+  function play(word, onend, o) {
+    o = o || {};
     stop();
-    const a = new Audio(src(word)); audio = a;
-    $("listenBtn").classList.add("playing");
-    const done = () => { if (audio === a) { $("listenBtn").classList.remove("playing"); audio = null; } if (onend) onend(); };
-    a.onended = done; a.onerror = done;
+    const btn = $(o.btn || "listenBtn");
+    const a = new Audio(o.cmp ? cmpSrc(word) : src(word)); audio = a;
+    btn.classList.add("playing");
+    const done = () => { if (audio === a) { btn.classList.remove("playing"); audio = null; } if (onend) onend(); };
+    a.onended = done;
+    a.onerror = () => { if (o.cmp) { play(word, onend, { btn: o.btn }); } else { done(); } };
     a.play().catch(done);
   }
 
@@ -326,7 +336,11 @@
     if (!p.length) return;
     const st0 = {}; p.forEach(it => { st0[it.id] = HEngine.mastered(D.stats[it.id]); });
     round = test ? new TestRound(p) : new HEngine.Round(p, D.stats, Math.min(ROUND_LEN, Math.max(6, p.length)));
-    G = { mode: test ? "test" : "train", n: 0, ok: 0, wrong: [], st0, pool: p, history: [], t0: Date.now(), replays: 0 };
+    /* help = millise küsimuse juures on kuulamisabi praegu vajutatud;
+       usedHelp = mis sõnale on abi juba korra antud (see tuleb ilma abita tagasi);
+       reasked = et üks sõna ei tuleks abi pärast rohkem kui üks kord juurde. */
+    G = { mode: test ? "test" : "train", n: 0, ok: 0, wrong: [], st0, pool: p, history: [], t0: Date.now(), replays: 0,
+          help: {}, usedHelp: {}, reasked: {}, nudged: false };
     $("prevBtn").hidden = test;
     $("flagBtn").hidden = test;
     renderPrevBtn();
@@ -370,6 +384,10 @@
     });
     $("fb").textContent = ""; $("fb").className = "feedback";
     $("hint").hidden = true; $("after").hidden = true;
+    /* Kuulamisabi ainult harjutamises ja ainult siis, kui sellele sõnale ei ole
+       seda selles ringis juba antud — abiga vastatud sõna tuleb ilma abita tagasi. */
+    $("cmpRow").hidden = !(G && G.mode === "train" && !G.usedHelp[it.id]);
+    $("cmpNote").hidden = true;
   }
 
   function hintText(it) {
@@ -384,6 +402,7 @@
      kui laps tuleb noolega tagasi seda kusimust vaatama. */
   function paintResult(rec) {
     const it = rec.it;
+    $("cmpRow").hidden = true; $("cmpNote").hidden = true;
     [...$("opts").children].forEach(b => {
       b.disabled = true;
       b.classList.remove("right", "wrong", "lit");
@@ -410,7 +429,21 @@
     stopTimer();
     const test = G.mode === "test";
     const ok = o === it.answer;
+    /* Kuulamisabi kolmas reegel: abiga vastatud sõna ei lähe selgeks ja tuleb
+       samas ringis 3-6 küsimuse pärast ilma abita tagasi. Oskust kontrollitakse
+       alati abita — muidu ei erista mäng kuulmist klipi äratundmisest. */
+    const helped = !!G.help[it.id]; delete G.help[it.id];
     round.record(it, ok); save();
+    if (helped && !test) {
+      G.usedHelp[it.id] = true;
+      const s = D.stats[it.id];
+      if (ok && s) s.streak = 0;
+      if (ok && !G.reasked[it.id] && round.asked < round.length * 2) {
+        G.reasked[it.id] = true;
+        round.due.push({ item: it, at: round.asked + 3 + Math.floor(Math.random() * 4) });
+      }
+      save();
+    }
     G.n++; if (ok) G.ok++; else if (!G.wrong.some(w => w.id === it.id)) G.wrong.push(it);
     const rec = { it, chosen: o, ok, praise: ok ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : "" };
     G.history.push(rec); renderPrevBtn();
@@ -429,6 +462,28 @@
     $("hint").innerHTML = KRobot("kind", { head: true }) + '<div class="hinttext">' + hintText(it) + "</div>"; $("hint").hidden = false;
     $("after").hidden = false;
     setTimeout(playAll, 600);
+  }
+
+  /* Kuulamisabi enne vastamist: kolm pikkust järjest, lühike - pikk - ülipikk.
+     Kolm asja eristavad seda spikrist:
+     1. õiget ei tähistata ja variantide sõnu ei kirjutata välja — kirjapilt
+        annaks päris sõna ära; süttib ainult täht, mille kõla parasjagu käib;
+     2. võrdlus tuleb teise häälega kui küsimus (kaust audio2);
+     3. abiga vastatud sõna tuleb ilma abita tagasi (vt answer()). */
+  function compare() {
+    const it = cur; if (!it || it.done || review !== null || G.mode === "test") return;
+    if (G.usedHelp[it.id]) return;
+    G.help[it.id] = true;
+    if (!G.nudged) { G.nudged = true; $("cmpNote").hidden = false; }
+    const btns = [...$("opts").children];
+    let k = 0;
+    const step = () => {
+      btns.forEach(b => b.classList.remove("lit"));
+      if (cur !== it || it.done || k >= btns.length) { $("cmpBtn").classList.remove("playing"); return; }
+      const b = btns[k++]; b.classList.add("lit");
+      play(variant(it, b.dataset.o), () => setTimeout(step, 350), { cmp: true, btn: "cmpBtn" });
+    };
+    step();
   }
 
   function playAll() {
@@ -695,6 +750,7 @@
     }
     play(cur.word);
   };
+  $("cmpBtn").onclick = compare;
   $("allBtn").onclick = playAll;
   $("nextBtn").onclick = next;
   /* Võistluses küsib ✕ kinnitust: pooleli jäetud ring läheb ikka kirja ja

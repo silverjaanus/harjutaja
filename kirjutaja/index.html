@@ -103,6 +103,12 @@
     </button>
     <p class="sentence" id="sentence" aria-live="polite"></p>
     <div class="opts" id="opts"></div>
+    <!-- Kuulamisabi: kolm pikkust enne vastamist. Võrdlus tuleb teise häälega ja
+         õiget varianti ei tähistata — muidu oleks see spikker, mitte abi. -->
+    <div class="row" id="cmpRow" hidden>
+      <button class="ghost" id="cmpBtn">Kuula kolme pikkust</button>
+    </div>
+    <p class="cmpnote" id="cmpNote" hidden>Kuula ja venita sõna ise kaasa. Mis täht sobib?</p>
     <div class="feedback" id="fb" aria-live="polite"></div>
     <div class="hintcard" id="hint" hidden></div>
     <div class="row" id="after" hidden>
