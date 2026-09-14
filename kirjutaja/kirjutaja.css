@@ -124,13 +124,31 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .report-list li{line-height:1.35}
 .reports .ghost{align-self:flex-start}
 
-/* --- eelmine sona --- */
-.prevbox{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);
-  border-top:1.5px solid var(--edge);border-radius:20px 20px 0 0;padding:16px 16px 20px;
-  display:flex;flex-direction:column;gap:10px;box-shadow:0 -8px 24px rgba(29,47,79,.14)}
-.prevbox[hidden]{display:none}
-.prev-word{margin:0;font-family:var(--display);font-weight:600;font-size:26px}
-.prev-sentence{margin:0;color:var(--ink-soft)}
+/* --- eelmiste sonade vaatamine ---
+   Nool tagasi viib paris eelmise kusimuse juurde, mitte ei mangi ainult heli.
+   Riba utleb, et see ei ole enam kaiv kusimus, ja toob tagasi mangu. */
+.reviewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--accent-soft,#fdf1d2);border:1.5px solid var(--accent-edge);border-radius:14px;
+  padding:8px 10px 8px 14px;font-weight:700;font-size:14.5px}
+.reviewbar .ghost{padding:7px 12px;font-size:14px}
+
+/* --- veast teada andmine --- */
+.flagbtn{margin:18px auto 0;display:block;font:inherit;font-size:14px;font-weight:700;
+  color:var(--ink-soft);background:none;border:0;border-bottom:1.5px dotted var(--ink-soft);
+  padding:2px 0;cursor:pointer}
+.flagbtn:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.flagwrap{position:fixed;inset:0;z-index:8;background:rgba(29,47,79,.45);
+  display:flex;align-items:flex-end;justify-content:center;padding:0}
+.flagwrap[hidden]{display:none}
+.flagcard{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;
+  padding:18px 16px 22px;display:flex;flex-direction:column;gap:8px;
+  box-shadow:0 -8px 24px rgba(29,47,79,.18)}
+.flagcard h3{margin:0;font-family:var(--display);font-weight:600;font-size:22px}
+.flag-word{margin:0;font-family:var(--display);font-weight:600;font-size:26px}
+.flag-sent{margin:0 0 4px;color:var(--ink-soft)}
+.flagopts{display:flex;flex-direction:column;gap:8px}
+.flagopts .ghost{text-align:left}
+.flag-cancel{margin-top:6px;align-self:center}
 .flag-note{margin:10px 0 0;text-align:center;color:var(--ok);font-weight:700}
 
 /* --- autor ja lahtekood --- */

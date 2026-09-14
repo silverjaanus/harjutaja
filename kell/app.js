@@ -214,30 +214,50 @@
     const q = D.reports.filter(r => !r.sent);
     if (!q.length) return Promise.resolve();
     return q.reduce((chain, r) => chain.then(() =>
-      HKlass.issue({ module: MODULE, kind: "ulesanne", item: r.item, detail: r.detail })
+      HKlass.issue({ module: MODULE, kind: "ulesanne", item: r.item, detail: r.detail,
+        note: r.why ? (MIKS[r.why] || r.why) : null })
         .then(res => { if (res && res.ok) { r.sent = true; save(); } })
         .catch(() => { })
     ), Promise.resolve());
   }
 
-  function flagCurrent() {
+  /* Nupp on lause all ja ütleb sõnadega, mida ta teeb. Aken küsib ka, MIS on
+     valesti — ilma selleta tuleb märge ilma vihjeta, mida otsida. */
+  const MIKS = {
+    lause: "Ülesande jutt on imelik",
+    vastus: "Mäng näitab valet vastust",
+    raske: "Ei saa aru, mida küsitakse",
+    muu: "Midagi muud"
+  };
+
+  function openFlag() {
     const k = reportKey(cur); if (!k) return;
-    if (!D.reports.some(r => r.item === k.item)) {
-      D.reports.push({ item: k.item, detail: k.detail, at: new Date().toISOString(), sent: false });
-      save();
-      sendReports();
-    }
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+    $("flagSentence").textContent = k.detail;
+    $("flagBox").hidden = false;
+  }
+
+  function closeFlag() { $("flagBox").hidden = true; }
+
+  function sendFlag(why) {
+    const k = reportKey(cur); if (!k) return;
+    const rec = D.reports.find(r => r.item === k.item);
+    if (rec) { rec.why = why; rec.sent = false; }
+    else D.reports.push({ item: k.item, detail: k.detail, why, at: new Date().toISOString(), sent: false });
+    save();
+    sendReports();
+    closeFlag();
     const f = $("flagNote");
-    f.textContent = "Märkisin selle ülesande ära. Aitäh!";
+    f.textContent = "Aitäh! Andsid veast teada.";
     f.hidden = false;
     clearTimeout(flagTimer);
-    flagTimer = setTimeout(() => { f.hidden = true; }, 2200);
+    flagTimer = setTimeout(() => { f.hidden = true; }, 2600);
   }
 
   function next() {
     clearTimeout(advanceTimer);
     stopTimer();
-    $("flagNote").hidden = true;
+    $("flagNote").hidden = true; $("flagBox").hidden = true;
     const q = round.next();
     if (!q) return finish();
     cur = q.item; cur.done = false;
@@ -664,7 +684,13 @@
   $("startBtn").onclick = () => start("train");
   $("competeBtn").onclick = onCompete;
   $("nextBtn").onclick = next;
-  $("flagBtn").onclick = flagCurrent;
+  $("flagBtn").onclick = openFlag;
+  $("flagCancel").onclick = closeFlag;
+  $("flagBox").onclick = e => { if (e.target === $("flagBox")) closeFlag(); };
+  $("flagOpts").addEventListener("click", e => {
+    const b = e.target.closest("button[data-why]"); if (!b) return;
+    sendFlag(b.dataset.why);
+  });
 
   let quitArmed = false;
   $("quitBtn").onclick = () => {

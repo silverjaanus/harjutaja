@@ -131,24 +131,64 @@
     el.hidden = false;
   }
 
-  /* ---------- eelmine sõna ---------- */
+  /* ---------- eelmiste küsimuste vaatamine ----------
+     Nool tagasi viib päris eelmise küsimuse juurde: sama lause, samad
+     variandid ja see, mida laps vastas. Varem mängis see ainult heli ja
+     ekraanil oli endiselt uus sõna — laps kuulis üht ja nägi teist.
+     `review` on indeks G.history sees; null tähendab, et mäng käib. */
+  let review = null;
+
+  function vaadatav() { return review === null ? null : G.history[review]; }
+
+  /* Mitmendale kirjele viib järgmine samm tagasi. Kui käiv küsimus on juba
+     vastatud, on see ise ajaloos viimane, seega tuleb üks võrra kaugemale. */
+  function eelmineIndeks() {
+    if (!G) return -1;
+    if (review !== null) return review - 1;
+    return G.history.length - (cur && cur.done ? 2 : 1);
+  }
+
   function renderPrevBtn() {
     const b = $("prevBtn"); if (!b) return;
-    b.disabled = !(G && G.history.length);
+    b.disabled = eelmineIndeks() < 0;
   }
+
   function openPrev() {
-    if (!G || !G.history.length) return;
+    const i = eelmineIndeks();
+    if (i < 0) return;
     if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
-    const it = G.history[G.history.length - 1];
-    $("prevWord").textContent = it.word;
-    $("prevSentence").textContent = it.sentence || it.word;
-    $("prevPlay").onclick = () => play(it.word);
-    $("prevBox").hidden = false;
-    play(it.word);
+    stop();
+    review = i;
+    const rec = G.history[review];
+    const sammu = G.history.length - review;
+    $("reviewWhich").textContent = sammu === 1 ? "Vaatad eelmist sõna" : "Vaatad " + sammu + " sõna tagasi";
+    $("reviewBar").hidden = false;
+    $("flagNote").hidden = true;
+    renderQuestion(rec.it);
+    paintResult(rec);
+    $("after").hidden = true;
+    renderPrevBtn();
+    play(rec.it.word);
   }
-  function closePrev() {
-    $("prevBox").hidden = true;
-    if (pendingAdvance) { pendingAdvance = false; next(); }
+
+  /* Tagasi mängu: kui vahepeal ootas edasiliikumine, läheb mäng edasi,
+     muidu joonistatakse käiv küsimus täpselt sellisena, nagu ta oli. */
+  function exitReview() {
+    if (review === null) return;
+    review = null;
+    stop();
+    $("reviewBar").hidden = true;
+    if (pendingAdvance) { pendingAdvance = false; next(); return; }
+    if (!cur) return;
+    renderQuestion(cur);
+    if (cur.done) {
+      const rec = G.history[G.history.length - 1];
+      if (rec && rec.it === cur) {
+        paintResult(rec);
+        $("after").hidden = !(G.mode !== "test" && !rec.ok);
+      }
+    }
+    renderPrevBtn();
   }
 
   /* ---------- midagi on valesti ---------- */
@@ -163,24 +203,56 @@
     return q.reduce((chain, r) => chain.then(() =>
       HKlass.issue({
         module: MODULE, kind: "sona", item: r.id,
-        detail: r.word + (r.sentence ? " / " + r.sentence : ""), version: ver
+        detail: r.word + (r.sentence ? " / " + r.sentence : ""),
+        note: r.why ? (MIKS[r.why] || r.why) : null, version: ver
       }).then(res => { if (res && res.ok) { r.sent = true; save(); } })
         .catch(() => { })
     ), Promise.resolve());
   }
 
-  function flagCurrent() {
-    const it = cur; if (!it) return;
-    if (!D.reports.some(r => r.id === it.id)) {
-      D.reports.push({ id: it.id, word: it.word, sentence: it.sentence || "", at: new Date().toISOString(), sent: false });
-      save();
-      sendReports();
-    }
+  /* Küsimärgi asemel on nüüd tekstiga nupp ja päris aken. Laps ütleb ka,
+     MIS on valesti — muidu tuleb märge ilma vihjeta, mida otsida. */
+  const MIKS = {
+    haal: "Häält ei ole kuulda või see ütleb valesti",
+    lause: "Lause on imelik",
+    vastus: "Mäng näitab valet vastust",
+    muu: "Midagi muud"
+  };
+
+  function flagItem() {
+    const rec = vaadatav();
+    return rec ? rec.it : cur;
+  }
+
+  function openFlag() {
+    const it = flagItem(); if (!it) return;
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
+    stop();
+    $("flagWord").textContent = it.word;
+    $("flagSentence").textContent = it.sentence || "";
+    $("flagSentence").hidden = !it.sentence;
+    $("flagBox").hidden = false;
+  }
+
+  function closeFlag() {
+    $("flagBox").hidden = true;
+    if (pendingAdvance && review === null) { pendingAdvance = false; next(); }
+  }
+
+  function sendFlag(why) {
+    const it = flagItem(); if (!it) return;
+    const rec = D.reports.find(r => r.id === it.id);
+    if (rec) { rec.why = why; rec.sent = false; }
+    else D.reports.push({ id: it.id, word: it.word, sentence: it.sentence || "", why, at: new Date().toISOString(), sent: false });
+    save();
+    sendReports();
+    closeFlag();
     const f = $("flagNote");
-    f.textContent = "Märkisin sõna „" + it.word + "“. Aitäh!";
+    f.textContent = "Aitäh! Andsid veast teada sõna „" + it.word + "“ juures.";
     f.hidden = false;
     clearTimeout(flagTimer);
-    flagTimer = setTimeout(() => { f.hidden = true; }, 2200);
+    flagTimer = setTimeout(() => { f.hidden = true; }, 2600);
+    renderReports();
   }
   function renderReports() {
     const box = $("reports"); if (!box) return;
@@ -189,7 +261,7 @@
     const list = $("reportList"); list.innerHTML = "";
     D.reports.forEach(r => {
       const li = document.createElement("li");
-      li.innerHTML = "<b>" + r.word + "</b>" + (r.sentence ? " — " + r.sentence : "");
+      li.textContent = r.word + (r.why ? " — " + (MIKS[r.why] || r.why).toLowerCase() : "");
       list.append(li);
     });
     $("reportCount").textContent = D.reports.length;
@@ -265,10 +337,12 @@
   function next() {
     clearTimeout(advanceTimer);
     stopTimer();
+    review = null; $("reviewBar").hidden = true; $("flagNote").hidden = true;
     const q = round.next();
     if (!q) return finish();
     cur = q.item; cur.done = false;
     renderQuestion(cur);
+    renderPrevBtn();   /* uus kusimus on vastamata, seega eelmine on jalle vaadatav */
     const total = round.length + round.due.length;
     $("bar").style.width = Math.min(100, 100 * (round.asked - 1) / Math.max(total, 1)) + "%";
     if (G.mode === "test") { G.replays = 0; $("listenBtn").disabled = false; }
@@ -305,6 +379,31 @@
     return "<b>" + it.word + "</b> — häälik venib kõige kauem, see on ülipikk. Kirjutame kaks tähte: <b>" + it.answer + "</b>.";
   }
 
+  /* Joonistab vastatud kusimuse: taidetud lunk, oige ja vale variant,
+     tagasiside ja vihje. Sama pilt kehtib nii vastamise hetkel kui siis,
+     kui laps tuleb noolega tagasi seda kusimust vaatama. */
+  function paintResult(rec) {
+    const it = rec.it;
+    [...$("opts").children].forEach(b => {
+      b.disabled = true;
+      b.classList.remove("right", "wrong", "lit");
+      if (b.dataset.o === it.answer) b.classList.add("right");
+      else if (b.dataset.o === rec.chosen) b.classList.add("wrong");
+    });
+    const gap = $("gap"); if (gap) { gap.textContent = it.answer; gap.classList.add("filled"); }
+    if (rec.ok) {
+      $("fb").textContent = rec.praise || "Oige!";
+      $("fb").className = "feedback ok";
+      $("hint").hidden = true;
+      return;
+    }
+    $("fb").textContent = (rec.chosen === null ? "Aeg sai otsa. Õige on „" : "Õige on „") + it.word + "“.";
+    $("fb").className = "feedback bad";
+    if (G && G.mode === "test") { $("hint").hidden = true; return; }
+    $("hint").innerHTML = KRobot("kind", { head: true }) + '<div class="hinttext">' + hintText(it) + "</div>";
+    $("hint").hidden = false;
+  }
+
   /* o === null tähendab, et võistluses sai aeg otsa. */
   function answer(o) {
     const it = cur; if (!it || it.done) return; it.done = true;
@@ -313,23 +412,15 @@
     const ok = o === it.answer;
     round.record(it, ok); save();
     G.n++; if (ok) G.ok++; else if (!G.wrong.some(w => w.id === it.id)) G.wrong.push(it);
-    G.history.push(it); renderPrevBtn();
-    [...$("opts").children].forEach(b => {
-      b.disabled = true;
-      if (b.dataset.o === it.answer) b.classList.add("right");
-      else if (b.dataset.o === o) b.classList.add("wrong");
-    });
-    const gap = $("gap"); gap.textContent = it.answer; gap.classList.add("filled");
+    const rec = { it, chosen: o, ok, praise: ok ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : "" };
+    G.history.push(rec); renderPrevBtn();
+    paintResult(rec);
     if (ok) {
       HSfx.ok();
-      $("fb").textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
-      $("fb").className = "feedback ok";
       advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, test ? 800 : 1100);
       return;
     }
     HSfx.bad();
-    $("fb").textContent = (o === null ? "Aeg sai otsa. Õige on \u201E" : "Õige on \u201E") + it.word + "\u201C.";
-    $("fb").className = "feedback bad";
     if (test) {
       // Võistluses ei õpetata: ei vihjet, ei variantide etteütlust. Ainult õige sõna.
       advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, 1300);
@@ -576,7 +667,8 @@
 
   function goHome() {
     stop(); stopTimer(); clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = false;
-    $("prevBox").hidden = true; $("flagNote").hidden = true;
+    $("flagBox").hidden = true; $("reviewBar").hidden = true; $("flagNote").hidden = true;
+    review = null;
     $("prevBtn").hidden = false; $("flagBtn").hidden = false;
     $("listenBtn").disabled = false;
     $("againBtn").textContent = "Harjuta veel";
@@ -594,7 +686,9 @@
   $("competeBtn").onclick = onCompete;
   /* Võistluses tohib heli üks kord korrata, aga aeg jookseb edasi. */
   $("listenBtn").onclick = () => {
-    if (!cur) return;
+    const vaade = flagItem();
+    if (!vaade) return;
+    if (review !== null) { play(vaade.word); return; }
     if (G && G.mode === "test") {
       if (cur.done || G.replays >= 1) return;
       G.replays++; $("listenBtn").disabled = true;
@@ -618,8 +712,14 @@
     if (G && G.n) finish(); else goHome();
   };
   $("prevBtn").onclick = openPrev;
-  $("prevClose").onclick = closePrev;
-  $("flagBtn").onclick = flagCurrent;
+  $("reviewBack").onclick = exitReview;
+  $("flagBtn").onclick = openFlag;
+  $("flagCancel").onclick = closeFlag;
+  $("flagBox").onclick = e => { if (e.target === $("flagBox")) closeFlag(); };
+  $("flagOpts").addEventListener("click", e => {
+    const b = e.target.closest("button[data-why]"); if (!b) return;
+    sendFlag(b.dataset.why);
+  });
   $("reportClear").onclick = () => { D.reports = []; save(); renderReports(); };
   $("againBtn").onclick = () => start("train");
   $("homeBtn").onclick = goHome;
