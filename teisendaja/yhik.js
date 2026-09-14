@@ -176,11 +176,21 @@
     return out;
   }
 
-  var P3 = paarid('pikkus', 4)
+  /* Tase 3 paarid on kaesitsi valitud, mitte koik voimalikud (Fable'i ulevaatus
+     14. sept). Koolis ei teisendata kilomeetreid sentimeetriteks ega nadalaid
+     tundideks - matemaatiliselt on need oiged, aga ulesandena voorad. Ajas kaivad
+     ainult naaberuhikud, ainus lubatud hupe on h <-> s. */
+  var P3 = [['cm', 'mm'], ['dm', 'cm'], ['m', 'dm'], ['km', 'm'],
+            ['m', 'cm'], ['m', 'mm'], ['dm', 'mm']]
     .concat(paarid('mass', 2), paarid('maht', 3),
-            paarid('aeg', 2, 0), paarid('aeg', 1, 1), paarid('raha', 1));
+            paarid('aeg', 1, 0), [['h', 's']], paarid('aeg', 1, 1), paarid('raha', 1));
 
-  var P4 = P3.concat(paarid('pindala', 2), paarid('ruumala', 2));
+  /* Tasemel 4 lisanduvad pindala ja ruumala, samuti ainult koolis esinevad paarid:
+     km² <-> a ja m³ <-> cm³ jaavad valja. */
+  var P4 = P3.concat(
+    [['cm²', 'mm²'], ['dm²', 'cm²'], ['m²', 'dm²'], ['m²', 'cm²'],
+     ['a', 'm²'], ['ha', 'a'], ['ha', 'm²'], ['km²', 'ha']],
+    [['cm³', 'mm³'], ['dm³', 'cm³'], ['m³', 'dm³']]);
 
   /* Tasemed jargivad oppekava. Vt faili paise, reegel 1. */
   var TASEMED = [null,
@@ -223,9 +233,9 @@
     { l: 'Sipelgas on 5 ___ pikk.', o: 'mm', v: ['cm', 'dm', 'm'], s: 'pikkus', tase: 2 },
     { l: 'Sõrmeküüs on 10 ___ lai.', o: 'mm', v: ['cm', 'dm', 'm'], s: 'pikkus', tase: 2 },
     { l: 'Tallinnast Tartusse on 185 ___.', o: 'km', v: ['m', 'dm', 'cm'], s: 'pikkus', tase: 2 },
-    { l: 'Koolimaja katus on 12 ___ kõrgel.', o: 'm', v: ['cm', 'km', 'mm'], s: 'pikkus', tase: 2 },
+    { l: 'Koolimaja on 12 ___ kõrge.', o: 'm', v: ['cm', 'km', 'mm'], s: 'pikkus', tase: 2 },
     { l: 'Õun kaalub 150 ___.', o: 'g', v: ['kg', 't'], s: 'mass', tase: 1 },
-    { l: 'Kolmanda klassi laps kaalub umbes 30 ___.', o: 'kg', v: ['g', 't'], s: 'mass', tase: 1 },
+    { l: 'Suur koer kaalub 30 ___.', o: 'kg', v: ['g', 't'], s: 'mass', tase: 1 },
     { l: 'Kiri kaalub 20 ___.', o: 'g', v: ['kg', 't'], s: 'mass', tase: 1 },
     { l: 'Veoauto kaalub 8 ___.', o: 't', v: ['kg', 'g'], s: 'mass', tase: 2 },
     { l: 'Suur hobune kaalub 600 ___.', o: 'kg', v: ['g', 't'], s: 'mass', tase: 2 },
@@ -234,16 +244,16 @@
     { l: 'Joogiklaasi mahub 2 ___.', o: 'dl', v: ['l', 'ml'], s: 'maht', tase: 2 },
     { l: 'Vanni mahub 150 ___ vett.', o: 'l', v: ['ml', 'dl'], s: 'maht', tase: 2 },
     { l: 'Koolitund kestab 45 ___.', o: 'min', v: ['s', 'h'], s: 'aeg', tase: 1 },
-    { l: 'Silmapilgutus kestab 1 ___.', o: 's', v: ['min', 'h'], s: 'aeg', tase: 1 },
+    { l: 'Kümneni lugemine kestab umbes 10 ___.', o: 's', v: ['min', 'h'], s: 'aeg', tase: 1 },
     { l: 'Laps magab öösel umbes 10 ___.', o: 'h', v: ['min', 's'], s: 'aeg', tase: 1 },
     { l: 'Suvevaheaeg kestab 3 ___.', o: 'kuu', v: ['nädal', 'aasta'], s: 'aeg', tase: 2 },
     { l: 'Jõuluvaheaeg kestab 2 ___.', o: 'nädal', v: ['ööpäev', 'kuu'], s: 'aeg', tase: 2 },
     { l: 'Jalgpallimäng kestab 90 ___.', o: 'min', v: ['s', 'h'], s: 'aeg', tase: 2 },
-    { l: 'Postmark on 6 ___ suur.', o: 'cm²', v: ['mm²', 'm²', 'dm²'], s: 'pindala', tase: 4 },
-    { l: 'Korvpalliplats on 420 ___ suur.', o: 'm²', v: ['cm²', 'km²', 'ha'], s: 'pindala', tase: 4 },
-    { l: 'Väike metsatukk on 2 ___ suur.', o: 'ha', v: ['m²', 'km²', 'a'], s: 'pindala', tase: 4 },
-    { l: 'Suhkrutükk on 4 ___ suur.', o: 'cm³', v: ['mm³', 'dm³', 'm³'], s: 'ruumala', tase: 4 },
-    { l: 'Kastiauto veab korraga 5 ___ liiva.', o: 'm³', v: ['cm³', 'dm³', 'mm³'], s: 'ruumala', tase: 4 }
+    { l: 'Postmargi pindala on 6 ___.', o: 'cm²', v: ['mm²', 'm²', 'dm²'], s: 'pindala', tase: 4 },
+    { l: 'Korvpalliplatsi pindala on 420 ___.', o: 'm²', v: ['cm²', 'km²', 'ha'], s: 'pindala', tase: 4 },
+    { l: 'Väikese metsatuki pindala on 2 ___.', o: 'ha', v: ['m²', 'km²', 'a'], s: 'pindala', tase: 4 },
+    { l: 'Suhkrutüki ruumala on 4 ___.', o: 'cm³', v: ['mm³', 'dm³', 'm³'], s: 'ruumala', tase: 4 },
+    { l: 'Kallur veab korraga 5 ___ liiva.', o: 'm³', v: ['cm³', 'dm³', 'mm³'], s: 'ruumala', tase: 4 }
   ];
 
   function rnd(n, R) { return Math.floor((R || Math.random)() * n); }
@@ -295,6 +305,9 @@
     var p = vali(filtreeri(TASEMED[t].paarid, kategooria), R);
     var TG = tegur(p[0], p[1]);
     if (TG.tegur < 10) return null;
+    /* Kumnendmurd ei kai ajauhikutega: "1,25 aastat" ei utle keegi, oeldakse
+       "aasta ja 3 kuud". Sama kehtib koigi sonaga uhikute kohta. */
+    if (TG.suurus === 'aeg' || SONA[p[0]] || SONA[p[1]]) return null;
     var murd = vali([0.5, 0.25, 0.75, 0.1, 0.2, 0.4], R);
     var arv = vali([0, 1, 2, 3, 4, 6], R) + murd;
     var vastus = teisenda(arv, p[0], p[1]);
@@ -395,9 +408,11 @@
     var fakt = vali(sobivad, R);
     var valed = sega(fakt.v, R).slice(0, 2);
     var id = 'yhik:' + fakt.o;
+    var valikud = sega([fakt.o].concat(valed), R), sildid = [];
+    for (var n2 = 0; n2 < valikud.length; n2++) sildid.push(silt(valikud[n2]));
     return {
       tyyp: 'yhik', tase: t, suurus: fakt.s, id: id, lemma: id,
-      kysimus: fakt.l, valikud: sega([fakt.o].concat(valed), R),
+      kysimus: fakt.l, valikud: valikud, valikudSildid: sildid,
       valjad: 0, vastus: fakt.o, mida: fakt.o
     };
   }
@@ -452,7 +467,7 @@
   function diagnoosi(q, vastus) {
     var K = kontrolli(q, vastus);
     if (K.oige) return { liik: 'oige', lause: '' };
-    if (K.tyhi) return { liik: 'tyhi', lause: 'Kirjuta arv ja vajuta „Vastan".' };
+    if (K.tyhi) return { liik: 'tyhi', lause: 'Kirjuta arv ja vajuta „Vastan“.' };
 
     if (q.tyyp === 'vordle' || q.tyyp === 'yhik') {
       return { liik: 'muu', lause: '' };
@@ -462,17 +477,18 @@
       var a = K.sisestus[0], b = K.sisestus[1];
       if (q.tyyp === 'ylekanne') {
         if (sama(a, q.vastus[0] - 1)) {
-          var MITMUS = { 'min': 'Minutid', 's': 'Sekundid' };
-          return { liik: 'ulekanne', lause: (MITMUS[q.mida] || 'Väiksemad ühikud') +
-            ' ei mahu ära: ' + vormU(60, q.mida) + ' = ' + vormU(1, q.mille) + '.' };
+          var bAlg = q.vastus[1] + 60;
+          return { liik: 'ulekanne', lause: vormU(bAlg, q.mida) + ' on rohkem kui ' +
+            vormU(1, q.mille) + '. ' + vormU(60, q.mida) + ' = ' + vormU(1, q.mille) +
+            ', seega ' + vormU(bAlg, q.mida) + ' = ' + vormU(1, q.mille) + ' ' +
+            vormU(q.vastus[1], q.mida) + '.' };
         }
         return { liik: 'muu', lause: '' };
       }
       if (sama(a + b, q.arv)) {
-        var TGn = tegur(q.sildid[0], q.sildid[1]).tegur;
-        return { liik: 'koht', lause: 'Esimesse lahtrisse käib see, mitu täis ' +
-          nimi(q.sildid[0], 3) + ' arvus on: ' + vormU(1, q.sildid[0]) + ' = ' +
-          vormU(TGn, q.sildid[1]) + '.' };
+        return { liik: 'koht', lause: 'Vaata, mitu täis ' + nimi(q.sildid[0], 3) +
+          ' sisse mahub: ' + vormU(q.arv, q.sildid[1]) + ' = ' +
+          vormU(q.vastus[0], q.sildid[0]) + ' ja ' + vormU(q.vastus[1], q.sildid[1]) + '.' };
       }
       return { liik: 'muu', lause: '' };
     }
@@ -483,20 +499,25 @@
       return { liik: 'sama', lause: 'Arv jäi samaks. Ühik muutus, seega peab muutuma ka arv.' };
     }
     if (q.tykid && sama(v, Number('' + q.tykid[0] + q.tykid[1]))) {
-      return { liik: 'koht', lause: 'Numbrid ei käi lihtsalt kõrvuti: ' + vorm(q.tykid[1]) + ' ' +
-        q.sildid[0] + ' vajab ees nulle, et kohad paika saada.' };
+      var TGk = T.tegur;
+      return { liik: 'koht', lause: vormU(q.tykid[0], q.mille) + ' = ' +
+        vormU(q.tykid[0] * TGk, q.mida) + '. Liida: ' + vorm(q.tykid[0] * TGk) + ' + ' +
+        vorm(q.tykid[1]) + ' = ' + vormU(q.vastus, q.mida) + '.' };
     }
     var vale = T.suurem === q.mille ? q.arv / T.tegur : q.arv * T.tegur;
     if (sama(v, vale)) {
       var vaiksem = T.suurem === q.mille ? q.mida : q.mille;
       return { liik: 'suund', lause: suureTaht(nimi(q.mida, 0)) + ' on ' +
         (q.mida === vaiksem ? 'väiksem' : 'suurem') + ' ühik kui ' + nimi(q.mille, 0) +
-        ', seega läheb arv ' + (q.mida === vaiksem ? 'suuremaks' : 'väiksemaks') + ', mitte vastupidi.' };
+        ', seega läheb arv ' + (q.mida === vaiksem ? 'suuremaks' : 'väiksemaks') + '.' };
     }
     var suhe = kumnendSuhe(v, q.vastus);
     if (suhe) {
-      return { liik: 'nullid', lause: 'Nullide arv läks paigast: vastus on ' +
-        (q.vastus > v ? suhe + ' korda suurem' : suhe + ' korda väiksem') + '.' };
+      var puudu = q.vastus > v;
+      var vaiksemY = T.suurem === q.mille ? q.mida : q.mille;
+      return { liik: 'nullid', lause: (puudu ? 'Nulle jäi puudu. ' : 'Nulle sai liiga palju. ') +
+        'Õige vastus on ' + vorm(suhe) + ' korda ' + (puudu ? 'suurem' : 'väiksem') +
+        ' kui sinu oma. Loe üle: ' + vormU(1, T.suurem) + ' = ' + vormU(T.tegur, vaiksemY) + '.' };
     }
     return { liik: 'muu', lause: '' };
   }
@@ -504,17 +525,19 @@
   /* Vihje. Alati kaks lauset: esimene ütleb redeli, teine teeb tehte ette. */
   function vihje(q) {
     if (q.tyyp === 'yhik') {
-      return 'Mõtle, kui suur üks ' + nimi(q.mida, 0) + ' on. Vali see ühik, mille kohta ' +
-        'arv annab usutava suuruse.';
+      return 'Proovi iga ühikut lausesse: ' + (q.valikudSildid || q.valikud).join(', ') +
+        '. Vali see, mis päriselus sobib.';
     }
     if (q.tyyp === 'vordle') {
       var yhes = teisenda(q.arv, q.mille, q.mida);
-      return 'Vii mõlemad samasse ühikusse. ' + vormU(q.arv, q.mille) + ' = ' +
+      return 'Teisenda mõlemad samasse ühikusse. ' + vormU(q.arv, q.mille) + ' = ' +
         vormU(yhes, q.mida) + ', teine on ' + vormU(q.teineArv, q.mida) + '.';
     }
     if (q.tyyp === 'ylekanne') {
-      return vormU(60, q.mida) + ' = ' + vormU(1, q.mille) + '. Võta ' + vorm(60) + ' ' +
-        nimi(q.mida, 3) + ' ära ja lisa üks ' + nimi(q.mille, 0) + ' juurde.';
+      var bA = q.vastus[1] + 60;
+      return vormU(60, q.mida) + ' = ' + vormU(1, q.mille) + '. ' + vormU(bA, q.mida) +
+        ' = ' + vormU(1, q.mille) + ' ' + vormU(q.vastus[1], q.mida) + ', seega vastus on ' +
+        vormU(q.vastus[0], q.mille) + ' ' + vormU(q.vastus[1], q.mida) + '.';
     }
     if (q.tyyp === 'nimega') {
       var suur = q.valjad === 2 ? q.sildid[0] : q.mille;

@@ -96,9 +96,12 @@ for (var tase = 1; tase <= 4; tase++) {
       ok(q.tyyp !== 'nimega' && q.tyyp !== 'ylekanne',
         'tase 1: nimega arve ja ülekannet veel ei ole');
     }
-    if (tase === 2 && (q.tyyp === 'teisenda')) {
-      ok(lubatudPaar(2, q.mille, q.mida),
-        'tase 2: paar ' + q.mille + '/' + q.mida + ' on nimekirjas');
+    if (q.tyyp === 'teisenda' || q.tyyp === 'koma') {
+      ok(lubatudPaar(tase, q.mille, q.mida),
+        'tase ' + tase + ': paar ' + q.mille + '/' + q.mida + ' on nimekirjas');
+    }
+    if (q.tyyp === 'koma') {
+      ok(q.suurus !== 'aeg', 'kümnendmurd ei käi ajaühikutega (' + q.kysimus + ')');
     }
   }
 }
@@ -207,6 +210,20 @@ for (var kk = 1; kk <= 4; kk++) {
   }
 }
 vordne(kaandeVead, 0, 'sõnaga ühik käändub igas lauses (' + naide + ')');
+
+/* 9. Koolis mitteesinevad paarid on välja jäetud (Fable'i ülevaatus 14. sept) --- */
+var KEELATUD = [['km', 'cm'], ['km', 'dm'], ['km', 'mm'], ['nädal', 'h'],
+                ['nädal', 'min'], ['ööpäev', 'min'], ['ööpäev', 's'],
+                ['km²', 'a'], ['km²', 'm²'], ['m³', 'cm³'], ['dm³', 'mm³']];
+for (var kt = 3; kt <= 4; kt++) {
+  for (var kx = 0; kx < KEELATUD.length; kx++) {
+    ok(!lubatudPaar(kt, KEELATUD[kx][0], KEELATUD[kx][1]),
+      'tase ' + kt + ': paar ' + KEELATUD[kx].join('/') + ' on välja jäetud');
+  }
+}
+ok(lubatudPaar(3, 'h', 's'), 'tase 3: h ja s on ainus lubatud ajahüpe');
+ok(lubatudPaar(4, 'm²', 'cm²'), 'tase 4: m² ja cm² on olemas (1 m² = 10 000 cm²)');
+ok(lubatudPaar(4, 'ha', 'm²'), 'tase 4: ha ja m² on olemas');
 
 /* Kokkuvõte ---------------------------------------------------------------- */
 if (vead.length) {
