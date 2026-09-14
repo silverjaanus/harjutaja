@@ -27,7 +27,10 @@
   let set = "all", cell = null;
   let round = null, cur = null, audio = null, G = null, advanceTimer = null;
   let pendingAdvance = false, flagTimer = null;
-  let tickTimer = null, deadline = 0, boardTab = "week", competeArmed = false;
+  let tickTimer = null, deadline = 0, boardTab = "week";
+  /* Viimase ringi vead: "Harjuta neid sõnu" peab päriselt neid sõnu harjutama,
+     mitte lihtsalt uut ringi alustama. */
+  let lastWrong = [];
 
   const today = (d) => { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const masteredCount = () => DATA.items.filter(it => HEngine.mastered(D.stats[it.id])).length;
@@ -328,11 +331,26 @@
     tickTimer = setInterval(tick, 100);
   }
 
+  /* Sihitud ring: valed sõnad ees, aga mitte üksi. Kui laps eksis ühe sõnaga,
+     ei ole kellelegi vaja sama sõna kuus korda järjest — täidame ringi sama
+     valiku teiste sõnadega. Kordamismootor eelistab niikuinii nõrku. */
+  function mixFocus(focus, all) {
+    if (!focus || !focus.length) return all;
+    const out = focus.slice(), seen = {};
+    out.forEach(it => { seen[it.id] = 1; });
+    const rest = all.slice().sort(() => Math.random() - 0.5);
+    for (const it of rest) {
+      if (out.length >= 8) break;
+      if (!seen[it.id]) { seen[it.id] = 1; out.push(it); }
+    }
+    return out;
+  }
+
   /* ---------- mäng ---------- */
-  function start(mode) {
+  function start(mode, focus) {
     HSfx.unlock();
     const test = mode === "test";
-    const p = test ? pickCompete() : pool();
+    const p = test ? pickCompete() : mixFocus(focus, pool());
     if (!p.length) return;
     const st0 = {}; p.forEach(it => { st0[it.id] = HEngine.mastered(D.stats[it.id]); });
     round = test ? new TestRound(p) : new HEngine.Round(p, D.stats, Math.min(ROUND_LEN, Math.max(6, p.length)));
@@ -346,6 +364,7 @@
     renderPrevBtn();
     show("s-game");
     next();
+    warmAudio();
   }
 
   function next() {
@@ -426,6 +445,9 @@
   /* o === null tähendab, et võistluses sai aeg otsa. */
   function answer(o) {
     const it = cur; if (!it || it.done) return; it.done = true;
+    /* Vastamine on teadlik jätkamine: ✕ ootel olek kaob siin, mitte vaikse
+       taimeriga lapse selja taga. */
+    quitArm.disarm();
     stopTimer();
     const test = G.mode === "test";
     const ok = o === it.answer;
@@ -504,8 +526,19 @@
     step();
   }
 
+  /* Tulemuse ekraani esmane nupp. Kui vigu oli, harjutab see päriselt neid
+     sõnu — varem lubas silt "Harjuta neid sõnu" midagi, mida nupp ei teinud
+     (ta alustas lihtsalt uut ringi). Vigadeta ringil ei ole "neid" olemas. */
+  function setAgain() {
+    lastWrong = G.wrong.slice();
+    $("againBtn").textContent = lastWrong.length ? "Harjuta neid sõnu" : "Harjuta veel";
+  }
+
   function finish() {
-    stop(); stopTimer();
+    /* Ootel edasiliikumine tuleb tühistada: ilma selleta võis ✕ vahetult
+       pärast vastust jätta käima next()-i, mis jooksis juba tulemuse peal. */
+    stop(); stopTimer(); clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = false;
+    quitArm.disarm();
     const pct = G.n ? G.ok / G.n : 0;
     const newly = G.pool.filter(it => !G.st0[it.id] && HEngine.mastered(D.stats[it.id]));
     if (G.mode === "test") return finishCompete(pct, newly);
@@ -526,6 +559,7 @@
     const nb = $("resNext"); nb.innerHTML = "";
     G.wrong.forEach(it => { const s = document.createElement("span"); const mk = document.createElement("mark"); mk.textContent = it.answer; s.append(it.pre, mk, it.post); nb.append(s); });
     $("resNextBlock").hidden = !G.wrong.length;
+    setAgain();
     show("s-result");
   }
 
@@ -559,7 +593,7 @@
     const nb = $("resNext"); nb.innerHTML = "";
     G.wrong.forEach(it => { const s = document.createElement("span"); const mk = document.createElement("mark"); mk.textContent = it.answer; s.append(it.pre, mk, it.post); nb.append(s); });
     $("resNextBlock").hidden = !G.wrong.length;
-    $("againBtn").textContent = "Harjuta neid sõnu";
+    setAgain();
     show("s-result");
   }
 
@@ -597,7 +631,6 @@
 
   function renderCompete() {
     const b = $("competeBtn"), n = $("competeNote");
-    competeArmed = false;
     b.classList.remove("armed");
     if (competedToday()) {
       b.textContent = "Võistlus tehtud";
@@ -610,19 +643,15 @@
     n.textContent = COMPETE_N + " juhuslikku sõna, igale " + COMPETE_SEC + " sekundit. Vihjeid ei näidata.";
   }
 
-  function onCompete() {
-    if (competedToday()) return;
-    if (!competeArmed) {
-      competeArmed = true;
-      $("competeBtn").textContent = "Alustame?";
-      $("competeBtn").classList.add("armed");
-      $("competeNote").textContent = "Tulemus läheb kirja ka siis, kui ring läheb halvasti. Vajuta veel kord.";
-      return;
-    }
-    competeArmed = false;
-    $("competeBtn").classList.remove("armed");
-    start("test");
-  }
+  const competeArm = HArm($("competeBtn"), {
+    idleText: "Võistle",
+    armedText: "Alustame?",
+    note: $("competeNote"),
+    message: HArm.COMPETE_MSG,
+    enabled: () => !competedToday(),
+    action: () => start("test"),
+    onDisarm: renderCompete
+  });
 
   /* ---------- edetabel ---------- */
   const num = n => String(Math.round(n || 0));
@@ -722,6 +751,7 @@
 
   function goHome() {
     stop(); stopTimer(); clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = false;
+    quitArm.disarm();
     $("flagBox").hidden = true; $("reviewBar").hidden = true; $("flagNote").hidden = true;
     review = null;
     $("prevBtn").hidden = false; $("flagBtn").hidden = false;
@@ -738,7 +768,6 @@
   $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
   $("sfxBtn").onclick = () => { HSfx.enabled = !HSfx.enabled; D.sfx = HSfx.enabled; save(); $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false"); };
   $("startBtn").onclick = () => start("train");
-  $("competeBtn").onclick = onCompete;
   /* Võistluses tohib heli üks kord korrata, aga aeg jookseb edasi. */
   $("listenBtn").onclick = () => {
     const vaade = flagItem();
@@ -754,19 +783,14 @@
   $("allBtn").onclick = playAll;
   $("nextBtn").onclick = next;
   /* Võistluses küsib ✕ kinnitust: pooleli jäetud ring läheb ikka kirja ja
-     päev on siis kasutatud, nii et eksikombel vajutamine oleks kallis. */
-  let quitArmed = false;
-  $("quitBtn").onclick = () => {
-    if (G && G.mode === "test" && G.n && !quitArmed) {
-      quitArmed = true;
-      $("fb").textContent = "Kindel? Pooleli jäänud ring läheb ikka kirja. Vajuta ✕ veel kord.";
-      $("fb").className = "feedback bad";
-      setTimeout(() => { quitArmed = false; }, 4000);
-      return;
-    }
-    quitArmed = false;
-    if (G && G.n) finish(); else goHome();
-  };
+     päev on siis kasutatud, nii et eksikombel vajutamine oleks kallis.
+     Kinnitust hoiab core/arm.js — nupp ise läheb nähtavalt ootele. */
+  const quitArm = HArm($("quitBtn"), {
+    note: $("quitNote"),
+    message: HArm.quitMsg("Kirjutajas"),
+    needsConfirm: () => !!(G && G.mode === "test" && G.n),
+    action: () => { if (G && G.n) finish(); else goHome(); }
+  });
   $("prevBtn").onclick = openPrev;
   $("reviewBack").onclick = exitReview;
   $("flagBtn").onclick = openFlag;
@@ -777,7 +801,7 @@
     sendFlag(b.dataset.why);
   });
   $("reportClear").onclick = () => { D.reports = []; save(); renderReports(); };
-  $("againBtn").onclick = () => start("train");
+  $("againBtn").onclick = () => start("train", lastWrong);
   $("homeBtn").onclick = goHome;
 
   $("joinBtn").onclick = () => HKlass.openJoin({ onDone: () => { renderKlass(); openBoard(); } });
@@ -819,4 +843,29 @@
   maybeInvite();
 
   if ("serviceWorker" in navigator) { navigator.serviceWorker.register("../sw.js").catch(() => {}); }
+
+  /* Heli ette vahemällu. Service worker hoidis mp3-sid alles esimesest
+     kuulamisest, mis tähendas, et võrguta töötasid ainult juba kuuldud sõnad —
+     ja just Kirjutaja kohta oli avalehel lubadus, et ta töötab ilma
+     internetita. Kogu komplekt on ~8 MB, seega laadime selle vaikselt taustal
+     kümne kaupa ja alles siis, kui laps on esimese ringi alustanud: lehe
+     avamine üksi ei tohi mobiilset andmesidet ära süüa. Lipp läheb kirja alles
+     siis, kui kõik klipid on käes — muidu jääks pooleli laadimine lõplikuks. */
+  function warmAudio() {
+    if (!window.fetch || D.audioWarm === DATA.version) return;
+    const seen = {}, list = [];
+    DATA.items.forEach(it => it.options.forEach(o => {
+      const u = src(variant(it, o));
+      if (!seen[u]) { seen[u] = 1; list.push(u); }
+    }));
+    let i = 0;
+    const step = () => {
+      if (i >= list.length) { D.audioWarm = DATA.version; save(); return; }
+      const batch = list.slice(i, i + 10); i += 10;
+      Promise.all(batch.map(u => fetch(u).catch(() => null)))
+        .then(() => setTimeout(step, 400))
+        .catch(() => {});
+    };
+    step();
+  }
 })();

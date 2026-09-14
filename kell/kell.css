@@ -47,6 +47,9 @@ h1{font-family:var(--display);font-weight:600;font-size:40px;margin:0}
 .compete:active{transform:translateY(2px);box-shadow:0 1px 0 #14223b}
 .compete[disabled]{background:var(--card);color:var(--ink-soft);border-color:var(--edge);box-shadow:none;cursor:default;transform:none}
 .compete.armed{background:var(--bad);border-color:var(--bad);box-shadow:0 3px 0 #8f3222}
+/* Ootel ✕: laps vaatab oma sõrme, seega peab muutuma nupp ise. */
+.icon-btn.armed{background:var(--bad);border-color:var(--bad);color:#fff}
+.quitnote{margin:0 0 4px;padding:10px 12px;border-radius:12px;background:var(--bad-bg);border:1.5px solid var(--bad);color:var(--bad);font-weight:700;font-size:15.5px;line-height:1.4}
 .ghost{font:inherit;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:12px 18px;cursor:pointer}
 button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .count-note,.hint-small{margin:0;color:var(--ink-soft);font-weight:600;font-size:13px;line-height:1.5}

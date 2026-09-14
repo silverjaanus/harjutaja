@@ -91,6 +91,9 @@
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
     <div class="track"><i id="bar"></i></div>
   </header>
+  <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
+       järgmine ülesanne hoiatuse üle. -->
+  <p class="quitnote" id="quitNote" role="status" hidden></p>
   <div class="stage">
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <p class="ask" id="askText" aria-live="polite"></p>
@@ -169,6 +172,7 @@
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
 <script src="../core/engine.js"></script>
+<script src="../core/arm.js"></script>
 <script src="../core/klahvistik.js"></script>
 <script src="yhik.js"></script>
 <script src="redel.js"></script>

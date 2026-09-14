@@ -27,7 +27,9 @@ head_extra = ('<link rel="manifest" href="../manifest.webmanifest">\n'
               # Klassi identiteet on koigi moodulite uhine. Peab laadima enne mangu skripti.
               '<script src="../core/klass.js"></script>\n'
               # Panda joonistus on uhine core/panda.js-is, sama fail teenindab Harjutaja avalehte.
-              '<script src="../core/panda.js"></script>\n')
+              '<script src="../core/panda.js"></script>\n'
+              # Kaheastmeline kinnitus ("vajuta veel kord") on koigi moodulite uhine.
+              '<script src="../core/arm.js"></script>\n')
 
 cut = frag.index('</style>') + len('</style>')
 html = ('<!doctype html>\n<html lang="et">\n<head>\n<meta charset="utf-8">\n'
