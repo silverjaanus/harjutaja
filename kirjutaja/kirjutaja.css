@@ -142,3 +142,5 @@ body{font-weight:400}
 .credit{line-height:1.5}
 .feedback{font-family:var(--body)}
 .hinttext{font-weight:inherit;font-size:inherit;line-height:inherit}
+/* Päises mitu nuppu: ainult esimene lükkab end paremale. */
+.top .icon-btn + .icon-btn, #s-board .icon-btn, #s-settings .icon-btn{margin-left:0}

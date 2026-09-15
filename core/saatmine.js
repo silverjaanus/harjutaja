@@ -103,7 +103,7 @@
       var olemas = null;
       D.reports.forEach(function (r) { if (r.item === t.item) olemas = r; });
       if (olemas) { olemas.why = t.why; olemas.detail = t.detail; olemas.sent = false; }
-      else D.reports.push({ item: t.item, detail: t.detail, why: t.why, sent: false, t: Date.now() });
+      else D.reports.push({ item: t.item, detail: t.detail, why: t.why, sona: t.sona || null, sent: false, t: Date.now() });
       save();
       return saadaTeated();
     }
@@ -115,7 +115,9 @@
       if (!jarg.length) return Promise.resolve();
       teatedKaib = Promise.all(jarg.map(function (r) {
         var detail = typeof r.detail === 'string' ? r.detail : JSON.stringify(r.detail);
-        return HKlass.issue({ module: o.moodul, kind: o.liik || 'ulesanne', item: r.item, detail: detail, note: r.why, version: o.versioon || null })
+        /* Märge läheb serverisse loetava lausena („Mäng näitab valet vastust"). */
+        var note = (o.miks && o.miks[r.why]) || r.why || null;
+        return HKlass.issue({ module: o.moodul, kind: o.liik || 'ulesanne', item: r.item, detail: detail, note: note, version: o.versioon || null })
           .then(function (res) {
             /* input = märget ei võta server kunagi vastu; ära proovi igavesti. */
             if (res && (res.ok || res.error === 'input')) r.sent = true;

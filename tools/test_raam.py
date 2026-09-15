@@ -142,7 +142,7 @@ def main():
         ctx, page, srv, js = uus(b)
         kontrolli("12 ülesannet" in page.inner_text("#startBtn"), "Harjuta nupul on ringi pikkus")
         kontrolli("15 ülesannet" in page.inner_text("#competeBtn"), "Võistle nupul on ülesannete arv")
-        kontrolli("Igas tasemes on ka eelmiste tasemete ülesandeid." in page.inner_text("#levelNote"), "tasemete märkus on avalehel")
+        kontrolli("Igal tasemel on ka eelmiste tasemete ülesandeid." in page.inner_text("#levelNote"), "tasemete märkus on avalehel")
         vahemik = lambda a, c: page.evaluate("""([a, c]) => { const m = HRedel.svg('pikkus', {from: a, to: c}).match(/font-size="12" font-weight="700" fill="[^"]+">([^<]+)</); return m ? m[1] : null; }""", [a, c])
         svg = page.evaluate("() => HRedel.svg('pikkus', {})")
         kontrolli("÷10" in svg and "×10" in svg, "redelil on mõlemad suunad (÷ ja ×)")
@@ -191,7 +191,7 @@ def main():
         page.wait_for_timeout(300)
         kontrolli(page.locator("#flagNote").is_visible(), "märke järel on tänusõna")
         teated = srv.arv("report_issue")
-        kontrolli(len(teated) == 1 and teated[0]["p_note"] == "vastus" and isinstance(teated[0]["p_detail"], str),
+        kontrolli(len(teated) == 1 and teated[0]["p_note"] == "Mäng näitab valet vastust" and isinstance(teated[0]["p_detail"], str),
                   "veateade läks serverisse tekstina", teated)
         rep = page.evaluate("() => JSON.parse(localStorage.getItem('teisendaja_v1')).reports")
         kontrolli(len(rep) == 1 and rep[0]["sent"] is True, "server vastas ok -> märge on saadetud")

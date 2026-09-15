@@ -43,7 +43,19 @@
     return v;
   }
 
-  function clear() { try { localStorage.removeItem(KEY); } catch (e) {} }
+  /* Lahkumine jätab maha märgi, KES lahkus. Ilma selleta tõstis current()
+     Korrutaja vanast asukohast sama konto kohe tagasi ja „Lahku klassist"
+     ei teinud midagi (Codex, B26). Märk kehtib ainult sellele kontole:
+     uue klassiga liitumine kirjutab ta üle. */
+  var LAHKUS = 'harjutaja_lahkus_v1';
+  function lahkunud() { try { return localStorage.getItem(LAHKUS) || ''; } catch (e) { return ''; } }
+  function clear() {
+    var c = read();
+    try {
+      if (c) localStorage.setItem(LAHKUS, c.player_id);
+      localStorage.removeItem(KEY);
+    } catch (e) {}
+  }
 
   /* Korrutaja vana asukoht. Loeme, aga ei kirjuta ega kustuta. */
   function legacy() {
@@ -56,7 +68,8 @@
   /* Ühekordne ja idempotentne tõste vanast asukohast ühisesse. */
   function adopt() {
     var old = legacy();
-    return old ? write(old) : null;
+    if (!old || old.player_id === lahkunud()) return null;
+    return write(old);
   }
 
   /* Moodulile, millel on oma koopia (Korrutaja). Ühine võti võidab, sest
@@ -64,7 +77,7 @@
   function sync(local) {
     var shared = read();
     if (shared) return shared;
-    if (valid(local)) return write(local);
+    if (valid(local) && local.player_id !== lahkunud()) return write(local);
     return adopt();
   }
 
@@ -222,11 +235,11 @@
 
   /* Kutselink viib samasse moodulisse, kus kutsuja parajasti on.
      app on mooduli nimi seesütlevas ('Korrutajas'), sest see läheb lausesse. */
-  function invite(code, name, app) {
+  function invite(code, name, app, kind) {
     var url = location.origin + location.pathname + '#k=' + encodeURIComponent(code) +
       (name ? '&n=' + encodeURIComponent(name) : '');
     var text = 'Tule harjuta minuga ' + (app || 'Harjutajas') + '!' +
-      (name ? '\nGrupp: ' + name : '') + '\nKlassikood: ' + code;
+      (name ? '\n' + (kind === 'team' ? 'Tiim: ' : 'Klass: ') + name : '') + '\nKlassikood: ' + code;
     return { url: url, text: text };
   }
 
@@ -467,7 +480,7 @@
 
     share.onclick = function () {
       if (!madeCode) return;
-      var inv2 = invite(madeCode, madeName, app);
+      var inv2 = invite(madeCode, madeName, app, kind);
       function flash(m) { share.textContent = m; setTimeout(function () { share.textContent = 'Jaga kutset'; }, 2400); }
       function manual() {
         shBox.hidden = false;

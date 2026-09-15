@@ -30,8 +30,17 @@
          lukusta(),                  // vastamine kinni
          mustand(), taasta(m),       // pooleli vastus (valikuline)
          fookus(),                   // valikuline
-         veateade(q)                 // → { item, detail, lause }
+         veateade(q),                // → { item, detail, lause, sona? }
+         // valikulised konksud (raamistiku etapp 3):
+         valmista(q),                // uus ülesanne enne joonistamist → ülesanne (nt koopia segatud valikutega)
+         algus(q),                   // uus ülesanne on ekraanil (Kirjutaja: mängi sõna, käivita taimer)
+         vastatud(rec),              // vastus on antud ja joonistatud (Kirjutaja: loe variandid ette)
+         valeLause(rec),             // vale vastuse lause; vaikimisi „Õige vastus on …."
+         aken(q),                    // veateate aken avaneb (Kirjutaja: peata heli)
+         klahv(e, q)                 // mooduli oma klahv; true = võetud
        },
+       taimerIse: false,             // true: moodul kutsub M.kaivitaTaimer() ise (Kirjutaja pärast sõna)
+       eelmineTekst, sammuTekst(n),  // eelmise vaatamise riba tekst
        salvesta(q, ok),              // statistika (tavaliselt round.record)
        lopp(G),                      // ring läbi → mooduli tulemus
        teata(t)                      // veateade → HSaatmine.teata
@@ -131,11 +140,12 @@
       puhastaLava();
       var q = round.next();
       if (!q) return lopeta();
-      cur = q.item;
+      cur = md.valmista ? (md.valmista(q.item, q) || q.item) : q.item;
       cur.done = false;
       md.joonista(cur, vasta, false);
       joonistaPais();
       if (G.mode === 'test' && !o.taimerIse) kaivitaTaimer();
+      if (md.algus) md.algus(cur);
     }
 
     function vasta(v) {
@@ -170,6 +180,7 @@
       G.history.push(rec);
       maali(rec);
       joonistaPais();
+      if (md.vastatud) md.vastatud(rec);
 
       if (ok) { if (window.HSfx) HSfx.ok(); edasi(test ? AEG.okVoistlus : AEG.ok); return; }
       if (window.HSfx) HSfx.bad();
@@ -187,7 +198,8 @@
         $('hint').hidden = true;
         return;
       }
-      $('fb').textContent = (rec.aegOtsas ? 'Aeg sai otsa. ' : '') + 'Õige vastus on ' + md.oige(rec.q) + '.';
+      $('fb').textContent = (rec.aegOtsas ? 'Aeg sai otsa. ' : '') +
+        (md.valeLause ? md.valeLause(rec) : 'Õige vastus on ' + md.oige(rec.q) + '.');
       $('fb').className = 'feedback bad';
       $('hint').innerHTML = rec.vihje;
       $('hint').hidden = !rec.vihje;
@@ -267,7 +279,11 @@
       var k = q && md.veateade(q); if (!k) return;
       if (edasiT) { peataEdasi(); ootab = true; }
       flagQ = q;
+      if (md.aken) md.aken(q);
+      var sona = $('flagWord');
+      if (sona) { sona.textContent = k.sona || ''; sona.hidden = !k.sona; }
       $('flagSentence').textContent = k.lause || '';
+      $('flagSentence').hidden = !k.lause;
       $('flagBox').hidden = false;
       viimaneFookus = document.activeElement;
       var esimene = $('flagOpts').querySelector('button');
@@ -285,9 +301,9 @@
       var q = flagQ || vaadatav() || cur;
       var k = q && md.veateade(q); if (!k) return;
       suleAken(false);
-      if (o.teata) o.teata({ item: k.item, detail: k.detail, why: why });
+      if (o.teata) o.teata({ item: k.item, detail: k.detail, why: why, sona: k.sona || null });
       var f = $('flagNote');
-      f.textContent = 'Aitäh! Andsid veast teada.';
+      f.textContent = 'Aitäh, et andsid veast teada!';
       f.hidden = false;
       clearTimeout(flagT);
       flagT = setTimeout(function () { f.hidden = true; }, 2600);
@@ -318,6 +334,8 @@
         if (e.key === 'Escape') { e.preventDefault(); suleAken(false); }
         return;
       }
+      /* Mooduli oma klahv (Kirjutajas tühik = kuulamisnupp, ka eelmise vaatamisel). */
+      if (md.klahv && md.klahv(e, vaadatav() || cur)) return;
       if (review !== null) {
         if (e.key === 'Escape' || e.key === 'Enter') { e.preventDefault(); tagasiMangu(); }
         return;
@@ -325,7 +343,6 @@
       /* Escape ei lõpeta kunagi ringi (Silveri otsus 15. sept). */
       if (e.key === 'Escape') { e.preventDefault(); return; }
       if (e.key === 'Enter' && cur.done && !$('after').hidden) { e.preventDefault(); jargmine(); return; }
-      if (md.klahv && md.klahv(e, cur)) return;
       var n = parseInt(e.key, 10);
       if (n >= 1 && n <= 9 && !cur.done && md.valikud) {
         var b = md.valikud()[n - 1];
@@ -353,6 +370,8 @@
       get G() { return G; },
       get cur() { return cur; },
       vaadatav: vaadatav,
+      get review() { return review !== null; },
+      get round() { return round; },
       disarm: function () { quitArm.disarm(); }
     };
     /* Testidele (tools/test_raam.py): käiv mäng on nähtav. */
