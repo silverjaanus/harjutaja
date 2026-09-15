@@ -24,8 +24,8 @@
   const MODULE = "keel", OP = "laused";
 
   const SAMMU_NIMI = {
-    tutvu: "Tutvu",
-    lunk: "Leia puuduv sõna",
+    tutvu: "Kuula ja loe ette",
+    lunk: "Kirjuta puuduv sõna",
     kokku: "Pane kokku",
     kuula: "Kirjuta kuulmise järgi",
     tolgi: "Tõlgi"
@@ -33,7 +33,7 @@
 
   let round = null, lastWrong = [], selgedEnne = 0;
   /* Kokkupaneku ja kirjutamise olek käiva ülesande kohta. */
-  let pandud = [], kaardid = [], sisend = null;
+  let pandud = [], kaardid = [];
 
   const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const selged = () => TUNNID.reduce((n, t) => n + t.read.filter(r => L.selge(D.stats, r.id)).length, 0);
@@ -45,23 +45,30 @@
     return L.sonad(en).map((w, i) =>
       '<button class="w' + (halvad && halvad[i] ? " halb" : "") + '" data-w="' + esc(w) + '">' + esc(w) + "</button>").join("");
   }
-  function kuulaNupud(abi) {
-    if (abi) return '<div class="kuula"><button class="ghost" data-heli="abi">' + KOLAR + " Kuula abiks</button></div>";
+  function kuulaNupud() {
     return '<div class="kuula"><button class="ghost" data-heli="rida">' + KOLAR + ' Kuula</button>' +
       '<button class="ghost" data-heli="aeglane">' + KOLAR + " Aeglaselt</button></div>";
   }
-  function kirjutaHtml() {
-    return '<div class="kirjuta">' +
-      '<input id="kirjuta" type="text" lang="en" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Kirjuta lause inglise keeles">' +
-      '<button class="primary" id="vastan">Vastan</button></div>';
-  }
 
   /* ---------- mooduli osa mängust ---------- */
+  let kb = null, uuesti = false;
+
+  function abiNupp() {
+    return '<div class="kuula"><button class="ghost" data-heli="abi">' + KOLAR + " Kuula abiks</button></div>" +
+      '<p class="hint-small" id="abiNote" hidden>Kuulasid abiks. See lause tuleb selles ringis veel korra.</p>';
+  }
+
+  /* Mida laps kirjutab: lüngas üks sõna, muidu terve lause. */
+  const siht = q => q.samm === "lunk" ? q.l.oige : q.rida.en;
+
+  function naitaLynk(t) {
+    const g = $("gap"); if (g) g.textContent = t || " ";
+  }
+
   const moodul = {
     valmista(it) {
       const q = Object.assign({}, it, { abi: false });
-      const koik = tund().read;
-      if (q.samm === "lunk") q.l = L.lunk(q.rida, koik);
+      if (q.samm === "lunk") q.l = L.lunk(q.rida, tund().read);
       if (q.samm === "kokku") q.k = L.kaardid(q.rida.en);
       return q;
     },
@@ -70,79 +77,72 @@
       const r = q.rida, lava = $("lava"), opts = $("opts");
       $("sammNimi").textContent = SAMMU_NIMI[q.samm];
       opts.hidden = true; opts.innerHTML = "";
-      sisend = null; kaardid = []; pandud = [];
+      kb = null; uuesti = false; kaardid = []; pandud = [];
       let h = "";
       if (q.samm === "tutvu") {
         h = '<div class="en">' + sonadHtml(r.en) + "</div>" +
           '<p class="et">' + esc(r.et) + "</p>" +
           (r.lugu && r.lugu !== r.en ? '<p class="lugu"><b>Õpikus:</b>' + esc(r.lugu) + "</p>" : "") +
           kuulaNupud() +
-          '<p class="hint-small">Loe lause valjult ette. Puuduta sõna, et seda eraldi kuulda.</p>' +
+          '<p class="hint-small">Kuula ja loe lause valjult ette. Puuduta sõna, et seda eraldi kuulda.</p>' +
           '<button class="primary" id="luges">Lugesin ette</button>';
       } else if (q.samm === "lunk") {
-        h = '<div class="en">' + q.l.sonad.map((w, i) => i === q.l.koht
-          ? '<span class="gap" id="gap">&nbsp;</span>' + esc(q.l.lopp)
-          : '<button class="w" data-w="' + esc(w) + '">' + esc(w) + "</button>").join("") + "</div>" +
-          '<p class="et">' + esc(r.et) + "</p>" + kuulaNupud();
-        opts.hidden = false;
-        q.l.valikud.forEach(v => {
-          const b = document.createElement("button");
-          b.className = "opt"; b.textContent = v; b.dataset.k = v;
-          b.onclick = () => vasta(v);
-          opts.append(b);
-        });
+        /* Heli ei mängi ise: laps peab sõna meenutama, mitte kuulma (Silver 15. sept). */
+        h = '<p class="et">' + esc(r.et) + "</p>" +
+          '<div class="en">' + q.l.sonad.map((w, i) => i === q.l.koht
+            ? '<span class="gap" id="gap">&nbsp;</span>' + esc(q.l.lopp)
+            : "<span>" + esc(w) + "</span>").join("") + "</div>" +
+          '<div id="kthost"></div>' + abiNupp();
       } else if (q.samm === "kokku") {
-        h = '<p class="et">' + esc(r.et) + "</p>" + kuulaNupud() +
+        h = '<p class="et">' + esc(r.et) + "</p>" +
           '<div class="rida-koht" id="koht" aria-label="Sinu lause"></div>' +
           '<div class="kaardid" id="kaardid"></div>' +
-          '<button class="primary" id="kontrolli" disabled>Kontrolli</button>';
+          '<button class="primary" id="kontrolli" disabled>Kontrolli</button>' + abiNupp();
       } else if (q.samm === "kuula") {
-        h = kuulaNupud() + '<p class="et">' + esc(r.et) + "</p>" + kirjutaHtml();
+        h = kuulaNupud() + '<p class="et">' + esc(r.et) + "</p>" + '<div id="kthost"></div>';
       } else {
         h = '<p class="et suur">' + esc(r.et) + "</p>" +
-          '<p class="hint-small">Kirjuta see inglise keeles.</p>' + kirjutaHtml() + kuulaNupud(true) +
-          '<p class="hint-small" id="abiNote" hidden>Kuulasid abiks. See lause tuleb selles ringis veel korra.</p>';
+          '<p class="hint-small">Kirjuta see inglise keeles.</p>' + '<div id="kthost"></div>' + abiNupp();
       }
       lava.innerHTML = h;
+      lava._q = q;
 
       if (q.samm === "tutvu") $("luges").onclick = () => vasta("loetud");
-      if (q.samm === "kokku") {
-        kaardid = q.k; pandud = [];
-        joonistaKaardid(q, vasta);
-      }
-      if (q.samm === "kuula" || q.samm === "tolgi") {
-        sisend = $("kirjuta");
-        $("vastan").onclick = () => vasta(sisend.value);
-        sisend.addEventListener("keydown", e => {
-          if (e.key === "Enter" && !q.done) { e.preventDefault(); vasta(sisend.value); }
+      if (q.samm === "kokku") { kaardid = q.k; joonistaKaardid(q, vasta); }
+      if ($("kthost")) {
+        const lynk = q.samm === "lunk";
+        kb = KKlaviatuur.loo({
+          host: $("kthost"),
+          peidaVali: lynk,
+          silt: lynk ? "Puuduv sõna" : "Kirjuta lause inglise keeles",
+          onMuutus: lynk ? naitaLynk : null,
+          onVastus: v => (uuesti ? kontrolliUuesti(q, v) : vasta(v))
         });
-        if (q.abi) $("abiNote").hidden = false;
+        if (!vaade) setTimeout(() => { if (kb && !q.done) kb.fookus(); }, 50);
       }
-      lava.dataset.q = q.id;
-      lava._q = q;
-      if (!vaade && sisend) setTimeout(() => { if (sisend && !q.done) sisend.focus(); }, 50);
+      if (q.abi && $("abiNote")) $("abiNote").hidden = false;
     },
 
     tyhi(q, v) {
-      if (q.samm === "tutvu" || q.samm === "lunk") return null;
+      if (q.samm === "tutvu") return null;
       if (q.samm === "kokku") return pandud.length < kaardid.length ? "Kasuta kõiki sõnu." : null;
-      return L.norm(v) ? null : "Kirjuta lause lahtrisse.";
+      if (L.norm(v)) return null;
+      return q.samm === "lunk" ? "Kirjuta puuduv sõna." : "Kirjuta lause.";
     },
 
     kontrolli(q, v) {
       if (q.samm === "tutvu") return true;
-      if (q.samm === "lunk") return v === q.l.oige;
+      if (q.samm === "lunk") return L.sonaNorm(v) === L.sonaNorm(q.l.oige);
       return L.kontrolli(q.rida.en, v);
     },
 
-    oige: q => q.samm === "lunk" ? "„" + q.l.oige + "“" : "„" + L.kuju(q.rida.en) + "“",
+    oige: q => "„" + (q.samm === "lunk" ? q.l.oige : L.kuju(q.rida.en)) + "“",
 
     valeLause(rec) {
       const q = rec.q;
       if (q.samm === "lunk") return "Õige sõna on „" + q.l.oige + "“.";
       if (q.samm === "kokku") return "Õige järjekord on all.";
-      const d = L.vordle(q.rida.en, rec.vastus || "");
-      const valesid = d.filter(x => !x.ok).length;
+      const valesid = L.vordle(q.rida.en, rec.vastus || "").filter(x => !x.ok).length;
       if (valesid && valesid <= 2) return "Peaaegu! Vaata punaseid sõnu.";
       return "Vaata õiget lauset all.";
     },
@@ -151,19 +151,14 @@
       const r = q.rida;
       let h = KPapagoi("teach", { head: true }) + '<div class="hinttext">';
       if (q.samm === "lunk") {
-        h += '<p class="oigerida">' + esc(L.kuju(r.en)) + "</p><p>" + esc(r.et) + "</p>";
+        h += '<p class="oigerida">' + q.l.sonad.map((w, i) => i === q.l.koht
+          ? '<span class="halb">' + esc(w) + "</span>" : esc(w)).join(" ") + "</p>";
       } else {
-        const d = L.vordle(r.en, v || "");
-        h += '<p class="oigerida">' + d.map(x => x.ok ? esc(x.sona) : '<span class="halb">' + esc(x.sona) + "</span>").join(" ") + "</p>" +
-          "<p>" + esc(r.et) + "</p>";
-        if (q.samm !== "kokku") {
-          /* Codex ja Fable 15. sept: õige kuju näha, siis peida ja kirjuta uuesti. */
-          h += '<div class="uuesti" data-en="' + esc(r.en) + '">' +
-            '<button class="ghost" data-uuesti="1">Peida ja kirjuta uuesti</button>' +
-            '<input type="text" lang="en" hidden autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Kirjuta lause uuesti">' +
-            '<p class="teade" hidden></p></div>';
-        }
+        h += '<p class="oigerida">' + L.vordle(r.en, v || "").map(x => x.ok ? esc(x.sona) : '<span class="halb">' + esc(x.sona) + "</span>").join(" ") + "</p>";
       }
+      h += "<p>" + esc(r.et) + "</p>";
+      /* Codex ja Fable 15. sept: õige kuju näha, siis peida ja kirjuta uuesti. */
+      if (q.samm !== "kokku") h += '<button class="ghost" data-uuesti="1">Peida ja kirjuta uuesti</button>';
       return h + "</div>";
     },
 
@@ -172,17 +167,6 @@
     naitaVastus(rec) {
       const q = rec.q;
       if (q.samm === "tutvu") { const b = $("luges"); if (b) b.disabled = true; return; }
-      if (q.samm === "lunk") {
-        [...$("opts").children].forEach(b => {
-          b.disabled = true;
-          b.classList.remove("right", "wrong");
-          if (b.dataset.k === q.l.oige) b.classList.add("right");
-          else if (b.dataset.k === rec.vastus) b.classList.add("wrong");
-        });
-        const g = $("gap");
-        if (g) { g.textContent = q.l.oige; g.classList.add("taidetud"); }
-        return;
-      }
       if (q.samm === "kokku") {
         const k = $("koht");
         /* Reas on lapse järjekord; õige järjekord on vihjekaardil. */
@@ -191,39 +175,41 @@
         const b = $("kontrolli"); if (b) b.hidden = true;
         return;
       }
-      if (sisend) {
-        sisend.value = rec.vastus == null ? "" : rec.vastus;
-        sisend.disabled = true;
-        sisend.classList.toggle("ok", rec.ok);
-        sisend.classList.toggle("bad", !rec.ok);
-        $("vastan").hidden = true;
+      if (kb) {
+        kb.pane(rec.vastus == null ? "" : rec.vastus);
+        kb.lukusta();
+        kb.input.classList.toggle("ok", rec.ok);
+        kb.input.classList.toggle("bad", !rec.ok);
       }
+      const g = $("gap");
+      if (g) g.classList.add(rec.ok ? "oige" : "vale");
     },
 
     lukusta() {
-      if (sisend) sisend.disabled = true;
-      const v = $("vastan"); if (v) v.disabled = true;
+      if (kb) kb.lukusta();
       const k = $("kontrolli"); if (k) k.disabled = true;
       const l = $("luges"); if (l) l.disabled = true;
       document.querySelectorAll("#kaardid .kaart, #koht .kaart").forEach(b => { b.disabled = true; });
     },
 
-    fookus() { if (sisend) sisend.focus(); },
+    fookus() { if (kb) kb.fookus(); },
 
     mustand() {
-      if (sisend) return { tekst: sisend.value };
+      if (kb) return { tekst: kb.vaartus() };
       if (kaardid.length) return { pandud: pandud.slice() };
       return null;
     },
     taasta(m) {
       if (!m) return;
-      if (sisend && m.tekst != null) sisend.value = m.tekst;
+      if (kb && m.tekst != null) kb.pane(m.tekst);
       if (m.pandud && $("koht")) { pandud = m.pandud.slice(); joonistaKaardid($("lava")._q, mang.vasta); }
     },
 
-    valikud() { return $("opts").hidden ? [] : [...$("opts").children]; },
+    valikud() { return []; },
 
+    /* Arvutis: tähed lähevad väljale ka siis, kui fookus on mujal. */
     klahv(e, q) {
+      if (kb && (!q.done || uuesti) && e.target !== kb.input && kb.klahv(e)) return true;
       if (e.key !== "Enter" || q.done) return false;
       if (q.samm === "tutvu" && $("luges")) { e.preventDefault(); $("luges").click(); return true; }
       if (q.samm === "kokku" && $("kontrolli") && !$("kontrolli").disabled) { e.preventDefault(); $("kontrolli").click(); return true; }
@@ -231,7 +217,7 @@
     },
 
     algus(q) {
-      if (q.samm === "tolgi") return;
+      if (q.samm !== "tutvu" && q.samm !== "kuula") return;
       setTimeout(() => { if (mang.cur === q && !q.done && !mang.review) KHeli.rida(q.rida); }, 250);
     },
 
@@ -250,6 +236,41 @@
       };
     }
   };
+
+  /* „Peida ja kirjuta uuesti": õige kuju kaob, laps kirjutab uuesti sama
+     klaviatuuriga. Tulemusse see ei lähe — see on ainult harjutus. */
+  function alustaUuesti() {
+    const q = $("lava")._q;
+    if (!kb || !q || !q.done) return;
+    uuesti = true;
+    const o = $("hint").querySelector(".oigerida"); if (o) o.hidden = true;
+    const b = $("hint").querySelector("[data-uuesti]"); if (b) b.hidden = true;
+    const g = $("gap"); if (g) g.classList.remove("oige", "vale");
+    kb.input.classList.remove("ok", "bad");
+    kb.tyhjenda();
+    kb.ava();
+    $("fb").textContent = q.samm === "lunk" ? "Kirjuta puuduv sõna uuesti." : "Kirjuta lause uuesti.";
+    $("fb").className = "feedback";
+  }
+  function kontrolliUuesti(q, v) {
+    if (!L.norm(v)) return;
+    const oige = q.samm === "lunk" ? L.sonaNorm(v) === L.sonaNorm(q.l.oige) : L.kontrolli(q.rida.en, v);
+    const fb = $("fb");
+    if (oige) {
+      uuesti = false;
+      kb.lukusta();
+      kb.input.classList.add("ok");
+      const g = $("gap"); if (g) g.classList.add("oige");
+      fb.textContent = "Nüüd on õige!"; fb.className = "feedback ok";
+      const o = $("hint").querySelector(".oigerida"); if (o) o.hidden = false;
+      $("nextBtn").focus();
+    } else {
+      fb.textContent = "Veel mitte. Vaata õiget lauset ja proovi uuesti.";
+      fb.className = "feedback bad";
+      const o = $("hint").querySelector(".oigerida"); if (o) o.hidden = false;
+      kb.tyhjenda();
+    }
+  }
 
   /* Kokkupanek: puuduta kaarti, et see ritta panna; puuduta rea kaarti,
      et see tagasi võtta. Kontrolli nupp läheb lahti, kui kõik on reas. */
@@ -288,34 +309,14 @@
     if (h.dataset.heli === "abi") {
       if (!q.done && !mang.review) { q.abi = true; $("abiNote").hidden = false; }
       KHeli.rida(q.rida, { nupp: h });
-      if (sisend && !q.done) sisend.focus();
+      if (kb && !q.done) kb.fookus();
       return;
     }
     KHeli.rida(q.rida, { aeglane: h.dataset.heli === "aeglane", nupp: h });
   });
 
-  /* Vihjekaardi „Peida ja kirjuta uuesti": ei loe tulemusse, on ainult harjutus. */
   $("hint").addEventListener("click", e => {
-    const b = e.target.closest("button[data-uuesti]"); if (!b) return;
-    const box = b.closest(".uuesti"), inp = box.querySelector("input");
-    $("hint").querySelector(".oigerida").hidden = true;
-    b.hidden = true; inp.hidden = false; inp.value = ""; inp.focus();
-  });
-  $("hint").addEventListener("keydown", e => {
-    const inp = e.target.closest(".uuesti input"); if (!inp || e.key !== "Enter") return;
-    e.preventDefault(); e.stopPropagation();
-    const box = inp.closest(".uuesti"), t = box.querySelector(".teade");
-    t.hidden = false;
-    if (L.kontrolli(box.dataset.en, inp.value)) {
-      t.textContent = "Nüüd on õige!"; t.className = "teade ok";
-      inp.disabled = true;
-      $("hint").querySelector(".oigerida").hidden = false;
-      $("nextBtn").focus();
-    } else {
-      t.textContent = "Veel mitte. Vaata õiget lauset ja proovi uuesti.";
-      t.className = "teade bad";
-      $("hint").querySelector(".oigerida").hidden = false;
-    }
+    if (e.target.closest("button[data-uuesti]")) alustaUuesti();
   });
 
   const mang = HMang.loo({

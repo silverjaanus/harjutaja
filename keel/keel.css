@@ -56,13 +56,25 @@
 .kaart.pandud{border-color:var(--accent-edge);background:var(--warm-soft)}
 .opts.kolm{grid-template-columns:1fr}
 
-/* kirjutamine */
-.kirjuta{display:flex;flex-direction:column;gap:10px;width:100%}
-.kirjuta input{font:inherit;font-family:var(--display);font-weight:500;font-size:24px;padding:12px 14px;border:2px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-sizing:border-box}
-.kirjuta input:focus{outline:none;border-color:var(--accent-edge)}
-.kirjuta input.ok{border-color:var(--ok);background:var(--ok-bg)}
-.kirjuta input.bad{border-color:var(--bad);background:var(--bad-bg)}
-.kirjuta input:disabled{color:var(--ink)}
+/* oma tähtklaviatuur (keel/klaviatuur.js) */
+#kthost{width:100%;display:flex;flex-direction:column;gap:10px}
+.taheklaviatuur input{font:inherit;font-family:var(--display);font-weight:500;font-size:24px;padding:10px 14px;border:2px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-sizing:border-box;caret-color:var(--accent-edge)}
+.taheklaviatuur input:focus{outline:none;border-color:var(--accent-edge)}
+.taheklaviatuur input.ok{border-color:var(--ok);background:var(--ok-bg)}
+.taheklaviatuur input.bad{border-color:var(--bad);background:var(--bad-bg)}
+.taheklaviatuur input:disabled{color:var(--ink);-webkit-text-fill-color:var(--ink);opacity:1}
+.taheklaviatuur input.peidus{position:absolute;opacity:0;width:1px;height:1px;padding:0;border:0;pointer-events:none}
+.kt-pad{display:flex;flex-direction:column;gap:6px;width:100%;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.kt-rida{display:flex;gap:4px;justify-content:center}
+.kt{font:inherit;font-weight:800;font-size:19px;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:9px;height:46px;flex:1 1 0;min-width:0;max-width:42px;padding:0;cursor:pointer;box-shadow:0 2px 0 var(--edge)}
+.kt:active{background:var(--warm-soft);transform:translateY(1px);box-shadow:none}
+.kt-kustuta{max-width:62px;flex-grow:1.5}
+.kt-ulakoma{max-width:42px}
+.kt-tyhik{max-width:none;flex-grow:4;font-size:15px;color:var(--ink-soft)}
+.kt-vastan{max-width:none;flex-grow:3;background:var(--accent);border-color:var(--accent-edge);box-shadow:0 3px 0 var(--accent-edge);color:var(--accent-ink);font-size:17px}
+.taheklaviatuur.lukus .kt-pad{display:none}
+.gap.oige{color:var(--ok);border-bottom-color:var(--ok)}
+.gap.vale{color:var(--bad);border-bottom-color:var(--bad)}
 
 /* vihjekaart: õige rida, valed sõnad esile */
 .oigerida{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.35;margin:4px 0}
