@@ -222,8 +222,9 @@ def run(pw):
     page.wait_for_timeout(500)
     check("Kella kaart on avalehel", page.locator('a.mod[href="kell/"]').count() == 1)
     check("kaardil on kägu", page.locator("#faceKell svg").count() == 1)
-    check("Kell ei ole enam „Tulekul“ nimekirjas", "Kell" not in page.locator(".soon").inner_text(),
-          page.locator(".soon").inner_text())
+    # „Tulekul" plokk kadus, kui Keel valmis sai (15. sept) — kui see tuleb tagasi, ei tohi Kell seal olla.
+    tulekul = page.locator(".soon").inner_text() if page.locator(".soon").count() else ""
+    check("Kell ei ole enam „Tulekul“ nimekirjas", "Kell" not in tulekul, tulekul)
 
     real = [e for e in errs if "fonts" not in e and "Failed to fetch" not in e and "supabase" not in e]
     check("konsoolis pole JS-vigu", not real, "; ".join(real[:3]))

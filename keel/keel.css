@@ -1,0 +1,100 @@
+/* Keel — Harjutaja ühine palett, aktsent lilla (papagoi). Aluseks teisendaja.css. */
+:root{
+  --accent:#b89cf0;
+  --accent-edge:#8e6ad8;
+  --accent-ink:#2a1650;
+  --warm:#6a44b8;
+  --warm-soft:#f1eafe;
+}
+
+/* papagoi */
+.kpapagoi{width:100%;height:auto;overflow:visible}
+.mascot .kpapagoi{animation:kp-bob 3.4s ease-in-out infinite}
+.kpapagoi .kp-eye{transform-box:fill-box;transform-origin:center;animation:kp-blink 5s infinite}
+.kpapagoi .kp-head{transform-box:fill-box;transform-origin:30% 80%;animation:kp-tilt 6s ease-in-out infinite}
+.mascot .kpapagoi.hop{animation:kp-hop .5s ease}
+@keyframes kp-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes kp-blink{0%,93%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes kp-tilt{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(-8deg)}90%{transform:rotate(4deg)}}
+@keyframes kp-hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){.mascot .kpapagoi,.kpapagoi .kp-eye,.kpapagoi .kp-head,.mascot .kpapagoi.hop{animation:none}}
+
+/* ---------- Keele oma osad ---------- */
+
+/* lava: ülesande osad üksteise all, nupud täislaiuses */
+.lava{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
+.lava > .primary{width:100%}
+.lava .hint-small{text-align:center;margin:0}
+.lava .en + .et{margin-top:-2px}
+
+/* sammu nimi ülesande kohal */
+.samm{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--warm);text-align:center;margin:4px 0 0}
+
+/* ingliskeelne rida: suur ja selge, sõnad on puudutatavad */
+.en{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.3;text-align:center;margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:2px 8px}
+.en .w{font:inherit;color:inherit;background:none;border:0;border-bottom:2px dotted var(--accent-edge);padding:0 1px;cursor:pointer;border-radius:4px}
+.en .w:active,.en .w.soob{background:var(--warm-soft)}
+.en .w.halb{color:var(--bad);border-bottom:3px solid var(--bad)}
+.en .gap{display:inline-block;min-width:4.2ch;border-bottom:3px solid var(--accent-edge);color:var(--warm)}
+.en .gap.taidetud{border-bottom-style:solid}
+
+/* eestikeelne tähendus */
+.et{font-size:19px;font-weight:700;text-align:center;margin:0;color:var(--ink-soft)}
+.et.suur{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.3;color:var(--ink);margin-top:6px}
+.lugu{font-size:15px;color:var(--ink-soft);text-align:center;margin:0;font-style:italic}
+.lugu b{font-style:normal;font-weight:800;color:var(--ink-soft);margin-right:4px}
+
+/* kuulamise nupud */
+.kuula{display:flex;width:100%;gap:10px;justify-content:center;flex-wrap:wrap}
+.kuula .ghost{display:inline-flex;align-items:center;gap:6px}
+
+/* sõnakaardid */
+.rida-koht{min-height:56px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:10px;border:2px dashed var(--edge);border-radius:16px;width:100%}
+.kaardid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%}
+.kaart{font:inherit;font-weight:800;font-size:19px;color:var(--ink);background:var(--card);border:2px solid var(--edge);border-radius:12px;padding:8px 12px;cursor:pointer;box-shadow:0 2px 0 var(--edge)}
+.kaart:disabled{opacity:.25;cursor:default;box-shadow:none}
+.kaart.pandud{border-color:var(--accent-edge);background:var(--warm-soft)}
+.opts.kolm{grid-template-columns:1fr}
+
+/* kirjutamine */
+.kirjuta{display:flex;flex-direction:column;gap:10px;width:100%}
+.kirjuta input{font:inherit;font-family:var(--display);font-weight:500;font-size:24px;padding:12px 14px;border:2px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-sizing:border-box}
+.kirjuta input:focus{outline:none;border-color:var(--accent-edge)}
+.kirjuta input.ok{border-color:var(--ok);background:var(--ok-bg)}
+.kirjuta input.bad{border-color:var(--bad);background:var(--bad-bg)}
+.kirjuta input:disabled{color:var(--ink)}
+
+/* vihjekaart: õige rida, valed sõnad esile */
+.oigerida{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.35;margin:4px 0}
+.oigerida .halb{color:var(--bad);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.uuesti{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.uuesti input{font:inherit;font-size:20px;padding:10px 12px;border:2px solid var(--edge);border-radius:12px;width:100%;box-sizing:border-box}
+.uuesti .teade{font-weight:800;margin:0}
+.uuesti .teade.ok{color:var(--ok)}
+.uuesti .teade.bad{color:var(--bad)}
+
+/* avalehe ridade kaart */
+.readmap{display:flex;flex-direction:column;gap:6px;width:100%}
+.rr{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid var(--edge);border-radius:14px;background:var(--card)}
+.rr.g{border-color:var(--ok);background:var(--ok-bg)}
+.rr .t{flex:1;min-width:0}
+.rr .t b{display:block;font-size:16px}
+.rr .t small{display:block;color:var(--ink-soft);font-size:14px}
+.tapid{display:flex;gap:4px;flex:none}
+.tapid i{width:9px;height:9px;border-radius:50%;background:var(--edge)}
+.tapid i.on{background:var(--accent-edge)}
+.rr.g .tapid i{background:var(--ok)}
+
+/* paberil kontroll tulemuse ekraanil */
+.paber{display:flex;flex-direction:column;gap:8px;width:100%}
+.pb{border:1.5px solid var(--edge);border-radius:14px;background:var(--card);padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.pb .et{text-align:left;font-size:18px;margin:0}
+.pb .en2{font-family:var(--display);font-weight:600;font-size:20px;color:var(--warm)}
+.pb .ghost{align-self:flex-start}
+
+/* vigade nimekiri: siin on terved read, mitte lühikesed sõnad */
+#resNext.words{flex-direction:column;align-items:stretch}
+#resNext .vaeg{width:auto;text-align:left;align-items:flex-start;border:1.5px solid var(--edge);border-radius:12px;background:var(--card);padding:8px 12px}
+#resNext .vaeg small{font-size:14px}
+.uuesti input:focus{outline:none;border-color:var(--accent-edge)}
+.pb .et{color:var(--ink)}
