@@ -170,3 +170,26 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .big small{display:block;font-family:var(--body);font-size:13px;font-weight:700;opacity:.75;margin-top:2px}
 .loendur{flex:0 0 auto;min-width:3.2em;text-align:center;font-weight:800;font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .flagopts button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* Raamistiku etapp 4: ühine edetabel ja seadete leht. */
+.scr-title{flex:1;margin:0;font-family:var(--display);font-weight:600;font-size:22px;text-align:center}
+.bcard{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:14px}
+.bcard .ghost{align-self:flex-start}
+.classline{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.classline b{font-family:var(--display);font-weight:600;font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.classline span{font-family:var(--display);font-weight:600;letter-spacing:.12em;color:var(--ink-soft);flex:none}
+.goal small{display:flex;justify-content:space-between;gap:8px;color:var(--ink-soft);font-weight:700;font-size:12px;margin-top:6px}
+.goal .track{height:10px}
+.brow.gap{justify-content:center;background:none;border:0;padding:0;color:var(--ink-soft);font-weight:800}
+.field{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:12px 14px}
+.field small{display:block;color:var(--ink-soft);font-weight:600;font-size:13px;line-height:1.35}
+.flabel{font-weight:800}
+.field input{font:inherit;font-weight:700;color:var(--ink);border:1.5px solid var(--edge);border-radius:12px;padding:8px 10px;width:10em;max-width:50%}
+.seg{display:flex;flex:none;border:1.5px solid var(--edge);border-radius:12px;overflow:hidden}
+.seg button{font:inherit;font-weight:800;font-size:14px;color:var(--ink);background:var(--card);border:0;padding:9px 12px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.setrow{margin:0;font-weight:700}
+.setrow b{font-family:var(--display);font-weight:600;letter-spacing:.08em}
+#setLeave.armed{background:var(--bad);border-color:var(--bad);color:#fff}
+#setExtra:empty{display:none}
+.goal small span:last-child{white-space:nowrap}

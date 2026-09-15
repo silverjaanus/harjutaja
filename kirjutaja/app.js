@@ -48,7 +48,7 @@
      moodulites valitud tase (15. sept). */
   let set = D.set || "all", cell = D.cell || null;
   const jataValikMeelde = () => { D.set = set; D.cell = cell; save(); };
-  let round = null, audio = null, boardTab = "week";
+  let round = null, audio = null;
   /* Ringi seis, mis on Kirjutaja oma:
      help = millise sõna juures on kuulamisabi praegu vajutatud;
      usedHelp = mis sõnale on abi juba korra antud (see tuleb ilma abita tagasi);
@@ -60,8 +60,6 @@
   let allTimer = null;
 
   const masteredCount = () => DATA.items.filter(it => HEngine.mastered(D.stats[it.id])).length;
-  const bestTest = () => D.tests.reduce((b, t) => Math.max(b, t.ok), 0);
-  const num = n => String(Math.round(n || 0));
 
   const slug = w => w.replace(/õ/g, "6").replace(/ä/g, "2").replace(/ö/g, "7").replace(/ü/g, "y");
   const src = w => "audio/" + slug(w) + ".mp3";
@@ -221,7 +219,7 @@
     kus: "Kirjutajas",
     sek: COMPETE_SEC,
     taimerIse: true,
-    ekraanid: ["s-home", "s-game", "s-result", "s-board"],
+    ekraanid: ["s-home", "s-game", "s-result", "s-board", "s-settings"],
     eelmineTekst: "Vaatad eelmist sõna",
     sammuTekst: n => "Vaatad sõna " + n + " sammu tagasi",
     moodul,
@@ -421,81 +419,26 @@
 
 
   /* ---------- tulemus ---------- */
-  /* Tulemuse ekraani esmane nupp. Kui vigu oli, harjutab see päriselt neid
-     sõnu. Vigadeta ringil ei ole "neid" olemas. */
-  function setAgain(G) {
-    lastWrong = G.wrong.slice();
-    $("againBtn").textContent = lastWrong.length ? "Harjuta neid sõnu" : "Harjuta veel";
-  }
-
-  function statKast(stats, big, small) {
-    const d = document.createElement("div"); d.className = "stat";
-    const b = document.createElement("b"); b.textContent = big;
-    const s = document.createElement("span"); s.textContent = small;
-    d.append(b, s); stats.append(d);
-  }
-
-  function naitaVead(G) {
-    const nb = $("resNext"); nb.innerHTML = "";
-    G.wrong.forEach(it => { const s = document.createElement("span"); const mk = document.createElement("mark"); mk.textContent = it.answer; s.append(it.pre, mk, it.post); nb.append(s); });
-    $("resNextBlock").hidden = !G.wrong.length;
-  }
+  const tulemus = HTulemus.loo({
+    D, save, saatmine, voistlus, mang, n: COMPETE_N,
+    maskott: KRobot,
+    alamTekst: "Vead näitavad, mida veel harjutada – nii see pähe jääbki.",
+    selgeks: ["sõna", "sõna"],
+    harjutaNeid: "Harjuta neid sõnu",
+    veaPiir: 30,
+    ringiLisa: () => ({ set: cell ? cell.s + "-" + cell.l : set }),
+    veaRida: it => {
+      const s = document.createElement("span");
+      const mk = document.createElement("mark"); mk.textContent = it.answer;
+      s.append(it.pre, mk, it.post);
+      return s;
+    }
+  });
 
   function finish(G) {
     stop(); clearTimeout(allTimer); clearTimeout(R.varuTimer);
-    const pct = G.n ? G.ok / G.n : 0;
-    const newly = R.pool.filter(it => !R.st0[it.id] && HEngine.mastered(D.stats[it.id]));
-    if (G.mode === "test") return finishCompete(G, pct, newly);
-    D.rounds.push({ t: Date.now(), n: G.n, ok: G.ok, set: cell ? cell.s + "-" + cell.l : set });
-    if (D.rounds.length > 20) D.rounds.shift();
-    /* Harjutusring läheb ka serverisse: nii jõuab selgete sõnade arv
-       edetabelisse ilma võistlemata (Silveri otsus 15. sept). */
-    if (G.n) saatmine.lisa({ mode: "train", n: G.n, ok: G.ok, score: G.ok, avg: 0 });
-    save();
-    saatmine.saada();
-    let title, sub = "", mood = "happy";
-    if (G.n < 5) { title = "Hea algus!"; mood = "wave"; }
-    else if (pct >= 0.9) { title = "Suurepärane!"; mood = "cheer"; HSfx.tada(); }
-    else if (pct >= 0.7) { title = "Hästi tehtud!"; mood = newly.length ? "cheer" : "happy"; }
-    else { title = "Hästi harjutatud!"; mood = "kind"; sub = "Vead näitavad, mida veel harjutada – nii see pähe jääbki."; }
-    $("resRobot").innerHTML = KRobot(mood);
-    $("resTitle").textContent = title; $("resSub").textContent = sub; $("resSub").hidden = !sub;
-    const stats = $("resStats"); stats.innerHTML = "";
-    statKast(stats, G.ok + " / " + G.n, "õigesti");
-    if (newly.length) statKast(stats, String(newly.length), "sõna sai selgeks");
-    naitaVead(G);
-    setAgain(G);
-    mang.naita("s-result");
-  }
-
-  function finishCompete(G, pct, newly) {
-    D.tests.push({ t: Date.now(), n: G.n, ok: G.ok });
-    if (D.tests.length > 40) D.tests.shift();
-    const prevBest = D.tests.slice(0, -1).reduce((b, t) => Math.max(b, t.ok), 0);
-    const avg = G.n ? (Date.now() - G.t0) / 1000 / G.n : 0;
-    saatmine.lisa({ mode: "test", n: G.n, ok: G.ok, score: G.ok, avg: Math.round(avg * 10) / 10 });
-    voistlus.margi();
-    saatmine.saada();
-
-    const record = G.ok > prevBest && D.tests.length > 1;
-    let title, sub = "Uus võistlus on homme.", mood = "happy";
-    /* „Kõik õiged" ja „Tugev ring" ainult täis ringi puhul — muidu kiitis
-       mäng last, kes lahkus pärast üht õiget vastust (15. sept). */
-    const tais = G.n >= COMPETE_N;
-    if (tais && G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
-    else if (record) { title = "Uus rekord!"; mood = "cheer"; HSfx.tada(); }
-    else if (tais && pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
-    else if (pct >= 0.5) { title = "Tubli võistlus!"; mood = "happy"; }
-    else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saad uuesti võistelda."; }
-    $("resRobot").innerHTML = KRobot(mood);
-    $("resTitle").textContent = title; $("resSub").textContent = sub; $("resSub").hidden = false;
-    const stats = $("resStats"); stats.innerHTML = "";
-    statKast(stats, G.ok + " / " + G.n, "õigesti");
-    statKast(stats, String(bestTest()), record ? "uus rekord" : "sinu rekord");
-    if (newly.length) statKast(stats, String(newly.length), "sõna sai selgeks");
-    naitaVead(G);
-    setAgain(G);
-    mang.naita("s-result");
+    const uued = R.pool.filter(it => !R.st0[it.id] && HEngine.mastered(D.stats[it.id])).length;
+    lastWrong = tulemus.naita(G, { uued });
   }
 
   /* ---------- klass ja edetabel ---------- */
@@ -514,95 +457,19 @@
     voistlus.joonista();
   }
 
-  function openBoard() { mang.naita("s-board"); renderBoard(); saatmine.saada().then(loadBoard); }
-
-  function loadBoard() {
-    if (!window.HKlass || !HKlass.current()) return;
-    $("bStatus").textContent = "Laadin…";
-    return HKlass.board(MODULE).then(r => {
-      if (r && r.error === "auth") { HKlass.clear(); D.board = null; save(); renderKlass(); mang.naita("s-home"); return; }
-      if (!r || r.error) { $("bStatus").textContent = "Ei õnnestunud."; return; }
-      D.board = r;
-      save(); renderBoard();
-      if (r.competed_today) voistlus.margi();
-      $("bStatus").textContent = "";
-    }).catch(() => {
-      renderBoard();
-      $("bStatus").textContent = D.board ? "Võrku pole. Näitan viimast seisu." : "Võrku pole.";
-    });
-  }
-
-  /* Kui klassiaste on teada, ütleme selle välja („3. klassid") — see on lapsele
-     palju selgem kui sõna „klassiaste". */
-  function boardHint(tab, grade) {
-    const g = grade ? grade + ". klassid" : "sama astme klassid";
-    if (tab === "week") return "Nädalapunktid on sinu viie parima päeva õiged vastused kokku. Nädalavahetusel ei pea mängima.";
-    if (tab === "sure") return "Selge sõna on see, mille oled kaks korda järjest õigesti kirjutanud.";
-    if (tab === "best") return "Sinu kõige parem võistlus. Igas võistluses on " + COMPETE_N + " sõna.";
-    if (tab === "school") return "Sinu kooli teised " + g + ". Võrdleme punkte ühe võistleja kohta, mitte kogusummat.";
-    return "Kõik Eesti " + g + ". Punktid ühe võistleja kohta.";
-  }
-
-  function renderBoard() {
-    const b = D.board;
-    const c = window.HKlass ? HKlass.current() : null;
-    $("bClass").textContent = b && b.class ? b.class.name : (c ? c.class_name : "");
-    $("bHint").textContent = boardHint(boardTab, b && b.class && b.class.grade);
-    document.querySelectorAll("#bTabs .chip").forEach(x => x.setAttribute("aria-pressed", x.dataset.t === boardTab ? "true" : "false"));
-    const list = $("bList"); list.innerHTML = "";
-    if (!b) { $("bStatus").textContent = $("bStatus").textContent || "Laadin edetabelit…"; return; }
-
-    /* Ühe ja mitme puhul on eesti keeles eri vorm: 1 võistluspäev, 2 võistluspäeva. */
-    const days = n => !n ? "" : (n === 1 ? "1 võistluspäev" : n + " võistluspäeva");
-    const players = n => n === 1 ? "1 võistleja" : (n || 0) + " võistlejat";
-
-    let rows = [];
-    if (boardTab === "week") rows = (b.players || []).map(p => ({ name: p.nick, v: p.week_n, sub: days(p.days), me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "sure") rows = (b.players || []).map(p => ({ name: p.nick, v: p.greens, sub: "selgeks saanud sõna", me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "best") rows = (b.players || []).map(p => ({ name: p.nick, v: p.best_test, sub: "õiget parimas võistluses", me: p.id === b.me })).sort((x, y) => y.v - x.v);
-    else if (boardTab === "school") rows = (b.siblings || []).map(g => ({ name: g.name, v: g.per_player, sub: players(g.active), me: b.class && g.id === b.class.id }));
-    else rows = (b.peers || []).map(g => ({ name: g.name, v: g.per_player, sub: (g.school || ""), me: b.class && g.id === b.class.id }));
-
-    if (!rows.length) {
-      const li = document.createElement("li");
-      li.className = "brow empty";
-      li.textContent = boardTab === "school" || boardTab === "country"
-        ? "Siin pole veel kedagi. Klass ilmub siia pärast esimest võistlust."
-        : "Keegi pole veel võistelnud. Ole esimene!";
-      list.append(li);
-      return;
-    }
-    rows.forEach((r, i) => {
-      const li = document.createElement("li");
-      li.className = "brow" + (r.me ? " me" : "");
-      const pos = document.createElement("b"); pos.className = "pos"; pos.textContent = (i + 1) + ".";
-      const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = r.name || "";
-      const sb = document.createElement("small"); sb.textContent = r.sub || "";
-      const v = document.createElement("b"); v.className = "val"; v.textContent = num(r.v);
-      const mid = document.createElement("span"); mid.className = "mid"; mid.append(nm, sb);
-      li.append(pos, mid, v);
-      list.append(li);
-    });
-  }
-
-  function invite() {
-    const c = window.HKlass ? HKlass.current() : null;
-    if (!c) return;
-    const url = location.origin + location.pathname + "#k=" + encodeURIComponent(c.code);
-    const text = "Liitu minu klassiga Harjutajas! Klassikood on " + c.code + ". " + url;
-    const note = $("bInviteNote");
-    if (navigator.share) { navigator.share({ text }).catch(() => {}); return; }
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(() => {
-        note.textContent = "Kutse on kopeeritud — kleebi see sõbrale sõnumisse.";
-        note.hidden = false;
-      }).catch(() => { note.textContent = "Klassikood on " + c.code + "."; note.hidden = false; });
-      return;
-    }
-    note.textContent = "Klassikood on " + c.code + ".";
-    note.hidden = false;
-  }
-
+  const edetabel = HEdetabel.loo({
+    D, save, moodul: MODULE, kus: "Kirjutajas", mang, saatmine, voistlus,
+    n: COMPETE_N, asjad: "sõna",
+    selged: { sakk: "Selged sõnad", yks: "selge sõna", mitu: "selget sõna",
+              selgitus: "Selge sõna on see, mille oled kaks korda järjest õigesti kirjutanud." },
+    kodu: () => mang.koju(), klass: renderKlass
+  });
+  const openBoard = () => edetabel.ava();
+  const liitu = () => HKlass.openJoin({ app: "Kirjutajas", onDone: () => { renderKlass(); openBoard(); } });
+  HSeaded.loo({
+    mang, kodu: () => mang.koju(), muusika: false, liitu,
+    lahkus: () => { D.board = null; save(); renderKlass(); }
+  });
 
   function goHome() {
     stop(); clearTimeout(allTimer); clearTimeout(R.varuTimer);
@@ -638,15 +505,8 @@
   $("reportClear").onclick = () => { D.reports = []; save(); renderReports(); };
   $("againBtn").onclick = () => start("train", lastWrong);
   $("homeBtn").onclick = () => mang.koju();
-  $("joinBtn").onclick = () => HKlass.openJoin({ app: "Kirjutajas", onDone: () => { renderKlass(); openBoard(); } });
+  $("joinBtn").onclick = liitu;
   $("boardBtn").onclick = openBoard;
-  $("bBack").onclick = () => mang.koju();
-  $("bRefresh").onclick = () => saatmine.saada().then(loadBoard);
-  $("bInvite").onclick = invite;
-  $("bTabs").addEventListener("click", e => {
-    const c = e.target.closest(".chip"); if (!c) return;
-    boardTab = c.dataset.t; renderBoard();
-  });
   document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); });
 
   $("mascot").innerHTML = KRobot("wave");
