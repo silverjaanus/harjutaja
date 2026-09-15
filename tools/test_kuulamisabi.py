@@ -53,6 +53,8 @@ def fresh_page(br, errs):
     ctx.route("**://fonts.googleapis.com/**", lambda r: r.abort())
     ctx.route("**://fonts.gstatic.com/**", lambda r: r.abort())
     ctx.route("**://*.supabase.co/**", lambda r: r.abort())
+    # Verceli analüütika skripti kohalik server ei paku (tekib alles Vercelis).
+    ctx.route("**/_vercel/insights/**", lambda r: r.fulfill(status=200, content_type="text/javascript", body=""))
     page = ctx.new_page()
 
     def on_console(m):

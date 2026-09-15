@@ -27,6 +27,14 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**KÜLASTUSTE STATISTIKA: Vercel Web Analytics (haru `analuutika`) — OOTAB SILVERI MERGE'I JA ANALYTICS'I SISSELÜLITAMIST.** Silver tahtis näha, kas ja kui palju äppi kasutatakse (e-kiri tuttavatele saadetud). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...analuutika
+
+- Igale lehele (avaleht, viis moodulit, `_mall/index.html`, Korrutajal `korrutaja.src.html` + `build.py`) lisati `<head>`-i Verceli HTML-skript: `window.va` järjekord + `<script defer src="/_vercel/insights/script.js">`. Pakette ega ehitust pole vaja.
+- **Silver peab Verceli projektis `harjutaja` lülitama sisse Analytics → Enable**; marsruut `/_vercel/insights/*` tekib alles järgmise deploy'ga. Enne seda annab skript 404 — see on vaikne ega sega mängu (ka võrguta mitte).
+- Privaatsus: küpsiseid ei ole, külastaja räsi kustub 24 h pärast, isikuandmeid ei salvestata (Verceli dokumentatsioon, vaadatud 15. sept). Kutselingi klassikood on `#k=…` fragmendis ja serverisse ei lähe.
+- Hobby piirid: 50 000 sündmust kuus kõigi Silveri Verceli projektide peale, andmed 1 kuu, kohandatud sündmusi ei ole. Seega näeb **lehe avamisi** (avaleht ja iga moodul), mitte mänguringe.
+- **Järgmine samm, kui kasutust tekib:** oma anonüümne ringiloendur Supabase'is (moodul + kuupäev, ka klassita mängijatelt) — praegu jõuavad serverisse ainult klassiga liitunud laste ringid.
+
 **KEEL MALLI PEAL + KLAVIATUUR ALL (16. sept, harud `keel-klaviatuur` ja `keel-malli`) - OOTAB SILVERI MERGE'I.** Raamistik 6 on mainis (PR #9). `keel-malli` sisaldab `keel-klaviatuur`-i - piisab `keel-malli` merge'ist; kui on kiire, võib enne merge'ida ainult `keel-klaviatuur` (üks CSS-muudatus). Võrdluslingid: https://github.com/silverjaanus/harjutaja/compare/main...keel-klaviatuur ja https://github.com/silverjaanus/harjutaja/compare/main...keel-malli
 
 - **Klaviatuur on ekraani allservas** (Silver telefonis: ülaosas oli ebamugav trükkida). `keel/keel.css`: `#s-game .kt-pad` on `position:fixed` all, `env(safe-area-inset-bottom)` arvestatud, lava saab 250 px ruumi (`:has(...)`). Veateate aken jääb klaviatuuri peale (z-index 5 < 8). `sw.js` VERSION-it `keel-klaviatuur` ei tõsta (rakenduse failid tulevad võrgust ise), et harud ei läheks VERSION-i real konflikti.
