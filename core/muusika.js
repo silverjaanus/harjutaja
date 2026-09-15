@@ -129,7 +129,8 @@
     },
     /* testide jaoks */
     _kõlab: function () { return kõlab; },
-    _lugu: function () { return lood[jrk] || null; }
+    _lugu: function () { return lood[jrk] || null; },
+    _audio: function () { return audio; }
   };
 
   if (prefs) prefs.on(function (n) { if (n === "music") { joonista(); if (!eelkuula) otsusta(); } });

@@ -52,6 +52,16 @@ def test_klahvistik(page):
     page.goto(BASE, wait_until="domcontentloaded")
     page.wait_for_selector("#startBtn")
     page.click("#startBtn")
+    # Esimene ülesanne võib olla nupuvalik („Kumb on suurem?"); mine edasi, kuni tuleb kirjutamine.
+    for _ in range(15):
+        page.wait_for_timeout(250)
+        if page.locator("#pad .kl-pad").is_visible():
+            break
+        if page.locator("#opts button:not([disabled])").count():
+            page.locator("#opts button:not([disabled])").first.click()
+            page.wait_for_timeout(1200)
+        if page.locator("#after").is_visible():
+            page.click("#nextBtn")
     page.wait_for_selector("#pad .kl-pad")
     kontrolli(page.locator("#pad .kl-vali input").count() >= 1, "sisestusväli on olemas")
     kontrolli(page.locator("#pad .kl-koma").count() == 0, "tasemel 2 ei ole koma klahvi")
