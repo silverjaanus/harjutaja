@@ -15,7 +15,7 @@
   /* Mida laps harjutab: kella lugemist või ajaarvutust tekstülesannetega. */
   D.opp = D.opp === "tekst" ? "tekst" : "lugemine";
   D.tekstStat = D.tekstStat || { n: 0, ok: 0 };
-  HSfx.enabled = D.sfx !== false;
+  /* Heli sees/väljas on ühine eelistus (core/eelistused.js), mitte mooduli oma lipp. */
   const save = () => HStore.save(KEY, D);
   const $ = id => document.getElementById(id);
 
@@ -25,7 +25,9 @@
     { id: 1, nimi: "Täistunnid", mins: [0] },
     { id: 2, nimi: "Ja pooled", mins: [0, 30] },
     { id: 3, nimi: "Ja veerandid", mins: [0, 15, 30, 45] },
-    { id: 4, nimi: "Viie minuti täpsus", mins: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55] },
+    /* „Kõik" ütleb, et eelmised astmed on sees (Silver 15. sept: vana nimi
+       „Viie minuti täpsus" ei andnud seda välja). */
+    { id: 4, nimi: "Kõik, 5 min kaupa", mins: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55] },
   ];
   const tase = () => TASEMED.find(t => t.id === D.level) || TASEMED[1];
 
@@ -50,6 +52,9 @@
 
   function show(id) {
     ["s-home", "s-game", "s-result", "s-board"].forEach(s => { $(s).hidden = s !== id; });
+    /* Võistluses muusikat ei ole, seega pole ka muusikanuppu. */
+    $("s-game").classList.toggle("voistlus", !!(G && G.mode === "test"));
+    if (window.HMuusika) HMuusika.mang(id === "s-game" && !!G && G.mode === "train");
     window.scrollTo(0, 0);
   }
 
@@ -170,7 +175,9 @@
   function start(mode, focus) {
     HSfx.unlock();
     const test = mode === "test";
-    const tekst = !test && D.opp === "tekst";
+    /* „Harjuta neid kellaaegu" harjutab alati kella lugemist, ka siis, kui
+       avalehel on valitud „Arvutan aega" (vead tulevad võistlusest). */
+    const tekst = !test && D.opp === "tekst" && !(focus && focus.length);
     const lvlSamm = tase().mins.length > 1 ? tase().mins[1] : 60;
     /* Tekstülesannetes ei minda veerandtunnist peenemaks, ka siis mitte, kui
        laps on valinud viie minuti täpsuse. Põhjus on keeles: kestust „20 minuti
@@ -208,8 +215,11 @@
        ekraanil öelda, mitu kellaaega selles ringis selgeks sai. */
     const st0 = {};
     if (p) p.forEach(it => { st0[it.lemma] = HEngine.mastered(D.stats[it.lemma]); });
-    G = { mode: test ? "test" : "train", tekst, n: 0, ok: 0, wrong: [], mins, t0: Date.now(), pool: tekst ? null : p, st0 };
+    G = { mode: test ? "test" : "train", tekst, n: 0, ok: 0, wrong: [], history: [], mins, t0: Date.now(), pool: tekst ? null : p, st0 };
     $("flagBtn").hidden = test;   /* võistluses ei märgita, seal mõõdetakse */
+    $("prevBtn").hidden = test;   /* võistluses tagasi ei vaadata */
+    review = null; pendingAdvance = false; liveSnap = null;
+    $("reviewBar").hidden = true;
     show("s-game");
     next();
   }
@@ -252,17 +262,26 @@
     muu: "Midagi muud"
   };
 
+  /* Veateade käib selle ülesande kohta, mis on ekraanil — ka eelmise vaatamisel. */
   function openFlag() {
-    const k = reportKey(cur); if (!k) return;
-    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+    const k = reportKey(vaadatav() || cur); if (!k) return;
+    /* Ootel edasiminek jääb ootele ja jätkub akna sulgemisel. Varem jäi
+       mäng pärast õiget vastust siia kinni (15. sept). */
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
+    flagIt = vaadatav() || cur;
     $("flagSentence").textContent = k.detail;
     $("flagBox").hidden = false;
   }
 
-  function closeFlag() { $("flagBox").hidden = true; }
+  let flagIt = null;
+  function closeFlag() {
+    $("flagBox").hidden = true;
+    flagIt = null;
+    if (pendingAdvance && review === null) { pendingAdvance = false; next(); }
+  }
 
   function sendFlag(why) {
-    const k = reportKey(cur); if (!k) return;
+    const k = reportKey(flagIt || vaadatav() || cur); if (!k) return;
     const rec = D.reports.find(r => r.item === k.item);
     if (rec) { rec.why = why; rec.sent = false; }
     else D.reports.push({ item: k.item, detail: k.detail, why, at: new Date().toISOString(), sent: false });
@@ -279,6 +298,8 @@
   function next() {
     clearTimeout(advanceTimer);
     stopTimer();
+    review = null; pendingAdvance = false; liveSnap = null;
+    $("reviewBar").hidden = true;
     $("flagNote").hidden = true; $("flagBox").hidden = true;
     const q = round.next();
     if (!q) return finish();
@@ -290,6 +311,7 @@
     const total = round.length + round.due.length;
     $("bar").style.width = Math.min(100, 100 * (round.asked - 1) / Math.max(total, 1)) + "%";
     if (G.mode === "test") startTimer();
+    renderPrevBtn();
   }
 
   function renderQuestion(it) {
@@ -377,8 +399,84 @@
     return "Pikk osuti on juba üle poole: loeme, kui palju on järgmise tunnini <b>puudu</b>. Kell on <b>" + j + "</b>.";
   }
 
+  /* ---------- eelmiste ülesannete vaatamine ----------
+     Sama muster nagu Kirjutajas: nool viib päris eelmise ülesande juurde.
+     Kellas on valikud segatud ja eksitajad juhuslikud, seega ülesannet ei
+     joonistata uuesti, vaid talletatakse ekraanipilt (kell, lugu, küsimus,
+     nupud koos värvidega, tagasiside, vihje) täpselt sellisena, nagu laps
+     seda nägi. Ainult harjutusringis. `review` = indeks G.history sees. */
+  let review = null, pendingAdvance = false, liveSnap = null;
+
+  function pilt() {
+    return {
+      clock: $("askClock").innerHTML, clockHidden: $("askClock").hidden,
+      lugu: $("lugu").textContent, luguHidden: $("lugu").hidden,
+      ask: $("askText").textContent,
+      optsClass: $("opts").className, opts: $("opts").innerHTML,
+      fb: $("fb").textContent, fbClass: $("fb").className,
+      hint: $("hint").innerHTML, hintHidden: $("hint").hidden
+    };
+  }
+
+  function taasta(p) {
+    $("askClock").innerHTML = p.clock; $("askClock").hidden = p.clockHidden;
+    $("lugu").textContent = p.lugu; $("lugu").hidden = p.luguHidden;
+    $("askText").textContent = p.ask;
+    $("opts").className = p.optsClass; $("opts").innerHTML = p.opts;
+    [...$("opts").children].forEach(b => { b.onclick = () => answer(b.dataset.k); });
+    $("fb").textContent = p.fb; $("fb").className = p.fbClass;
+    $("hint").innerHTML = p.hint; $("hint").hidden = p.hintHidden;
+  }
+
+  function vaadatav() { return review === null ? null : G.history[review].it; }
+
+  function talleta(it, ok) {
+    if (!G.history) return;
+    G.history.push({ it, ok, pilt: pilt() });
+    renderPrevBtn();
+  }
+
+  /* Kui käiv ülesanne on juba vastatud, on see ise ajaloos viimane. */
+  function eelmineIndeks() {
+    if (!G || !G.history) return -1;
+    if (review !== null) return review - 1;
+    return G.history.length - (cur && cur.done ? 2 : 1);
+  }
+
+  function renderPrevBtn() {
+    $("prevBtn").disabled = eelmineIndeks() < 0;
+  }
+
+  function openPrev() {
+    const i = eelmineIndeks();
+    if (i < 0) return;
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
+    if (review === null) liveSnap = pilt();
+    review = i;
+    const sammu = G.history.length - i;
+    $("reviewWhich").textContent = sammu === 1 ? "Vaatad eelmist ülesannet" : "Vaatad ülesannet " + sammu + " sammu tagasi";
+    $("reviewBar").hidden = false;
+    $("flagNote").hidden = true;
+    $("after").hidden = true;
+    taasta(G.history[i].pilt);
+    renderPrevBtn();
+  }
+
+  function exitReview() {
+    if (review === null) return;
+    review = null;
+    $("reviewBar").hidden = true;
+    if (pendingAdvance) { pendingAdvance = false; liveSnap = null; next(); return; }
+    if (liveSnap) taasta(liveSnap);
+    liveSnap = null;
+    const rec = G.history[G.history.length - 1];
+    $("after").hidden = !(cur && cur.done && rec && rec.it === cur && !rec.ok && G.mode !== "test");
+    renderPrevBtn();
+  }
+
   /* `valitud` on nupu võti (aeg „3:15" või kestus „d:20"); null = aeg sai otsa. */
   function answer(valitud) {
+    if (review !== null) return;
     const it = cur; if (!it || it.done) return; it.done = true;
     /* Vastamine on teadlik jätkamine: ✕ ootel olek kaob siin. */
     quitArm.disarm();
@@ -403,6 +501,7 @@
       HSfx.ok();
       $("fb").textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
       $("fb").className = "feedback ok";
+      talleta(it, ok);
       advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, test ? 800 : 1000);
       return;
     }
@@ -411,12 +510,14 @@
       (it.tekst ? "Õige vastus on " + õigeSilt + "." : "Kell on " + HAeg.utle(it.h, it.m) + ".");
     $("fb").className = "feedback bad";
     if (test) {
+      talleta(it, ok);
       advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, 1400);
       return;
     }
     $("hint").innerHTML = KKagu("kind", { head: true }) + '<div class="hinttext">' +
       (it.tekst ? it.step.vihje : vihje(it)) + "</div>";
     $("hint").hidden = false;
+    talleta(it, ok);
     $("after").hidden = false;
   }
 
@@ -507,9 +608,11 @@
 
     const record = G.ok > prevBest && D.tests.length > 1;
     let title, sub = "Uus võistlus on homme.", mood = "happy";
-    if (G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
+    /* „Kõik õiged" ja „Tugev ring" ainult täis ringi puhul (15. sept). */
+    const tais = G.n >= COMPETE_N;
+    if (tais && G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
     else if (record) { title = "Uus rekord!"; mood = "cheer"; HSfx.tada(); }
-    else if (pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
+    else if (tais && pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
     else if (pct >= 0.5) { title = "Tubli võistlus!"; mood = "happy"; }
     else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saad uuesti võistelda."; }
     $("resKagu").innerHTML = KKagu(mood);
@@ -548,7 +651,7 @@
       b.className = "chip";
       /* Neljas tase tähendab kella lugemises viie minuti, tekstülesannetes
          minuti täpsust — silt ütleb seda, mis parajasti kehtib. */
-      b.textContent = (t.id === 4 && D.opp === "tekst") ? "Minuti täpsus" : t.nimi;
+      b.textContent = (t.id === 4 && D.opp === "tekst") ? "Kõik, minuti kaupa" : t.nimi;
       b.setAttribute("aria-pressed", t.id === D.level ? "true" : "false");
       b.onclick = () => { D.level = t.id; save(); renderTasemed(); renderModes(); renderKaart(); };
       box.append(b);
@@ -569,7 +672,7 @@
     const peen = !tekst ? ""
       : D.level === 4
         ? " Siin on kellaajad numbritega nagu bussiplaanis (8.28) ja arvutad minuti täpsusega."
-        : " Sõnadega ülesannetes on ajad veerandtundide kaupa (veerand, pool, kolmveerand), nii nagu kellaaega sõnadega öeldakse. Minuti täpsusega arvutamiseks vali „Minuti täpsus“.";
+        : " Sõnadega ülesannetes on ajad veerandtundide kaupa (veerand, pool, kolmveerand), nii nagu kellaaega sõnadega öeldakse. Minuti täpsusega arvutamiseks vali „Kõik, minuti kaupa“.";
     $("tekstStat").textContent = (s.n
       ? "Tehtud " + s.n + " ülesannet, õigesti " + s.ok + "."
       : "Elulised ülesanded: mis kell film lõpeb, kui kaua trenn kestab, mis kell pead kodust välja minema.") + peen;
@@ -721,18 +824,20 @@
     stopTimer(); clearTimeout(advanceTimer); advanceTimer = null;
     quitArm.disarm();
     cur = null;
+    review = null; pendingAdvance = false; liveSnap = null;
+    $("reviewBar").hidden = true;
     $("againBtn").textContent = "Harjuta veel";
     renderTasemed(); renderModes(); renderKaart(); renderKlass(); show("s-home");
   }
 
   /* ---------- sündmused ---------- */
-  $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
-  $("sfxBtn").onclick = () => {
-    HSfx.enabled = !HSfx.enabled; D.sfx = HSfx.enabled; save();
-    $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
-  };
+  HSfx.nupp($("sfxBtn")); HSfx.nupp($("sfxBtnG"));
+  HMuusika.init({ src: "muusika.mp3" });
+  HMuusika.nupp($("musicBtn")); HMuusika.nupp($("musicBtnG"));
   $("startBtn").onclick = () => start("train");
   $("nextBtn").onclick = next;
+  $("prevBtn").onclick = openPrev;
+  $("reviewBack").onclick = exitReview;
   $("flagBtn").onclick = openFlag;
   $("flagCancel").onclick = closeFlag;
   $("flagBox").onclick = e => { if (e.target === $("flagBox")) closeFlag(); };
@@ -765,6 +870,8 @@
 
   document.addEventListener("keydown", e => {
     if ($("s-game").hidden || !cur) return;
+    if (!$("flagBox").hidden) { if (e.key === "Escape") { e.preventDefault(); closeFlag(); } return; }
+    if (review !== null) { if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); exitReview(); } return; }
     if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); return; }
     const n = parseInt(e.key, 10);
     if (n >= 1 && n <= 4 && !cur.done) {
@@ -780,12 +887,21 @@
     svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
   };
 
-  /* Nüüdiskell abitekstis, et laps näeks kohe päris näidet. */
-  (function () {
+  /* Nüüdiskell abitekstis, et laps näeks kohe päris näidet. Uueneb iga
+     minutiga ja avalehele naastes — enne 15. septembrit jäi see lehe
+     avamise hetke ja näitas kella õpetavas moodulis vale aega. */
+  let nowMin = -1;
+  function renderNow() {
     const n = new Date();
+    const m = n.getHours() * 60 + n.getMinutes();
+    if (m === nowMin) return;
+    nowMin = m;
     $("nowClock").innerHTML = HSihverplaat.svg(n.getHours(), n.getMinutes(), { size: 96 });
     $("nowText").textContent = "Praegu on kell " + HAeg.utle(n.getHours(), n.getMinutes()) + ".";
-  })();
+  }
+  renderNow();
+  setInterval(() => { if (!$("s-home").hidden && !document.hidden) renderNow(); }, 5000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) renderNow(); });
 
   renderTasemed(); renderModes(); renderKaart(); renderKlass();
   flushOutbox();

@@ -225,6 +225,53 @@ ok(lubatudPaar(3, 'h', 's'), 'tase 3: h ja s on ainus lubatud ajahüpe');
 ok(lubatudPaar(4, 'm²', 'cm²'), 'tase 4: m² ja cm² on olemas (1 m² = 10 000 cm²)');
 ok(lubatudPaar(4, 'ha', 'm²'), 'tase 4: ha ja m² on olemas');
 
+/* 10. Kui tegur on 24, 12 voi 7, jaab suurema uhiku arv korrutustabelisse (15. sept) */
+var LAGI = { 24: 3, 12: 5, 7: 5, 3600: 1 }, lagiVead = 0, lagiNaide = '';
+var R4 = seeme(20260915);
+for (var kl = 1; kl <= 4; kl++) {
+  for (var ml = 0; ml < 3000; ml++) {
+    var ql = Y.genereeri(kl, 'aeg', R4);
+    if (!ql || (ql.tyyp !== 'teisenda' && ql.tyyp !== 'vordle')) continue;
+    var tl = Y.teisenda(1, ql.mille, ql.mida);
+    var tg = Math.round(tl > 1 ? tl : 1 / tl);
+    if (!LAGI[tg]) continue;
+    var suurArv = ql.tyyp === 'vordle' ? ql.arv : (tl > 1 ? ql.arv : ql.vastus);
+    if (suurArv > LAGI[tg]) { lagiVead++; if (!lagiNaide) lagiNaide = ql.kysimus + ' ' + (ql.valikud || []).join(' / '); }
+  }
+}
+vordne(lagiVead, 0, 'tegur 24/12/7: arv on korrutustabelis (' + lagiNaide + ')');
+
+/* 11. Tasemel 2 (ka voistlus) on x60 paaridel arv kuni 10 */
+var l60Vead = 0, l60Naide = '';
+for (var m6 = 0; m6 < 4000; m6++) {
+  var q6 = Y.genereeri(2, 'aeg', R4);
+  if (!q6 || q6.tyyp !== 'teisenda') continue;
+  var t6 = Y.teisenda(1, q6.mille, q6.mida);
+  if (Math.round(t6 > 1 ? t6 : 1 / t6) !== 60) continue;
+  if ((t6 > 1 ? q6.arv : q6.vastus) > 10) { l60Vead++; if (!l60Naide) l60Naide = q6.kysimus; }
+}
+vordne(l60Vead, 0, 'tase 2: x60 arv kuni 10 (' + l60Naide + ')');
+
+/* 12. Valitud kategooria kehtib (15. sept: tasemel 1 „Maht" andis 80% muud) */
+var katVead = 0, katNaide = '';
+for (var tk = 1; tk <= 4; tk++) {
+  for (var ki2 = 0; ki2 < Y.kategooriad.length; ki2++) {
+    var kat = Y.kategooriad[ki2];
+    var olemas = Y.kategooriaOlemas(tk, kat);
+    for (var mk = 0; mk < 150; mk++) {
+      var qk2 = Y.genereeri(tk, kat, R4);
+      if (!olemas) break;   /* avaleht seda kategooriat ei näita */
+      if (!qk2) continue;
+      if (qk2.suurus !== kat) { katVead++; if (!katNaide) katNaide = 'tase ' + tk + ' ' + kat + ': ' + qk2.kysimus; }
+    }
+  }
+}
+vordne(katVead, 0, 'valitud kategooria kehtib (' + katNaide + ')');
+ok(!Y.kategooriaOlemas(1, 'maht'), 'tasemel 1 mahtu ei ole');
+ok(Y.kategooriaOlemas(2, 'maht'), 'tasemel 2 maht on olemas');
+ok(Y.voti({ kysimus: 'Kumb on suurem?', valikud: ['1 m', '90 cm'] }) !== Y.voti({ kysimus: 'Kumb on suurem?', valikud: ['2 kg', '1900 g'] }),
+  'eri võrdlused on eri ülesanded');
+
 /* Kokkuvõte ---------------------------------------------------------------- */
 if (vead.length) {
   console.log('KATKI - ' + vead.length + ' viga ' + kontrolle + ' kontrollist:');

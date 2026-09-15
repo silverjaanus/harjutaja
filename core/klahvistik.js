@@ -82,12 +82,19 @@
       valjad[aktiivne].focus();
     }
 
+    /* Väli laieneb koos sisuga: "15000" peab mahtuma tervikuna ära, aga tühi
+       väli ei tohi olla lai kast. Neli kohta on alati olemas. */
+    function sobita(v) {
+      v.style.width = (Math.max(4, v.value.length) + 0.5) + 'ch';
+    }
+
     function kirjuta(m) {
       var v = valjad[aktiivne];
       if (v.disabled) return;
       if (v.value.length >= MAX) return;
       if (m === ',' && (v.value.indexOf(',') >= 0 || !v.value.length)) return;
       v.value += m;
+      sobita(v);
       v.focus();
     }
 
@@ -96,6 +103,7 @@
       if (v.disabled) return;
       if (!v.value.length && aktiivne > 0) { vali(aktiivne - 1); return; }
       v.value = v.value.slice(0, -1);
+      sobita(v);
       v.focus();
     }
 
@@ -111,7 +119,9 @@
         if (e.key >= '0' && e.key <= '9') { e.preventDefault(); kirjuta(e.key); return; }
         if ((e.key === ',' || e.key === '.') && koma) { e.preventDefault(); kirjuta(','); return; }
         if (e.key === 'Backspace') { e.preventDefault(); kustuta(); return; }
-        if (e.key === 'Enter') { e.preventDefault(); vastan(); }
+        /* stopPropagation: muidu jõudis sama Enter lehe käsitlejani, mis nägi
+           juba vastatud ülesannet ja jättis vihje kohe vahele (15. sept). */
+        if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); vastan(); }
       });
     });
 
@@ -137,8 +147,12 @@
 
     return {
       vaartused: function () { return valjad.map(function (v) { return v.value; }); },
+      /* Eelmise küsimuse vaatamiseks: näita lapse vastust väljal. */
+      pane: function (vaartused) {
+        valjad.forEach(function (v, i) { v.value = (vaartused && vaartused[i]) || ''; sobita(v); });
+      },
       tyhjenda: function () {
-        valjad.forEach(function (v) { v.value = ''; v.disabled = false; });
+        valjad.forEach(function (v) { v.value = ''; v.disabled = false; sobita(v); });
         host.classList.remove('lukus');
         vali(0);
       },

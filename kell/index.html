@@ -11,6 +11,7 @@
 <link rel="apple-touch-icon" href="../icons/harjutaja-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="../core/base.css">
 <link rel="stylesheet" href="kell.css">
 </head>
 <body>
@@ -20,6 +21,7 @@
   <header class="top">
     <a class="back" href="../">‹ Harjutaja</a>
     <button class="icon-btn" id="sfxBtn" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
+    <button class="icon-btn" id="musicBtn" aria-pressed="false" aria-label="Taustamuusika" data-muusika hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17V5l10-2v12"/><circle cx="6.5" cy="17" r="2.5" fill="currentColor"/><circle cx="16.5" cy="15" r="2.5" fill="currentColor"/><path class="off" d="M3 3l18 18"/></svg></button>
   </header>
   <div class="hero">
     <button class="mascot" id="mascot" aria-label="Kägu"></button>
@@ -98,12 +100,20 @@
 <section id="s-game" class="screen" hidden>
   <header class="top">
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
+    <button class="icon-btn" id="prevBtn" aria-label="Vaata eelmist ülesannet" disabled>‹</button>
     <div class="track"><i id="bar"></i></div>
+    <!-- Heli (ja muusika) lüliti on mängu ajal samas kohas kõigis moodulites. -->
+    <button class="icon-btn" id="sfxBtnG" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
+    <button class="icon-btn" id="musicBtnG" aria-pressed="false" aria-label="Taustamuusika" data-muusika hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17V5l10-2v12"/><circle cx="6.5" cy="17" r="2.5" fill="currentColor"/><circle cx="16.5" cy="15" r="2.5" fill="currentColor"/><path class="off" d="M3 3l18 18"/></svg></button>
   </header>
   <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
        järgmine küsimus hoiatuse üle. -->
   <p class="quitnote" id="quitNote" role="status" hidden></p>
   <div class="stage">
+    <div class="reviewbar" id="reviewBar" hidden>
+      <span id="reviewWhich">Vaatad eelmist ülesannet</span>
+      <button class="ghost" id="reviewBack">Tagasi mängu</button>
+    </div>
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <div id="askClock" class="askclock"></div>
     <p class="story" id="lugu" hidden></p>
@@ -178,9 +188,11 @@
 
 </main>
 <script src="../core/store.js"></script>
+<script src="../core/eelistused.js"></script>
 <script src="../core/config.js"></script>
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
+<script src="../core/muusika.js"></script>
 <script src="../core/engine.js"></script>
 <script src="../core/arm.js"></script>
 <script src="aeg.js"></script>

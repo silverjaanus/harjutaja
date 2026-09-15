@@ -1,6 +1,6 @@
 /* Harjutaja service worker: rakenduse failid vahemällu, heli vahemällu esimesel kuulamisel. */
-const VERSION = 'h-202609151200';
-const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js', 'core/klahvistik.js', 'core/arm.js',
+const VERSION = 'h-202609152300';
+const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js', 'core/klahvistik.js', 'core/arm.js', 'core/base.css', 'core/eelistused.js', 'core/muusika.js',
   'kirjutaja/', 'kirjutaja/index.html', 'kirjutaja/kirjutaja.css', 'kirjutaja/app.js', 'kirjutaja/robot.js', 'kirjutaja/data.js',
   'korrutaja/', 'korrutaja/index.html',
   'kell/', 'kell/index.html', 'kell/kell.css', 'kell/app.js', 'kell/aeg.js', 'kell/sihverplaat.js', 'kell/tekst.js', 'kell/tegelane.js',
@@ -18,7 +18,7 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (url.pathname.endsWith('.mp3')) {
     // heli ei muutu: vahemälust, puudumisel võrgust ja vahemällu
-    e.respondWith(caches.open('audio').then(c => c.match(e.request).then(hit => hit || fetch(e.request).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; }))));
+    e.respondWith(caches.open('audio').then(c => c.match(e.request).then(hit => hit || fetch(e.request).then(r => { if (r.status === 200) c.put(e.request, r.clone()).catch(() => {}); return r; }))));
     return;
   }
   if (url.origin === location.origin) {

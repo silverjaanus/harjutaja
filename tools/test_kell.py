@@ -180,7 +180,7 @@ def run(pw):
         return silt, selgitus, lood, kysimused, valikud
 
     silt4, selg4, lood4, kys4, val4 = tekstiring(4)
-    check("tase 4 nupp ütleb „Minuti täpsus\u201c", silt4 == "Minuti täpsus", silt4)
+    check("tase 4 nupp ütleb „Kõik, minuti kaupa\u201c", silt4 == "Kõik, minuti kaupa", silt4)
     check("tase 4 selgitus räägib bussiplaanist", "bussiplaanis" in selg4, selg4[-70:])
     # Kahesammulise loo TEISES sammus ei olegi numbritega kellaaega
     # („Bussi väljumiseni on 37 minutit…") — see on teadlik valik, sest
@@ -198,10 +198,10 @@ def run(pw):
     silt2, selg2, lood2, kys2, val2 = tekstiring(2)
     # Nupu silt käib REŽIIMI, mitte valitud taseme järgi: tekstirežiimis ütleb
     # neljas nupp alati seda, mida ta annaks, kui ta valida.
-    check("tekstirežiimis jääb neljas nupp „Minuti täpsus“", silt2 == "Minuti täpsus", silt2)
+    check("tekstirežiimis jääb neljas nupp „Kõik, minuti kaupa“", silt2 == "Kõik, minuti kaupa", silt2)
     check("tase 2 lugudes ei ole numbritega kellaaega",
           not any(re.search(r"\d{1,2}\.\d\d", l) for l in lood2), lood2[:2])
-    check("tase 2 ütleb, kust minutitäpsuse leiab", "Minuti täpsus" in selg2, selg2[-70:])
+    check("tase 2 ütleb, kust minutitäpsuse leiab", "Kõik, minuti kaupa" in selg2, selg2[-70:])
 
     # Kella lugemises tähendab sama nupp viie minuti täpsust.
     page.goto(BASE + "/kell/", wait_until="domcontentloaded")
@@ -210,7 +210,7 @@ def run(pw):
     page.goto(BASE + "/kell/", wait_until="domcontentloaded")
     page.wait_for_timeout(500)
     siltL = page.locator("#levels .chip").nth(3).inner_text()
-    check("lugemises on neljas nupp „Viie minuti täpsus“", siltL == "Viie minuti täpsus", siltL)
+    check("lugemises on neljas nupp „Kõik, 5 min kaupa“", siltL == "Kõik, 5 min kaupa", siltL)
 
     # Keelereegel 2: „N minuti pärast" ei tohi tekstülesandes esineda.
     kokku = " ".join(lood4 + kys4 + lood2 + kys2)
