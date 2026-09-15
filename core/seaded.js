@@ -98,7 +98,7 @@
     /* Lahkumine on pöördumatu (ilma taastekoodita ei saa tagasi), seega
        kinnitusega nagu ✕ võistluses. */
     var leave = HArm($('setLeave'), {
-      armedText: 'Kindel? Vajuta veel kord',
+      armedText: 'Oled kindel? Vajuta veel kord',
       note: $('setLeaveNote'),
       message: 'Kui lahkud, kaob klass sellest telefonist. Klassi saad tagasi ainult klassikoodi, oma nime ja taastekoodiga.',
       action: function () {

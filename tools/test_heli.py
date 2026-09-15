@@ -98,8 +98,8 @@ def vasta_valesti(page, moodul):
         for _ in range(12):
             if page.evaluate("() => window.__vib.length"):
                 return
-            if page.locator("#tipmsg.on").count():
-                page.click("#stage"); page.wait_for_timeout(300); continue
+            if page.locator("#after:not([hidden])").count():
+                page.wait_for_timeout(850); page.click("#nextBtn"); page.wait_for_timeout(300); continue
             if page.locator("#s-game.on").count() == 0:
                 page.wait_for_timeout(300)
                 for sel in ["#introGo", "#s-intro button", ".screen.on .btn.primary"]:
@@ -121,7 +121,15 @@ def vasta_valesti(page, moodul):
     # Valikvastus: õiget varianti test ei tea. Kui juhtus õige, oota järgmist
     # ülesannet ja proovi uuesti, kuni tuleb viga (või värin).
     for _ in range(8):
-        page.locator("#opts button:not([disabled])").last.click()
+        nupp = page.locator("#opts button:not([disabled])").last
+        try:
+            nupp.wait_for(state="visible", timeout=4000)
+        except Exception:
+            # ülesanne on vahepeal vahetunud või vastus juba kirjas
+            if page.evaluate("() => window.__vib.length") or page.locator("#after").is_visible():
+                return
+            continue
+        nupp.click()
         page.wait_for_timeout(300)
         if page.evaluate("() => window.__vib.length") or page.locator("#after").is_visible():
             return
@@ -216,8 +224,8 @@ def main():
         kontrolli(page.locator("#sfxBtnG").is_visible(), "Kell: võistluses 🔊 on alles")
 
         # Eelistus on ühine: Korrutaja seaded näitavad sama.
-        page.goto(f"{BASE}/korrutaja/", wait_until="domcontentloaded"); page.wait_for_selector("#btnSettings")
-        page.click("#btnSettings"); page.wait_for_timeout(200)
+        page.goto(f"{BASE}/korrutaja/", wait_until="domcontentloaded"); page.wait_for_selector("#setBtn")
+        page.click("#setBtn"); page.wait_for_timeout(200)
         kontrolli(page.get_attribute('#segMusic button[data-v="1"]', "class") and "on" in page.get_attribute('#segMusic button[data-v="1"]', "class"),
                   "Korrutaja: seaded näitavad Kellas sisse lülitatud muusikat")
         page.click('#segSfx button[data-v="0"]')

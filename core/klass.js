@@ -144,7 +144,9 @@
     return rpc('class_board', { p_player_id: c.player_id, p_secret: c.secret, p_module: module || 'korrutaja' });
   }
 
-  /* p = {module, mode, op, n, ok, score, avg, greens, state} */
+  /* p = {module, mode, op, n, ok, score, avg, greens, state}
+     Korrutaja saadab lisaks greens_mul, greens_div ja best_test (server loeb
+     tema selgeid tehteid kahes numbris). */
   function report(p) {
     var c = current();
     if (!c) return Promise.resolve({ error: 'auth' });
@@ -152,7 +154,7 @@
       p_player_id: c.player_id, p_secret: c.secret,
       p_mode: p.mode, p_op: p.op, p_n: p.n, p_ok: p.ok,
       p_score: p.score, p_avg: p.avg,
-      p_greens_mul: 0, p_greens_div: 0, p_best_test: 0,
+      p_greens_mul: p.greens_mul || 0, p_greens_div: p.greens_div || 0, p_best_test: p.best_test || 0,
       p_state: p.state || null, p_module: p.module, p_greens: p.greens || 0
     });
   }

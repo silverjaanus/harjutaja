@@ -22,11 +22,11 @@
    Kasutus:
      const S = HSaatmine.loo({
        D, save, moodul: "teisendaja", op: "yhik", liik: "ulesanne",
-       lisa: () => ({ greens: 12, state: {...} }),   // viimasele kirjele
+       lisa: () => ({ greens: 12, state: {...} }),   // igale kirjele; state ainult viimasele
        tehtud: () => V.margi(),                       // server: täna on võisteldud
        auth: () => renderKlass()                      // konto ei kehti enam
      });
-     S.lisa({ mode: "test", n, ok, score, avg }); S.saada();
+     S.lisa({ mode: "test", n, ok, score, avg, op }); S.saada();   // op: kui ring on teisest rühmast
      S.teata({ item, detail, why }); S.saadaTeated();
 */
 (function () {
@@ -47,7 +47,7 @@
     function lisa(k) {
       var c = konto();
       D.outbox.push({
-        module: o.moodul, op: o.op, mode: k.mode, n: k.n, ok: k.ok,
+        module: o.moodul, op: k.op || o.op, mode: k.mode, n: k.n, ok: k.ok,
         score: k.score != null ? k.score : k.ok, avg: k.avg || 0,
         pid: c ? c.player_id : null, t: Date.now()
       });
@@ -66,10 +66,14 @@
       var jarg = saadetavad(c);
       if (!jarg.length) return Promise.resolve();
       var e = jarg[0];
-      var p = { module: e.module, mode: e.mode, op: e.op, n: e.n, ok: e.ok, score: e.score, avg: e.avg };
-      if (jarg.length === 1 && o.lisa) {
+      /* Vanadel Korrutaja kirjetel mooduli nime ei ole. */
+      var p = { module: e.module || o.moodul, mode: e.mode, op: e.op || o.op, n: e.n, ok: e.ok, score: e.score, avg: e.avg };
+      if (o.lisa) {
+        /* Selgete arv käib iga kirjega kaasa (muidu paneks vahepealne kirje
+           serveris selged nulli); kogu seis ainult viimasega. */
         var x = o.lisa() || {};
-        p.greens = x.greens; p.state = x.state;
+        p.greens = x.greens; p.greens_mul = x.greens_mul; p.greens_div = x.greens_div; p.best_test = x.best_test;
+        if (jarg.length === 1) p.state = x.state;
       }
       return HKlass.report(p).then(function (r) {
         r = r || {};
