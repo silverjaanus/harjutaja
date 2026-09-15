@@ -219,9 +219,13 @@
 
     { nr: 4, nimi: 'Koma ja ruudud', klass: '5. klass',
       paarid: P4, kordajad: [1, 2, 3, 4, 5, 6, 8, 12, 25, 40],
-      nimegaPaarid: [['km', 'm'], ['m', 'cm'], ['kg', 'g'], ['t', 'kg'], ['l', 'ml']],
+      /* Tasemed kuhjuvad (Silveri otsus 15. sept): 4. tasemel on kõik, mis
+         3. tasemel, pluss koma, pindala ja ruumala. Kuni 15. septembrini
+         puudusid siit ülekanne ja osa nimega arvudest (Codex, B18). */
+      nimegaPaarid: [['km', 'm'], ['m', 'cm'], ['kg', 'g'], ['t', 'kg'],
+                     ['l', 'ml'], ['€', 'senti'], ['h', 'min'], ['min', 's']],
       ylekanne: true, koma: true,
-      tyybid: ['teisenda', 'teisenda', 'koma', 'koma', 'nimega', 'vordle', 'yhik'] }
+      tyybid: ['teisenda', 'teisenda', 'koma', 'koma', 'nimega', 'ylekanne', 'vordle', 'yhik'] }
   ];
 
   /* "Milline uhik sobib?" - oppekava rida "moistab, mida esitatud mootarv reaalselt
@@ -251,7 +255,7 @@
     { l: 'Jalgpallimäng kestab 90 ___.', o: 'min', v: ['s', 'h'], s: 'aeg', tase: 2 },
     { l: 'Postmargi pindala on 6 ___.', o: 'cm²', v: ['mm²', 'm²', 'dm²'], s: 'pindala', tase: 4 },
     { l: 'Korvpalliplatsi pindala on 420 ___.', o: 'm²', v: ['cm²', 'km²', 'ha'], s: 'pindala', tase: 4 },
-    { l: 'Väikese metsatuki pindala on 2 ___.', o: 'ha', v: ['m²', 'km²', 'a'], s: 'pindala', tase: 4 },
+    { l: 'Väikese metsatuka pindala on 2 ___.', o: 'ha', v: ['m²', 'km²', 'a'], s: 'pindala', tase: 4 },
     { l: 'Suhkrutüki ruumala on 4 ___.', o: 'cm³', v: ['mm³', 'dm³', 'm³'], s: 'ruumala', tase: 4 },
     { l: 'Kallur veab korraga 5 ___ liiva.', o: 'm³', v: ['cm³', 'dm³', 'mm³'], s: 'ruumala', tase: 4 }
   ];

@@ -60,6 +60,12 @@ def test_klahvistik(page):
     kontrolli(page.locator("#pad .kl-vali input").first.input_value() == "12", "klahvid kirjutavad välja")
     page.click("#pad .kl-kustuta")
     kontrolli(page.locator("#pad .kl-vali input").first.input_value() == "1", "kustutus võtab viimase ära")
+    # Nimega arvul on kaks lahtrit: täida ka teine, muidu on vastus tühi
+    # ja ülesanne jääb (õigesti) lahti.
+    valjad = page.locator("#pad .kl-vali input").all()
+    if len(valjad) > 1:
+        valjad[1].focus()
+        page.keyboard.press("1")
     page.click("#pad .kl-vastan")
     page.wait_for_selector("#fb:not(:empty)")
     kontrolli(page.locator(".klahvistik.lukus").count() == 1, "pärast vastamist läheb klahvistik lukku")

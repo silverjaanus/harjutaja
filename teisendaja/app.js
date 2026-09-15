@@ -1,13 +1,19 @@
 /* Teisendaja mäng. Kogu sisu (ühikud, tasemed, ülesanded, diagnoos, vihjed)
-   elab failis yhik.js — siin on ainult ekraanid, ring ja tagasiside.
-   Maskott on mõõdulint (tegelane.js, KLint), redel on redel.js. */
+   elab failis yhik.js, maskott on tegelane.js (KLint), redel on redel.js.
+
+   Raamistiku etapp 2 (15. sept 2026): mängu liikumine — päis, ✕, eelmise
+   vaatamine, edasiminek, taimer, klaviatuur, veateate aken — tuleb failist
+   core/mang.js, võistluse nupp ja päevapiir failist core/voistlus.js ning
+   tulemuste ja veateadete saatmine failist core/saatmine.js. Siin on ainult
+   see, mis on Teisendaja oma: ülesanded, vastamisviis, vihje, avaleht,
+   tulemus ja edetabel. */
 (function () {
   'use strict';
   const $ = id => document.getElementById(id);
 
   const KEY = "teisendaja_v1";
   const D = HStore.load(KEY, {
-    stats: {}, sfx: true, level: 2, kat: "koik",
+    stats: {}, level: 2, kat: "koik",
     rounds: [], tests: [], outbox: [], reports: [], board: null
   });
   D.stats = D.stats || {};
@@ -35,27 +41,42 @@
      moodulites, sest siin kirjutatakse vastus, mitte ei vajutata nuppu. */
   const COMPETE_N = 15, COMPETE_SEC = 15, COMPETE_TASE = 2;
   const MODULE = "teisendaja", OP = "yhik";
-  const PRAISE = ["Õige!", "Täpselt!", "Tubli!", "Just nii!", "Väga hea!"];
 
-  let round = null, cur = null, G = null, kb = null;
-  let advanceTimer = null, tickTimer = null, deadline = 0;
+  let round = null, kb = null;
   let boardTab = "week";
   /* Viimase ringi vead: "Harjuta neid teisendusi" peab päriselt neid
      harjutama, mitte lihtsalt uut ringi alustama. */
   let lastWrong = [];
+  /* Selged paarid enne ringi — tulemus ütleb, mitu selles ringis lisandus. */
+  let selgedEnne = 0;
 
-  const today = (d) => { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
-  const competedToday = () => D.lastCompete === today();
   const bestTest = () => D.tests.reduce((b, t) => Math.max(b, t.ok), 0);
   const num = n => String(Math.round(n || 0));
 
-  function show(id) {
-    ["s-home", "s-game", "s-result", "s-board"].forEach(s => { $(s).hidden = s !== id; });
-    /* Võistluses muusikat ei ole, seega pole ka muusikanuppu. */
-    $("s-game").classList.toggle("voistlus", !!(G && G.mode === "test"));
-    if (window.HMuusika) HMuusika.mang(id === "s-game" && !!G && G.mode === "train");
-    window.scrollTo(0, 0);
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
   }
+
+  /* ---------- selged teisendused ----------
+     Selge on ühikupaar (nt km ja m), mille laps on MÕLEMAT PIDI kaks korda
+     järjest õigesti teinud. Sama arvestus käib avalehe kaardil, tulemuses ja
+     edetabelis. Enne 15. septembrit loeti edetabelisse iga oskuse võti
+     eraldi (ka „Kumb on suurem?" ja „Milline ühik sobib?"), aga selgitus
+     lubas „mõlemat pidi" — number ja lause ei klappinud (Codex, B12). */
+  const KOIK_PAARID = (() => {
+    const out = [], seen = {};
+    TYhik.TASEMED.forEach(t => {
+      if (!t) return;
+      t.paarid.forEach(p => {
+        const k = [p[0], p[1]].sort().join("|");
+        if (seen[k] || !TYhik.tegur(p[0], p[1])) return;
+        seen[k] = 1; out.push(p);
+      });
+    });
+    return out;
+  })();
+  const paarSelge = p => HEngine.mastered(D.stats[p[0] + ">" + p[1]]) && HEngine.mastered(D.stats[p[1] + ">" + p[0]]);
+  const selged = () => KOIK_PAARID.filter(paarSelge).length;
 
   /* ---------- ülesannete pakk ----------
      yhik.js genereerib ülesandeid, aga kordamismootor tahab nimekirja, kus
@@ -79,35 +100,132 @@
     if (this.asked >= this.length) return null;
     return { item: this.items[this.asked++], repeat: false };
   };
-  TestRound.prototype.record = function (it, ok) { salvesta(it, ok); };
-
-  function salvesta(it, ok) {
+  TestRound.prototype.record = function (it, ok) {
     const s = D.stats[it.id] || (D.stats[it.id] = { n: 0, ok: 0, streak: 0, lastOk: false, t: 0 });
     s.n++; s.t = Date.now(); s.lastOk = ok;
     if (ok) { s.ok++; s.streak++; } else { s.streak = 0; }
+  };
+
+  /* ---------- mooduli osa mängust ---------- */
+  function oigeTekst(q) {
+    if (q.valjad === 2) return TYhik.vormU(q.vastus[0], q.sildid[0]) + " " + TYhik.vormU(q.vastus[1], q.sildid[1]);
+    if (q.valjad === 1) return TYhik.vormU(q.vastus, q.mida);
+    if (q.tyyp === "vordle") return q.valikud[q.vastus];
+    return TYhik.silt(q.vastus);
   }
 
-  /* ---------- taimer (ainult võistluses) ---------- */
-  function stopTimer() { clearInterval(tickTimer); tickTimer = null; $("timer").hidden = true; }
-  function startTimer() {
-    stopTimer();
-    $("timer").hidden = false;
-    const fill = $("timerFill");
-    deadline = performance.now() + COMPETE_SEC * 1000;
-    const tick = () => {
-      const left = deadline - performance.now();
-      const osa = Math.max(0, left / (COMPETE_SEC * 1000));
-      fill.style.width = (osa * 100).toFixed(1) + "%";
-      fill.classList.toggle("low", osa < 0.25);
-      if (left <= 0) { stopTimer(); answer(null); }
-    };
-    tick();
-    tickTimer = setInterval(tick, 100);
+  /* Vihjekaart: kõigepealt diagnoos (MIS viga sa tegid), siis tehe ette,
+     siis redel. Diagnoos on mooduli mõte — vt yhik.js diagnoosi(). */
+  function vihjeKaart(q, vastus, aegOtsas) {
+    const d = aegOtsas ? { liik: "tyhi", lause: "" } : TYhik.diagnoosi(q, vastus);
+    const redel = (q.mille && q.mida && q.tyyp !== "yhik" && window.HRedel)
+      ? HRedel.svg(q.suurus, { from: q.mille, to: q.mida }) : "";
+    return KLint("kind", { head: true }) +
+      '<div class="hinttext">' +
+      (d.lause ? '<p class="diag">' + esc(d.lause) + "</p>" : "") +
+      "<p>" + esc(TYhik.vihje(q)) + "</p>" +
+      (redel ? '<div class="redelbox">' + redel + "</div>" : "") +
+      "</div>";
   }
+
+  const moodul = {
+    joonista(q, vasta) {
+      $("askText").textContent = q.kysimus;
+      const pad = $("pad"), opts = $("opts");
+      pad.innerHTML = ""; opts.innerHTML = "";
+      kb = null;
+      if (q.valjad > 0) {
+        opts.hidden = true; pad.hidden = false;
+        kb = HKlahvistik.loo({
+          host: pad,
+          valjad: q.valjad,
+          sildid: (q.sildid || []).map(t => TYhik.silt(t)),
+          koma: q.tase >= 4,
+          onVastus: v => vasta(v)
+        });
+        kb.fookus();
+        return;
+      }
+      /* „Kumb on suurem?" ja „Milline ühik sobib?" on nupuvajutused — seal ei
+         ole midagi kirjutada. */
+      pad.hidden = true; opts.hidden = false;
+      const sildid = q.valikudSildid || q.valikud;
+      q.valikud.forEach((v, i) => {
+        const b = document.createElement("button");
+        b.className = "opt";
+        b.textContent = sildid[i];
+        b.dataset.k = q.tyyp === "vordle" ? String(i) : v;
+        b.onclick = () => vasta(b.dataset.k);
+        opts.append(b);
+      });
+    },
+    /* Tühi „Vastan" ei ole vale vastus: laps vajutas kogemata. */
+    tyhi(q, v) {
+      if (q.valjad === 0 || !TYhik.kontrolli(q, v).tyhi) return null;
+      return q.valjad === 2 ? "Kirjuta arv mõlemasse lahtrisse." : "Kirjuta vastus lahtrisse.";
+    },
+    kontrolli: (q, v) => !!TYhik.kontrolli(q, v).oige,
+    oige: oigeTekst,
+    vihje: vihjeKaart,
+    sama: (a, b) => TYhik.voti(a) === TYhik.voti(b),
+    naitaVastus(rec) {
+      const q = rec.q;
+      if (q.valjad === 0) {
+        [...$("opts").children].forEach(b => {
+          b.disabled = true;
+          b.classList.remove("right", "wrong");
+          const onOige = q.tyyp === "vordle" ? Number(b.dataset.k) === q.vastus : b.dataset.k === q.vastus;
+          if (onOige) b.classList.add("right");
+          else if (!rec.aegOtsas && b.dataset.k === String(rec.vastus)) b.classList.add("wrong");
+        });
+      } else if (kb) {
+        if (rec.vastus !== null) kb.pane(rec.vastus);
+        kb.lukusta();
+      }
+    },
+    lukusta() { if (kb) kb.lukusta(); },
+    fookus() { if (kb) kb.fookus(); },
+    mustand() { return kb ? kb.vaartused() : null; },
+    taasta(m) { if (kb) kb.pane(m); },
+    valikud() { return $("opts").hidden ? [] : [...$("opts").children]; },
+    /* detail on tekst, nagu Kirjutajas ja Kellas: serveri väli on text.
+       Võrdluse puhul on valikud sees, muidu ei tea, millisest käis jutt. */
+    veateade(q) {
+      const valik = q.valikud ? " (" + (q.valikudSildid || q.valikud).join(" / ") + ")" : "";
+      return {
+        item: TYhik.voti(q), lause: q.kysimus + valik,
+        detail: q.kysimus + valik + " — õige: " + oigeTekst(q) + " — tase " + q.tase + ", " + q.tyyp
+      };
+    }
+  };
+
+  const mang = HMang.loo({
+    kus: "Teisendajas",
+    sek: COMPETE_SEC,
+    ekraanid: ["s-home", "s-game", "s-result", "s-board"],
+    moodul,
+    salvesta: (q, ok) => { round.record(q, ok); save(); },
+    lopp: finish,
+    kodu: goHome,
+    teata: t => saatmine.teata(t)
+  });
+
+  const voistlus = HVoistlus.loo({
+    D, save,
+    nupp: $("competeBtn"), silt: $("competeLbl"), rida: $("competeNote"), lisarida: $("competeMeta"),
+    kirjeldus: COMPETE_N + " ülesannet, iga ülesande jaoks " + COMPETE_SEC + " sekundit. Võistluses on alati naaberühikud ja täisarvud, et tulemusi saaks omavahel võrrelda.",
+    alusta: () => start("test")
+  });
+
+  const saatmine = HSaatmine.loo({
+    D, save, moodul: MODULE, op: OP, liik: "ulesanne",
+    lisa: () => ({ greens: selged(), state: { stats: D.stats, tests: D.tests, level: D.level } }),
+    tehtud: () => voistlus.margi(),
+    auth: () => { D.board = null; save(); renderKlass(); }
+  });
 
   /* ---------- ring ---------- */
   function start(mode, focus) {
-    HSfx.unlock();
     const test = mode === "test";
     const tase = test ? COMPETE_TASE : D.level;
     const kat = test ? "koik" : D.kat;
@@ -126,227 +244,9 @@
     }
     if (!items.length) return;
     round = test ? new TestRound(items) : new HEngine.Round(items, D.stats, ROUND_LEN);
-    G = { mode, n: 0, ok: 0, wrong: [], history: [], t0: Date.now(), tase };
-    cur = null;
-    review = null; pendingAdvance = false; draft = null;
-    $("reviewBar").hidden = true;
-    $("prevBtn").hidden = test;
-    $("flagBtn").hidden = test;   /* võistluses ei märgita, seal mõõdetakse */
-    $("bar").style.width = "0%";
-    $("flagNote").hidden = true;
-    show("s-game");
-    next();
-  }
-
-  function next() {
-    clearTimeout(advanceTimer); advanceTimer = null;
-    review = null; pendingAdvance = false; draft = null;
-    $("reviewBar").hidden = true;
-    $("flagBox").hidden = true; flagQ = null;
-    $("fb").textContent = ""; $("fb").className = "feedback";
-    $("hint").hidden = true; $("after").hidden = true;
-    const q = round.next();
-    if (!q) return finish();
-    cur = q.item;
-    cur.done = false;
-    renderQuestion(cur);
-    const total = round.length + (round.due ? round.due.length : 0);
-    $("bar").style.width = Math.min(100, (G.n / total) * 100) + "%";
-    if (G.mode === "test") startTimer();
-    renderPrevBtn();
-  }
-
-  function renderQuestion(q) {
-    $("askText").textContent = q.kysimus;
-    const pad = $("pad"), opts = $("opts");
-    pad.innerHTML = ""; opts.innerHTML = "";
-    kb = null;
-    if (q.valjad > 0) {
-      opts.hidden = true; pad.hidden = false;
-      kb = HKlahvistik.loo({
-        host: pad,
-        valjad: q.valjad,
-        sildid: (q.sildid || []).map(t => TYhik.silt(t)),
-        koma: q.tase >= 4,
-        onVastus: v => answer(v)
-      });
-      kb.fookus();
-      return;
-    }
-    /* „Kumb on suurem?" ja „Milline ühik sobib?" on nupuvajutused — seal ei ole
-       midagi kirjutada. Segamoodus on juba Kellas olemas. */
-    pad.hidden = true; opts.hidden = false;
-    const sildid = q.valikudSildid || q.valikud;
-    q.valikud.forEach((v, i) => {
-      const b = document.createElement("button");
-      b.className = "opt";
-      b.textContent = sildid[i];
-      b.dataset.k = q.tyyp === "vordle" ? String(i) : v;
-      b.onclick = () => answer(b.dataset.k);
-      opts.append(b);
-    });
-  }
-
-  function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-  }
-
-  function oigeTekst(q) {
-    if (q.valjad === 2) return TYhik.vormU(q.vastus[0], q.sildid[0]) + " " + TYhik.vormU(q.vastus[1], q.sildid[1]);
-    if (q.valjad === 1) return TYhik.vormU(q.vastus, q.mida);
-    if (q.tyyp === "vordle") return q.valikud[q.vastus];
-    return TYhik.silt(q.vastus);
-  }
-
-  function answer(vastus) {
-    /* Eelmise ülesande vaatamise ajal on väljad lukus, aga igaks juhuks:
-       vaatamine ei tohi kunagi käiva ülesande vastust anda. */
-    if (review !== null) return;
-    const q = cur; if (!q || q.done) return;
-    /* Tühi „Vastan" ei ole vale vastus: laps vajutas kogemata. Ülesanne jääb
-       lahti ja väli saab fookuse (Fable'i ja Codexi leid 15. sept). */
-    if (vastus !== null && vastus !== undefined && q.valjad > 0 && TYhik.kontrolli(q, vastus).tyhi) {
-      $("fb").textContent = q.valjad === 2 ? "Kirjuta arv mõlemasse lahtrisse." : "Kirjuta vastus enne lahtrisse.";
-      $("fb").className = "feedback";
-      if (kb) kb.fookus();
-      return;
-    }
-    q.done = true;
-    /* Vastamine on teadlik jätkamine: ✕ ootel olek kaob siin. */
-    quitArm.disarm();
-    stopTimer();
-    if (kb) kb.lukusta();
-    const test = G.mode === "test";
-    const aegOtsas = (vastus === null || vastus === undefined);
-    const K = aegOtsas ? { oige: false, tyhi: true } : TYhik.kontrolli(q, vastus);
-    const ok = !!K.oige;
-    round.record(q, ok); save();
-    G.n++;
-    if (ok) G.ok++;
-    else if (!G.wrong.some(w => TYhik.voti(w) === TYhik.voti(q))) G.wrong.push(q);
-
-    const rec = {
-      q, ok, aegOtsas,
-      vastus: aegOtsas ? null : vastus,
-      praise: ok ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : "",
-      hint: (!ok && !test) ? vihjeKaart(q, vastus, aegOtsas) : ""
-    };
-    G.history.push(rec); renderPrevBtn();
-    paintResult(rec);
-
-    if (ok) {
-      HSfx.ok();
-      advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, test ? 800 : 1000);
-      return;
-    }
-    HSfx.bad();
-    if (test) {
-      advanceTimer = setTimeout(() => { advanceTimer = null; next(); }, 1400);
-      return;
-    }
-    $("after").hidden = false;
-  }
-
-  /* Vihjekaart: kõigepealt diagnoos (MIS viga sa tegid), siis tehe ette,
-     siis redel. Diagnoos on mooduli mõte — vt yhik.js diagnoosi(). */
-  function vihjeKaart(q, vastus, aegOtsas) {
-    const d = aegOtsas ? { liik: "tyhi", lause: "" } : TYhik.diagnoosi(q, vastus);
-    const redel = (q.mille && q.mida && q.tyyp !== "yhik" && window.HRedel)
-      ? HRedel.svg(q.suurus, { from: q.mille, to: q.mida }) : "";
-    return KLint("kind", { head: true }) +
-      '<div class="hinttext">' +
-      (d.lause ? '<p class="diag">' + esc(d.lause) + "</p>" : "") +
-      "<p>" + esc(TYhik.vihje(q)) + "</p>" +
-      (redel ? '<div class="redelbox">' + redel + "</div>" : "") +
-      "</div>";
-  }
-
-  /* Joonistab vastatud ülesande: valikunupud, tagasiside ja vihje. Sama pilt
-     kehtib vastamise hetkel ja siis, kui laps tuleb noolega seda vaatama. */
-  function paintResult(rec) {
-    const q = rec.q;
-    if (q.valjad === 0) {
-      [...$("opts").children].forEach(b => {
-        b.disabled = true;
-        b.classList.remove("right", "wrong");
-        const onOige = q.tyyp === "vordle" ? Number(b.dataset.k) === q.vastus : b.dataset.k === q.vastus;
-        if (onOige) b.classList.add("right");
-        else if (!rec.aegOtsas && b.dataset.k === String(rec.vastus)) b.classList.add("wrong");
-      });
-    } else if (kb) {
-      if (rec.vastus !== null) kb.pane(rec.vastus);
-      kb.lukusta();
-    }
-    if (rec.ok) {
-      $("fb").textContent = rec.praise;
-      $("fb").className = "feedback ok";
-      $("hint").hidden = true;
-      return;
-    }
-    $("fb").textContent = (rec.aegOtsas ? "Aeg sai otsa. " : "") + "Õige vastus on " + oigeTekst(q) + ".";
-    $("fb").className = "feedback bad";
-    $("hint").innerHTML = rec.hint;
-    $("hint").hidden = !rec.hint;
-  }
-
-  /* ---------- eelmiste ülesannete vaatamine ----------
-     Sama muster nagu Kirjutajas: nool viib päris eelmise ülesande juurde,
-     koos lapse vastuse, õige vastuse ja vihjega. Ainult harjutusringis.
-     `review` on indeks G.history sees; null tähendab, et mäng käib. */
-  let review = null, pendingAdvance = false, draft = null;
-
-  function vaadatav() { return review === null ? null : G.history[review].q; }
-
-  /* Kui käiv ülesanne on juba vastatud, on see ise ajaloos viimane, seega
-     tuleb esimene samm üks võrra kaugemale. */
-  function eelmineIndeks() {
-    if (!G) return -1;
-    if (review !== null) return review - 1;
-    return G.history.length - (cur && cur.done ? 2 : 1);
-  }
-
-  function renderPrevBtn() {
-    $("prevBtn").disabled = eelmineIndeks() < 0;
-  }
-
-  function openPrev() {
-    const i = eelmineIndeks();
-    if (i < 0) return;
-    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
-    /* Pooleli kirjutatud vastus ei tohi vaatamise ajal kaduma minna. */
-    if (review === null && cur && !cur.done && kb) draft = kb.vaartused();
-    review = i;
-    const rec = G.history[i];
-    const sammu = G.history.length - i;
-    $("reviewWhich").textContent = sammu === 1 ? "Vaatad eelmist ülesannet" : "Vaatad ülesannet " + sammu + " sammu tagasi";
-    $("reviewBar").hidden = false;
-    $("flagNote").hidden = true;
-    $("after").hidden = true;
-    renderQuestion(rec.q);
-    paintResult(rec);
-    renderPrevBtn();
-  }
-
-  /* Tagasi mängu: kui vahepeal ootas edasiliikumine, läheb mäng edasi,
-     muidu joonistatakse käiv ülesanne täpselt sellisena, nagu ta oli. */
-  function exitReview() {
-    if (review === null) return;
-    review = null;
-    $("reviewBar").hidden = true;
-    if (pendingAdvance) { pendingAdvance = false; draft = null; next(); return; }
-    if (!cur) return;
-    $("fb").textContent = ""; $("fb").className = "feedback";
-    $("hint").hidden = true; $("after").hidden = true;
-    renderQuestion(cur);
-    const rec = G.history[G.history.length - 1];
-    if (cur.done && rec && rec.q === cur) {
-      paintResult(rec);
-      $("after").hidden = rec.ok || G.mode === "test";
-    } else if (draft && kb) {
-      kb.pane(draft);
-    }
-    draft = null;
-    renderPrevBtn();
+    selgedEnne = selged();
+    const G = mang.alusta(round, test ? "test" : "train");
+    G.tase = tase;
   }
 
   /* ---------- tulemus ---------- */
@@ -357,7 +257,12 @@
     d.append(b, s); stats.append(d);
   }
 
-  function naitaVead() {
+  function selgeksKast(stats) {
+    const n = selged() - selgedEnne;
+    if (n > 0) statKast(stats, String(n), n === 1 ? "teisendus sai selgeks" : "teisendust sai selgeks");
+  }
+
+  function naitaVead(G) {
     const nb = $("resNext"); nb.innerHTML = "";
     G.wrong.slice(0, 6).forEach(q => {
       const s = document.createElement("span");
@@ -370,21 +275,21 @@
 
   /* Tulemuse ekraani esmane nupp: kui vigu oli, harjutab see päriselt neid
      teisendusi. Vigadeta ringil ei ole "neid" olemas. */
-  function setAgain() {
+  function setAgain(G) {
     lastWrong = G.wrong.slice();
     $("againBtn").textContent = lastWrong.length ? "Harjuta neid teisendusi" : "Harjuta veel";
   }
 
-  function finish() {
-    /* Ootel edasiliikumine tuleb tühistada: ilma selleta võis ✕ vahetult
-       pärast vastust jätta käima next()-i, mis jooksis juba tulemuse peal. */
-    stopTimer(); clearTimeout(advanceTimer); advanceTimer = null;
-    quitArm.disarm();
+  function finish(G) {
     const pct = G.n ? G.ok / G.n : 0;
-    if (G.mode === "test") return finishCompete(pct);
+    if (G.mode === "test") return finishCompete(G, pct);
     D.rounds.push({ t: Date.now(), n: G.n, ok: G.ok, level: D.level });
     if (D.rounds.length > 20) D.rounds.shift();
+    /* Harjutusring läheb ka serverisse: nii jõuab selgete teisenduste arv
+       edetabelisse ilma võistlemata (Silveri otsus 15. sept). */
+    if (G.n) saatmine.lisa({ mode: "train", n: G.n, ok: G.ok, score: G.ok, avg: 0 });
     save();
+    saatmine.saada();
     let title, sub = "", mood = "happy";
     if (G.n < 4) { title = "Hea algus!"; mood = "wave"; }
     else if (pct >= 0.9) { title = "Suurepärane!"; mood = "cheer"; HSfx.tada(); }
@@ -395,20 +300,20 @@
     $("resSub").textContent = sub; $("resSub").hidden = !sub;
     const stats = $("resStats"); stats.innerHTML = "";
     statKast(stats, G.ok + " / " + G.n, "õigesti");
-    naitaVead();
-    setAgain();
-    show("s-result");
+    selgeksKast(stats);
+    naitaVead(G);
+    setAgain(G);
+    mang.naita("s-result");
   }
 
-  function finishCompete(pct) {
+  function finishCompete(G, pct) {
     D.tests.push({ t: Date.now(), n: G.n, ok: G.ok });
     if (D.tests.length > 40) D.tests.shift();
     const prevBest = D.tests.slice(0, -1).reduce((b, t) => Math.max(b, t.ok), 0);
-    D.lastCompete = today();
     const avg = G.n ? (Date.now() - G.t0) / 1000 / G.n : 0;
-    D.outbox.push({ module: MODULE, mode: "test", op: OP, n: G.n, ok: G.ok, score: G.ok, avg: Math.round(avg * 10) / 10 });
-    save();
-    flushOutbox();
+    saatmine.lisa({ mode: "test", n: G.n, ok: G.ok, score: G.ok, avg: Math.round(avg * 10) / 10 });
+    voistlus.margi();
+    saatmine.saada();
 
     const record = G.ok > prevBest && D.tests.length > 1;
     let title, sub = "Uus võistlus on homme.", mood = "happy";
@@ -425,86 +330,10 @@
     const stats = $("resStats"); stats.innerHTML = "";
     statKast(stats, G.ok + " / " + G.n, "õigesti");
     statKast(stats, String(bestTest()), record ? "uus rekord" : "sinu rekord");
-    naitaVead();
-    setAgain();
-    show("s-result");
-  }
-
-  /* ---------- tulemuste saatmine ---------- */
-  function flushOutbox() {
-    if (!window.HKlass || !HKlass.online() || !HKlass.current() || !D.outbox.length) return Promise.resolve();
-    const it = D.outbox[0];
-    return HKlass.report(Object.assign({}, it, {
-      greens: selged(),
-      state: D.outbox.length === 1 ? { stats: D.stats, tests: D.tests, level: D.level } : null
-    })).then(r => {
-      if (r && r.error === "auth") { D.outbox = []; HKlass.clear(); save(); renderKlass(); return; }
-      D.outbox.shift(); save();
-      return flushOutbox();
-    }).catch(() => {});
-  }
-
-  /* „Selge" on oskus (nt km>m), mille laps on kaks korda järjest õigesti teinud. */
-  const selged = () => Object.keys(D.stats).filter(k => HEngine.mastered(D.stats[k])).length;
-
-  /* ---------- veateade ---------- */
-  let flagTimer = null;
-
-  function reportKey(q) {
-    if (!q) return null;
-    /* detail on tekst, nagu Kirjutajas ja Kellas: serveri väli on text.
-       Võrdluse puhul on valikud sees, muidu ei tea, millisest käis jutt. */
-    const valik = q.valikud ? " (" + (q.valikudSildid || q.valikud).join(" / ") + ")" : "";
-    return { item: TYhik.voti(q), detail: q.kysimus + valik + " — õige: " + oigeTekst(q) + " — tase " + q.tase + ", " + q.tyyp };
-  }
-
-  function sendReports() {
-    if (!window.HKlass || !HKlass.online() || !HKlass.issue) return Promise.resolve();
-    const q = D.reports.filter(r => !r.sent);
-    if (!q.length) return Promise.resolve();
-    return Promise.all(q.map(r =>
-      HKlass.issue({ module: MODULE, kind: "ulesanne", item: r.item, detail: r.detail, note: r.why })
-        .then(res => { if (res && res.ok) r.sent = true; }).catch(() => {})   /* ainult päris õnnestumine */
-    )).then(save);
-  }
-
-  const MIKS = {
-    ulesanne: "Ülesanne on imelik",
-    vastus: "Mäng näitab valet vastust",
-    raske: "Ei saa aru, mida küsitakse",
-    muu: "Midagi muud"
-  };
-
-  /* Veateade käib selle ülesande kohta, mis on ekraanil — ka siis, kui laps
-     vaatab noolega eelmist. */
-  /* Aken lukustab ülesande, mille kohta ta avati, ja peatab edasimineku;
-     muidu võis märge minna juba järgmise ülesande kohta (15. sept). */
-  let flagQ = null;
-  function openFlag() {
-    const q = vaadatav() || cur;
-    const k = reportKey(q); if (!k) return;
-    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
-    flagQ = q;
-    $("flagSentence").textContent = q.kysimus;
-    $("flagBox").hidden = false;
-  }
-  function closeFlag() {
-    $("flagBox").hidden = true;
-    flagQ = null;
-    if (pendingAdvance && review === null) { pendingAdvance = false; next(); }
-  }
-
-  function sendFlag(why) {
-    const k = reportKey(flagQ || vaadatav() || cur); if (!k) return;
-    const rec = D.reports.find(r => r.item === k.item);
-    if (rec) { rec.why = why; rec.sent = false; }
-    else D.reports.push({ item: k.item, detail: k.detail, why, sent: false, t: Date.now() });
-    save(); closeFlag(); sendReports();
-    const f = $("flagNote");
-    f.textContent = "Aitäh! Andsid veast teada.";   /* sama tekst mis Kirjutajas ja Kellas */
-    f.hidden = false;
-    clearTimeout(flagTimer);
-    flagTimer = setTimeout(() => { f.hidden = true; }, 2600);
+    selgeksKast(stats);
+    naitaVead(G);
+    setAgain(G);
+    mang.naita("s-result");
   }
 
   /* ---------- avaleht ---------- */
@@ -537,7 +366,10 @@
       box.append(b);
     });
     const t = TYhik.TASEMED[D.level];
-    $("levelNote").textContent = t ? "See tase sobib umbes " + t.klass.replace("klass", "klassile") + "." : "";
+    /* Tasemed kuhjuvad: iga tase sisaldab ka eelmiste ülesandeid
+       (Silveri otsus 15. sept). */
+    $("levelNote").textContent = (t ? "See tase sobib umbes " + t.klass.replace("klass", "klassile") + ". " : "") +
+      "Igas tasemes on ka eelmiste tasemete ülesandeid.";
   }
 
   /* Kaart näitab valitud taseme ühikupaare: roheline siis, kui mõlemad suunad
@@ -557,16 +389,21 @@
     return out.slice(0, 12);
   }
 
+  /* Kaardi pealkiri on nimetavas: „euro ja sent", mitte „€ ja senti"
+     (Fable 15. sept). Muud ühikud on tähisena. */
+  const KAARDINIMI = { "€": "euro", "senti": "sent" };
+  const kaardiNimi = t => KAARDINIMI[t] || TYhik.silt(t);
+
   function renderKaart() {
     const box = $("map"); box.innerHTML = "";
     paarid().forEach(p => {
       const a = D.stats[p[0] + ">" + p[1]], b = D.stats[p[1] + ">" + p[0]];
-      const selge = HEngine.mastered(a) && HEngine.mastered(b);
+      const selge = paarSelge(p);
       const alustatud = (a && a.n) || (b && b.n);
       const d = document.createElement("div");
       d.className = "mcell" + (selge ? " g" : (alustatud ? " y" : ""));
-      d.innerHTML = "<b>" + esc(TYhik.silt(p[0])) + " → " + esc(TYhik.silt(p[1])) + "</b>" +
-        "<small>×" + esc(TYhik.vorm(TYhik.tegur(p[0], p[1]).tegur)) + "</small>";
+      d.innerHTML = "<b>" + esc(kaardiNimi(p[0])) + " ja " + esc(kaardiNimi(p[1])) + "</b>" +
+        "<small>" + esc(TYhik.vormU(1, p[0]) + " = " + TYhik.vormU(TYhik.tegur(p[0], p[1]).tegur, p[1])) + "</small>";
       box.append(d);
     });
   }
@@ -576,7 +413,7 @@
     $("homeRedel").innerHTML = window.HRedel ? HRedel.svg(suurus, {}) : "";
     $("homeRedelNote").textContent = suurus === "aeg"
       ? "Aeg ei ole kümnendsüsteemis: tunnis on 60 minutit, ööpäevas 24 tundi."
-      : "Iga aste korrutab või jagab arvu selle teguriga.";
+      : "Väiksemaks ühikuks korrutad, suuremaks ühikuks jagad.";
   }
 
   function renderKlass() {
@@ -591,56 +428,32 @@
       $("joinBtn").textContent = "Liitu klassiga";
       $("boardBtn").hidden = true;
     }
-    renderCompete();
+    voistlus.joonista();
   }
-
-  function renderCompete() {
-    const b = $("competeBtn"), n = $("competeNote");
-    b.classList.remove("armed");
-    if (competedToday()) {
-      b.textContent = "Võistlus tehtud";
-      b.disabled = true;
-      n.textContent = "Võistelda saab üks kord päevas. Uus ring homme.";
-      return;
-    }
-    b.disabled = false;
-    b.textContent = "Võistle";
-    n.textContent = COMPETE_N + " ülesannet, igale " + COMPETE_SEC + " sekundit. Võistluses on alati naaberühikud ja täisarvud, et tulemused oleksid võrreldavad.";
-  }
-
-  const competeArm = HArm($("competeBtn"), {
-    idleText: "Võistle",
-    armedText: "Alustame?",
-    note: $("competeNote"),
-    message: HArm.COMPETE_MSG,
-    enabled: () => !competedToday(),
-    action: () => start("test"),
-    onDisarm: renderCompete
-  });
 
   /* ---------- edetabel ---------- */
-  function openBoard() { show("s-board"); renderBoard(); flushOutbox().then(loadBoard); }
+  function openBoard() { mang.naita("s-board"); renderBoard(); saatmine.saada().then(loadBoard); }
 
   function loadBoard() {
     if (!window.HKlass || !HKlass.current()) return;
     $("bStatus").textContent = "Laadin…";
     return HKlass.board(MODULE).then(r => {
-      if (r && r.error === "auth") { HKlass.clear(); D.board = null; save(); renderKlass(); show("s-home"); return; }
+      if (r && r.error === "auth") { HKlass.clear(); D.board = null; save(); renderKlass(); mang.naita("s-home"); return; }
       if (!r || r.error) { $("bStatus").textContent = "Ei õnnestunud."; return; }
       D.board = r;
-      if (r.competed_today) D.lastCompete = today();
-      save(); renderBoard(); renderCompete();
+      save(); renderBoard();
+      if (r.competed_today) voistlus.margi();
       $("bStatus").textContent = "";
     }).catch(() => {
       renderBoard();
-      $("bStatus").textContent = D.board ? "Internetti pole. Näitan viimast seisu." : "Internetti pole.";
+      $("bStatus").textContent = D.board ? "Võrku pole. Näitan viimast seisu." : "Võrku pole.";
     });
   }
 
   function boardHint(tab, grade) {
     const g = grade ? grade + ". klassid" : "sama astme klassid";
     if (tab === "week") return "Nädalapunktid on sinu viie parima päeva õiged vastused kokku. Nädalavahetusel ei pea mängima.";
-    if (tab === "sure") return "Selge on teisendus, mille oled mõlemat pidi kaks korda järjest õigesti teinud.";
+    if (tab === "sure") return "Selge on teisendus, mille oled kummaski suunas kaks korda järjest õigesti teinud.";
     if (tab === "best") return "Sinu kõige parem võistlus. Igas võistluses on " + COMPETE_N + " ülesannet.";
     if (tab === "school") return "Sinu kooli teised " + g + ". Võrdleme punkte ühe võistleja kohta, mitte kogusummat.";
     return "Kõik Eesti " + g + ". Punktid ühe võistleja kohta.";
@@ -707,78 +520,38 @@
   }
 
   function goHome() {
-    stopTimer(); clearTimeout(advanceTimer); advanceTimer = null;
-    quitArm.disarm();
-    cur = null;
-    review = null; pendingAdvance = false; draft = null;
-    $("reviewBar").hidden = true;
-    $("flagBox").hidden = true; flagQ = null;
     $("againBtn").textContent = "Harjuta veel";
     renderTasemed(); renderKatid(); renderKaart(); renderRedel(); renderKlass();
-    show("s-home");
+    mang.naita("s-home");
   }
 
   /* ---------- sündmused ---------- */
   HSfx.nupp($("sfxBtn")); HSfx.nupp($("sfxBtnG"));
+  $("trainMeta").textContent = ROUND_LEN + " ülesannet";
+  $("competeMeta").textContent = COMPETE_N + " ülesannet";
   $("startBtn").onclick = () => start("train");
-  $("nextBtn").onclick = next;
-  $("prevBtn").onclick = openPrev;
-  $("reviewBack").onclick = exitReview;
-  $("flagBtn").onclick = openFlag;
-  $("flagCancel").onclick = closeFlag;
-  $("flagBox").onclick = e => { if (e.target === $("flagBox")) closeFlag(); };
-  $("flagOpts").addEventListener("click", e => {
-    const b = e.target.closest("button[data-why]"); if (!b) return;
-    sendFlag(b.dataset.why);
-  });
-
-  /* Võistluses küsib ✕ kinnitust: pooleli jäetud ring läheb ikka kirja ja
-     päev on siis kasutatud. Kinnitust hoiab core/arm.js — nupp ise läheb
-     nähtavalt ootele ja hoiatus saab oma rea. */
-  const quitArm = HArm($("quitBtn"), {
-    note: $("quitNote"),
-    message: HArm.quitMsg("Teisendajas"),
-    needsConfirm: () => !!(G && G.mode === "test" && G.n),
-    action: () => { if (G && G.n) finish(); else goHome(); }
-  });
-
   $("againBtn").onclick = () => start("train", lastWrong);
-  $("homeBtn").onclick = goHome;
+  $("homeBtn").onclick = () => mang.koju();
   $("joinBtn").onclick = () => HKlass.openJoin({ app: "Teisendajas", onDone: () => { renderKlass(); openBoard(); } });
   $("boardBtn").onclick = openBoard;
-  $("bBack").onclick = goHome;
-  $("bRefresh").onclick = () => flushOutbox().then(loadBoard);
+  $("bBack").onclick = () => mang.koju();
+  $("bRefresh").onclick = () => saatmine.saada().then(loadBoard);
   $("bInvite").onclick = invite;
   $("bTabs").addEventListener("click", e => {
     const c = e.target.closest(".chip"); if (!c) return;
     boardTab = c.dataset.t; renderBoard();
   });
 
-  /* Enter viib edasi siis, kui vastus on juba antud. Numbriklahvid kuuluvad
-     klahvistikule, seega siin neid ei püüta. */
-  document.addEventListener("keydown", e => {
-    if ($("s-game").hidden || !cur || e.defaultPrevented) return;   /* klahvistik võttis klahvi juba */
-    if (!$("flagBox").hidden) { if (e.key === "Escape") { e.preventDefault(); closeFlag(); } return; }
-    if (review !== null) { if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); exitReview(); } return; }
-    if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); return; }
-    /* Valikküsimustel valivad numbrid vastuse, nagu Kellas ja Kirjutajas. */
-    const n = parseInt(e.key, 10);
-    if (n >= 1 && n <= 4 && !cur.done && cur.valjad === 0) {
-      const b = $("opts").children[n - 1];
-      if (b) { e.preventDefault(); b.click(); }
-    }
-  });
-
   $("mascot").innerHTML = KLint("wave");
   $("mascot").onclick = () => {
-    HSfx.unlock(); HSfx.ok();
+    HSfx.unlock(); HSfx.blip();
     const svg = $("mascot").querySelector("svg");
     svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
   };
 
   renderTasemed(); renderKatid(); renderKaart(); renderRedel(); renderKlass();
-  flushOutbox();
-  sendReports();   /* võrguta jäänud märked lähevad teele, kui võrk on tagasi */
+  saatmine.saada();
+  saatmine.saadaTeated();   /* võrguta jäänud märked lähevad teele, kui võrk on tagasi */
 
   function maybeInvite() {
     const m = /[#&]k=([A-Za-z0-9]{4,8})/.exec(location.hash || "");

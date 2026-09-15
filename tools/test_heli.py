@@ -116,10 +116,16 @@ def vasta_valesti(page, moodul):
         for v in page.locator("#pad .kl-vali input").all():
             v.focus(); page.keyboard.press("1"); page.keyboard.press("7")
         page.click("#pad .kl-vastan")
-    else:
-        # vali variant, mis ei ole õige: proovi järjest, kuni tuleb viga
-        page.locator("#opts button").last.click()
-    page.wait_for_timeout(300)
+        page.wait_for_timeout(300)
+        return
+    # Valikvastus: õiget varianti test ei tea. Kui juhtus õige, oota järgmist
+    # ülesannet ja proovi uuesti, kuni tuleb viga (või värin).
+    for _ in range(8):
+        page.locator("#opts button:not([disabled])").last.click()
+        page.wait_for_timeout(300)
+        if page.evaluate("() => window.__vib.length") or page.locator("#after").is_visible():
+            return
+        page.wait_for_timeout(1300)
 
 
 def main():

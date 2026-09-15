@@ -165,3 +165,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .flagopts{display:flex;flex-direction:column;gap:8px}
 .flagopts .ghost{text-align:left}
 .flag-cancel{margin-top:6px;align-self:center}
+
+/* Raamistiku etapp 2: ringi pikkus nähtav nupul ja mängu ajal („4 / 12"). */
+.big small{display:block;font-family:var(--body);font-size:13px;font-weight:700;opacity:.75;margin-top:2px}
+.loendur{flex:0 0 auto;min-width:3.2em;text-align:center;font-weight:800;font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.flagopts button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
