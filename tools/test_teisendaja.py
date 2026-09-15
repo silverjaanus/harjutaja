@@ -63,6 +63,14 @@ def test_klahvistik(page):
     page.click("#pad .kl-vastan")
     page.wait_for_selector("#fb:not(:empty)")
     kontrolli(page.locator(".klahvistik.lukus").count() == 1, "pärast vastamist läheb klahvistik lukku")
+    # 15. sept viga: #pad on sama element igas ülesandes ja lukk jäi külge,
+    # seega teisest ülesandest alates ei saanud enam vastata.
+    uus_lukus = page.evaluate("""() => {
+      const pad = document.getElementById('pad');
+      HKlahvistik.loo({ host: pad, valjad: 1, sildid: ['ml'] });
+      return pad.classList.contains('lukus');
+    }""")
+    kontrolli(not uus_lukus, "uus klahvistik ei päri eelmise ülesande lukku")
 
     page.goto(BASE, wait_until="domcontentloaded")
     page.wait_for_selector("#levels .chip")
