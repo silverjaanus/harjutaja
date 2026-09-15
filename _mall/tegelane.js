@@ -6,7 +6,8 @@
 (function () {
   function KTapike(mood, o) {
     o = o || {};
-    var keha = '#b9a6f2', serv = '#6a52b8', tume = '#241645';
+    var keha = '#f6b8c8', serv = '#b8526e', tume = '#4a1426';
+    /* Põsed on siin tumedamad, sest keha on juba roosa. */
     var suu = mood === 'cheer'
       ? '<path d="M44 70 Q60 88 76 70 Z" fill="' + tume + '"/>'
       : mood === 'kind'
@@ -24,7 +25,7 @@
     return '<svg class="tapike" viewBox="' + vb + '" role="img" aria-label="Täpike">' +
       kaed +
       '<circle cx="60" cy="62" r="42" fill="' + keha + '" stroke="' + serv + '" stroke-width="3"/>' +
-      '<circle cx="36" cy="68" r="5" fill="#f4a3a0" opacity=".7"/><circle cx="84" cy="68" r="5" fill="#f4a3a0" opacity=".7"/>' +
+      '<circle cx="36" cy="68" r="5" fill="#e07a96" opacity=".6"/><circle cx="84" cy="68" r="5" fill="#e07a96" opacity=".6"/>' +
       silmad + suu +
       '</svg>';
   }

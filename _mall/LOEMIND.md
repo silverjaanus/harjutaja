@@ -1,6 +1,6 @@
 # Uue mooduli mall
 
-See kaust on töötav näidismoodul „Näidis“ (liitmine). Ava see brauseris aadressil `…/_mall/`. Avalehel seda ei ole ja service worker seda vahemällu ei pane.
+See kaust on töötav näidismoodul „Näidis“ (liitmine, roosa aktsent). Ava see brauseris aadressil `…/_mall/`. Avalehel seda ei ole ja service worker seda vahemällu ei pane.
 
 Mall on repo juurkaustas, mitte `moodulid/_mall/` (nagu kavas oli), sest moodulid elavad juurkaustas. Nii jäävad teed `../core/...` kopeerimisel samaks.
 

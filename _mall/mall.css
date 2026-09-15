@@ -1,11 +1,11 @@
 /* MALL: mooduli aktsent. Kõik muu (päis, nupud, mäng, tulemus, edetabel,
    seaded) tuleb failist core/base.css — seda siin üle ei kirjutata. */
 :root{
-  --accent:#b9a6f2;
-  --accent-edge:#8c74d6;
-  --accent-ink:#241645;
-  --warm:#6a52b8;
-  --warm-soft:#efeafc;
+  --accent:#f6b8c8;
+  --accent-edge:#d9869d;
+  --accent-ink:#4a1426;
+  --warm:#b8526e;
+  --warm-soft:#fcebf0;
 }
 
 /* Maskott: kõigub vaikselt, pilgutab, hüppab puudutusel. */

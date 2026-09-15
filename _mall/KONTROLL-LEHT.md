@@ -33,7 +33,7 @@ Iga punkt enne esimest merge'i. Kui mõni punkt ei kehti, kirjuta Handover.md-ss
 
 ## Välimus ja maskott
 
-- [ ] Aktsentvärv on oma ja erineb teistest moodulitest (Kell kollane, Teisendaja roheline, Korrutaja sinine, mall lilla).
+- [ ] Aktsentvärv on oma ja erineb teistest moodulitest (Kell kollane, Teisendaja roheline, Korrutaja sinine, Kirjutaja sinihall, Keel lilla, mall roosa).
 - [ ] Maskotil on meeleolud `wave`, `happy`, `cheer`, `kind` ja pea-kuju. Vea peale ei ole ta kurb.
 - [ ] `prefers-reduced-motion` peatab maskoti animatsioonid.
 - [ ] Ekraanipildid 400 px laiusel: avaleht, mäng (õige ja vale vastus koos vihjega), tulemus, edetabel, seaded. Midagi ei lähe üle ääre.
