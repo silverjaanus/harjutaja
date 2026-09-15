@@ -68,7 +68,7 @@
       $('fName').hidden = !o.nimi;
       $('inName').value = HPrefs.get('name') || '';
       var c = window.HKlass ? HKlass.current() : null;
-      $('setClassName').textContent = c && c.class_name ? c.class_name + ' · ' + (c.nick || '') : 'Sa pole veel klassis.';
+      $('setClassName').textContent = c && c.class_name ? c.class_name + ' · ' + (c.nick || '') : 'Sa pole veel klassiga liitunud.';
       $('setCodes').hidden = !c;
       $('setCode').textContent = c ? c.code : '';
       $('setSecret').textContent = c ? c.secret : '';
@@ -98,7 +98,7 @@
     /* Lahkumine on pöördumatu (ilma taastekoodita ei saa tagasi), seega
        kinnitusega nagu ✕ võistluses. */
     var leave = HArm($('setLeave'), {
-      armedText: 'Kindel? Vajuta veel kord',
+      armedText: 'Oled kindel? Vajuta veel kord',
       note: $('setLeaveNote'),
       message: 'Kui lahkud, kaob klass sellest telefonist. Klassi saad tagasi ainult klassikoodi, oma nime ja taastekoodiga.',
       action: function () {

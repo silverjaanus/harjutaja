@@ -155,7 +155,7 @@ def run(pw):
     page.evaluate("localStorage.removeItem('harjutaja_id_v1')")
     page.goto(BASE + "/kirjutaja/", wait_until="domcontentloaded")
     page.wait_for_timeout(500)
-    check("klassita tekst paigas", "pole veel klassis" in page.locator("#klassNote").inner_text(),
+    check("klassita tekst paigas", "pole veel klassiga liitunud" in page.locator("#klassNote").inner_text(),
           page.locator("#klassNote").inner_text())
     check("Edetabeli nupp peidus", page.locator("#boardBtn").is_hidden())
     page.locator("#joinBtn").click()

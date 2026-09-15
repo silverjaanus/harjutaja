@@ -117,7 +117,7 @@ def main():
             page.click("#setBtn")
             kontrolli(page.locator("#s-settings").is_visible(), f"{m}: ⚙ avab seaded")
             kontrolli(page.inner_text("#setCode") == "ABC123" and page.inner_text("#setSecret") == "TAAS42", f"{m}: kood ja taastekood näha")
-            kontrolli(page.locator("#fMusic").is_visible() == (m == "kell"), f"{m}: muusika ainult Kellas")
+            kontrolli(page.locator("#fMusic").is_visible() == (m != "kirjutaja"), f"{m}: muusika on seal, kus on lugu (mitte Kirjutajas)")
             page.click('#segSfx button[data-v="0"]')
             prefs = page.evaluate("() => JSON.parse(localStorage.getItem('harjutaja_prefs_v1'))")
             kontrolli(prefs["sfx"] is False, f"{m}: seadetes heli välja")

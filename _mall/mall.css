@@ -1,0 +1,28 @@
+/* MALL: mooduli aktsent. Kõik muu (päis, nupud, mäng, tulemus, edetabel,
+   seaded) tuleb failist core/base.css — seda siin üle ei kirjutata. */
+:root{
+  --accent:#f6b8c8;
+  --accent-edge:#d9869d;
+  --accent-ink:#4a1426;
+  --warm:#b8526e;
+  --warm-soft:#fcebf0;
+}
+
+/* Maskott: kõigub vaikselt, pilgutab, hüppab puudutusel. */
+.tapike{width:100%;height:auto}
+.mascot .tapike{animation:tp-bob 3.6s ease-in-out infinite}
+.tapike .tp-silmad{transform-box:fill-box;transform-origin:center;animation:tp-blink 5.5s infinite}
+.mascot .tapike.hop{animation:tp-hop .5s ease}
+@keyframes tp-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes tp-blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.15)}}
+@keyframes tp-hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){.mascot .tapike,.tapike .tp-silmad,.mascot .tapike.hop{animation:none}}
+
+/* ---------- mooduli oma osad ---------- */
+.ask{font-size:34px;font-variant-numeric:tabular-nums}
+.opts{grid-template-columns:1fr 1fr}
+.opt{font-size:24px;font-variant-numeric:tabular-nums}
+.mkaart{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.mkaart div{border:1.5px solid var(--edge);border-radius:10px;padding:6px 0;text-align:center;font-weight:800;font-size:14px;background:var(--card)}
+.mkaart div.y{background:var(--mid-bg)}
+.mkaart div.g{background:var(--ok-bg);border-color:var(--ok)}

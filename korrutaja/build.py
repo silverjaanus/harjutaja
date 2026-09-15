@@ -33,7 +33,14 @@ head_extra = ('<link rel="manifest" href="../manifest.webmanifest">\n'
               # Panda joonistus on uhine core/panda.js-is, sama fail teenindab Harjutaja avalehte.
               '<script src="../core/panda.js"></script>\n'
               # Kaheastmeline kinnitus ("vajuta veel kord") on koigi moodulite uhine.
-              '<script src="../core/arm.js"></script>\n')
+              '<script src="../core/arm.js"></script>\n'
+              # Raamistik (etapp 5): mangu ajad, voistlus, saatmine, tulemus, edetabel, seaded.
+              '<script src="../core/mang.js"></script>\n'
+              '<script src="../core/voistlus.js"></script>\n'
+              '<script src="../core/saatmine.js"></script>\n'
+              '<script src="../core/tulemus.js"></script>\n'
+              '<script src="../core/edetabel.js"></script>\n'
+              '<script src="../core/seaded.js"></script>\n')
 
 cut = frag.index('</style>') + len('</style>')
 html = ('<!doctype html>\n<html lang="et">\n<head>\n<meta charset="utf-8">\n'

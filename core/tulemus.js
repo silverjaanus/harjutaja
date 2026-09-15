@@ -21,9 +21,16 @@
        harjutaNeid: "Harjuta neid kellaaegu",
        veaRida: it => element,                // üks rida vigade nimekirjas
        ringiLisa: () => ({ level: D.level }), // lisaväljad D.rounds kirjele
-       kordus: G => G.wrong                   // mida „Harjuta neid …" harjutab ([] = ei midagi)
+       kordus: G => G.wrong,                  // mida „Harjuta neid …" harjutab ([] = ei midagi)
+
+       // Korrutaja konksud (etapp 5), kõik valikulised:
+       kirjuta: G => ({ rekord, parim, score, avg, op }), // moodul paneb ringi ise kirja
+       nimi: () => "Mia",                     // „Suurepärane, Mia!"
+       kastid: G => [["120", "punkti"]],      // lisakastid numbrite reale
+       voidud: G => [element, …],             // kiidukaardid #resWins sisse
+       pidu: () => konfetti()                 // kui naita(G, { pidu: true })
      });
-     T.naita(G, { uued: 3 }) → lastWrong
+     T.naita(G, { uued: 3, pidu: false }) → lastWrong
 */
 (function () {
   'use strict';
@@ -39,6 +46,12 @@
 
   function loo(o) {
     var D = o.D, save = o.save;
+
+    /* „Suurepärane!" → „Suurepärane, Mia!" */
+    function nimega(t) {
+      var nm = o.nimi ? String(o.nimi() || '').trim() : '';
+      return nm ? t.replace(/!$/, ', ' + nm + '!') : t;
+    }
 
     function pealkiri(G, rekord) {
       var pct = G.n ? G.ok / G.n : 0;
@@ -59,12 +72,18 @@
     function naita(G, lisa) {
       lisa = lisa || {};
       var test = G.mode === 'test';
-      var rekord = false;
-      if (test) {
+      var rekord = false, parim = 0;
+      if (o.kirjuta) {
+        var k = o.kirjuta(G) || {};
+        rekord = !!k.rekord; parim = k.parim || 0;
+        if (G.n) o.saatmine.lisa({ mode: G.mode, n: G.n, ok: G.ok, score: k.score != null ? k.score : G.ok, avg: k.avg || 0, op: k.op });
+        if (test) o.voistlus.margi();
+      } else if (test) {
         D.tests.push({ t: Date.now(), n: G.n, ok: G.ok });
         if (D.tests.length > 40) D.tests.shift();
         var enne = D.tests.slice(0, -1).reduce(function (b, t) { return Math.max(b, t.ok); }, 0);
         rekord = G.ok > enne && D.tests.length > 1;
+        parim = Math.max(enne, G.ok);
         var avg = G.n ? (Date.now() - G.t0) / 1000 / G.n : 0;
         o.saatmine.lisa({ mode: 'test', n: G.n, ok: G.ok, score: G.ok, avg: Math.round(avg * 10) / 10 });
         o.voistlus.margi();
@@ -83,20 +102,28 @@
 
       var p = pealkiri(G, rekord);
       var alam = p[3] || (test ? 'Uus võistlus on homme.' : '');
+      if (lisa.pidu) { p[1] = 'cheer'; p[2] = true; if (o.pidu) o.pidu(); }
       if (p[2] && window.HSfx) HSfx.tada();
       $('resMaskott').innerHTML = o.maskott(p[1]);
-      $('resTitle').textContent = p[0];
+      $('resTitle').textContent = nimega(p[0]);
       $('resSub').textContent = alam;
       $('resSub').hidden = !alam;
 
       var stats = $('resStats'); stats.innerHTML = '';
       kast(stats, G.ok + ' / ' + G.n, 'õigesti');
       if (test) {
-        var parim = D.tests.reduce(function (b, t) { return Math.max(b, t.ok); }, 0);
         kast(stats, String(parim), rekord ? 'uus rekord' : 'sinu rekord');
       }
       var uued = lisa.uued || 0;
       if (uued > 0 && o.selgeks) kast(stats, String(uued), (uued === 1 ? o.selgeks[0] : o.selgeks[1]) + ' sai selgeks');
+      if (o.kastid) o.kastid(G).forEach(function (x) { kast(stats, x[0], x[1]); });
+
+      var wins = $('resWins');
+      if (wins) {
+        wins.innerHTML = '';
+        (o.voidud ? o.voidud(G) : []).forEach(function (el) { wins.appendChild(el); });
+        wins.hidden = !wins.children.length;
+      }
 
       var nb = $('resNext'); nb.innerHTML = '';
       G.wrong.slice(0, o.veaPiir || 6).forEach(function (it) { nb.appendChild(o.veaRida(it)); });

@@ -21,6 +21,7 @@
   <header class="top">
     <a class="back" href="../">‹ Harjutaja</a>
     <button class="icon-btn" id="sfxBtn" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
+    <button class="icon-btn" id="musicBtn" aria-pressed="false" aria-label="Taustamuusika" data-muusika hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17V5l10-2v12"/><circle cx="6.5" cy="17" r="2.5" fill="currentColor"/><circle cx="16.5" cy="15" r="2.5" fill="currentColor"/><path class="off" d="M3 3l18 18"/></svg></button>
     <button class="icon-btn" id="setBtn" aria-label="Seaded"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </header>
   <div class="hero">
@@ -96,6 +97,7 @@
     <span class="loendur" id="loendur"></span>
     <!-- Heli (ja muusika) lüliti on mängu ajal samas kohas kõigis moodulites. -->
     <button class="icon-btn" id="sfxBtnG" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
+    <button class="icon-btn" id="musicBtnG" aria-pressed="false" aria-label="Taustamuusika" data-muusika hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17V5l10-2v12"/><circle cx="6.5" cy="17" r="2.5" fill="currentColor"/><circle cx="16.5" cy="15" r="2.5" fill="currentColor"/><path class="off" d="M3 3l18 18"/></svg></button>
   </header>
   <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
        järgmine ülesanne hoiatuse üle. -->
@@ -163,6 +165,7 @@
 <script src="../core/config.js"></script>
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
+<script src="../core/muusika.js"></script>
 <script src="../core/engine.js"></script>
 <script src="../core/arm.js"></script>
 <script src="../core/mang.js"></script>
