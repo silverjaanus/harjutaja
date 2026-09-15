@@ -4,7 +4,7 @@ Uuendatud: 15. september 2026
 
 ## Current Goal
 
-Harjutaja on eestikeelne õppemängude äpp lastele. Esimene kasutaja on Mia, kes käib 3. klassis. Moodulid: **Korrutaja, Kirjutaja ja Kell on live** (Kellas nii kella lugemine kui ajaarvutus), Teisendaja ja Keel on plaanis. Kirjutaja on õigekirjamäng, kus laps kuulab sõna ja valib lünka õige tähe (g / k / kk, b / p / pp, d / t / tt); lause on ekraanil.
+Harjutaja on eestikeelne õppemängude äpp lastele. Esimene kasutaja on Mia, kes käib 3. klassis. Moodulid: **Korrutaja, Kirjutaja, Kell ja Teisendaja on live** (Kellas nii kella lugemine kui ajaarvutus); **Keel** (inglise keele laused) on harus `keel` ja ootab merge'i. Kirjutaja on õigekirjamäng, kus laps kuulab sõna ja valib lünka õige tähe (g / k / kk, b / p / pp, d / t / tt); lause on ekraanil.
 
 **Mis on pooleli ja otsustamata: vt jaotist „Lahtised otsad" allpool.** Seal on kõik ühes kohas.
 
@@ -27,7 +27,7 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**RAAMISTIKU ETAPP 6 TEHTUD: mooduli leping ja mall + muusika (16. sept, haru `raamistik-6`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-5` (sisaldab seda, piisab ühest merge'ist). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-6
+**RAAMISTIKU ETAPP 6 TEHTUD: mooduli leping ja mall + muusika (16. sept, haru `raamistik-6`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-5` (sisaldab seda, piisab ühest merge'ist). Main (Keel, PR #8) on sisse merge'itud; `sw.js` VERSION `h-202609161000` ja Keele failid on nimekirjas. Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-6
 
 - **`core/moodul.js`** (`HMoodul.registreeri({...})`) ehitab kogu lehe (avaleht, mäng, tulemus, edetabel, seaded) ja ühendab kõik tuumamoodulid. Lepingu kirjeldus on faili alguses. Avalehe valikud on `kiibid` (mitte `valikud`, see nimi on HMang konksul). „Harjuta neid …“ paneb vead päriselt ette (iga teine ülesanne). `voistlus: null` = võistlust pole. Olemasolevad moodulid jäid nagu olid (oma avalehtedega).
 - **`_mall/`** (repo juurkaustas, mitte `moodulid/_mall/`, et `../core/` teed kopeerimisel ei muutuks): töötav näidismoodul „Näidis“ (liitmine, maskott Täpike, roosa aktsent), `LOEMIND.md` (kuidas kopeerida) ja **`KONTROLL-LEHT.md`** (sisu, keel/Fable, võistlus = Silveri otsus, serveri migratsioon, välimus, avaleht, sw.js, testid). Avalehel malli ei ole, `sw.js` seda vahemällu ei pane.
@@ -48,6 +48,23 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 - **Fable'i tekstid:** „Võistlus on kõigil ühesugune, et tulemusi saaks võrrelda.“, „Aeg tehte jaoks“, „Oled kindel? Vajuta veel kord“ (ka `core/seaded.js`), „Loevad nii korrutamine kui ka jagamine, kokku on neid 90.“ Fable pakkus ka „Sa pole veel klassiga liitunud.“ - tegemata, sest see lause on kõigis moodulites ühine (Silveri otsus).
 - **Testid:** uus `tools/test_raam5.py 8808`; `test_heli` uuendatud (Edasi, ⚙, kindlam valikunupp). Kõik 12 Playwrighti testi + node-testid läbi, homoglüüfid PUHAS.
 - **Järgmine: etapp 6** - mall `moodulid/_mall/` ja kontroll-leht.
+
+**KEEL v0 TEHTUD: inglise keele laused (15. sept, haru `keel`, worktree `..\harjutaja-keel`) — MERGE'ITUD (PR #8).** Põhineb `main`-il (raamistiku etapp 4 sees). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...keel
+
+Tellimus: Mia peab **neljapäevaks 17. sept** oskama Unit 4 Lesson 4 („Where's the museum?") 10 rida lugeda ja kirjutada. **Õpetaja kontrollib nii: ütleb eesti keeles, lapsed kirjutavad inglise keeles.** Kava ja kolme arvamuse (Fable, Codex, Gemini) kokkuvõte: Claude'i projektis `claude/keel-plaan.md`; sisu ja tõlked: `claude/keel-unit4-laused.md`.
+
+- **Viis sammu iga lause kohta** (`keel/lause.js`): tutvu (lause + eesti vaste + õpiku lause, kõla, sõnad puudutatavad, „Lugesin ette") → lünk (3 valikut samast tunnist) → kokku (sõnakaardid) → kuula (kuulmise järgi kirjutamine) → tõlgi (ainult eesti lause). Esimesed neli on läbitud ühe õigega; **tõlge on selge alles kahe abita õigega KAHES eri ringis** (`ringid`), vale tõlge nullib selle. Kuulamisabiga õige ei loe ja lause tuleb samas ringis tagasi.
+- **Ring:** kuni 5 lauset × kuni 3 sammu, sammud vaheldumisi; vale samm tuleb 3–5 ülesande pärast tagasi (kuni 2 korda) ja loendur kasvab (`Ring.length++`). Kui kõik on selged, on ring 5 tõlget kõige kauem nägemata lausetest.
+- **Kontroll:** suur/väike täht, lõpumärk, topelttühik ja ülakoma kuju ei loe; õigekiri loeb. Vale vastuse järel on vihjekaardil õige lause, valed sõnad punased (LCS-joondus), ja nupp „Peida ja kirjuta uuesti" (ei lähe tulemusse). Telefoni automaatparandus väljas (`autocorrect/autocapitalize/spellcheck/autocomplete`).
+- **Tulemuse ekraanil „Kirjuta vihikusse"**: ringi laused eesti keeles, „Näita" paljastab inglise lause (Codexi soovitus: ekraanil kirjutamine ei näita käekirja).
+- **Heli** (`keel/heli.js`): `keel/audio/<id>.mp3` ja sõnad `keel/audio/s/<sõna>.mp3` (Gemini Kore, `tools/keel_audio.py`, iga päringu kontroll transkriptsiooniga). **Kui faili pole, loeb brauseri inglise hääl** (speechSynthesis, en-GB) — nii töötab moodul ka enne heli valmimist; lühikesi abisõnu (a, an, the, to, at, in, is) failina ei tehta. „Aeglaselt" = playbackRate 0,7. Kogu tunni heli läheb vahemällu pärast esimese ringi algust.
+- **POOLELI: heli.** 15. sept tehti 3 lauset (u4l4-01…03), siis sai Gemini TTS päevalimiit täis. **16. sept pärast kella 10 (Eesti aeg):** `python tools\keel_audio.py --max-requests 22` worktree's `..\harjutaja-keel` (jätab olemasolevad vahele), siis commit `keel/audio` ja push. Vaja veel ~7 + 4 päringut.
+- **Tekstid:** Fable vaatas üle; „rida" → **„lause"** kõikjal (õpetaja ja Silver ütlevad „laused"), „Loos:" → „Õpikus:", „Pane kõik sõnad ritta" → „Kasuta kõiki sõnu". Tõlked Fable'ilt: „näitama näpuga suure hoone poole" (building, point), „nägema aknas toitu", „Kas too on muuseum?" (that ≠ this), „On palju kohti, mida külastada." (visit). **„Vastan" jäi** — sama nupp on Teisendajas; Fable pidas seda segaseks, see on terviku otsus.
+- **Maskott:** lilla papagoi (`keel/tegelane.js`, `KPapagoi`), Harjutaja avalehel uus kaart; „Tulekul" plokk kadus avalehelt (`test_kell.py` arvestab sellega).
+- **Võistlust ja edetabelit v0-s ei ole** (võistlusreeglid on Silveri otsus). Harjutusring ja veateated lähevad serverisse (`module: "keel"`, `op: "laused"`; server lubab `keel`-i migratsioonist 6).
+- **Sisu:** `keel/tunnid.js` — uus tund = uus kirje (id, en, et, lugu, lunk). Õpiku lugu tervikuna repos ei ole (avalik repo).
+- **Testid:** `node keel/lause.test.js` (110 kontrolli), `tools/test_keel.py 8809` (Playwright, 50 kontrolli). Kõik vanad testid läbi, homoglüüfid PUHAS.
+- **Järgmine:** heli lõpetada (vt ülal); pärast neljapäeva küsida Silverilt, kuidas Mial läks, ja kas lisada järgmise tunni laused, klasside oma laused või võistlus.
 
 **RAAMISTIKU ETAPP 4 - MERGE'ITUD (PR #7).**
 

@@ -1,10 +1,11 @@
 /* Harjutaja service worker: rakenduse failid vahemällu, heli vahemällu esimesel kuulamisel. */
-const VERSION = 'h-202609160900';
+const VERSION = 'h-202609161000';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js', 'core/klahvistik.js', 'core/arm.js', 'core/base.css', 'core/eelistused.js', 'core/muusika.js', 'core/mang.js', 'core/voistlus.js', 'core/saatmine.js', 'core/tulemus.js', 'core/edetabel.js', 'core/seaded.js', 'core/moodul.js',
   'kirjutaja/', 'kirjutaja/index.html', 'kirjutaja/kirjutaja.css', 'kirjutaja/app.js', 'kirjutaja/robot.js', 'kirjutaja/data.js',
   'korrutaja/', 'korrutaja/index.html',
   'kell/', 'kell/index.html', 'kell/kell.css', 'kell/app.js', 'kell/aeg.js', 'kell/sihverplaat.js', 'kell/tekst.js', 'kell/tegelane.js',
   'teisendaja/', 'teisendaja/index.html', 'teisendaja/teisendaja.css', 'teisendaja/app.js', 'teisendaja/yhik.js', 'teisendaja/redel.js', 'teisendaja/tegelane.js',
+  'keel/', 'keel/index.html', 'keel/keel.css', 'keel/app.js', 'keel/tunnid.js', 'keel/lause.js', 'keel/heli.js', 'keel/tegelane.js',
   'icons/harjutaja-ikoon-ummar.svg', 'icons/harjutaja-192.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open('app-' + VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));

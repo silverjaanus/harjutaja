@@ -152,12 +152,13 @@ def main():
         page.wait_for_timeout(250)
         # Enter võib tuua uue tehte tutvustuse (ka see ootab „Edasi“), seega vaatame tehet.
         kontrolli(page.locator("#after").is_hidden() or page.inner_text("#qText") != q2, "Enter viib edasi")
-        kysimus(page)
+        q3 = kysimus(page)
         vasta(page, False)
         page.wait_for_timeout(900)
         page.click("#nextBtn")
         page.wait_for_timeout(200)
-        kontrolli(page.locator("#after").is_hidden(), "„Edasi“ viib edasi")
+        # järgmine võib olla uue tehte tutvustus, mis ootab samuti „Edasi“
+        kontrolli(page.locator("#after").is_hidden() or page.inner_text("#qText") != q3, "„Edasi“ viib edasi")
 
         # --- tulemus ja „Harjuta neid tehteid" ---
         kysimus(page)
