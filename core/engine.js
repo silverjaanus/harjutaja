@@ -18,7 +18,9 @@
   }
   Round.prototype.next = function () {
     if (this.asked >= this.length) {
-      if (!this.due.length) return null;                 // ring läbi
+      // ring läbi; ring ei veni üle kahekordse pikkuse (15. sept: 6-küsimuseline
+      // ring andis 13 vastust, lagi oli 12)
+      if (!this.due.length || this.asked >= this.length * 2) return null;
       this.asked++; return this._take(this.due.shift().item, true);  // lõpus küsime vead veel üle
     }
     this.asked++;

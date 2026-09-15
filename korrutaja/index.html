@@ -376,7 +376,7 @@ select.in{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button class="btn" id="btnBoard" hidden>Edetabel <small id="boardMeta"></small></button>
     <button class="btn" id="btnJoin" hidden>Liitu klassiga <small>võistle klassikaaslastega</small></button>
   </div>
-  <p class="foot">Tegi <a href="https://silverjaanus.com" target="_blank" rel="noopener">Silver Jaanus</a> · <a href="https://github.com/silverjaanus/korrutaja" target="_blank" rel="noopener">kood GitHubis</a> · <a href="#" id="footInfo">kuidas see töötab</a></p>
+  <p class="foot">Tegi <a href="https://silverjaanus.com" target="_blank" rel="noopener">Silver Jaanus</a> · <a href="#" id="footInfo">kuidas see töötab</a></p>
 </section>
 
 <!-- TABLE -->
@@ -826,7 +826,7 @@ var MNEM={
   '7x8':'Ütle järjest: 5, 6, 7, 8. Nii ongi 56 = 7 × 8.',
   '6x8':'Kuus korda kaheksa – nelikümmend kaheksa. Vastuse lõpp on sama mis tehtel.',
   '6x7':'6 × 6 = 36, pane üks kuus juurde: 42.',
-  '7x7':'Peaaegu viiskümmend, aga üks seitse vähem: 49.',
+  '7x7':'Seitse korda seitse – nelikümmend üheksa. Üks vähem kui viiskümmend.',
   '8x8':'Malelaual on 64 ruutu: kaheksa rida ja kaheksa tulpa.',
   '6x6':'Kuus korda kuus – kolmkümmend kuus. Mõlemas on kuus.',
   '4x6':'Kuus kaks korda on 12, ja veel kaks korda: 24 – nagu tunde ööpäevas.',
@@ -1317,10 +1317,12 @@ $('s-game').addEventListener('click',function(){resumeFromTip();});
 $('pad').addEventListener('click',function(e){var b=e.target.closest('.key');if(!b||!b.dataset.k)return;typeKey(b.dataset.k);});
 document.addEventListener('keydown',function(e){
   if(!G||!$('s-game').classList.contains('on'))return;
-  if(G.waitTap){if(e.key!=='Escape')resumeFromTip();else quitGame();return;}
+  /* Ühtne klaviatuur (Silveri otsus 15. sept): vihje jätkub Enteri või
+     tühikuga, mitte suvalise klahviga (eksikombel vajutatud number jättis
+     vihje lugemata); Escape ei lõpeta kunagi ringi — lõpetab ainult ✕. */
+  if(G.waitTap){if(e.key==='Enter'||e.key===' '){e.preventDefault();resumeFromTip();}return;}
   if(e.key>='0'&&e.key<='9')typeKey(e.key);
   else if(e.key==='Backspace')typeKey('bs');
-  else if(e.key==='Escape')quitGame();
 });
 /* Kinnitust hoiab core/arm.js, sama mis teistes moodulites: nupp ise läheb
    nähtavalt ootele ja hoiatus saab oma rea. Ootel olek kaob siis, kui laps
@@ -1444,6 +1446,9 @@ function musicOff(){
 function endGame(){
   musicOff();
   if(raf)cancelAnimationFrame(raf);
+  /* Ootel edasiminek tuleb tühistada, muidu võis see jõuda juba järgmisse
+     ringi (Codexi leid 15. sept). */
+  if(G&&G.advT){clearTimeout(G.advT);G.advT=null;}
   var R=G;G=null;
   var prevBest=bestTest(),prevTest=D.tests.length?D.tests[D.tests.length-1]:null;
   var prevRound=null;

@@ -63,8 +63,8 @@
     const out = [], nahtud = {};
     for (let i = 0; i < mitu * 8 && out.length < mitu; i++) {
       const q = TYhik.genereeri(tase, kat);
-      if (!q || nahtud[q.kysimus]) continue;
-      nahtud[q.kysimus] = 1;
+      if (!q || nahtud[TYhik.voti(q)]) continue;
+      nahtud[TYhik.voti(q)] = 1;
       out.push(q);
     }
     return out;
@@ -113,11 +113,11 @@
        kaksteist korda järjest ei ole kellelegi vaja. */
     if (!test && focus && focus.length) {
       const seen = {}, out = focus.slice();
-      out.forEach(q => { seen[q.kysimus] = 1; });
+      out.forEach(q => { seen[TYhik.voti(q)] = 1; });
       const rest = items.slice().sort(() => Math.random() - 0.5);
       for (const q of rest) {
         if (out.length >= 8) break;
-        if (!seen[q.kysimus]) { seen[q.kysimus] = 1; out.push(q); }
+        if (!seen[TYhik.voti(q)]) { seen[TYhik.voti(q)] = 1; out.push(q); }
       }
       items = out;
     }
@@ -128,6 +128,7 @@
     review = null; pendingAdvance = false; draft = null;
     $("reviewBar").hidden = true;
     $("prevBtn").hidden = test;
+    $("flagBtn").hidden = test;   /* võistluses ei märgita, seal mõõdetakse */
     $("bar").style.width = "0%";
     $("flagNote").hidden = true;
     show("s-game");
@@ -138,6 +139,7 @@
     clearTimeout(advanceTimer); advanceTimer = null;
     review = null; pendingAdvance = false; draft = null;
     $("reviewBar").hidden = true;
+    $("flagBox").hidden = true; flagQ = null;
     $("fb").textContent = ""; $("fb").className = "feedback";
     $("hint").hidden = true; $("after").hidden = true;
     const q = round.next();
@@ -197,7 +199,16 @@
     /* Eelmise ülesande vaatamise ajal on väljad lukus, aga igaks juhuks:
        vaatamine ei tohi kunagi käiva ülesande vastust anda. */
     if (review !== null) return;
-    const q = cur; if (!q || q.done) return; q.done = true;
+    const q = cur; if (!q || q.done) return;
+    /* Tühi „Vastan" ei ole vale vastus: laps vajutas kogemata. Ülesanne jääb
+       lahti ja väli saab fookuse (Fable'i ja Codexi leid 15. sept). */
+    if (vastus !== null && vastus !== undefined && q.valjad > 0 && TYhik.kontrolli(q, vastus).tyhi) {
+      $("fb").textContent = q.valjad === 2 ? "Kirjuta arv mõlemasse lahtrisse." : "Kirjuta vastus enne lahtrisse.";
+      $("fb").className = "feedback";
+      if (kb) kb.fookus();
+      return;
+    }
+    q.done = true;
     /* Vastamine on teadlik jätkamine: ✕ ootel olek kaob siin. */
     quitArm.disarm();
     stopTimer();
@@ -209,7 +220,7 @@
     round.record(q, ok); save();
     G.n++;
     if (ok) G.ok++;
-    else if (!G.wrong.some(w => w.kysimus === q.kysimus)) G.wrong.push(q);
+    else if (!G.wrong.some(w => TYhik.voti(w) === TYhik.voti(q))) G.wrong.push(q);
 
     const rec = {
       q, ok, aegOtsas,
@@ -398,9 +409,11 @@
 
     const record = G.ok > prevBest && D.tests.length > 1;
     let title, sub = "Uus võistlus on homme.", mood = "happy";
-    if (G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
+    /* „Kõik õiged" ja „Tugev ring" ainult täis ringi puhul (15. sept). */
+    const tais = G.n >= COMPETE_N;
+    if (tais && G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
     else if (record) { title = "Uus rekord!"; mood = "cheer"; HSfx.tada(); }
-    else if (pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
+    else if (tais && pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
     else if (pct >= 0.5) { title = "Tubli võistlus!"; mood = "happy"; }
     else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saad uuesti võistelda."; }
     $("resLint").innerHTML = KLint(mood);
@@ -436,7 +449,10 @@
 
   function reportKey(q) {
     if (!q) return null;
-    return { item: q.id + "|" + q.kysimus, detail: { kysimus: q.kysimus, oige: oigeTekst(q), tase: q.tase, tyyp: q.tyyp } };
+    /* detail on tekst, nagu Kirjutajas ja Kellas: serveri väli on text.
+       Võrdluse puhul on valikud sees, muidu ei tea, millisest käis jutt. */
+    const valik = q.valikud ? " (" + (q.valikudSildid || q.valikud).join(" / ") + ")" : "";
+    return { item: TYhik.voti(q), detail: q.kysimus + valik + " — õige: " + oigeTekst(q) + " — tase " + q.tase + ", " + q.tyyp };
   }
 
   function sendReports() {
@@ -445,7 +461,7 @@
     if (!q.length) return Promise.resolve();
     return Promise.all(q.map(r =>
       HKlass.issue({ module: MODULE, kind: "ulesanne", item: r.item, detail: r.detail, note: r.why })
-        .then(() => { r.sent = true; }).catch(() => {})
+        .then(res => { if (res && res.ok) r.sent = true; }).catch(() => {})   /* ainult päris õnnestumine */
     )).then(save);
   }
 
@@ -458,29 +474,40 @@
 
   /* Veateade käib selle ülesande kohta, mis on ekraanil — ka siis, kui laps
      vaatab noolega eelmist. */
+  /* Aken lukustab ülesande, mille kohta ta avati, ja peatab edasimineku;
+     muidu võis märge minna juba järgmise ülesande kohta (15. sept). */
+  let flagQ = null;
   function openFlag() {
     const q = vaadatav() || cur;
     const k = reportKey(q); if (!k) return;
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
+    flagQ = q;
     $("flagSentence").textContent = q.kysimus;
     $("flagBox").hidden = false;
   }
-  function closeFlag() { $("flagBox").hidden = true; }
+  function closeFlag() {
+    $("flagBox").hidden = true;
+    flagQ = null;
+    if (pendingAdvance && review === null) { pendingAdvance = false; next(); }
+  }
 
   function sendFlag(why) {
-    const k = reportKey(vaadatav() || cur); if (!k) return;
+    const k = reportKey(flagQ || vaadatav() || cur); if (!k) return;
     const rec = D.reports.find(r => r.item === k.item);
     if (rec) { rec.why = why; rec.sent = false; }
     else D.reports.push({ item: k.item, detail: k.detail, why, sent: false, t: Date.now() });
     save(); closeFlag(); sendReports();
     const f = $("flagNote");
-    f.textContent = "Aitäh! Märkisin üles: " + (MIKS[why] || "midagi muud") + ".";
+    f.textContent = "Aitäh! Andsid veast teada.";   /* sama tekst mis Kirjutajas ja Kellas */
     f.hidden = false;
     clearTimeout(flagTimer);
-    flagTimer = setTimeout(() => { f.hidden = true; }, 4000);
+    flagTimer = setTimeout(() => { f.hidden = true; }, 2600);
   }
 
   /* ---------- avaleht ---------- */
-  function katid() { return KATID.filter(k => !k.tase || D.level >= k.tase); }
+  /* Näita ainult kategooriaid, milles sellel tasemel on ülesandeid
+     (näiteks tasemel 1 mahtu ei ole). */
+  function katid() { return KATID.filter(k => (!k.tase || D.level >= k.tase) && TYhik.kategooriaOlemas(D.level, k.id)); }
 
   function renderKatid() {
     const box = $("kats"); box.innerHTML = "";
@@ -682,6 +709,7 @@
     cur = null;
     review = null; pendingAdvance = false; draft = null;
     $("reviewBar").hidden = true;
+    $("flagBox").hidden = true; flagQ = null;
     $("againBtn").textContent = "Harjuta veel";
     renderTasemed(); renderKatid(); renderKaart(); renderRedel(); renderKlass();
     show("s-home");
@@ -730,9 +758,16 @@
   /* Enter viib edasi siis, kui vastus on juba antud. Numbriklahvid kuuluvad
      klahvistikule, seega siin neid ei püüta. */
   document.addEventListener("keydown", e => {
-    if ($("s-game").hidden || !cur) return;
+    if ($("s-game").hidden || !cur || e.defaultPrevented) return;   /* klahvistik võttis klahvi juba */
+    if (!$("flagBox").hidden) { if (e.key === "Escape") { e.preventDefault(); closeFlag(); } return; }
     if (review !== null) { if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); exitReview(); } return; }
-    if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); }
+    if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); return; }
+    /* Valikküsimustel valivad numbrid vastuse, nagu Kellas ja Kirjutajas. */
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 4 && !cur.done && cur.valjad === 0) {
+      const b = $("opts").children[n - 1];
+      if (b) { e.preventDefault(); b.click(); }
+    }
   });
 
   $("mascot").innerHTML = KLint("wave");

@@ -119,7 +119,9 @@
         if (e.key >= '0' && e.key <= '9') { e.preventDefault(); kirjuta(e.key); return; }
         if ((e.key === ',' || e.key === '.') && koma) { e.preventDefault(); kirjuta(','); return; }
         if (e.key === 'Backspace') { e.preventDefault(); kustuta(); return; }
-        if (e.key === 'Enter') { e.preventDefault(); vastan(); }
+        /* stopPropagation: muidu jõudis sama Enter lehe käsitlejani, mis nägi
+           juba vastatud ülesannet ja jättis vihje kohe vahele (15. sept). */
+        if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); vastan(); }
       });
     });
 

@@ -172,7 +172,9 @@
   function start(mode, focus) {
     HSfx.unlock();
     const test = mode === "test";
-    const tekst = !test && D.opp === "tekst";
+    /* „Harjuta neid kellaaegu" harjutab alati kella lugemist, ka siis, kui
+       avalehel on valitud „Arvutan aega" (vead tulevad võistlusest). */
+    const tekst = !test && D.opp === "tekst" && !(focus && focus.length);
     const lvlSamm = tase().mins.length > 1 ? tase().mins[1] : 60;
     /* Tekstülesannetes ei minda veerandtunnist peenemaks, ka siis mitte, kui
        laps on valinud viie minuti täpsuse. Põhjus on keeles: kestust „20 minuti
@@ -260,15 +262,23 @@
   /* Veateade käib selle ülesande kohta, mis on ekraanil — ka eelmise vaatamisel. */
   function openFlag() {
     const k = reportKey(vaadatav() || cur); if (!k) return;
-    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+    /* Ootel edasiminek jääb ootele ja jätkub akna sulgemisel. Varem jäi
+       mäng pärast õiget vastust siia kinni (15. sept). */
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; pendingAdvance = true; }
+    flagIt = vaadatav() || cur;
     $("flagSentence").textContent = k.detail;
     $("flagBox").hidden = false;
   }
 
-  function closeFlag() { $("flagBox").hidden = true; }
+  let flagIt = null;
+  function closeFlag() {
+    $("flagBox").hidden = true;
+    flagIt = null;
+    if (pendingAdvance && review === null) { pendingAdvance = false; next(); }
+  }
 
   function sendFlag(why) {
-    const k = reportKey(vaadatav() || cur); if (!k) return;
+    const k = reportKey(flagIt || vaadatav() || cur); if (!k) return;
     const rec = D.reports.find(r => r.item === k.item);
     if (rec) { rec.why = why; rec.sent = false; }
     else D.reports.push({ item: k.item, detail: k.detail, why, at: new Date().toISOString(), sent: false });
@@ -595,9 +605,11 @@
 
     const record = G.ok > prevBest && D.tests.length > 1;
     let title, sub = "Uus võistlus on homme.", mood = "happy";
-    if (G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
+    /* „Kõik õiged" ja „Tugev ring" ainult täis ringi puhul (15. sept). */
+    const tais = G.n >= COMPETE_N;
+    if (tais && G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
     else if (record) { title = "Uus rekord!"; mood = "cheer"; HSfx.tada(); }
-    else if (pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
+    else if (tais && pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
     else if (pct >= 0.5) { title = "Tubli võistlus!"; mood = "happy"; }
     else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saad uuesti võistelda."; }
     $("resKagu").innerHTML = KKagu(mood);
@@ -857,6 +869,7 @@
 
   document.addEventListener("keydown", e => {
     if ($("s-game").hidden || !cur) return;
+    if (!$("flagBox").hidden) { if (e.key === "Escape") { e.preventDefault(); closeFlag(); } return; }
     if (review !== null) { if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); exitReview(); } return; }
     if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); return; }
     const n = parseInt(e.key, 10);
@@ -873,12 +886,21 @@
     svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
   };
 
-  /* Nüüdiskell abitekstis, et laps näeks kohe päris näidet. */
-  (function () {
+  /* Nüüdiskell abitekstis, et laps näeks kohe päris näidet. Uueneb iga
+     minutiga ja avalehele naastes — enne 15. septembrit jäi see lehe
+     avamise hetke ja näitas kella õpetavas moodulis vale aega. */
+  let nowMin = -1;
+  function renderNow() {
     const n = new Date();
+    const m = n.getHours() * 60 + n.getMinutes();
+    if (m === nowMin) return;
+    nowMin = m;
     $("nowClock").innerHTML = HSihverplaat.svg(n.getHours(), n.getMinutes(), { size: 96 });
     $("nowText").textContent = "Praegu on kell " + HAeg.utle(n.getHours(), n.getMinutes()) + ".";
-  })();
+  }
+  renderNow();
+  setInterval(() => { if (!$("s-home").hidden && !document.hidden) renderNow(); }, 5000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) renderNow(); });
 
   renderTasemed(); renderModes(); renderKaart(); renderKlass();
   flushOutbox();

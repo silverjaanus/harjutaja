@@ -252,6 +252,26 @@ for (var m6 = 0; m6 < 4000; m6++) {
 }
 vordne(l60Vead, 0, 'tase 2: x60 arv kuni 10 (' + l60Naide + ')');
 
+/* 12. Valitud kategooria kehtib (15. sept: tasemel 1 „Maht" andis 80% muud) */
+var katVead = 0, katNaide = '';
+for (var tk = 1; tk <= 4; tk++) {
+  for (var ki2 = 0; ki2 < Y.kategooriad.length; ki2++) {
+    var kat = Y.kategooriad[ki2];
+    var olemas = Y.kategooriaOlemas(tk, kat);
+    for (var mk = 0; mk < 150; mk++) {
+      var qk2 = Y.genereeri(tk, kat, R4);
+      if (!olemas) break;   /* avaleht seda kategooriat ei näita */
+      if (!qk2) continue;
+      if (qk2.suurus !== kat) { katVead++; if (!katNaide) katNaide = 'tase ' + tk + ' ' + kat + ': ' + qk2.kysimus; }
+    }
+  }
+}
+vordne(katVead, 0, 'valitud kategooria kehtib (' + katNaide + ')');
+ok(!Y.kategooriaOlemas(1, 'maht'), 'tasemel 1 mahtu ei ole');
+ok(Y.kategooriaOlemas(2, 'maht'), 'tasemel 2 maht on olemas');
+ok(Y.voti({ kysimus: 'Kumb on suurem?', valikud: ['1 m', '90 cm'] }) !== Y.voti({ kysimus: 'Kumb on suurem?', valikud: ['2 kg', '1900 g'] }),
+  'eri võrdlused on eri ülesanded');
+
 /* Kokkuvõte ---------------------------------------------------------------- */
 if (vead.length) {
   console.log('KATKI - ' + vead.length + ' viga ' + kontrolle + ' kontrollist:');

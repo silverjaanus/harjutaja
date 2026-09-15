@@ -275,7 +275,24 @@
     for (var i = 0; i < list.length; i++) {
       if (kategooriaks(list[i]) === kategooria) out.push(list[i]);
     }
-    return out.length ? out : list;
+    /* Tühi tulemus on tühi: 15. sept kukkus siit tagasi terve nimekiri ja
+       tasemel 1 „Maht" valides tuli 80% muid ülesandeid (Codexi leid). */
+    return out;
+  }
+
+  /* Kas sellel tasemel on selles kategoorias teisendusi? Avaleht peidab
+     kategooriad, mida pole. Üksik „Milline ühik sobib?" fakt ei tee
+     kategooriat: tasemel 1 oleks „Maht" küsinud üht ja sama piimapakki. */
+  function kategooriaOlemas(t, kategooria) {
+    if (!kategooria || kategooria === 'koik') return true;
+    var tase = TASEMED[t];
+    return !!tase && filtreeri(tase.paarid, kategooria).length > 0;
+  }
+
+  /* Ülesande võti kordumise ja vigade tuvastamiseks. Küsimusest üksi ei
+     piisa: kõik võrdlused küsivad „Kumb on suurem?". */
+  function voti(q) {
+    return q ? q.kysimus + '|' + (q.valikud || []).join('/') : '';
   }
 
   /* Kui tegur ei ole 10 aste ega 60, jaab suurema uhiku arv korrutustabelisse:
@@ -298,6 +315,7 @@
   function genTeisenda(t, kategooria, R) {
     var tase = TASEMED[t];
     var p = vali(filtreeri(tase.paarid, kategooria), R);
+    if (!p) return null;
     var TG = tegur(p[0], p[1]);
     var alla = rnd(2, R) === 0;
     var k = vali(kordajadPaarile(tase.kordajad, TG.tegur, t), R);
@@ -319,6 +337,7 @@
   function genKoma(t, kategooria, R) {
     if (!TASEMED[t].koma) return null;
     var p = vali(filtreeri(TASEMED[t].paarid, kategooria), R);
+    if (!p) return null;
     var TG = tegur(p[0], p[1]);
     if (TG.tegur < 10) return null;
     /* Kumnendmurd ei kai ajauhikutega: "1,25 aastat" ei utle keegi, oeldakse
@@ -344,6 +363,7 @@
     var lubatud = TASEMED[t].nimegaPaarid;
     if (!lubatud) return null;
     var p = vali(filtreeri(lubatud, kategooria), R);
+    if (!p) return null;
     var TG = tegur(p[0], p[1]).tegur;
     var suur = p[0], vaike = p[1];
     var a = 1 + rnd(9, R);
@@ -392,6 +412,7 @@
      suurem suurus - muidu saab vastata teisendamata. */
   function genVordle(t, kategooria, R) {
     var p = vali(filtreeri(TASEMED[t].paarid, kategooria), R);
+    if (!p) return null;
     var TG = tegur(p[0], p[1]);
     var a = 1 + rnd(Math.min(9, kordajaLagi(TG.tegur)), R);
     var alus = a * TG.tegur;
@@ -446,7 +467,10 @@
       var q = GENID[tyyp](t, kategooria, R);
       if (q) return q;
     }
-    return genTeisenda(t, null, R) || genYhik(t, null, R);
+    /* Varem tuli siit ülesanne ükskõik mis kategooriast. Nüüd jääb kategooria
+       kehtima; kui sellel tasemel seda pole, on vastus null (avaleht seda
+       kategooriat ei näita). */
+    return genTeisenda(t, kategooria, R) || genYhik(t, kategooria, R);
   }
 
   function suureTaht(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -594,7 +618,7 @@
     nimi: nimi, tahis: tahis, silt: silt, tegur: tegur, teisenda: teisenda,
     vorm: vorm, vormU: vormU, loeArv: loeArv,
     genereeri: genereeri, kontrolli: kontrolli, diagnoosi: diagnoosi,
-    vihje: vihje, redel: redel,
+    vihje: vihje, redel: redel, kategooriaOlemas: kategooriaOlemas, voti: voti,
     kategooriad: ['pikkus', 'mass', 'maht', 'aeg', 'raha', 'pindala', 'ruumala']
   };
 

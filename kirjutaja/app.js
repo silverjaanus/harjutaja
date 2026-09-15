@@ -24,7 +24,10 @@
   const PRAISE = ["Õige!", "Täpselt!", "Tubli!", "Just nii!", "Väga hea!"];
   const LETTERS = "a-zõäöüšž";
 
-  let set = "all", cell = null;
+  /* Valitud tähtede rühm ja kaardi lahter jäävad meelde nagu teistes
+     moodulites valitud tase (15. sept). */
+  let set = D.set || "all", cell = D.cell || null;
+  const jataValikMeelde = () => { D.set = set; D.cell = cell; save(); };
   let round = null, cur = null, audio = null, G = null, advanceTimer = null;
   let pendingAdvance = false, flagTimer = null;
   let tickTimer = null, deadline = 0, boardTab = "week";
@@ -115,6 +118,7 @@
         b.onclick = () => {
           cell = (cell && cell.s === s && cell.l === l) ? null : { s, l };
           if (cell) setChips(null); else setChips("all");
+          jataValikMeelde();
           renderMap(); renderCount();
         };
         m.append(b);
@@ -174,7 +178,7 @@
     review = i;
     const rec = G.history[review];
     const sammu = G.history.length - review;
-    $("reviewWhich").textContent = sammu === 1 ? "Vaatad eelmist sõna" : "Vaatad " + sammu + " sõna tagasi";
+    $("reviewWhich").textContent = sammu === 1 ? "Vaatad eelmist sõna" : "Vaatad sõna " + sammu + " sammu tagasi";
     $("reviewBar").hidden = false;
     $("flagNote").hidden = true;
     renderQuestion(rec.it);
@@ -379,7 +383,17 @@
     const total = round.length + round.due.length;
     $("bar").style.width = Math.min(100, 100 * (round.asked - 1) / Math.max(total, 1)) + "%";
     if (G.mode === "test") { G.replays = 0; $("listenBtn").disabled = false; }
-    play(cur.word, () => { if (G.mode === "test" && cur === q.item && !cur.done) startTimer(); });
+    /* Võistluse taimer käivitub, kui sõna on kõlanud. Kordus ja vahelehe
+       peitmine katkestavad esimese klipi, seega käivitab taimeri ka korduse
+       lõpp ja igaks juhuks 6 s varukell — varem võis taimer jääda üldse
+       käivitamata (Codexi leid 15. sept). */
+    const kaivita = () => {
+      if (G && G.mode === "test" && cur === q.item && !cur.done && !G.timerOn) { G.timerOn = true; startTimer(); }
+    };
+    G.timerOn = false; G.kaivita = kaivita;
+    clearTimeout(G.varuTimer);
+    if (G.mode === "test") G.varuTimer = setTimeout(kaivita, 6000);
+    play(cur.word, kaivita);
   }
 
   function renderQuestion(it) {
@@ -444,6 +458,7 @@
 
   /* o === null tähendab, et võistluses sai aeg otsa. */
   function answer(o) {
+    if (review !== null) return;   /* eelmise vaatamine ei vasta kunagi käivale küsimusele */
     const it = cur; if (!it || it.done) return; it.done = true;
     /* Vastamine on teadlik jätkamine: ✕ ootel olek kaob siin, mitte vaikse
        taimeriga lapse selja taga. */
@@ -483,8 +498,12 @@
     }
     $("hint").innerHTML = KRobot("kind", { head: true }) + '<div class="hinttext">' + hintText(it) + "</div>"; $("hint").hidden = false;
     $("after").hidden = false;
-    setTimeout(playAll, 600);
+    /* Ainult siis, kui laps on ikka sama sõna juures: varem võis hilinenud
+       kõne mängida juba järgmise küsimuse variandid (15. sept). */
+    clearTimeout(allTimer);
+    allTimer = setTimeout(() => { if (cur === it && review === null) playAll(); }, 600);
   }
+  let allTimer = null;
 
   /* Kuulamisabi enne vastamist: kolm pikkust järjest, lühike - pikk - ülipikk.
      Kolm asja eristavad seda spikrist:
@@ -575,9 +594,12 @@
 
     const record = G.ok > prevBest && D.tests.length > 1;
     let title, sub = "", mood = "happy";
-    if (G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
+    /* „Kõik õiged" ja „Tugev ring" ainult täis ringi puhul — muidu kiitis
+       mäng last, kes lahkus pärast üht õiget vastust (15. sept). */
+    const tais = G.n >= COMPETE_N;
+    if (tais && G.ok === G.n) { title = "Kõik õiged!"; mood = "cheer"; HSfx.tada(); }
     else if (record) { title = "Uus rekord!"; mood = "cheer"; HSfx.tada(); }
-    else if (pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
+    else if (tais && pct >= 0.8) { title = "Tugev ring!"; mood = "cheer"; }
     else if (pct >= 0.5) { title = "Tubli võistlus!"; mood = "happy"; }
     else { title = "Võistlus tehtud!"; mood = "kind"; sub = "Harjutamine tõstab tulemust. Homme saad uuesti võistelda."; }
     if (!sub) sub = "Uus võistlus on homme.";
@@ -763,7 +785,7 @@
   /* ---------- sündmused ---------- */
   $("sets").addEventListener("click", e => {
     const c = e.target.closest(".chip"); if (!c) return;
-    cell = null; setChips(c.dataset.set); renderMap(); renderCount();
+    cell = null; setChips(c.dataset.set); jataValikMeelde(); renderMap(); renderCount();
   });
   $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
   $("sfxBtn").onclick = () => { HSfx.enabled = !HSfx.enabled; D.sfx = HSfx.enabled; save(); $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false"); };
@@ -776,6 +798,8 @@
     if (G && G.mode === "test") {
       if (cur.done || G.replays >= 1) return;
       G.replays++; $("listenBtn").disabled = true;
+      play(cur.word, G.kaivita);
+      return;
     }
     play(cur.word);
   };
@@ -813,10 +837,16 @@
     const c = e.target.closest(".chip"); if (!c) return;
     boardTab = c.dataset.t; renderBoard();
   });
+  /* Klahvid käivad samade nuppude kaudu kui puudutus: tühik = kuulamisnupp
+     (võistluses üks kordus, eelmise vaatamisel eelmine sõna). Varem mängis
+     tühik piiramatult ja numbriklahv vastas eelmise vaatamise ajal käivale
+     küsimusele (15. sept). */
   document.addEventListener("keydown", e => {
     if ($("s-game").hidden || !cur) return;
-    if (e.key === " " ) { e.preventDefault(); play(cur.word); }
-    else if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); }
+    if (!$("flagBox").hidden) { if (e.key === "Escape") { e.preventDefault(); closeFlag(); } return; }
+    if (e.key === " ") { e.preventDefault(); if (!$("listenBtn").disabled) $("listenBtn").click(); return; }
+    if (review !== null) { if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); exitReview(); } return; }
+    if (e.key === "Enter" && cur.done && !$("after").hidden) { e.preventDefault(); next(); }
     else { const n = parseInt(e.key, 10); if (n >= 1 && n <= 3 && !cur.done) answer(cur.options[n - 1]); }
   });
   document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); });
@@ -826,6 +856,8 @@
     HSfx.unlock(); HSfx.ok();
     const svg = $("mascot").querySelector("svg"); svg.classList.remove("hop"); void svg.getBBox(); svg.classList.add("hop");
   };
+  if (!pool().length) { set = "all"; cell = null; }   /* vana salvestus võib enam mitte kehtida */
+  setChips(cell ? null : set);
   renderMap(); renderCount(); renderReports(); renderKlass();
   flushOutbox();
   sendReports();   /* võrguta jäänud märked lähevad teele, kui võrk on tagasi */
@@ -858,11 +890,14 @@
       const u = src(variant(it, o));
       if (!seen[u]) { seen[u] = 1; list.push(u); }
     }));
-    let i = 0;
+    /* Lipp läheb kirja ainult siis, kui KÕIK klipid tulid päriselt kätte.
+       Varem loeti ebaõnnestunud laadimine ka tehtuks ja uuesti ei proovitud
+       (Codexi leid 15. sept). */
+    let i = 0, vigu = 0;
     const step = () => {
-      if (i >= list.length) { D.audioWarm = DATA.version; save(); return; }
+      if (i >= list.length) { if (!vigu) { D.audioWarm = DATA.version; save(); } return; }
       const batch = list.slice(i, i + 10); i += 10;
-      Promise.all(batch.map(u => fetch(u).catch(() => null)))
+      Promise.all(batch.map(u => fetch(u).then(r => { if (!r.ok) vigu++; }).catch(() => { vigu++; })))
         .then(() => setTimeout(step, 400))
         .catch(() => {});
     };

@@ -128,22 +128,18 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .credit{color:var(--ink-soft);font-weight:600;font-size:13px;text-align:center;line-height:1.6}
 .credit a{color:var(--ink)}
 
-/* kägu */
-.kk{width:100%;height:auto}
-.kk-body{transform-origin:60px 108px;animation:kk-sway 4s ease-in-out infinite}
-/* transform-box/origin EI TOHI puududa: ilma nendeta skaleerib SVG rühma
-   kujundi (0,0) suhtes ja silmad lendavad pilgutades peast välja. Mia märkas.
-   Robotil (.kr-eyes) ja pandal (.pe) on sama rida — käol oli see unustatud. */
-.kk-eyes{transform-box:fill-box;transform-origin:center;animation:kk-blink 5.5s infinite}
-.kk-wave{transform-origin:78px 84px;animation:kk-wave 1.6s ease-in-out infinite}
-.kk-spark{animation:kk-spark 1.4s ease-in-out infinite}
-.kk.hop{animation:kk-hop .5s ease}
-@keyframes kk-sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
-@keyframes kk-blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
-@keyframes kk-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
-@keyframes kk-spark{0%,100%{opacity:.35;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
-@keyframes kk-hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
-@media (prefers-reduced-motion:reduce){.kk-body,.kk-eyes,.kk-wave,.kk-spark,.kk.hop{animation:none}}
+/* mõõdulint. Siin oli 15. septembrini Kellast kopeeritud käo CSS (.kk-*),
+   mis lindile ei kehtinud: lint seisis paigal ja klikk andis ainult heli.
+   .kl-body transformi ei animeerita, sest sellel on SVG-s oma kalle. */
+.klint{width:100%;height:auto}
+.mascot .klint{animation:kl-bob 3.6s ease-in-out infinite}
+/* transform-box/origin on vajalik, muidu lendab nägu pilgutades paigast. */
+.klint .kl-face{transform-box:fill-box;transform-origin:center;animation:kl-blink 5.5s infinite}
+.mascot .klint.hop{animation:kl-hop .5s ease}
+@keyframes kl-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes kl-blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.15)}}
+@keyframes kl-hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){.mascot .klint,.klint .kl-face,.mascot .klint.hop{animation:none}}
 
 /* tekstülesanded */
 .story{margin:0;max-width:26rem;text-align:center;font-weight:700;font-size:17px;line-height:1.5;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:12px 14px}
