@@ -241,6 +241,17 @@ for (var kl = 1; kl <= 4; kl++) {
 }
 vordne(lagiVead, 0, 'tegur 24/12/7: arv on korrutustabelis (' + lagiNaide + ')');
 
+/* 11. Tasemel 2 (ka voistlus) on x60 paaridel arv kuni 10 */
+var l60Vead = 0, l60Naide = '';
+for (var m6 = 0; m6 < 4000; m6++) {
+  var q6 = Y.genereeri(2, 'aeg', R4);
+  if (!q6 || q6.tyyp !== 'teisenda') continue;
+  var t6 = Y.teisenda(1, q6.mille, q6.mida);
+  if (Math.round(t6 > 1 ? t6 : 1 / t6) !== 60) continue;
+  if ((t6 > 1 ? q6.arv : q6.vastus) > 10) { l60Vead++; if (!l60Naide) l60Naide = q6.kysimus; }
+}
+vordne(l60Vead, 0, 'tase 2: x60 arv kuni 10 (' + l60Naide + ')');
+
 /* Kokkuvõte ---------------------------------------------------------------- */
 if (vead.length) {
   console.log('KATKI - ' + vead.length + ' viga ' + kontrolle + ' kontrollist:');
