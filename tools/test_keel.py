@@ -14,7 +14,10 @@ Valvab:
   - rida on selge alles pärast kahte õiget tõlget KAHES eri ringis;
   - tulemuse ekraanil on „Kirjuta vihikusse" ringi ridadega;
   - heli: kui faili pole, loeb brauseri hääl (speechSynthesis);
-  - Enter ei jäta vihjet vahele, avalehe kaart viib Keelde.
+  - Enter ei jäta vihjet vahele, avalehe kaart viib Keelde;
+  - Keel on malli peal (core/moodul.js, 16. sept): klassi plokk, edetabel
+    ilma võistluseta (ainult „Selged laused"), vana D.tund loetakse üle;
+  - klaviatuur on ekraani allservas.
 
 Kasutus (pilvekonteineris, repo juurest):
     python3 -m http.server 8809 &
@@ -255,6 +258,32 @@ def main():
         page.click("#homeBtn")
         kontrolli(page.locator("#readmap .rr.g").count() == selgeid, "avalehel selged read rohelised")
         kontrolli(len(js) == 0, "konsoolis vigu pole (2)", js)
+        ctx.close()
+
+        # --- mall: vana andmekuju, klass, edetabel ilma võistluseta ---
+        konto = {"player_id": "11111111-1111-4111-8111-111111111111", "secret": "TAAS42", "class_id": "c1",
+                 "class_name": "Test 3B", "code": "ABC123", "nick": "Mia"}
+        ctx, page, js = uus(b, {"keel_v1": {"stats": {}, "tund": "u4l4"}, "harjutaja_id_v1": konto})
+        kontrolli(page.evaluate("() => HMoodul._aktiivne.D.valik.tund") == "u4l4", "vana D.tund loeti üle")
+        kontrolli(page.locator("#competeBtn").count() == 0 and page.locator("#musicBtn").count() == 0, "võistlust ja muusikat pole")
+        kontrolli(page.locator("#boardBtn").is_visible(), "klassis olles on edetabeli nupp")
+        page.route(re.compile(r"supabase\.co"), lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(
+            {"me": konto["player_id"], "class": {"id": "c1", "name": "Test 3B", "code": "ABC123", "kind": "class", "grade": 3, "week_n": 0, "active_week": 0},
+             "players": [{"id": konto["player_id"], "nick": "Mia", "week_n": 0, "days": 0, "greens": 4, "best_test": 0}], "siblings": [], "peers": []})))
+        page.click("#boardBtn")
+        page.wait_for_timeout(400)
+        kontrolli(page.locator("#bTabs").is_hidden() and page.locator("#s-board .goal").is_hidden(), "edetabelis pole sakke ega nädala riba")
+        kontrolli("4" in page.inner_text("#bList") and "selget lauset" in page.inner_text("#bList"), "edetabel näitab selgeid lauseid", page.inner_text("#bList"))
+        page.click("#bBack")
+        page.click("#startBtn")
+        page.wait_for_timeout(300)
+        while page.locator("#luges").is_visible():
+            page.click("#luges"); page.wait_for_timeout(1200)
+        page.wait_for_timeout(300)
+        if page.locator("#s-game .kt-pad").is_visible():
+            kast = page.locator("#s-game .kt-pad").bounding_box()
+            kontrolli(abs(kast["y"] + kast["height"] - 860) < 2, "klaviatuur on ekraani allservas", kast)
+        kontrolli(len(js) == 0, "konsoolis vigu pole (mall)", js)
         ctx.close()
 
         # --- Harjutaja avaleht ---

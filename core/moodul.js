@@ -38,6 +38,19 @@
      lava: "<p class='ask' id='askText'></p>",  // valikuline; mooduli oma osa mänguekraanil
      miks: { ulesanne: "…", … },            // veateate põhjused; vaikimisi ühised
      voimed: { eelmine: true, veateade: true },
+
+     // Valikulised konksud moodulile, mille ring on teistsugune (Keel, 16. sept):
+     laadi: D => {},                        // vanade andmete üleviimine enne kõike muud
+     ring: (D, mode, fookus) => round,      // oma ring pakk()-i ja HEngine.Round asemel
+                                            // (round.next(), round.record(q, ok, q.abi), round.length)
+     ringAlgas: (round, D) => {},           // nt heli eellaadimine
+     kordus: G => [...],                    // mida „Harjuta neid …" järgmisele ringile annab
+     harjutaMeta: D => "5 lauset",          // Harjuta nupu alamtekst
+     avaleht: D => {},                      // avalehe oma read (nt #startNote)
+     enneTulemust: G => {},                 // nt heli peatamine, vigade nimekirja puhastus
+     tulemusLisa: { silt, markus, joonista(host, G, round) },   // plokk tulemuse ekraanil
+     koju: () => {},                        // avalehele minnes
+     // kaart.id: avalehe kaardi elemendi id (vaikimisi "kaart")
      // HMang konksud (vt core/mang.js): joonista, kontrolli, oige, vihje,
      // naitaVastus, lukusta, tyhi, mustand, taasta, fookus, valikud, sama,
      // veateade, valmista, algus, vastatud, valeLause, aken, klahv
@@ -108,7 +121,8 @@
             '<button class="compete big" id="competeBtn"><span id="competeLbl">Võistle</span><small id="competeMeta"></small></button>' +
           '</div>' +
           '<p class="count-note" id="competeNote"></p>'
-        : '<button class="primary big" id="startBtn">Harjuta<small id="trainMeta"></small></button>') +
+        : '<button class="primary big" id="startBtn">Harjuta<small id="trainMeta"></small></button>' +
+          '<p class="count-note" id="startNote"></p>') +
       '<div class="block" id="klassBlock">' +
         '<span class="label">Klass</span>' +
         '<p class="klass-line" id="klassNote"></p>' +
@@ -120,7 +134,7 @@
       (m.kaart
         ? '<div class="block" id="kaartBlock">' +
             '<span class="label">' + esc(m.kaart.silt || 'Sinu oskused') + '</span>' +
-            '<div id="kaart"></div>' +
+            '<div id="' + (m.kaart.id || 'kaart') + '"></div>' +
             (m.kaart.markus ? '<p class="hint-small">' + esc(m.kaart.markus) + '</p>' : '') +
           '</div>'
         : '') +
@@ -171,6 +185,13 @@
         '<p class="sub" id="resSub"></p>' +
       '</div>' +
       '<div class="stats" id="resStats"></div>' +
+      (m.tulemusLisa
+        ? '<div class="block" id="resLisaBlock" hidden>' +
+            '<span class="label">' + esc(m.tulemusLisa.silt || '') + '</span>' +
+            (m.tulemusLisa.markus ? '<p class="hint-small">' + esc(m.tulemusLisa.markus) + '</p>' : '') +
+            '<div id="resLisa"></div>' +
+          '</div>'
+        : '') +
       '<div class="block" id="resNextBlock" hidden>' +
         '<span class="label">Järgmisel korral harjutame</span>' +
         '<div class="words" id="resNext"></div>' +
@@ -197,6 +218,7 @@
     D.rounds = D.rounds || []; D.tests = D.tests || [];
     D.outbox = D.outbox || []; D.reports = D.reports || [];
     D.valik = D.valik || {};
+    if (m.laadi) m.laadi(D);
     (m.kiibid || []).forEach(function (x) {
       var olemas = x.valikud.some(function (y) { return y.id === D.valik[x.id]; });
       if (!olemas) D.valik[x.id] = x.vaikimisi != null ? x.vaikimisi : x.valikud[0].id;
@@ -234,8 +256,16 @@
       ekraanid: ['s-home', 's-game', 's-result', 's-board', 's-settings'],
       moodul: konksud,
       voimed: m.voimed,
-      salvesta: function (q, ok) { round.record(q, ok); save(); },
-      lopp: function (G) { lastWrong = tulemus.naita(G, { uued: selged() - selgedEnne }); },
+      salvesta: function (q, ok) { round.record(q, ok, q.abi); save(); },
+      lopp: function (G) {
+        if (m.enneTulemust) m.enneTulemust(G);
+        lastWrong = tulemus.naita(G, { uued: selged() - selgedEnne });
+        if (m.tulemusLisa) {
+          var host = $('resLisa'); host.innerHTML = '';
+          var on = m.tulemusLisa.joonista(host, G, round);
+          $('resLisaBlock').hidden = on === false || !host.children.length;
+        }
+      },
       kodu: koju,
       teata: function (t) { saatmine.teata(t); }
     });
@@ -257,6 +287,14 @@
 
     function alusta(mode, focus) {
       var test = mode === 'test';
+      if (m.ring) {
+        round = m.ring(D, mode, focus || []);
+        if (!round || !round.length) return;
+        selgedEnne = selged();
+        mang.alusta(round, test ? 'test' : 'train');
+        if (m.ringAlgas) m.ringAlgas(round, D);
+        return;
+      }
       var items = m.pakk(D.valik, mode) || [];
       if (!test && focus && focus.length) {
         /* Sihitud ring: vead ees, aga koos teistega, et ring ei oleks üks ja sama. */
@@ -276,6 +314,7 @@
       }
       selgedEnne = selged();
       mang.alusta(round, test ? 'test' : 'train');
+      if (m.ringAlgas) m.ringAlgas(round, D);
     }
 
     var tulemus = HTulemus.loo({
@@ -285,6 +324,7 @@
       selgeks: [asjad.yks, asjad.mitu],
       harjutaNeid: m.harjutaNeid || 'Harjuta neid uuesti',
       ringiLisa: function () { return { valik: JSON.parse(JSON.stringify(D.valik)) }; },
+      kordus: m.kordus,
       veaRida: m.veaRida
     });
 
@@ -322,11 +362,14 @@
 
     function renderKodu() {
       renderValikud();
-      if (m.kaart) m.kaart.joonista($('kaart'), D, D.valik);
+      $('trainMeta').textContent = m.harjutaMeta ? m.harjutaMeta(D) : ringiPikkus + ' ' + asjad.mitu;
+      if (m.kaart) m.kaart.joonista($(m.kaart.id || 'kaart'), D, D.valik);
+      if (m.avaleht) m.avaleht(D);
       renderKlass();
     }
 
     function koju() {
+      if (m.koju) m.koju();
       $('againBtn').textContent = 'Harjuta veel';
       renderKodu();
       mang.naita('s-home');
@@ -340,9 +383,9 @@
         sakk: 'Selged ' + asjad.mitmus, yks: 'selge ' + asjad.yks, mitu: 'selget ' + asjad.mitu,
         selgitus: m.selgus || ''
       },
-      kodu: function () { mang.koju(); }, klass: renderKlass
+      kodu: function () { mang.koju(); }, klass: renderKlass,
+      ilmaVoistluseta: !v
     });
-    if (!v) $('bTabs').querySelector('[data-t="best"]').hidden = true;
     var openBoard = function () { edetabel.ava(); };
     var liitu = function () { HKlass.openJoin({ app: m.kus, onDone: function () { renderKlass(); openBoard(); } }); };
     HSeaded.loo({
@@ -356,7 +399,6 @@
       HMuusika.init({ src: m.muusika });
       HMuusika.nupp($('musicBtn')); HMuusika.nupp($('musicBtnG'));
     }
-    $('trainMeta').textContent = ringiPikkus + ' ' + asjad.mitu;
     if (v) $('competeMeta').textContent = v.n + ' ' + asjad.mitu;
     $('startBtn').onclick = function () { alusta('train'); };
     $('againBtn').onclick = function () { alusta('train', lastWrong); };

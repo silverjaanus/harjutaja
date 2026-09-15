@@ -14,7 +14,8 @@
        n: 20, asjad: "kellaaega",                 // „Igas võistluses on 20 kellaaega."
        selged: { sakk: "Selged kellaajad", yks: "selge kellaaeg", mitu: "selget kellaaega",
                  selgitus: "Selge on kellaaeg, mille …" },
-       kodu: () => mang.koju(), klass: renderKlass
+       kodu: () => mang.koju(), klass: renderKlass,
+       ilmaVoistluseta: false                     // true: nädala ja rekordi sakki ega eesmärgiriba pole
      });
      E.ava();
 */
@@ -54,10 +55,19 @@
 
   function loo(o) {
     var D = o.D, save = o.save;
-    var sakk = 'week';
+    /* Ilma võistluseta moodulis nädalapunkte ega rekordit ei teki: siis on
+       ainus mõistlik võrdlus selgete asjade arv. */
+    var ilma = !!o.ilmaVoistluseta;
+    var sakk = ilma ? 'sure' : 'week';
     var host = $('s-board');
     host.innerHTML = MALL;
     $('bTabs').querySelector('[data-t="sure"]').textContent = o.selged.sakk;
+    /* Kooli ja Eesti võrdlus käib samuti nädalapunktide järgi — ilma
+       võistluseta jääb ainult üks sakk ja sakkide rida pole vaja. */
+    if (ilma) {
+      $('bTabs').hidden = true;
+      host.querySelector('.goal').hidden = true;
+    }
 
     function konto() { return (window.HKlass && HKlass.current()) || null; }
 
@@ -126,7 +136,7 @@
       var tiim = !!(k && k.kind === 'team');
       $('bTabs').querySelector('[data-t="school"]').hidden = tiim;
       $('bTabs').querySelector('[data-t="country"]').hidden = tiim;
-      if (tiim && (sakk === 'school' || sakk === 'country')) sakk = 'week';
+      if (tiim && (sakk === 'school' || sakk === 'country')) sakk = ilma ? 'sure' : 'week';
       [].forEach.call($('bTabs').children, function (x) { x.setAttribute('aria-pressed', x.dataset.t === sakk ? 'true' : 'false'); });
       $('bHint').textContent = vihje(sakk, k && k.grade);
       var list = $('bList'); list.innerHTML = '';

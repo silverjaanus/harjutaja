@@ -15,139 +15,23 @@
 <link rel="stylesheet" href="keel.css">
 </head>
 <body>
-<main class="app">
-<section id="s-home" class="screen">
-  <header class="top">
-    <a class="back" href="../">‹ Harjutaja</a>
-    <button class="icon-btn" id="setBtn" aria-label="Seaded"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
-    <button class="icon-btn" id="sfxBtn" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
-  </header>
-  <div class="hero">
-    <button class="mascot" id="mascot" aria-label="Papagoi"></button>
-    <h1>Keel</h1>
-    <p class="sub">Inglise keele laused: kuula, loe ette ja kirjuta.</p>
-  </div>
-
-  <div class="block">
-    <span class="label" id="lblTund">Mida harjutad?</span>
-    <div class="chips" role="group" aria-labelledby="lblTund" id="tunnid"></div>
-  </div>
-
-  <button class="primary big" id="startBtn">Harjuta<small id="trainMeta"></small></button>
-  <p class="count-note" id="startNote"></p>
-
-  <div class="block">
-    <span class="label">Sinu laused</span>
-    <div class="readmap" id="readmap"></div>
-    <p class="hint-small">Iga lause läbib viis sammu. Lause on selge, kui oled selle kahel eri korral ilma abita õigesti tõlkinud.</p>
-  </div>
-
-  <details class="help">
-    <summary>Kuidas see käib?</summary>
-    <div class="help-body">
-      <p>Iga lauset harjutad viies sammus. Iga samm on eelmisest natuke raskem.</p>
-      <ul>
-        <li><b>Kuula ja loe ette.</b> Kuula lauset ja loe see valjult ette. Kui puudutad sõna, kuuled seda eraldi.</li>
-        <li><b>Kirjuta puuduv sõna.</b> Lauses on üks sõna puudu. Kirjuta see ise.</li>
-        <li><b>Pane kokku.</b> Sõnad on segamini, pane need õigesse järjekorda.</li>
-        <li><b>Kirjuta kuulmise järgi.</b> Kuula ja kirjuta lause.</li>
-        <li><b>Tõlgi.</b> Näed lauset eesti keeles ja kirjutad selle inglise keeles. Nii küsib ka õpetaja.</li>
-      </ul>
-      <p>Mängul on oma klaviatuur, et telefon ei pakuks sõnu ette. Suured ja väikesed tähed ning punkt lõpus ei loe, aga iga täht sõnas loeb. Ringi lõpus kirjuta laused ka vihikusse — ekraanil kirjutamine ei asenda käega kirjutamist.</p>
-      <p>Mängu ajal on ülesande all nupp <b>„Anna veast teada“</b>. Kui tõlge või hääl tundub vale, vajuta seda ja vali, mis on valesti. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Keel">e-kirjaga</a>.</p>
-    </div>
-  </details>
-
-  <footer class="credit">
-    Tegi <a href="https://silverjaanus.com" target="_blank" rel="noopener">Silver Jaanus</a>
-  </footer>
-</section>
-
-<section id="s-game" class="screen" hidden>
-  <header class="top">
-    <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
-    <button class="icon-btn" id="prevBtn" aria-label="Vaata eelmist ülesannet" disabled>‹</button>
-    <div class="track"><i id="bar"></i></div>
-    <span class="loendur" id="loendur"></span>
-    <!-- Heli (ja muusika) lüliti on mängu ajal samas kohas kõigis moodulites. -->
-    <button class="icon-btn" id="sfxBtnG" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
-  </header>
-  <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
-       järgmine ülesanne hoiatuse üle. -->
-  <p class="quitnote" id="quitNote" role="status" hidden></p>
-  <div class="stage">
-    <div class="reviewbar" id="reviewBar" hidden>
-      <span id="reviewWhich">Vaatad eelmist ülesannet</span>
-      <button class="ghost" id="reviewBack">Tagasi mängu</button>
-    </div>
-    <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
-    <p class="samm" id="sammNimi"></p>
-    <div class="lava" id="lava"></div>
-    <div class="opts kolm" id="opts" hidden></div>
-    <div class="feedback" id="fb" aria-live="polite"></div>
-    <div class="hintcard" id="hint" hidden></div>
-    <div class="row" id="after" hidden>
-      <button class="primary" id="nextBtn">Edasi</button>
-    </div>
-    <p class="flag-note" id="flagNote" role="status" hidden></p>
-    <button class="flagbtn" id="flagBtn">Anna veast teada</button>
-  </div>
-
-  <!-- Veateate aken. Laps valib, mis on valesti – nii saab viga ka üles otsida. -->
-  <div class="flagwrap" id="flagBox" hidden>
-    <div class="flagcard" role="dialog" aria-modal="true" aria-labelledby="flagTitle">
-      <h3 id="flagTitle">Anna veast teada</h3>
-      <p class="flag-sent" id="flagSentence"></p>
-      <span class="label">Mis on valesti?</span>
-      <div class="flagopts" id="flagOpts">
-        <button class="ghost" data-why="tolge">Tõlge on vale</button>
-        <button class="ghost" data-why="heli">Hääl ütleb valesti</button>
-        <button class="ghost" data-why="vastus">Minu vastus oli õige</button>
-        <button class="ghost" data-why="muu">Midagi muud</button>
-      </div>
-      <button class="ghost flag-cancel" id="flagCancel">Sulge</button>
-    </div>
-  </div>
-</section>
-
-<section id="s-result" class="screen" hidden>
-  <div class="res-hero">
-    <div class="bubble" id="resTitle"></div>
-    <div id="resMaskott"></div>
-    <p class="sub" id="resSub"></p>
-  </div>
-  <div class="stats" id="resStats"></div>
-  <div class="block" id="paberBlock">
-    <span class="label">Kirjuta vihikusse</span>
-    <p class="hint-small">Loe eestikeelne lause, kirjuta see vihikusse inglise keeles ja vajuta siis „Näita“.</p>
-    <div class="paber" id="paber"></div>
-  </div>
-  <div class="block" id="resNextBlock" hidden>
-    <span class="label">Järgmisel korral harjutame</span>
-    <div class="words" id="resNext"></div>
-  </div>
-  <div class="row">
-    <button class="primary big" id="againBtn">Harjuta veel</button>
-    <button class="ghost" id="homeBtn">Koju</button>
-  </div>
-</section>
-
-<section id="s-board" class="screen" hidden></section>
-
-<section id="s-settings" class="screen" hidden></section>
-
-</main>
+<!-- Kogu leht ehitatakse siia failist core/moodul.js. -->
+<main class="app" id="app"></main>
 <script src="../core/store.js"></script>
 <script src="../core/eelistused.js"></script>
 <script src="../core/config.js"></script>
 <script src="../core/klass.js"></script>
 <script src="../core/sfx.js"></script>
+<script src="../core/muusika.js"></script>
+<script src="../core/engine.js"></script>
 <script src="../core/arm.js"></script>
 <script src="../core/mang.js"></script>
 <script src="../core/voistlus.js"></script>
 <script src="../core/saatmine.js"></script>
 <script src="../core/tulemus.js"></script>
+<script src="../core/edetabel.js"></script>
 <script src="../core/seaded.js"></script>
+<script src="../core/moodul.js"></script>
 <script src="tunnid.js"></script>
 <script src="lause.js"></script>
 <script src="heli.js"></script>
