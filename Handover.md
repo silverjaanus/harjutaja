@@ -27,6 +27,14 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**KEEL v0.1 (15. sept õhtul, haru `keel-2`) — OOTAB SILVERI MERGE'I.** Keel v0 (haru `keel`) on mainis (PR #8). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...keel-2
+
+Silver proovis telefonis ja leidis kaks asja:
+- **Lünk oli liiga lihtne:** lause kõlas, sõna oli ekraanil kolme valiku seas — laps vajutas lihtsalt kuuldud sõnale. Nüüd: samm „Kirjuta puuduv sõna" — eesti lause ja inglise lause lüngaga, **laps kirjutab sõna ise, heli ei mängi** (ainult „Kuula abiks", mis toob lause samas ringis tagasi ega lase sammu läbida). Ka kokkupanekul ei mängi lause enam ise, ainult abina. Esimene samm on nüüd „Kuula ja loe ette" (Silver: see on alustuseks ok).
+- **Telefoni klaviatuur pakkus sõnu ette** („bui" → „building"): `autocorrect="off"` ja `spellcheck="false"` Gboardi ettepanekuid ei peata. Nüüd **oma tähtklaviatuur** `keel/klaviatuur.js` (`KKlaviatuur`), sama põhimõttega nagu `core/klahvistik.js`: päris `<input inputmode="none">`, süsteemiklaviatuur jääb kinni. Ainult väiketähed (suurtäht ei loe), tühik, ülakoma, ⌫, Vastan. Arvutis töötab füüsiline klaviatuur ka siis, kui fookus pole väljal (`moodul.klahv` → `kb.klahv`). Pärast vastust klaviatuur peidetakse, et vihjekaart mahuks.
+- **„Peida ja kirjuta uuesti"** kasutab nüüd sama klaviatuuri (varem oli vihjekaardil süsteemiklaviatuuriga väli); teated tulevad `#fb` reale.
+- Testid: `tools/test_keel.py` uuendatud (lünk kirjutades, heli ei mängi, inputmode, klahvid, uuesti-režiim), `node keel/lause.test.js` läbi, homoglüüfid PUHAS. Fable kontrollis uued tekstid.
+
 **KEEL v0 TEHTUD: inglise keele laused (15. sept, haru `keel`, worktree `..\harjutaja-keel`) — OOTAB SILVERI MERGE'I.** Põhineb `main`-il (raamistiku etapp 4 sees). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...keel
 
 Tellimus: Mia peab **neljapäevaks 17. sept** oskama Unit 4 Lesson 4 („Where's the museum?") 10 rida lugeda ja kirjutada. **Õpetaja kontrollib nii: ütleb eesti keeles, lapsed kirjutavad inglise keeles.** Kava ja kolme arvamuse (Fable, Codex, Gemini) kokkuvõte: Claude'i projektis `claude/keel-plaan.md`; sisu ja tõlked: `claude/keel-unit4-laused.md`.

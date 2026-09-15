@@ -3,7 +3,9 @@
 Valvab:
   - avalehel on tunni 10 rida ja igal real viis sammu-täppi;
   - uus ring: 5 rida, esmalt iga rea tutvumine, siis lünk, siis kokkupanek;
-  - lünk: õige sõna täidab lünga, vale jätab ülesande järgmisse kordusesse;
+  - lünk: laps kirjutab puuduva sõna, heli ei mängi ise; vale tuleb samas ringis tagasi;
+  - oma tähtklaviatuur: süsteemiklaviatuur kinni (inputmode="none"), seega
+    telefon ei paku sõnu ette; klahvid ja arvuti klaviatuur kirjutavad väljale;
   - kokkupanek: Kontrolli on kinni, kuni kõik sõnad on reas;
   - kirjutamine: suurtäht ja punkt ei loe, õigekiri loeb; vale sõna on
     vihjekaardil punane; „Peida ja kirjuta uuesti" ei muuda tulemust;
@@ -75,15 +77,16 @@ def vasta_oigesti(page, q):
     if s == "tutvu":
         page.click("#luges")
     elif s == "lunk":
-        page.click(f'#opts .opt[data-k="{q["oige"]}"]')
+        page.keyboard.type(q["oige"])
+        page.keyboard.press("Enter")
     elif s == "kokku":
         sonad = q["en"].split()
         for w in sonad:
             page.locator("#kaardid .kaart:not([disabled])", has_text=re.compile("^" + re.escape(w) + "$")).first.click()
         page.click("#kontrolli")
     else:
-        page.fill("#kirjuta", q["en"].lower().rstrip(".?"))
-        page.press("#kirjuta", "Enter")
+        page.keyboard.type(q["en"].lower().rstrip(".?"))
+        page.keyboard.press("Enter")
 
 
 def edasi(page):
@@ -109,7 +112,7 @@ def main():
         page.wait_for_timeout(400)
         kontrolli(page.inner_text("#loendur") == "1 / 15", "ringis 15 ülesannet", page.inner_text("#loendur"))
         q = cur(page)
-        kontrolli(q["samm"] == "tutvu" and page.text_content("#sammNimi") == "Tutvu", "esimene samm on tutvumine")
+        kontrolli(q["samm"] == "tutvu" and page.text_content("#sammNimi") == "Kuula ja loe ette", "esimene samm on tutvumine")
         kontrolli(page.locator("#lava .en .w").count() == len(q["en"].split()), "rea sõnad on puudutatavad")
         page.wait_for_timeout(300)
         raagitud = page.evaluate("() => window.__raagi.slice()")
@@ -121,21 +124,37 @@ def main():
                   "sõna heli otsitakse kõigepealt failist")
 
         samme = []
+        raagitud_enne_lynki = 0
         for i in range(5):
             q = cur(page); samme.append(q["samm"]); vasta_oigesti(page, q); edasi(page)
         kontrolli(samme == ["tutvu"] * 5, "esmalt viis tutvumist", samme)
+        page.wait_for_timeout(400)
+        raagitud_enne_lynki = len(page.evaluate("() => window.__raagi"))
         q = cur(page)
         kontrolli(q["samm"] == "lunk", "siis lünk")
-        kontrolli(page.locator("#opts .opt").count() == 3 and page.locator("#gap").count() == 1, "lüngas kolm valikut")
-        # vale lünk
-        vale = page.evaluate("() => [...document.querySelectorAll('#opts .opt')].map(b => b.dataset.k).find(k => k !== HMang._aktiivne.cur.l.oige)")
-        page.click(f'#opts .opt[data-k="{vale}"]')
+        page.wait_for_timeout(400)
+        kontrolli(len(page.evaluate("() => window.__raagi")) == raagitud_enne_lynki, "lünga juures heli ise ei mängi")
+        kontrolli(page.locator("#gap").count() == 1 and page.locator("#opts").is_hidden(), "lüngas pole valikuid, tuleb kirjutada")
+        kontrolli(page.get_attribute("#kirjuta", "inputmode") == "none", "süsteemiklaviatuur kinni (inputmode=none)")
+        kontrolli(page.locator(".kt-pad .kt").count() >= 30, "oma tähtklaviatuur on olemas")
+        # vale sõna klahvidelt
+        for t in "xx":
+            page.locator(".kt-pad .kt", has_text=re.compile("^" + t + "$")).first.click()
+        kontrolli(page.inner_text("#gap") == "xx", "klahvid kirjutavad lünka", page.inner_text("#gap"))
+        page.click(".kt-vastan")
         kontrolli(page.locator("#after").is_visible(), "vale lünga järel ootab Edasi")
-        kontrolli(page.inner_text("#gap") == q["oige"], "lünk täitub õige sõnaga")
         kontrolli("Õige sõna on" in page.inner_text("#fb"), "vale lause", page.inner_text("#fb"))
+        kontrolli(page.locator(".kt-pad").is_hidden(), "pärast vastust klaviatuur peidus")
+        # peida ja kirjuta uuesti
+        page.click("#hint [data-uuesti]")
+        kontrolli(page.locator(".kt-pad").is_visible() and not page.locator("#hint .oigerida").is_visible(), "uuesti: klaviatuur lahti, õige peidus")
+        page.keyboard.type(q["oige"].upper())
+        page.keyboard.press("Enter")
+        kontrolli(page.inner_text("#fb") == "Nüüd on õige!", "uuesti kirjutamine: õige", page.inner_text("#fb"))
+        kontrolli(cur(page)["id"] == q["id"], "Enter uuesti-režiimis ei vii edasi")
         page.keyboard.press("Enter")
         page.wait_for_timeout(100)
-        kontrolli(cur(page)["id"] != q["id"], "Enter läheb edasi")
+        kontrolli(cur(page)["id"] != q["id"], "järgmine Enter läheb edasi")
         valeId = q["id"]
 
         # kõik ülejäänud õigesti, kuni kokkupanek tuleb
@@ -149,6 +168,7 @@ def main():
             if q["samm"] == "kokku" and not page.evaluate("() => window.__kokkuTest || false"):
                 page.evaluate("() => window.__kokkuTest = true")
                 kontrolli(page.locator("#kontrolli").is_disabled(), "Kontrolli on kinni, kuni sõnad pole reas")
+                kontrolli(page.locator('#lava [data-heli="rida"]').count() == 0, "kokkupanekul ainult kuulamisabi")
                 page.locator("#kaardid .kaart").first.click()
                 kontrolli(page.locator("#koht .kaart").count() == 1, "kaart läheb ritta")
                 page.locator("#koht .kaart").first.click()
@@ -176,24 +196,27 @@ def main():
         page.wait_for_timeout(300)
         q = cur(page)
         kontrolli(q["samm"] == "kuula", "neljas samm on kuulmise järgi kirjutamine")
-        attr = page.evaluate("() => { const i = document.getElementById('kirjuta'); return [i.getAttribute('autocorrect'), i.getAttribute('autocapitalize'), i.getAttribute('spellcheck'), i.getAttribute('autocomplete')]; }")
-        kontrolli(attr == ["off", "off", "false", "off"], "automaatparandus väljas", attr)
+        attr = page.evaluate("() => { const i = document.getElementById('kirjuta'); return [i.inputMode, i.getAttribute('autocorrect'), i.spellcheck, i.autocomplete]; }")
+        kontrolli(attr == ["none", "off", False, "off"], "süsteemiklaviatuur ja automaatparandus väljas", attr)
         # tühi vastus ei ole viga
-        page.click("#vastan")
+        page.click(".kt-vastan")
         kontrolli(not cur(page)["done"] and "Kirjuta" in page.inner_text("#fb"), "tühi vastus ei ole vale")
         # kirjaviga
         vigane = q["en"].replace("building", "bulding") if "building" in q["en"] else q["en"].replace("e", "a", 1)
-        page.fill("#kirjuta", vigane)
-        page.press("#kirjuta", "Enter")
+        page.keyboard.type(vigane)
+        page.keyboard.press("Enter")
         kontrolli(cur(page)["done"] and page.locator("#after").is_visible(), "kirjaviga on vale")
         kontrolli(page.locator("#hint .oigerida .halb").count() == 1, "vihjel üks punane sõna", page.inner_html("#hint"))
         kontrolli("Peaaegu" in page.inner_text("#fb"), "peaaegu-lause", page.inner_text("#fb"))
         page.click("#hint [data-uuesti]")
-        kontrolli(not page.locator("#hint .oigerida").is_visible(), "uuesti kirjutades on õige rida peidus")
-        page.fill("#hint .uuesti input", q["en"].upper())
-        page.press("#hint .uuesti input", "Enter")
-        kontrolli(page.inner_text("#hint .teade") == "Nüüd on õige!", "uuesti kirjutamine: õige")
-        kontrolli(page.locator("#s-game").is_visible() and cur(page)["id"] == q["id"], "Enter vihjes ei vii edasi")
+        kontrolli(page.input_value("#kirjuta") == "", "uuesti: väli on tühi")
+        page.keyboard.type("vale")
+        page.keyboard.press("Enter")
+        kontrolli("Veel mitte" in page.inner_text("#fb") and page.locator("#hint .oigerida").is_visible(), "uuesti vale: õige lause näha")
+        page.keyboard.type(q["en"].upper())
+        page.keyboard.press("Enter")
+        kontrolli(page.inner_text("#fb") == "Nüüd on õige!", "uuesti kirjutamine: õige")
+        kontrolli(page.locator("#s-game").is_visible() and cur(page)["id"] == q["id"], "uuesti ei vii edasi ega muuda tulemust")
         page.click("#nextBtn")
 
         # tõlge kuulamisabiga

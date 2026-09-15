@@ -8,7 +8,7 @@
       sõnad, mis lapsel puudusid või olid valesti kirjutatud.
    3. Sammud. Iga rida läbib viis sammu:
         tutvu — rida, tähendus ja kõla; laps loeb valjult ette
-        lunk  — üks sõna on puudu, laps valib kolmest
+        lunk  — üks sõna on puudu, laps kirjutab selle (heli ainult abiks)
         kokku — kõik sõnad on segamini, laps paneb järjekorda
         kuula — rida kõlab, eesti tähendus on näha, laps kirjutab
         tolgi — ainult eesti lause, laps kirjutab (nii kontrollib õpetaja)
@@ -217,7 +217,7 @@
 
   var api = {
     SAMMUD: SAMMUD, puhasta: puhasta, norm: norm, kontrolli: kontrolli, sonad: sonad,
-    vordle: vordle, kuju: kuju, lunk: lunk, kaardid: kaardid, segamini: segamini,
+    vordle: vordle, sonaNorm: sonaNorm, kuju: kuju, lunk: lunk, kaardid: kaardid, segamini: segamini,
     voti: voti, samm: samm, selge: selge, sammLabi: sammLabi, salvesta: salvesta, Ring: Ring
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
