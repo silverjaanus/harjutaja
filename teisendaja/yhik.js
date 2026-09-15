@@ -281,8 +281,9 @@
   /* Kui tegur ei ole 10 aste ega 60, jaab suurema uhiku arv korrutustabelisse:
      "6 oopaeva = ___ h" (6 x 24) on 3. klassile liiga raske peastarvutus
      (Silver 15. sept). 60 on korras, sest 7 x 60 on sisuliselt 7 x 6.
-     3600 (h <-> s, tase 3) on samuti kuni 3: "75 h = 270 000 s" ei ole harjutus. */
-  var KORDAJA_LAGI = { 24: 3, 12: 5, 7: 5, 3600: 3 };
+     3600 (h <-> s, tase 3) on ainult 1: peast teatakse 1 h = 3600 s, juba
+     2 h = 7200 s on arvutus. */
+  var KORDAJA_LAGI = { 24: 3, 12: 5, 7: 5, 3600: 1 };
   function kordajaLagi(tg) { return KORDAJA_LAGI[tg] || Infinity; }
   function kordajadPaarile(list, tg) {
     var lagi = kordajaLagi(tg), out = [];

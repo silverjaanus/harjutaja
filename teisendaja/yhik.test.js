@@ -226,7 +226,7 @@ ok(lubatudPaar(4, 'm²', 'cm²'), 'tase 4: m² ja cm² on olemas (1 m² = 10 000
 ok(lubatudPaar(4, 'ha', 'm²'), 'tase 4: ha ja m² on olemas');
 
 /* 10. Kui tegur on 24, 12 voi 7, jaab suurema uhiku arv korrutustabelisse (15. sept) */
-var LAGI = { 24: 3, 12: 5, 7: 5, 3600: 3 }, lagiVead = 0, lagiNaide = '';
+var LAGI = { 24: 3, 12: 5, 7: 5, 3600: 1 }, lagiVead = 0, lagiNaide = '';
 var R4 = seeme(20260915);
 for (var kl = 1; kl <= 4; kl++) {
   for (var ml = 0; ml < 3000; ml++) {
