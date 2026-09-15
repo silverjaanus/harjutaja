@@ -27,7 +27,17 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**RAAMISTIKU ETAPP 3 TEHTUD: Kell ja Kirjutaja ühisel raamil (15. sept, haru `raamistik-3`, worktree `..\harjutaja-raamistik`) — OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-2` (sisaldab seda), seega piisab ühest merge'ist. Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-3
+**RAAMISTIKU ETAPP 4 TEHTUD: ühine tulemus, edetabel ja seaded (15. sept, haru `raamistik-4`, worktree `..\harjutaja-raamistik`) — OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-3` (sisaldab seda; etapp 2 on mainis, PR #6). Piisab ühest merge'ist. Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-4
+
+- **`core/tulemus.js`** (`HTulemus.loo(...).naita(G, {uued})`) — pealkirjad ühest tabelist (lühike ring < 4 = „Hea algus!", Kirjutajal oli 5), rekordikast, „N … sai selgeks", sihitud nupp, `D.rounds`/`D.tests` kirje ja saatmine. Tulemuse maskoti koht on igas moodulis `#resMaskott`.
+- **`core/edetabel.js`** (`HEdetabel`) — joonistab kogu `#s-board` ise: klassi nimi + kood, nädala eesmärgiriba (eesmärgid 50…16 000 nagu Korrutajas), sakid (tiimil pole Kool/Eesti), klassis 7 esimest + „···" + mina, kutse `HKlass.invite` kaudu. Id-d `bTabs/bList/bHint/bStatus` jäid samaks.
+- **`core/seaded.js`** (`HSeaded`) — joonistab `#s-settings`: heli, muusika (ainult kus on lugu), nimi (ainult kui moodul küsib — praegu mitte kellelgi; Korrutaja etapis 5), klass + klassikood + **taastekood** + „Lahku klassist" kinnitusega, `lisa(host)` mooduli oma väljade jaoks. Avalehe päises on hammasratta nupp `#setBtn`.
+- **`core/klass.js`:** `clear()` jätab märgi `harjutaja_lahkus_v1` (kes lahkus); `adopt()` ja `sync()` ei tõsta seda kontot enam Korrutaja vanast asukohast tagasi (Codex B26). Kutsetekstis „Klass:" / „Tiim:" (oli „Grupp:").
+- **Fable'i tekstid:** „Klassikood" kokku, „Klassi saad tagasi ainult klassikoodi, oma nime ja taastekoodiga.", „1 õige / 12 õiget parimas võistluses".
+- **Testid:** uus `tools/test_raam4.py 8810` (kukub vana koodiga). Kõik 11 Playwrighti testi + node-testid läbi, homoglüüfid PUHAS.
+- **Järgmine: etapp 5** — Korrutaja raami (kõige riskantsem).
+
+**RAAMISTIKU ETAPP 3 TEHTUD: Kell ja Kirjutaja ühisel raamil (15. sept, haru `raamistik-3`) — sisaldub harus `raamistik-4`.**
 
 - **`core/mang.js` sai konksud:** `valmista(q)` (uus ülesanne → koopia; Kell segab valikud siin üks kord, nii et ‹ näitab täpselt sama pilti), `algus(q)` (Kirjutaja mängib sõna ja käivitab taimeri), `vastatud(rec)` (Kirjutaja loeb vale järel variandid ette), `valeLause(rec)` (Kell: „Kell on pool viis."; Kirjutaja: „Õige on „kapp"."), `aken(q)` (peatab heli), `klahv(e, q)` (Kirjutaja tühik — kutsutakse enne eelmise vaatamise haru, et tühik mängiks vaadatavat sõna). Lisaks `taimerIse`, `eelmineTekst`, `sammuTekst`, aknas `#flagWord`, getterid `review` ja `round`.
 - **`core/saatmine.js`:** `miks` kaart — märge läheb serverisse loetava lausena (nagu Kell ja Kirjutaja varem saatsid); märkel on `sona`.
