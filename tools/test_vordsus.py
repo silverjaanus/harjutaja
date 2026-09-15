@@ -34,7 +34,9 @@ def lahti(page):
 def vasta(page):
     """Vastab käivale ülesandele kuidas iganes ja liigub järgmise juurde."""
     if page.locator("#pad .kl-vastan").count() and not page.locator("#pad").is_hidden():
-        page.locator("#pad .kl-pad button", has_text=re.compile(r"^9$")).first.click()
+        for vali in page.locator("#pad .kl-vali input").all():   # nimega arvul on kaks lahtrit
+            vali.focus()
+            page.keyboard.press("9")
         page.click("#pad .kl-vastan")
     else:
         page.locator("#opts button").first.click()
