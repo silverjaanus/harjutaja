@@ -128,7 +128,8 @@ def run(pw):
     check("võistluses vihjet ei näidatud", page.locator("#hint").is_hidden())
     d = ls(page, "kell_v1")
     check("võistlus läks kirja", len(d.get("tests", [])) == 1, d.get("tests"))
-    ob = (d.get("outbox") or [{}])[0]
+    # Harjutusringid lähevad ka järjekorda (raamistik 3); võistlus on mode "test".
+    ob = ([o for o in (d.get("outbox") or []) if o.get("mode") == "test"] or [{}])[0]
     check("outbox: moodul kell", ob.get("module") == "kell", ob)
     check("outbox: 20 küsimust", ob.get("n") == 20, ob)
 

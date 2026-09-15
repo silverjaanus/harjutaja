@@ -37,8 +37,8 @@
     </div>
   </div>
   <div class="two">
-    <button class="primary big" id="startBtn">Harjuta</button>
-    <button class="compete big" id="competeBtn">Võistle</button>
+    <button class="primary big" id="startBtn">Harjuta<small id="trainMeta"></small></button>
+    <button class="compete big" id="competeBtn"><span id="competeLbl">Võistle</span><small id="competeMeta"></small></button>
   </div>
   <p class="count-note" id="competeNote"></p>
 
@@ -92,6 +92,7 @@
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
     <button class="icon-btn" id="prevBtn" aria-label="Vaata eelmist sõna" disabled>‹</button>
     <div class="track"><i id="bar"></i></div>
+    <span class="loendur" id="loendur"></span>
     <!-- Heli (ja muusika) lüliti on mängu ajal samas kohas kõigis moodulites. -->
     <button class="icon-btn" id="sfxBtnG" aria-pressed="true" aria-label="Heliefektid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
   </header>
@@ -192,6 +193,9 @@
 <script src="../core/sfx.js"></script>
 <script src="../core/engine.js"></script>
 <script src="../core/arm.js"></script>
+<script src="../core/mang.js"></script>
+<script src="../core/voistlus.js"></script>
+<script src="../core/saatmine.js"></script>
 <script src="data.js"></script>
 <script src="robot.js"></script>
 <script src="app.js"></script>

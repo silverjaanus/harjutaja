@@ -219,6 +219,7 @@
 
   const saatmine = HSaatmine.loo({
     D, save, moodul: MODULE, op: OP, liik: "ulesanne",
+    miks: { ulesanne: "Ülesanne on imelik", vastus: "Mäng näitab valet vastust", raske: "Ei saa aru, mida küsitakse", muu: "Midagi muud" },
     lisa: () => ({ greens: selged(), state: { stats: D.stats, tests: D.tests, level: D.level } }),
     tehtud: () => voistlus.margi(),
     auth: () => { D.board = null; save(); renderKlass(); }
@@ -369,7 +370,7 @@
     /* Tasemed kuhjuvad: iga tase sisaldab ka eelmiste ülesandeid
        (Silveri otsus 15. sept). */
     $("levelNote").textContent = (t ? "See tase sobib umbes " + t.klass.replace("klass", "klassile") + ". " : "") +
-      "Igas tasemes on ka eelmiste tasemete ülesandeid.";
+      "Igal tasemel on ka eelmiste tasemete ülesandeid.";
   }
 
   /* Kaart näitab valitud taseme ühikupaare: roheline siis, kui mõlemad suunad

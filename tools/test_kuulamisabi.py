@@ -141,14 +141,15 @@ def run(pw):
         check("#allBtn käivitatuna small-elemendid endiselt olemas", page.locator("#opts .opt small").count() == 3)
 
     print("\n6. Regressioon: 'Edasi' viib järgmise küsimuseni, edenemisriba liigub")
-    bar_before = page.evaluate("() => document.getElementById('bar').style.width")
+    # Raamistik 3: riba liigub vastamise hetkel; järgmise küsimuse number loendurist.
+    bar_before = page.evaluate("() => document.getElementById('loendur').textContent")
     if page.locator("#nextBtn").is_visible():
         page.locator("#nextBtn").click()
     page.wait_for_timeout(300)
     check("uus küsimus laadis (#cmpRow jälle nähtav)", page.locator("#cmpRow").is_visible())
     check("#cmpNote uue küsimuse juures peidus", page.locator("#cmpNote").is_hidden())
-    bar_after = page.evaluate("() => document.getElementById('bar').style.width")
-    check("edenemisriba muutus", bar_before != bar_after, (bar_before, bar_after))
+    bar_after = page.evaluate("() => document.getElementById('loendur').textContent")
+    check("loendur liikus järgmise küsimuse peale", bar_before != bar_after, (bar_before, bar_after))
     check("variante ikka 3", page.locator("#opts .opt").count() == 3)
 
     print("\n7. Võistluses kuulamisabi ei ole")
