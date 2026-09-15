@@ -27,6 +27,14 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**MOODULITE VÕRDSUS (15. sept, haru `moodulite-vordsus`, worktree `..\harjutaja-vordsus`) — OOTAB SILVERI MERGE'I.** Silveri neli tähelepanekut; eilne ühtlustus oli funktsioonide võrdluse vahele jätnud. **Võrdlustabel on Claude'i projektis `claude/moodulite-vordlus.md` — vaata see üle iga uue mänguaegse funktsiooni juures.**
+- **‹ eelmise ülesande nool Kellas ja Teisendajas** (Kirjutajas oli). Ainult harjutusringis. Teisendaja joonistab ülesande uuesti ja paneb lapse vastuse väljale (`kb.pane`), pooleli kirjutatud vastus jääb alles; Kell talletab ekraanipildi (valikud on segatud). Korrutajasse ei tule (Silveri otsus).
+- **Vastuse lahter laieneb sisuga** (`core/klahvistik.js` `sobita`): „15000" ei mahtunud 4,2ch väljale.
+- **Heli Androidis:** toon ajastati peatatud kontekstis hetkele `currentTime` ja jäi vaikseks. `core/sfx.js` ja Korrutaja `kuiHeli` ootavad nüüd `resume()` ära; helid valjemad, „vale" kõrgem. Päris telefonis kinnitamata.
+- **Kella 4. tase** „Viie minuti täpsus" → „Kõik, 5 min kaupa" (tekstirežiimis „Kõik, minuti kaupa"), Fable'i sõnastus. `tools/test_kell.py` uuendatud.
+- **Uus test `tools/test_vordsus.py 8814`**: eelmise nool mõlemas moodulis, võistluses peidus, lahtri laius kuni 1 000 000, heli ajastus peatatud kontekstist. Vana koodiga 8 viga, uuega läbi. Kõik teised testid läbi.
+- **Lahtine:** Korrutaja taustamuusika on Silveri hinnangul häiriv. Talle anti CC0-lugude nimekiri (OpenGameArt hernandack „Short Loops“, HoliznaCC0 FMA-s); asendus tuleb alles pärast tema valikut.
+
 **VEAPARANDUS (15. sept, haru `klahvistik-lukk`, commit `db99766`) — OOTAB SILVERI MERGE'I.** Teisendajas oli teisest klahvistikuga ülesandest alates klahvistik hall ja vastata ei saanud: `#pad` on sama element igas ülesandes, `lukusta()` lisas sellele klassi `lukus` ja `HKlahvistik.loo()` ei võtnud seda maha. Parandus `core/klahvistik.js`-is (loo() eemaldab `lukus`), regressioonitest `tools/test_teisendaja.py`-s (kukub vana koodiga, läheb läbi uuega), `sw.js` VERSION tõstetud. Viga oli sees Teisendaja algusest (`89fa597`). Ühtlustuse haru on juba mainis (PR #3). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...klahvistik-lukk
 
 **ÜHTLUSTUS ON TEHTUD JA TESTITUD (14. sept, haru `uhtlustus`, commit `3e7964d`) — OOTAB SILVERI MERGE'I.** Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...uhtlustus
