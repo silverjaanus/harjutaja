@@ -27,7 +27,18 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**RAAMISTIKU ETAPP 4 TEHTUD: ühine tulemus, edetabel ja seaded (15. sept, haru `raamistik-4`, worktree `..\harjutaja-raamistik`) — OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-3` (sisaldab seda; etapp 2 on mainis, PR #6). Piisab ühest merge'ist. Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-4
+**RAAMISTIKU ETAPP 5 TEHTUD: Korrutaja ühisel raamil (15. sept, haru `raamistik-5`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-4` (etapp 4 on mainis, PR #7). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-5
+
+- **Avaleht:** päises ‹ Harjutaja, 🔊 ja ⚙ (`#setBtn`); keskel panda, pealkiri „Korrutaja“ ja rida „Tere, Mia! Täna N vastust…“ (nimi `HPrefs`-ist, `D.settings.name` saab edasi kirja). Kaks suurt nuppu Harjuta / Võistle (`HVoistlus`, päev Tallinna aja järgi), klassi plokk, „Kuidas see käib?“ (endine kiirjuhend `s-quick` ja (i) nupp kadusid). Korrutustabel ja soojuskaart jäid.
+- **Mäng:** õige vastuse järel 1 s (võistluses 0,8 s) - `HMang.AEG`. Vale vastuse järel harjutamises alati nupp **„Edasi“** klahvistiku kohal (ka Enter/tühik; 0,8 s kaitse topeltpuute vastu), ekraani puudutus enam edasi ei vii. Võistluses liigub ise (1,4 s). Võistlusreeglid (25 tehet, 6 s, ainult korrutamine) ei muutunud.
+- **Tulemus:** `HTulemus` uute konksudega (`kirjuta`, `nimi`, `kastid`, `voidud`, `pidu`). Korrutaja kiidukaardid jäid (`#resWins`), numbrid: õigesti / rekord / punkti / keskmine aeg. **„Harjuta neid tehteid“** alustab ringi vigastega (iga teine tehe). `D.tests`/`D.rounds` kirje kuju ei muutunud.
+- **Saatmine:** `HSaatmine` (vana `flush` kadus). `HKlass.report` edastab `greens_mul`, `greens_div`, `best_test`; selgete arv käib iga kirjega, seis ainult viimasega; kirjel võib olla oma `op`. Vana Korrutaja kirje (ilma moodulita) läheb Korrutaja nimele. NB: harjutusring läheb nüüd järjekorda ka klassita lapsel (nagu teistes moodulites).
+- **Edetabel ja seaded tuumast.** Seadetes Korrutaja lisad: aeg tehte jaoks, ringi pikkus, rahulik režiim, „Kustuta edenemine“ (kinnitusega, laeb lehe uuesti). Korrutaja ei lae `base.css`-i (mänguekraani klassinimed põrkuvad); tuumakomponentide CSS on Korrutaja failis eraldi plokis.
+- **Fable'i tekstid:** „Võistlus on kõigil ühesugune, et tulemusi saaks võrrelda.“, „Aeg tehte jaoks“, „Oled kindel? Vajuta veel kord“ (ka `core/seaded.js`), „Loevad nii korrutamine kui ka jagamine, kokku on neid 90.“ Fable pakkus ka „Sa pole veel klassiga liitunud.“ - tegemata, sest see lause on kõigis moodulites ühine (Silveri otsus).
+- **Testid:** uus `tools/test_raam5.py 8808`; `test_heli` uuendatud (Edasi, ⚙, kindlam valikunupp). Kõik 12 Playwrighti testi + node-testid läbi, homoglüüfid PUHAS.
+- **Järgmine: etapp 6** - mall `moodulid/_mall/` ja kontroll-leht.
+
+**RAAMISTIKU ETAPP 4 - MERGE'ITUD (PR #7).**
 
 - **`core/tulemus.js`** (`HTulemus.loo(...).naita(G, {uued})`) — pealkirjad ühest tabelist (lühike ring < 4 = „Hea algus!", Kirjutajal oli 5), rekordikast, „N … sai selgeks", sihitud nupp, `D.rounds`/`D.tests` kirje ja saatmine. Tulemuse maskoti koht on igas moodulis `#resMaskott`.
 - **`core/edetabel.js`** (`HEdetabel`) — joonistab kogu `#s-board` ise: klassi nimi + kood, nädala eesmärgiriba (eesmärgid 50…16 000 nagu Korrutajas), sakid (tiimil pole Kool/Eesti), klassis 7 esimest + „···" + mina, kutse `HKlass.invite` kaudu. Id-d `bTabs/bList/bHint/bStatus` jäid samaks.
