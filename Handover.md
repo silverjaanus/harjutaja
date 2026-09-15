@@ -1,6 +1,6 @@
 # Handover — Harjutaja
 
-Uuendatud: 14. september 2026
+Uuendatud: 15. september 2026
 
 ## Current Goal
 
@@ -27,13 +27,15 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**MOODULITE VÕRDSUS (15. sept, haru `moodulite-vordsus`, worktree `..\harjutaja-vordsus`) — OOTAB SILVERI MERGE'I.** Silveri neli tähelepanekut; eilne ühtlustus oli funktsioonide võrdluse vahele jätnud. **Võrdlustabel on Claude'i projektis `claude/moodulite-vordlus.md` — vaata see üle iga uue mänguaegse funktsiooni juures.**
+**MOODULITE VÕRDSUS (15. sept, haru `moodulite-vordsus`, worktree `..\harjutaja-vordsus`) — OOTAB SILVERI MERGE'I. See haru sisaldab ka haru `teisendaja-kordajad` (järgmine lõik), seega piisab ühest merge'ist.** Silveri neli tähelepanekut; eilne ühtlustus oli funktsioonide võrdluse vahele jätnud. **Võrdlustabel on Claude'i projektis `claude/moodulite-vordlus.md` — vaata see üle iga uue mänguaegse funktsiooni juures.**
 - **‹ eelmise ülesande nool Kellas ja Teisendajas** (Kirjutajas oli). Ainult harjutusringis. Teisendaja joonistab ülesande uuesti ja paneb lapse vastuse väljale (`kb.pane`), pooleli kirjutatud vastus jääb alles; Kell talletab ekraanipildi (valikud on segatud). Korrutajasse ei tule (Silveri otsus).
 - **Vastuse lahter laieneb sisuga** (`core/klahvistik.js` `sobita`): „15000" ei mahtunud 4,2ch väljale.
 - **Heli Androidis:** toon ajastati peatatud kontekstis hetkele `currentTime` ja jäi vaikseks. `core/sfx.js` ja Korrutaja `kuiHeli` ootavad nüüd `resume()` ära; helid valjemad, „vale" kõrgem. Päris telefonis kinnitamata.
 - **Kella 4. tase** „Viie minuti täpsus" → „Kõik, 5 min kaupa" (tekstirežiimis „Kõik, minuti kaupa"), Fable'i sõnastus. `tools/test_kell.py` uuendatud.
 - **Uus test `tools/test_vordsus.py 8814`**: eelmise nool mõlemas moodulis, võistluses peidus, lahtri laius kuni 1 000 000, heli ajastus peatatud kontekstist. Vana koodiga 8 viga, uuega läbi. Kõik teised testid läbi.
 - **Lahtine:** Korrutaja taustamuusika on Silveri hinnangul häiriv. Talle anti CC0-lugude nimekiri (OpenGameArt hernandack „Short Loops“, HoliznaCC0 FMA-s); asendus tuleb alles pärast tema valikut.
+
+**TEISENDAJA AJAÜHIKUTE ARVUD (15. sept, haru `teisendaja-kordajad`) — OOTAB SILVERI MERGE'I.** Silver märkas, et tasemel 2 tuli „6 ööpäeva = ___ h“ ehk 6 × 24 peast. Põhjus: `genTeisenda` võttis kordaja kõigile paaridele samast nimekirjast (kuni 50), nii et tuli ka 50 ööpäeva = 1200 h ja 50 aastat = 600 kuud. Parandus `teisendaja/yhik.js`-is: `KORDAJA_LAGI = {24: 3, 12: 5, 7: 5}` — kui tegur on 24, 12 või 7, on suurema ühiku arv kuni 3 / 5 / 5. ×60 jäi puutumata (7 × 60 on sisuliselt 7 × 6). Sama lagi käib `genVordle`-s („54 ööpäeva või 7 nädalat?“ oli samuti võimalik). Test `yhik.test.js` jaotis 10 kukub vana koodiga (1318 viga) ja läheb uuega läbi. `sw.js` VERSION tõstetud. Teise commitiga (Silveri otsus) sai sama lae ka tasemel 3 h ↔ s (×3600): ainult 1 h = 3600 s (varem kuni 75 h = 270 000 s), sest peast teatakse ainult seda seost. Kolmas muudatus: tasemel 2 (ka võistlus, 15 s) on ×60 paaridel (min ↔ s, h ↔ min) arv kuni 10 (`TASEMED[2].lagi60`), varem kuni 50 („25 min = 1500 s“). Tasemel 3 on ×60 kordaja endiselt kuni 75. Harjutusringil ajapiirangut ei ole, taimer käib ainult võistlusel.
 
 **VEAPARANDUS (15. sept, haru `klahvistik-lukk`, commit `db99766`) — OOTAB SILVERI MERGE'I.** Teisendajas oli teisest klahvistikuga ülesandest alates klahvistik hall ja vastata ei saanud: `#pad` on sama element igas ülesandes, `lukusta()` lisas sellele klassi `lukus` ja `HKlahvistik.loo()` ei võtnud seda maha. Parandus `core/klahvistik.js`-is (loo() eemaldab `lukus`), regressioonitest `tools/test_teisendaja.py`-s (kukub vana koodiga, läheb läbi uuega), `sw.js` VERSION tõstetud. Viga oli sees Teisendaja algusest (`89fa597`). Ühtlustuse haru on juba mainis (PR #3). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...klahvistik-lukk
 

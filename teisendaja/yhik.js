@@ -205,7 +205,7 @@
                ['kg', 'g'], ['t', 'kg'], ['min', 's'], ['h', 'min'], ['ööpäev', 'h'],
                ['nädal', 'ööpäev'], ['aasta', 'kuu'], ['sajand', 'aasta'],
                ['l', 'dl'], ['l', 'ml'], ['€', 'senti']],
-      kordajad: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 15, 20, 25, 50],
+      kordajad: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 15, 20, 25, 50], lagi60: 10,
       nimegaPaarid: [['km', 'm'], ['m', 'cm'], ['kg', 'g'], ['t', 'kg'],
                      ['l', 'ml'], ['€', 'senti']],
       tyybid: ['teisenda', 'teisenda', 'nimega', 'nimega', 'vordle', 'yhik'] },
@@ -278,13 +278,29 @@
     return out.length ? out : list;
   }
 
+  /* Kui tegur ei ole 10 aste ega 60, jaab suurema uhiku arv korrutustabelisse:
+     "6 oopaeva = ___ h" (6 x 24) on 3. klassile liiga raske peastarvutus
+     (Silver 15. sept). 60 on korras, sest 7 x 60 on sisuliselt 7 x 6.
+     3600 (h <-> s, tase 3) on ainult 1: peast teatakse 1 h = 3600 s, juba
+     2 h = 7200 s on arvutus. */
+  var KORDAJA_LAGI = { 24: 3, 12: 5, 7: 5, 3600: 1 };
+  function kordajaLagi(tg) { return KORDAJA_LAGI[tg] || Infinity; }
+  /* Tasemel 2 (ka voistlus, 15 s) on x60 paaridel arv kuni 10: "7 min = 420 s"
+     on peast tehtav, "25 min = 1500 s" ei ole (Silver 15. sept). */
+  function kordajadPaarile(list, tg, t) {
+    var lagi = kordajaLagi(tg), out = [];
+    if (tg === 60 && TASEMED[t].lagi60) lagi = TASEMED[t].lagi60;
+    for (var i = 0; i < list.length; i++) if (list[i] <= lagi) out.push(list[i]);
+    return out.length ? out : list;
+  }
+
   /* "3 km = ___ m" */
   function genTeisenda(t, kategooria, R) {
     var tase = TASEMED[t];
     var p = vali(filtreeri(tase.paarid, kategooria), R);
     var TG = tegur(p[0], p[1]);
     var alla = rnd(2, R) === 0;
-    var k = vali(tase.kordajad, R);
+    var k = vali(kordajadPaarile(tase.kordajad, TG.tegur, t), R);
     var mille = alla ? p[0] : p[1];
     var mida = alla ? p[1] : p[0];
     var arv = alla ? k : k * TG.tegur;
@@ -377,7 +393,7 @@
   function genVordle(t, kategooria, R) {
     var p = vali(filtreeri(TASEMED[t].paarid, kategooria), R);
     var TG = tegur(p[0], p[1]);
-    var a = 1 + rnd(9, R);
+    var a = 1 + rnd(Math.min(9, kordajaLagi(TG.tegur)), R);
     var alus = a * TG.tegur;
     var samm = Math.max(1, Math.round(TG.tegur / 10));
     var b = alus + (rnd(2, R) ? 1 : -1) * vali([1, 2, 5, 10], R) * samm;
