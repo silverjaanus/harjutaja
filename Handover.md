@@ -27,7 +27,18 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**RAAMISTIKU ETAPP 5 TEHTUD: Korrutaja ühisel raamil (15. sept, haru `raamistik-5`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-4` (etapp 4 on mainis, PR #7). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-5
+**RAAMISTIKU ETAPP 6 TEHTUD: mooduli leping ja mall + muusika (16. sept, haru `raamistik-6`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-5` (sisaldab seda, piisab ühest merge'ist). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-6
+
+- **`core/moodul.js`** (`HMoodul.registreeri({...})`) ehitab kogu lehe (avaleht, mäng, tulemus, edetabel, seaded) ja ühendab kõik tuumamoodulid. Lepingu kirjeldus on faili alguses. Avalehe valikud on `kiibid` (mitte `valikud`, see nimi on HMang konksul). „Harjuta neid …“ paneb vead päriselt ette (iga teine ülesanne). `voistlus: null` = võistlust pole. Olemasolevad moodulid jäid nagu olid (oma avalehtedega).
+- **`_mall/`** (repo juurkaustas, mitte `moodulid/_mall/`, et `../core/` teed kopeerimisel ei muutuks): töötav näidismoodul „Näidis“ (liitmine, maskott Täpike, lilla aktsent), `LOEMIND.md` (kuidas kopeerida) ja **`KONTROLL-LEHT.md`** (sisu, keel/Fable, võistlus = Silveri otsus, serveri migratsioon, välimus, avaleht, sw.js, testid). Avalehel malli ei ole, `sw.js` seda vahemällu ei pane.
+- **Keel:** haru `keel` (paralleelsessioon) on ehitatud otse raamile. Järgmine samm oleks tõsta see `HMoodul` peale kontroll-lehe järgi - enne tuleb `keel` ja `raamistik-6` main'i merge'ida.
+- **Taustamuusika:** Korrutajal ja Teisendajal kaks omaloodud lugu (`korrutaja/muusika-1/2.mp3`, `teisendaja/muusika-1/2.mp3`, ~400 KB, keskmine valjus sama mis Kella lool). Tehtud skriptiga `tools/tee_muusika.py` (numpy + ffmpeg), litsentsimuret pole. `HMuusika.init({ src: [...] })` mängib loendit ringiratast, alates juhuslikust. Korrutaja sünteesitud WebAudio muusika kadus; avalehe päises on nüüd ka ♪. **Muudetud loole alati uus failinimi** - `sw.js` hoiab mp3-e igavesti. Kirjutajas muusikat ei ole (kuulamine on ülesanne).
+- **Tekst kõigis moodulites:** „Sa pole veel klassiga liitunud. Klassis saad võistelda sõpradega.“ (Fable, Silveri „jah“).
+- **Fable (mall):** „Vastuse saab valida ka numbriklahvidega 1–4.“, „Kui vastad valesti, näitab mäng õiget vastust ja annab väikese nipi.“, „seesütlev kääne“ (mitte „kus-kääne“).
+- **Testid:** uus `tools/test_mall.py 8807` (ka muusika loendi vahetus) ja `node _mall/sisu.test.js`; `test_heli` kontrollib Teisendaja ja Korrutaja lugusid; `test_teisendaja` klahvistiku test ei kuku enam, kui esimene ülesanne on nupuvalik; `test_raam4` teab, et muusika on Kellas ja Teisendajas. Kõik 13 Playwrighti testi + 3 node-testi läbi, homoglüüfid PUHAS.
+- **Raamistiku kava on sellega läbi.** Lahtine: `core/tekst.js` (ühised tekstid ühte faili) ei tulnud - tekstid on tuumafailides ja see töötab.
+
+**RAAMISTIKU ETAPP 5 TEHTUD (haru `raamistik-5`) - sisaldub harus `raamistik-6`.**
 
 - **Avaleht:** päises ‹ Harjutaja, 🔊 ja ⚙ (`#setBtn`); keskel panda, pealkiri „Korrutaja“ ja rida „Tere, Mia! Täna N vastust…“ (nimi `HPrefs`-ist, `D.settings.name` saab edasi kirja). Kaks suurt nuppu Harjuta / Võistle (`HVoistlus`, päev Tallinna aja järgi), klassi plokk, „Kuidas see käib?“ (endine kiirjuhend `s-quick` ja (i) nupp kadusid). Korrutustabel ja soojuskaart jäid.
 - **Mäng:** õige vastuse järel 1 s (võistluses 0,8 s) - `HMang.AEG`. Vale vastuse järel harjutamises alati nupp **„Edasi“** klahvistiku kohal (ka Enter/tühik; 0,8 s kaitse topeltpuute vastu), ekraani puudutus enam edasi ei vii. Võistluses liigub ise (1,4 s). Võistlusreeglid (25 tehet, 6 s, ainult korrutamine) ei muutunud.
