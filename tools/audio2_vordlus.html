@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuulamisabi: kahe hääle võrdlus</title>
+<style>
+  :root{
+    --sinine:#123a63;
+    --helesinine:#e7eef7;
+    --kollane:#f2b705;
+    --hall:#6b7280;
+    --joon:#d3dce8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    padding:24px 16px 64px;
+    background:#f7f9fc;
+    color:var(--sinine);
+    font:16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .leht{max-width:760px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 8px}
+  .sissejuhatus{color:var(--hall);margin:0 0 24px}
+  .sissejuhatus b{color:var(--sinine)}
+  .kolmik{
+    background:#fff;
+    border:1px solid var(--joon);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .kolmik h2{
+    font-size:15px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--hall);
+    margin:0 0 10px;
+    font-weight:600;
+  }
+  .rida{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+  }
+  .rida:last-child{margin-bottom:0}
+  .haal{
+    width:92px;
+    flex:0 0 92px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--hall);
+  }
+  button{
+    font:inherit;
+    font-weight:600;
+    color:var(--sinine);
+    background:var(--helesinine);
+    border:1px solid var(--joon);
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+    min-width:104px;
+    text-align:left;
+  }
+  button:hover{background:#dbe6f4}
+  button.mangib{background:var(--kollane);border-color:var(--kollane)}
+  button.puudu{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+  button .pikkus{display:block;font-size:11px;font-weight:500;color:var(--hall);text-transform:uppercase;letter-spacing:.03em}
+  button.mangib .pikkus{color:#5a4300}
+  .koik{
+    min-width:0;
+    background:#fff;
+    border-style:dashed;
+  }
+  .markus{margin-top:24px;color:var(--hall);font-size:14px}
+</style>
+</head>
+<body>
+<div class="leht">
+  <h1>Kuulamisabi: kahe hääle võrdlus</h1>
+  <p class="sissejuhatus">
+    Ülemine rida on <b>küsimuse hääl</b> (Kore, kaust <code>kirjutaja/audio</code>).
+    Alumine rida on <b>võrdluse hääl</b> (Charon, kaust <code>kirjutaja/audio2</code>).
+    Kuula kolm pikkust järjest ja vaata, kas Charon eristab neid sama selgelt kui Kore.
+  </p>
+
+  <div id="loend"></div>
+
+  <p class="markus">
+    Kui nupp on kriipsutatud, siis seda klippi veel ei ole — heli genereerimine käib.
+    Lehte värskendades ilmuvad uued klipid juurde.
+  </p>
+</div>
+
+<script>
+const KOLMIKUD = [
+  ["kabi", "kapi", "kappi"],
+  ["tigu", "tiku", "tikku"],
+  ["lugu", "luku", "lukku"],
+  ["lagi", "laki", "lakki"],
+  ["kodu", "kotu", "kottu"],
+  ["vigur", "vikur", "vikkur"],
+  ["ribi", "ripi", "rippi"],
+  ["pudel", "putel", "puttel"],
+  ["sibul", "sipul", "sippul"],
+  ["madal", "matal", "mattal"],
+  ["kade", "kate", "katte"],
+  ["rada", "rata", "ratta"],
+  ["kabe", "kape", "kappe"],
+  ["tuba", "tupa", "tuppa"],
+  ["siga", "sika", "sikka"],
+  ["sadam", "satam", "sattam"],
+  ["vaba", "vapa", "vappa"],
+  ["kagu", "kaku", "kakku"]
+];
+
+const SILDID = ["lühike", "pikk", "ülipikk"];
+const HAALED = [
+  { nimi: "Küsimus", kaust: "../kirjutaja/audio/" },
+  { nimi: "Võrdlus", kaust: "../kirjutaja/audio2/" }
+];
+
+let mangija = null;
+let aktiivneNupp = null;
+
+function peata() {
+  if (mangija) { mangija.pause(); mangija = null; }
+  if (aktiivneNupp) { aktiivneNupp.classList.remove("mangib"); aktiivneNupp = null; }
+}
+
+function mangi(nupp) {
+  return new Promise(function (valmis) {
+    peata();
+    nupp.classList.add("mangib");
+    aktiivneNupp = nupp;
+    const heli = new Audio(nupp.dataset.fail);
+    mangija = heli;
+    heli.onended = function () {
+      nupp.classList.remove("mangib");
+      if (aktiivneNupp === nupp) { aktiivneNupp = null; }
+      if (mangija === heli) { mangija = null; }
+      valmis();
+    };
+    heli.onerror = function () {
+      nupp.classList.remove("mangib");
+      nupp.classList.add("puudu");
+      if (mangija === heli) { mangija = null; }
+      valmis();
+    };
+    heli.play().catch(function () { valmis(); });
+  });
+}
+
+async function mangiKoik(nupud) {
+  for (const nupp of nupud) {
+    if (nupp.classList.contains("puudu")) { continue; }
+    await mangi(nupp);
+    await new Promise(function (v) { setTimeout(v, 320); });
+  }
+}
+
+const loend = document.getElementById("loend");
+
+KOLMIKUD.forEach(function (kolmik) {
+  const kast = document.createElement("div");
+  kast.className = "kolmik";
+
+  const pealkiri = document.createElement("h2");
+  pealkiri.textContent = kolmik.join(" – ");
+  kast.appendChild(pealkiri);
+
+  HAALED.forEach(function (haal) {
+    const rida = document.createElement("div");
+    rida.className = "rida";
+
+    const silt = document.createElement("span");
+    silt.className = "haal";
+    silt.textContent = haal.nimi;
+    rida.appendChild(silt);
+
+    const nupud = [];
+    kolmik.forEach(function (sona, i) {
+      const nupp = document.createElement("button");
+      nupp.dataset.fail = haal.kaust + sona + ".mp3";
+      nupp.innerHTML = '<span class="pikkus">' + SILDID[i] + "</span>" + sona;
+      nupp.addEventListener("click", function () { mangi(nupp); });
+      rida.appendChild(nupp);
+      nupud.push(nupp);
+    });
+
+    const koik = document.createElement("button");
+    koik.className = "koik";
+    koik.textContent = "▶ kõik kolm";
+    koik.addEventListener("click", function () { mangiKoik(nupud); });
+    rida.appendChild(koik);
+
+    kast.appendChild(rida);
+  });
+
+  loend.appendChild(kast);
+});
+</script>
+</body>
+</html>
