@@ -27,7 +27,7 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
-**RAAMISTIKU ETAPP 6 TEHTUD: mooduli leping ja mall + muusika (16. sept, haru `raamistik-6`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-5` (sisaldab seda, piisab ühest merge'ist). Main (Keel, PR #8) on sisse merge'itud; `sw.js` VERSION `h-202609161000` ja Keele failid on nimekirjas. Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-6
+**RAAMISTIKU ETAPP 6 TEHTUD: mooduli leping ja mall + muusika (16. sept, haru `raamistik-6`, worktree `..\harjutaja-raamistik`) - OOTAB SILVERI MERGE'I.** Põhineb harul `raamistik-5` (sisaldab seda, piisab ühest merge'ist). Main (Keel, PR #8) on sisse merge'itud; `sw.js` VERSION `h-202609161900` ja Keele failid on nimekirjas. Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...raamistik-6
 
 - **`core/moodul.js`** (`HMoodul.registreeri({...})`) ehitab kogu lehe (avaleht, mäng, tulemus, edetabel, seaded) ja ühendab kõik tuumamoodulid. Lepingu kirjeldus on faili alguses. Avalehe valikud on `kiibid` (mitte `valikud`, see nimi on HMang konksul). „Harjuta neid …“ paneb vead päriselt ette (iga teine ülesanne). `voistlus: null` = võistlust pole. Olemasolevad moodulid jäid nagu olid (oma avalehtedega).
 - **`_mall/`** (repo juurkaustas, mitte `moodulid/_mall/`, et `../core/` teed kopeerimisel ei muutuks): töötav näidismoodul „Näidis“ (liitmine, maskott Täpike, roosa aktsent), `LOEMIND.md` (kuidas kopeerida) ja **`KONTROLL-LEHT.md`** (sisu, keel/Fable, võistlus = Silveri otsus, serveri migratsioon, välimus, avaleht, sw.js, testid). Avalehel malli ei ole, `sw.js` seda vahemällu ei pane.
@@ -48,6 +48,14 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 - **Fable'i tekstid:** „Võistlus on kõigil ühesugune, et tulemusi saaks võrrelda.“, „Aeg tehte jaoks“, „Oled kindel? Vajuta veel kord“ (ka `core/seaded.js`), „Loevad nii korrutamine kui ka jagamine, kokku on neid 90.“ Fable pakkus ka „Sa pole veel klassiga liitunud.“ - tegemata, sest see lause on kõigis moodulites ühine (Silveri otsus).
 - **Testid:** uus `tools/test_raam5.py 8808`; `test_heli` uuendatud (Edasi, ⚙, kindlam valikunupp). Kõik 12 Playwrighti testi + node-testid läbi, homoglüüfid PUHAS.
 - **Järgmine: etapp 6** - mall `moodulid/_mall/` ja kontroll-leht.
+
+**KEEL v0.1 (15. sept õhtul, haru `keel-2`) — MERGE'ITUD (PR #10).** Keel v0 (haru `keel`) on mainis (PR #8). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...keel-2
+
+Silver proovis telefonis ja leidis kaks asja:
+- **Lünk oli liiga lihtne:** lause kõlas, sõna oli ekraanil kolme valiku seas — laps vajutas lihtsalt kuuldud sõnale. Nüüd: samm „Kirjuta puuduv sõna" — eesti lause ja inglise lause lüngaga, **laps kirjutab sõna ise, heli ei mängi** (ainult „Kuula abiks", mis toob lause samas ringis tagasi ega lase sammu läbida). Ka kokkupanekul ei mängi lause enam ise, ainult abina. Esimene samm on nüüd „Kuula ja loe ette" (Silver: see on alustuseks ok).
+- **Telefoni klaviatuur pakkus sõnu ette** („bui" → „building"): `autocorrect="off"` ja `spellcheck="false"` Gboardi ettepanekuid ei peata. Nüüd **oma tähtklaviatuur** `keel/klaviatuur.js` (`KKlaviatuur`), sama põhimõttega nagu `core/klahvistik.js`: päris `<input inputmode="none">`, süsteemiklaviatuur jääb kinni. Ainult väiketähed (suurtäht ei loe), tühik, ülakoma, ⌫, Vastan. Arvutis töötab füüsiline klaviatuur ka siis, kui fookus pole väljal (`moodul.klahv` → `kb.klahv`). Pärast vastust klaviatuur peidetakse, et vihjekaart mahuks.
+- **„Peida ja kirjuta uuesti"** kasutab nüüd sama klaviatuuri (varem oli vihjekaardil süsteemiklaviatuuriga väli); teated tulevad `#fb` reale.
+- Testid: `tools/test_keel.py` uuendatud (lünk kirjutades, heli ei mängi, inputmode, klahvid, uuesti-režiim), `node keel/lause.test.js` läbi, homoglüüfid PUHAS. Fable kontrollis uued tekstid.
 
 **KEEL v0 TEHTUD: inglise keele laused (15. sept, haru `keel`, worktree `..\harjutaja-keel`) — MERGE'ITUD (PR #8).** Põhineb `main`-il (raamistiku etapp 4 sees). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...keel
 
