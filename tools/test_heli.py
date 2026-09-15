@@ -237,12 +237,28 @@ def main():
         ctx, page, js = uus(b, {"harjutaja_prefs_v1": {"sfx": True, "music": True, "name": ""}})
         ava(page, "korrutaja"); alusta(page, "korrutaja")
         kontrolli(page.locator("#gMusic").is_visible(), "Korrutaja: ♪ on harjutamise päises")
-        kontrolli(page.evaluate("() => HMuusika._kõlab()") is True, "Korrutaja: sisse lülitatud muusika mängib harjutamisel")
+        page.wait_for_timeout(300)
+        kontrolli(page.evaluate("() => HMuusika._kõlab() && window.__play > 0"), "Korrutaja: sisse lülitatud muusika mängib harjutamisel (failist)")
+        kontrolli(page.evaluate("() => /muusika-[12]\\.mp3$/.test(HMuusika._lugu())"), "Korrutaja: lugu on üks kahest failist")
         page.click("#gMusic")
         kontrolli(page.evaluate("() => HMuusika._kõlab()") is False, "Korrutaja: ♪ mängu ajal peatab muusika")
         ctx.close()
 
-        for m in ["kirjutaja", "teisendaja"]:
+        # Teisendaja: kaks lugu, mängivad harjutamisel; lugude failid on olemas.
+        ctx, page, js = uus(b, {"harjutaja_prefs_v1": {"sfx": True, "music": True, "name": ""}})
+        ava(page, "teisendaja")
+        kontrolli(page.locator("#musicBtn").is_visible(), "Teisendaja: ♪ on avalehel")
+        alusta(page, "teisendaja")
+        page.wait_for_timeout(300)
+        kontrolli(page.locator("#musicBtnG").is_visible() and page.evaluate("() => HMuusika._kõlab() && window.__play > 0"),
+                  "Teisendaja: muusika mängib harjutamisel")
+        for f in ["teisendaja/muusika-1.mp3", "teisendaja/muusika-2.mp3", "korrutaja/muusika-1.mp3", "korrutaja/muusika-2.mp3"]:
+            r = page.request.get(f"{BASE}/{f}")
+            kontrolli(r.ok and r.headers.get("content-type", "").startswith("audio"), f"{f} on olemas")
+        kontrolli(not js, "Teisendaja: JS-vigu pole", js)
+        ctx.close()
+
+        for m in ["kirjutaja"]:
             ctx, page, js = uus(b, {"harjutaja_prefs_v1": {"sfx": True, "music": True, "name": ""}})
             ava(page, m); alusta(page, m)
             kontrolli(page.locator("[data-muusika]:visible").count() == 0, f"{m}: ♪ nuppu ei ole (lugu puudub)")

@@ -1,5 +1,5 @@
 /* Harjutaja service worker: rakenduse failid vahemällu, heli vahemällu esimesel kuulamisel. */
-const VERSION = 'h-202609160700';
+const VERSION = 'h-202609160900';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js', 'core/klahvistik.js', 'core/arm.js', 'core/base.css', 'core/eelistused.js', 'core/muusika.js', 'core/mang.js', 'core/voistlus.js', 'core/saatmine.js', 'core/tulemus.js', 'core/edetabel.js', 'core/seaded.js',
   'kirjutaja/', 'kirjutaja/index.html', 'kirjutaja/kirjutaja.css', 'kirjutaja/app.js', 'kirjutaja/robot.js', 'kirjutaja/data.js',
   'korrutaja/', 'korrutaja/index.html',

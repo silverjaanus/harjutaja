@@ -355,7 +355,7 @@
       $("joinBtn").textContent = "Vaheta klassi";
       $("boardBtn").hidden = false;
     } else {
-      note.textContent = "Sa pole veel klassis. Klassis saad võistelda sõpradega.";
+      note.textContent = "Sa pole veel klassiga liitunud. Klassis saad võistelda sõpradega.";
       $("joinBtn").textContent = "Liitu klassiga";
       $("boardBtn").hidden = true;
     }
@@ -385,6 +385,8 @@
 
   /* ---------- sündmused ---------- */
   HSfx.nupp($("sfxBtn")); HSfx.nupp($("sfxBtnG"));
+  HMuusika.init({ src: ["muusika-1.mp3", "muusika-2.mp3"] });
+  HMuusika.nupp($("musicBtn")); HMuusika.nupp($("musicBtnG"));
   $("trainMeta").textContent = ROUND_LEN + " ülesannet";
   $("competeMeta").textContent = COMPETE_N + " ülesannet";
   $("startBtn").onclick = () => start("train");

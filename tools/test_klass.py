@@ -103,7 +103,7 @@ def run(pw):
     check("Korrutaja avaekraan on olemas", page.locator("#s-home").count() > 0)
     page.goto(BASE + "/kirjutaja/", wait_until="domcontentloaded")
     page.wait_for_timeout(700)
-    check("Kirjutaja ütleb, et klassi pole", "pole veel klassis" in page.locator("#klassNote").inner_text(),
+    check("Kirjutaja ütleb, et klassi pole", "pole veel klassiga liitunud" in page.locator("#klassNote").inner_text(),
           page.locator("#klassNote").inner_text())
     check("Kirjutaja Harjuta nupp töötab", page.locator("#startBtn").is_enabled())
 

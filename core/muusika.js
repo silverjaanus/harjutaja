@@ -8,6 +8,9 @@
 
    Kasutus moodulis:
      HMuusika.init({ src: "muusika.mp3" });   // või { on: fn, off: fn } omaenda heliga
+     HMuusika.init({ src: ["muusika-1.mp3", "muusika-2.mp3"] });  // mitu lugu järjest
+   Mitme loo korral alustatakse juhuslikust ja mängitakse ringiratast; üks
+   lugu kordub. Loo vahetamine: pane uus fail loendisse ja tõsta sw.js VERSION.
      HMuusika.nupp(nupp);                     // muusikanupp, neid võib olla mitu
      HMuusika.mang(true / false);             // kas käib harjutusring
    Moodul kutsub mang() oma show()-funktsioonist; siin otsustatakse, kas
@@ -25,19 +28,35 @@
      Otse <audio src> küsiks brauser faili tükkidena (Range, HTTP 206) ja
      service worker ei saa osalist vastust vahemällu panna — siis ei töötaks
      muusika ilma netita. Terve fail läheb vahemällu esimesel mängimisel. */
-  var laadimine = null;
+  var laadimine = null, lood = [], jrk = 0;
   function laadi() {
     if (!laadimine) {
-      laadimine = fetch(cfg.src)
+      var src = lood[jrk];
+      laadimine = fetch(src)
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.blob(); })
         .then(function (b) {
-          audio = new Audio(URL.createObjectURL(b));
-          audio.loop = true; audio.volume = 0;
-          return audio;
+          var a = new Audio(URL.createObjectURL(b));
+          a.loop = lood.length === 1; a.volume = 0;
+          a.addEventListener('ended', jargmine);
+          audio = a;
+          return a;
         })
         .catch(function (e) { laadimine = null; throw e; });
     }
     return laadimine;
+  }
+  /* Lugu sai läbi: järgmine loendist, sama valjusega (ilma uue sissetulekuta). */
+  function jargmine() {
+    var vana = audio;
+    jrk = (jrk + 1) % lood.length;
+    laadimine = null;
+    laadi().then(function (a) {
+      if (vana && vana !== a) { try { URL.revokeObjectURL(vana.src); } catch (e) {} }
+      if (!kõlab) return;
+      a.volume = VALJUS;
+      var p; try { p = a.play(); } catch (e) {}
+      if (p && p.catch) p.catch(function () { kõlab = false; });
+    }).catch(function () { kõlab = false; });
   }
   function heli() { return audio; }
   function sujuv(siht, ms, siis) {
@@ -82,7 +101,14 @@
   }
 
   window.HMuusika = {
-    init: function (c) { cfg = c; joonista(); },
+    init: function (c) {
+      cfg = c;
+      if (c && c.src) {
+        lood = [].concat(c.src);
+        jrk = Math.floor(Math.random() * lood.length);
+      }
+      joonista();
+    },
     olemas: function () { return !!cfg; },
     mang: function (kas) { aktiivne = !!kas; otsusta(); },
     toggle: function () {
@@ -102,7 +128,8 @@
       joonista();
     },
     /* testide jaoks */
-    _kõlab: function () { return kõlab; }
+    _kõlab: function () { return kõlab; },
+    _lugu: function () { return lood[jrk] || null; }
   };
 
   if (prefs) prefs.on(function (n) { if (n === "music") { joonista(); if (!eelkuula) otsusta(); } });

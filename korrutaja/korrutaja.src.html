@@ -394,6 +394,7 @@ details.help .quick p,details.help .quick ul{font-size:15px}
     <a class="backlink" href="../">‹ Harjutaja</a>
     <div class="hbtns">
     <button class="icon" id="btnSfx" aria-pressed="true" aria-label="Heliefektid"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
+    <button class="icon" id="btnMusic" aria-pressed="false" aria-label="Taustamuusika" data-muusika><svg viewBox="0 0 24 24"><path d="M9 17V5l10-2v12"/><circle cx="6.5" cy="17" r="2.5" fill="currentColor"/><circle cx="16.5" cy="15" r="2.5" fill="currentColor"/><path class="off" d="M3 3l18 18"/></svg></button>
     <button class="icon" id="setBtn" aria-label="Seaded"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
   </header>
@@ -1112,7 +1113,7 @@ function renderKlass(){
   var on=!!(window.HKlass&&HKlass.online());
   var c=on?HKlass.current():null;
   $('klassBlock').hidden=!on;
-  $('klassNote').textContent=c&&c.class_name?c.class_name+' · '+(c.nick||''):'Sa pole veel klassis. Klassis saad võistelda sõpradega.';
+  $('klassNote').textContent=c&&c.class_name?c.class_name+' · '+(c.nick||''):'Sa pole veel klassiga liitunud. Klassis saad võistelda sõpradega.';
   $('btnJoin').textContent=c?'Vaheta klassi':'Liitu klassiga';
   $('btnBoard').hidden=!c;
   if(voistlus)voistlus.joonista();
@@ -1412,64 +1413,16 @@ document.addEventListener('visibilitychange',function(){
 function factLabel(f,op){return op==='div'?(f.a*f.b)+' : '+f.a:f.a+' × '+f.b;}
 
 /* ---------- heli ----------
-   Heliefektid tulevad core/sfx.js-ist, sama mis teistes moodulites (raamistiku
-   etapp 1, 15. sept): vale vastuse peale toon ja värin, sisse lülitades
-   proovitoon. Heli ja muusika sees/väljas on ühine eelistus kõigis moodulites
-   (core/eelistused.js). Taustamuusika on siin veel WebAudioga sünteesitud;
-   loo helifailist saab Korrutaja raamistiku etapis 5.
-   AudioContext luuakse alles esimese puudutuse peale (brauseri autoplay reeglid). */
-var AC=null,musicNodes=null,musicTimer=null;
-function ac(){
-  if(AC===null){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){AC=false;}}
-  if(AC&&AC.state==='suspended'){try{AC.resume();}catch(e){}}
-  return AC||null;
-}
+   Heliefektid ja taustamuusika tulevad core/sfx.js-ist ja core/muusika.js-ist,
+   sama mis teistes moodulites. Muusika on kaks omaloodud lugu
+   (tools/tee_muusika.py); enne 16. septembrit sünteesiti see siin WebAudioga. */
 function celebrateGreen(label){
   var st=$('stage');if(!st)return;
   var e=document.createElement('div');e.className='gcelebrate';e.textContent='★ '+label+' on peas!';
   st.appendChild(e);setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);},1500);
 }
-/* Taustamuusika: pehme pad (kaks kergelt häälestamata sinusoidi + aeglane LFO) ja
-   aeg-ajalt üks vaikne pentatooniline noot. Tahtlikult tuhm ja aeglane, et
-   peastarvutamist mitte segada. */
-function musicOn(){
-  if(musicNodes)return;var c=ac();if(!c)return;
-  var master=c.createGain();master.gain.setValueAtTime(0.0001,c.currentTime);master.connect(c.destination);
-  master.gain.linearRampToValueAtTime(0.13,c.currentTime+2);   /* vaikne, taustale */
-  musicNodes={master:master};
-  /* Lift-muusika: pehmed akordid, mis tulevad ja kaovad ning vahetuvad – mitte
-     pidev droon (see kõlas nagu kinnijäänud klahv). Iga akord on oma swell. */
-  var chords=[
-    [329.63,392.00,523.25], /* C  – E4 G4 C5 */
-    [329.63,440.00,523.25], /* Am – E4 A4 C5 */
-    [349.23,440.00,523.25], /* F  – F4 A4 C5 */
-    [392.00,493.88,587.33]  /* G  – G4 B4 D5 */
-  ];
-  var ci=0;
-  function nextChord(){
-    if(!musicNodes)return;var cc=ac();if(!cc){musicTimer=setTimeout(nextChord,4000);return;}
-    var t=cc.currentTime,freqs=chords[ci%chords.length];ci++;
-    var cg=cc.createGain();cg.connect(musicNodes.master);
-    cg.gain.setValueAtTime(0.0001,t);
-    cg.gain.linearRampToValueAtTime(0.34,t+1.1);        /* pehme sissetulek */
-    cg.gain.setValueAtTime(0.34,t+2.8);
-    cg.gain.linearRampToValueAtTime(0.0001,t+4.4);      /* pehme kadu */
-    freqs.forEach(function(f,k){var o=cc.createOscillator();o.type='sine';o.frequency.value=f;o.detune.value=(k-1)*3;o.connect(cg);o.start(t);o.stop(t+4.5);});
-    musicTimer=setTimeout(nextChord,3900);              /* järgmine akord kattub kergelt */
-  }
-  nextChord();
-}
-function musicOff(){
-  if(musicTimer){clearTimeout(musicTimer);musicTimer=null;}
-  if(!musicNodes)return;var c=ac(),m=musicNodes;
-  /* Akordide ostsillaatorid peatuvad ise; siin vaid vaigistame masteri pehmelt. */
-  try{if(c)m.master.gain.linearRampToValueAtTime(0.0001,c.currentTime+0.6);}catch(e){}
-  musicNodes=null;
-}
-
-/* Sees/väljas ja millal mängida otsustab core/muusika.js. */
-HMuusika.init({on:musicOn,off:musicOff});
-HMuusika.nupp($('gMusic'));
+HMuusika.init({src:['muusika-1.mp3','muusika-2.mp3']});
+HMuusika.nupp($('gMusic'));HMuusika.nupp($('btnMusic'));
 
 function endGame(){
   if(raf)cancelAnimationFrame(raf);

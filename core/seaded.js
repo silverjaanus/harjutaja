@@ -68,7 +68,7 @@
       $('fName').hidden = !o.nimi;
       $('inName').value = HPrefs.get('name') || '';
       var c = window.HKlass ? HKlass.current() : null;
-      $('setClassName').textContent = c && c.class_name ? c.class_name + ' · ' + (c.nick || '') : 'Sa pole veel klassis.';
+      $('setClassName').textContent = c && c.class_name ? c.class_name + ' · ' + (c.nick || '') : 'Sa pole veel klassiga liitunud.';
       $('setCodes').hidden = !c;
       $('setCode').textContent = c ? c.code : '';
       $('setSecret').textContent = c ? c.secret : '';

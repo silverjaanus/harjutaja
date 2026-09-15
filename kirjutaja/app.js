@@ -450,7 +450,7 @@
       $("joinBtn").textContent = "Vaheta klassi";
       $("boardBtn").hidden = false;
     } else {
-      note.textContent = "Sa pole veel klassis. Klassis saad võistelda sõpradega.";
+      note.textContent = "Sa pole veel klassiga liitunud. Klassis saad võistelda sõpradega.";
       $("joinBtn").textContent = "Liitu klassiga";
       $("boardBtn").hidden = true;
     }
