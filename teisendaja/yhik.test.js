@@ -273,6 +273,20 @@ ok(Y.voti({ kysimus: 'Kumb on suurem?', valikud: ['1 m', '90 cm'] }) !== Y.voti(
   'eri võrdlused on eri ülesanded');
 
 /* Kokkuvõte ---------------------------------------------------------------- */
+/* 13. Tasemed kuhjuvad (Silveri otsus 15. sept): iga tase sisaldab eelmise
+   paare, nimega paare ja ülesandetüüpe. */
+(function () {
+  var paar = function (p) { return p[0] + '>' + p[1]; };
+  for (var n = 2; n <= 4; n++) {
+    var e = Y.TASEMED[n - 1], t = Y.TASEMED[n];
+    var tp = t.paarid.map(paar), tn = (t.nimegaPaarid || []).map(paar);
+    e.paarid.forEach(function (p) { ok(tp.indexOf(paar(p)) >= 0, 'tase ' + n + ' paarides puudub ' + paar(p)); });
+    (e.nimegaPaarid || []).forEach(function (p) { ok(tn.indexOf(paar(p)) >= 0, 'tase ' + n + ' nimega paarides puudub ' + paar(p)); });
+    e.tyybid.forEach(function (ty) { ok(t.tyybid.indexOf(ty) >= 0, 'tase ' + n + ' tüüpides puudub ' + ty); });
+    if (e.ylekanne) ok(!!t.ylekanne, 'tase ' + n + ' kaotas ülekande');
+  }
+})();
+
 if (vead.length) {
   console.log('KATKI - ' + vead.length + ' viga ' + kontrolle + ' kontrollist:');
   for (var e = 0; e < Math.min(vead.length, 25); e++) console.log('  - ' + vead[e]);
