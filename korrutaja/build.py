@@ -26,6 +26,10 @@ head_extra = ('<link rel="manifest" href="../manifest.webmanifest">\n'
               '<link rel="apple-touch-icon" href="../icons/harjutaja-180.png">\n'
               # Klassi identiteet on koigi moodulite uhine. Peab laadima enne mangu skripti.
               '<script src="../core/klass.js"></script>\n'
+              # Heli, muusika ja nende uhine eelistus (raamistiku etapp 1).
+              '<script src="../core/eelistused.js"></script>\n'
+              '<script src="../core/sfx.js"></script>\n'
+              '<script src="../core/muusika.js"></script>\n'
               # Panda joonistus on uhine core/panda.js-is, sama fail teenindab Harjutaja avalehte.
               '<script src="../core/panda.js"></script>\n'
               # Kaheastmeline kinnitus ("vajuta veel kord") on koigi moodulite uhine.

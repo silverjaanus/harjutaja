@@ -1,4 +1,9 @@
-/* Harjutaja ühine tuum: heliefektid WebAudioga (ühtegi helifaili pole). */
+/* Harjutaja ühine tuum: heliefektid WebAudioga (ühtegi helifaili pole).
+
+   Raamistiku etapp 1 (15. sept): heli sees/väljas tuleb ühisest eelistusest
+   (core/eelistused.js), vale vastuse peale kõlab toon JA telefon väriseb,
+   ja lülitit sisse lülitades kõlab proovitoon — nii kuuleb laps kohe, et
+   heli töötab. Kõik moodulid, ka Korrutaja, kasutavad seda faili. */
 (function () {
   /* 15. sept: Silver ei kuulnud Androidis heli üldse. Arvutis mängis kõik
      (Playwrightis loodi ostsillaatorid, kontekst oli "running"), seega on
@@ -39,20 +44,47 @@
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     o.connect(g).connect(out); o.start(t); o.stop(t + dur + 0.05);
   }
+  const prefs = window.HPrefs;
+  const nupud = [];
+  function joonista() {
+    nupud.forEach(b => b.setAttribute("aria-pressed", HSfx.enabled ? "true" : "false"));
+  }
   window.HSfx = {
-    enabled: true,
+    /* Ilma eelistuste failita (vana leht vahemälus) jääb heli lihtsalt sisse. */
+    get enabled() { return prefs ? prefs.get("sfx") !== false : true; },
+    set enabled(v) { if (prefs) prefs.set("sfx", !!v); },
     unlock() { const c = ac(); if (c && c.state !== "running") c.resume(); },
     ok() {
       if (!this.enabled) return;
       kui(c => { tone(c, 880, 0, 0.22, "sine", 0.4); tone(c, 1320, 0.08, 0.28, "sine", 0.32); });
     },
     bad() {
+      /* Värin käib koos tooniga ja sama lüliti all: vaikne telefon on vaikne. */
       if (!this.enabled) return;
+      try { if (navigator.vibrate) navigator.vibrate(60); } catch (e) {}
       kui(c => { tone(c, 392, 0, 0.24, "triangle", 0.45); tone(c, 311, 0.13, 0.3, "triangle", 0.42); });
     },
     tada() {
       if (!this.enabled) return;
       kui(c => [523, 659, 784, 1047].forEach((f, i) => tone(c, f, i * 0.1, 0.4, "sine", 0.32)));
+    },
+    /* Lühike kahetooniline tervitus maskoti puudutamisel. */
+    blip() {
+      if (!this.enabled) return;
+      kui(c => { tone(c, 520, 0, 0.1, "triangle", 0.3); tone(c, 780, 0.07, 0.14, "triangle", 0.28); });
+    },
+    toggle() {
+      this.enabled = !this.enabled;
+      if (this.enabled) { this.unlock(); this.ok(); }
+      return this.enabled;
+    },
+    /* Seob helinupu: aria-pressed näitab olekut, kõik nupud liiguvad koos. */
+    nupp(btn) {
+      if (!btn) return;
+      nupud.push(btn);
+      btn.addEventListener("click", () => this.toggle());
+      joonista();
     }
   };
+  if (prefs) prefs.on(n => { if (n === "sfx") joonista(); });
 })();

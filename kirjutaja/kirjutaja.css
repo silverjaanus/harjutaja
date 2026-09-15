@@ -1,13 +1,10 @@
 :root{
-  --paper:#fdfdfa; --ink:#1d2f4f; --ink-soft:#5a6a82; --rule:#9fbde6; --rule-soft:#d3e1f3; --edge:#c3d4ea;
-  --accent:#ffd166; --accent-edge:#e9b93f; --accent-ink:#3a2c00;
-  --ok:#1d7f53; --ok-bg:#e3f5ec; --bad:#b8432d; --bad-bg:#fbe9e4; --mid:#c98a00; --mid-bg:#fff4d4; --card:#ffffff;
-  --display:"Fredoka",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
-  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:light;
+  --rule:#9fbde6;
+  --accent:#ffd166;
+  --accent-edge:#e9b93f;
+  --accent-ink:#3a2c00;
+  --mid:#c98a00;
 }
-*{box-sizing:border-box}
-[hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;background:var(--paper);
   background-image:repeating-linear-gradient(to bottom,transparent 0 14px,var(--rule-soft) 14px 15px,transparent 15px 28px,var(--rule-soft) 28px 29px,transparent 29px 42px,var(--rule) 42px 43px,transparent 43px 56px);
@@ -18,11 +15,7 @@ body{margin:0;color:var(--ink);font-family:var(--body);font-size:17px;line-heigh
 .back{color:var(--ink);font-weight:800;text-decoration:none;background:var(--paper);padding:6px 4px}
 .icon-btn{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--edge);background:var(--card);color:var(--ink);font:inherit;font-size:20px;display:grid;place-items:center;cursor:pointer}
 #s-game .icon-btn{margin-left:0}
-/* Ootel ✕: laps vaatab oma sõrme, seega peab muutuma nupp ise, mitte ainult
-   tekst mujal ekraanil. */
-.icon-btn.armed{background:var(--bad);border-color:var(--bad);color:#fff}
-.quitnote{margin:0 0 4px;padding:10px 12px;border-radius:12px;background:var(--bad-bg);border:1.5px solid var(--bad);color:var(--bad);font-weight:700;font-size:15.5px;line-height:1.4}
-.icon-btn .off{display:none} .icon-btn[aria-pressed="false"] .off{display:inline} .icon-btn[aria-pressed="false"] .wave{display:none}
+.icon-btn .off{display:none} .icon-btn[aria-pressed="false"] .off{display:inline}
 /* Robot on joonelisele lehele joonistatud, seega tema taha jooned jaavad.
    Paberilaik kaib ainult teksti alla, et jooned tahtedest labi ei jookseks. */
 .hero{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-block:4px}
@@ -30,16 +23,7 @@ body{margin:0;color:var(--ink);font-family:var(--body);font-size:17px;line-heigh
 .logo{border-radius:18px}
 h1{font-family:var(--display);font-weight:600;font-size:38px;line-height:1.05;margin:0;text-wrap:balance}
 .sub{margin:0;color:var(--ink-soft);max-width:34ch}
-.block{display:flex;flex-direction:column;gap:10px}
 .label{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper);align-self:flex-start;padding-inline:2px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{font:inherit;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:999px;padding:8px 16px;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent-edge)}
-.primary{font-family:var(--display);font-weight:600;font-size:20px;background:var(--accent);color:var(--accent-ink);border:1.5px solid var(--accent-edge);border-radius:16px;padding:12px 28px;cursor:pointer;box-shadow:0 3px 0 var(--accent-edge)}
-.primary:active{transform:translateY(2px);box-shadow:0 1px 0 var(--accent-edge)}
-.primary.big{font-size:26px;padding:16px 28px}
-.ghost{font:inherit;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:12px 18px;cursor:pointer}
-button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 /* häälikukaart */
 .map{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;align-items:stretch}
 .map .h{font-size:13px;font-weight:800;color:var(--ink-soft);text-align:center;align-self:end;background:var(--paper)}
@@ -63,8 +47,6 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%}
 .opt{font-family:var(--display);font-weight:600;font-size:38px;color:var(--ink);background:var(--card);border:2px solid var(--edge);border-radius:18px;padding-block:14px;cursor:pointer;transition:background .15s,border-color .15s;min-height:84px}
 .opt:disabled{cursor:default}
-.opt.right{border-color:var(--ok);background:var(--ok-bg)}
-.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
 .opt.lit{border-color:var(--accent-edge);background:#fff4d4;box-shadow:0 0 0 3px rgba(255,209,102,.5)}
 .opt small{display:block;font-family:var(--body);font-size:14px;font-weight:700;color:var(--ink-soft);margin-top:2px}
 /* Kuulamisabi: nupp on vastusenuppudest vaiksem, sest abi on pakkumine, mitte kutse.
@@ -74,14 +56,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .cmpnote{margin:8px auto 0;max-width:24em;text-align:center;font-size:14px;font-weight:700;
   color:var(--ink-soft);background:var(--paper);padding:2px 8px}
 .feedback{min-height:28px;font-weight:800;font-size:20px;text-align:center;background:var(--paper);padding-inline:8px}
-.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
 .hintcard{width:100%;background:var(--card);border:1.5px solid var(--edge);border-radius:16px;padding:14px 16px;font-size:17px}
 .hintcard b{font-family:var(--display);font-weight:600}
-.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
-/* tulemus */
-.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.stat{background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:10px 16px;text-align:center;min-width:110px}
-.stat b{display:block;font-family:var(--display);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
 .stat span{font-size:13px;color:var(--ink-soft);font-weight:700}
 .words{display:flex;flex-wrap:wrap;gap:8px}
 .words span{font-family:var(--display);font-size:22px;background:var(--card);border:1.5px solid var(--edge);border-radius:12px;padding:4px 12px}
@@ -140,54 +116,29 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .reviewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
   background:var(--accent-soft,#fdf1d2);border:1.5px solid var(--accent-edge);border-radius:14px;
   padding:8px 10px 8px 14px;font-weight:700;font-size:14.5px}
-.reviewbar .ghost{padding:7px 12px;font-size:14px}
-
-/* --- veast teada andmine --- */
-.flagbtn{margin:18px auto 0;display:block;font:inherit;font-size:14px;font-weight:700;
-  color:var(--ink-soft);background:none;border:0;border-bottom:1.5px dotted var(--ink-soft);
-  padding:2px 0;cursor:pointer}
-.flagbtn:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .flagwrap{position:fixed;inset:0;z-index:8;background:rgba(29,47,79,.45);
   display:flex;align-items:flex-end;justify-content:center;padding:0}
 .flagwrap[hidden]{display:none}
-.flagcard{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;
-  padding:18px 16px 22px;display:flex;flex-direction:column;gap:8px;
-  box-shadow:0 -8px 24px rgba(29,47,79,.18)}
-.flagcard h3{margin:0;font-family:var(--display);font-weight:600;font-size:22px}
 .flag-word{margin:0;font-family:var(--display);font-weight:600;font-size:26px}
-.flag-sent{margin:0 0 4px;color:var(--ink-soft)}
-.flagopts{display:flex;flex-direction:column;gap:8px}
-.flagopts .ghost{text-align:left}
-.flag-cancel{margin-top:6px;align-self:center}
-.flag-note{margin:10px 0 0;text-align:center;color:var(--ok);font-weight:700}
 
 /* --- autor ja lahtekood --- */
 .credit{color:var(--ink-soft);font-size:13.5px;line-height:1.5;text-align:center;padding:4px 6px 0}
 .credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .credit a:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
-
-/* võistlus */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.two .big{font-size:22px;padding:15px 10px}
-.compete{font-family:var(--display);font-weight:600;font-size:20px;background:var(--ink);color:#fff;border:1.5px solid var(--ink);border-radius:16px;padding:12px 28px;cursor:pointer;box-shadow:0 3px 0 #14223b}
-.compete:active{transform:translateY(2px);box-shadow:0 1px 0 #14223b}
-.compete[disabled]{background:var(--card);color:var(--ink-soft);border-color:var(--edge);box-shadow:none;cursor:default;transform:none}
-.compete.armed{background:var(--bad);border-color:var(--bad);box-shadow:0 3px 0 #8f3222}
 .klass-line{margin:0;font-weight:800;color:var(--ink)}
 
 /* võistluse taimer */
 .timer{width:100%;max-width:420px;height:8px;margin:0 auto 12px;border-radius:999px;background:var(--rule-soft);overflow:hidden}
-.timer i{display:block;height:100%;width:100%;background:var(--ok);border-radius:999px;transition:width .12s linear}
-.timer i.low{background:var(--bad)}
-@media (prefers-reduced-motion:reduce){.timer i{transition:none}}
 
-/* edetabel */
-.board{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.brow{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--edge);border-radius:14px;padding:10px 12px}
-.brow.me{border-color:var(--accent-edge);background:var(--mid-bg)}
-.brow.empty{display:block;color:var(--ink-soft);font-weight:600;line-height:1.5}
-.brow .pos{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink-soft);min-width:28px;font-variant-numeric:tabular-nums}
-.brow .mid{display:flex;flex-direction:column;flex:1;min-width:0}
-.brow .nm{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.brow .mid small{color:var(--ink-soft);font-weight:600;font-size:12px}
-.brow .val{font-family:var(--display);font-weight:600;font-size:24px;font-variant-numeric:tabular-nums}
+/* Kirjutaja jooneline leht: lugemistekst on tavakaaluga, mitte paks nagu
+   teistes moodulites (base.css paneb body-le 700). */
+body{font-weight:400}
+.app{display:block}
+.back{font-size:17px;line-height:inherit}
+.sub,.count-note,.hint-small,.help-body,.credit,#resSub{font-weight:400}
+.count-note,.hint-small{line-height:1.45}
+.help-body{font-size:17px;line-height:1.45}
+.help-body li{margin:0}
+.credit{line-height:1.5}
+.feedback{font-family:var(--body)}
+.hinttext{font-weight:inherit;font-size:inherit;line-height:inherit}

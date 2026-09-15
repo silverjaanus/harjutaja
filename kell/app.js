@@ -15,7 +15,7 @@
   /* Mida laps harjutab: kella lugemist või ajaarvutust tekstülesannetega. */
   D.opp = D.opp === "tekst" ? "tekst" : "lugemine";
   D.tekstStat = D.tekstStat || { n: 0, ok: 0 };
-  HSfx.enabled = D.sfx !== false;
+  /* Heli sees/väljas on ühine eelistus (core/eelistused.js), mitte mooduli oma lipp. */
   const save = () => HStore.save(KEY, D);
   const $ = id => document.getElementById(id);
 
@@ -52,6 +52,9 @@
 
   function show(id) {
     ["s-home", "s-game", "s-result", "s-board"].forEach(s => { $(s).hidden = s !== id; });
+    /* Võistluses muusikat ei ole, seega pole ka muusikanuppu. */
+    $("s-game").classList.toggle("voistlus", !!(G && G.mode === "test"));
+    if (window.HMuusika) HMuusika.mang(id === "s-game" && !!G && G.mode === "train");
     window.scrollTo(0, 0);
   }
 
@@ -828,11 +831,9 @@
   }
 
   /* ---------- sündmused ---------- */
-  $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
-  $("sfxBtn").onclick = () => {
-    HSfx.enabled = !HSfx.enabled; D.sfx = HSfx.enabled; save();
-    $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
-  };
+  HSfx.nupp($("sfxBtn")); HSfx.nupp($("sfxBtnG"));
+  HMuusika.init({ src: "muusika.mp3" });
+  HMuusika.nupp($("musicBtn")); HMuusika.nupp($("musicBtnG"));
   $("startBtn").onclick = () => start("train");
   $("nextBtn").onclick = next;
   $("prevBtn").onclick = openPrev;

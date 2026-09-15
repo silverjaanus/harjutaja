@@ -13,7 +13,7 @@
   D.stats = D.stats || {};
   D.rounds = D.rounds || []; D.tests = D.tests || [];
   D.outbox = D.outbox || []; D.reports = D.reports || [];
-  HSfx.enabled = D.sfx !== false;
+  /* Heli sees/väljas on ühine eelistus (core/eelistused.js), mitte mooduli oma lipp. */
   const save = () => HStore.save(KEY, D);
 
   /* Pindala ja ruumala ilmuvad valikusse alles neljandal tasemel, sest need
@@ -51,6 +51,9 @@
 
   function show(id) {
     ["s-home", "s-game", "s-result", "s-board"].forEach(s => { $(s).hidden = s !== id; });
+    /* Võistluses muusikat ei ole, seega pole ka muusikanuppu. */
+    $("s-game").classList.toggle("voistlus", !!(G && G.mode === "test"));
+    if (window.HMuusika) HMuusika.mang(id === "s-game" && !!G && G.mode === "train");
     window.scrollTo(0, 0);
   }
 
@@ -716,11 +719,7 @@
   }
 
   /* ---------- sündmused ---------- */
-  $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
-  $("sfxBtn").onclick = () => {
-    HSfx.enabled = !HSfx.enabled; D.sfx = HSfx.enabled; save();
-    $("sfxBtn").setAttribute("aria-pressed", HSfx.enabled ? "true" : "false");
-  };
+  HSfx.nupp($("sfxBtn")); HSfx.nupp($("sfxBtnG"));
   $("startBtn").onclick = () => start("train");
   $("nextBtn").onclick = next;
   $("prevBtn").onclick = openPrev;
