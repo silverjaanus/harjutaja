@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Harjutaja — eestikeelsed õppemängud</title>
-<meta name="description" content="Eestikeelsed õppemängud lastele: Kirjutaja õpetab õigekirja, Korrutaja korrutustabelit, Kell kella lugemist ja ajaarvutust, Teisendaja mõõtühikute teisendamist. Tasuta, ilma reklaamita ja ilma kontota.">
+<meta name="description" content="Eestikeelsed õppemängud lastele: Kirjutaja õpetab õigekirja, Korrutaja korrutustabelit, Kell kella lugemist ja ajaarvutust, Teisendaja mõõtühikute teisendamist, Keel inglise keele lauseid. Tasuta, ilma reklaamita ja ilma kontota.">
 <meta name="theme-color" content="#fdfdfa">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/harjutaja-ikoon-ummar.svg" type="image/svg+xml">
 <link rel="icon" href="icons/harjutaja-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="icons/harjutaja-180.png">
 <meta property="og:title" content="Harjutaja — eestikeelsed õppemängud">
-<meta property="og:description" content="Kirjutaja õpetab õigekirja, Korrutaja korrutustabelit, Kell kella lugemist ja ajaarvutust, Teisendaja mõõtühikute teisendamist. Tasuta, ilma reklaamita ja ilma kontota.">
+<meta property="og:description" content="Kirjutaja õpetab õigekirja, Korrutaja korrutustabelit, Kell kella lugemist ja ajaarvutust, Teisendaja mõõtühikute teisendamist, Keel inglise keele lauseid. Tasuta, ilma reklaamita ja ilma kontota.">
 <meta property="og:image" content="https://harjutaja.silverjaanus.com/icons/harjutaja-512.png">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
@@ -39,6 +39,7 @@ a.mod:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .mod-korrutaja .face{background:#eceefc;border-color:#d4d9f7}
 .mod-kell .face{background:#fbead9;border-color:#f0cfae}
 .mod-teisendaja .face{background:#e3f3ea;border-color:#a9d9c1}
+.mod-keel .face{background:#f1eafe;border-color:#d3c2f5}
 .mod-kell .face svg{width:104%}
 /* pead on eri kõrgusega (robotil on antenn) — ühtlustame nii, et näod tunduvad ühesuurused */
 .mod-kirjutaja .face svg{width:130%;transform:translateY(3px)}
@@ -105,19 +106,16 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
       <span class="face" id="faceLint"></span>
       <div><b>Teisendaja</b><span>Mitu meetrit on kilomeetris? Pikkus, mass, maht ja aeg ühest ühikust teise.</span></div>
     </a>
+    <a class="mod mod-keel" href="keel/">
+      <span class="face" id="facePapagoi"></span>
+      <div><b>Keel</b><span>Inglise keele laused: kuula, loe ette ja kirjuta.</span></div>
+    </a>
   </nav>
-
-  <section class="soon">
-    <h2 class="label">Tulekul</h2>
-    <ul>
-      <li><b>Keel</b> <span>Inglise sõnad: kuula ja ütle järele</span></li>
-    </ul>
-  </section>
 
   <details class="help">
     <summary>Mis see on ja kuidas töötab?</summary>
     <div class="help-body">
-      <p>Harjutaja on kogum eestikeelseid õppemänge. Iga mäng on oma moodul: <b>Kirjutaja</b> õpetab õigekirja, <b>Korrutaja</b> korrutustabelit, <b>Kell</b> osutitega kella lugemist ja <b>Teisendaja</b> mõõtühikute teisendamist. Keel tuleb hiljem.</p>
+      <p>Harjutaja on kogum eestikeelseid õppemänge. Iga mäng on oma moodul: <b>Kirjutaja</b> õpetab õigekirja, <b>Korrutaja</b> korrutustabelit, <b>Kell</b> osutitega kella lugemist, <b>Teisendaja</b> mõõtühikute teisendamist ja <b>Keel</b> inglise keele lauseid.</p>
       <p>Kõik moodulid töötavad ühtmoodi. Sa harjutad lühikeste ringidena, mitte tundide kaupa. Äpp jätab meelde, mis läks valesti, ja toob need ülesanded ise tagasi — nii kordad seda, mida päriselt vaja on. Vea peale ei juhtu midagi halba: äpp näitab õiget vastust ja seletab, miks see nii on.</p>
       <p>Igal moodulil on oma tegelane, kes sind saadab. Edenemine jääb sellesse seadmesse, kontot ei ole vaja.</p>
       <p>Mängu ajal on ülesande all nupp <b>„Anna veast teada“</b>: kui mõni sõna, hääl või ülesanne tundub vale, vajuta seda ja vali, mis täpselt viga on. Nii jõuab see mängu tegijani ja vea saab ära parandada. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja">e-kirjaga</a>.</p>
@@ -133,11 +131,13 @@ a.mod:hover .face{transform:translateY(-2px) rotate(-2deg)}
 <script src="core/panda.js"></script>
 <script src="kell/tegelane.js"></script>
 <script src="teisendaja/tegelane.js"></script>
+<script src="keel/tegelane.js"></script>
 <script>
   document.getElementById("faceK").innerHTML = KRobot("happy", { head: true });
   document.getElementById("faceP").innerHTML = KPanda("happy", true);
   document.getElementById("faceKell").innerHTML = KKagu("happy", { head: true });
   document.getElementById("faceLint").innerHTML = KLint("happy", { head: true });
+  document.getElementById("facePapagoi").innerHTML = KPapagoi("happy", { head: true });
 
   /* Avaleht registreerib service workeri ise. Varem tegid seda ainult mängud,
      nii et laps, kes ainult vaatas avalehte või mängis Korrutajat, ei saanud
