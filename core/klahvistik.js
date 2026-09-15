@@ -82,12 +82,19 @@
       valjad[aktiivne].focus();
     }
 
+    /* Väli laieneb koos sisuga: "15000" peab mahtuma tervikuna ära, aga tühi
+       väli ei tohi olla lai kast. Neli kohta on alati olemas. */
+    function sobita(v) {
+      v.style.width = (Math.max(4, v.value.length) + 0.5) + 'ch';
+    }
+
     function kirjuta(m) {
       var v = valjad[aktiivne];
       if (v.disabled) return;
       if (v.value.length >= MAX) return;
       if (m === ',' && (v.value.indexOf(',') >= 0 || !v.value.length)) return;
       v.value += m;
+      sobita(v);
       v.focus();
     }
 
@@ -96,6 +103,7 @@
       if (v.disabled) return;
       if (!v.value.length && aktiivne > 0) { vali(aktiivne - 1); return; }
       v.value = v.value.slice(0, -1);
+      sobita(v);
       v.focus();
     }
 
@@ -137,8 +145,12 @@
 
     return {
       vaartused: function () { return valjad.map(function (v) { return v.value; }); },
+      /* Eelmise küsimuse vaatamiseks: näita lapse vastust väljal. */
+      pane: function (vaartused) {
+        valjad.forEach(function (v, i) { v.value = (vaartused && vaartused[i]) || ''; sobita(v); });
+      },
       tyhjenda: function () {
-        valjad.forEach(function (v) { v.value = ''; v.disabled = false; });
+        valjad.forEach(function (v) { v.value = ''; v.disabled = false; sobita(v); });
         host.classList.remove('lukus');
         vali(0);
       },

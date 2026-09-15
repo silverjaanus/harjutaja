@@ -89,12 +89,17 @@
 <section id="s-game" class="screen" hidden>
   <header class="top">
     <button class="icon-btn" id="quitBtn" aria-label="Lõpeta ring">✕</button>
+    <button class="icon-btn" id="prevBtn" aria-label="Vaata eelmist ülesannet" disabled>‹</button>
     <div class="track"><i id="bar"></i></div>
   </header>
   <!-- Katkestamise kinnitus. Oma rida, mitte tagasisideriba: seal kirjutaks
        järgmine ülesanne hoiatuse üle. -->
   <p class="quitnote" id="quitNote" role="status" hidden></p>
   <div class="stage">
+    <div class="reviewbar" id="reviewBar" hidden>
+      <span id="reviewWhich">Vaatad eelmist ülesannet</span>
+      <button class="ghost" id="reviewBack">Tagasi mängu</button>
+    </div>
     <div class="timer" id="timer" hidden><i id="timerFill"></i></div>
     <p class="ask" id="askText" aria-live="polite"></p>
     <div class="padhost" id="pad"></div>

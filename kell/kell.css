@@ -23,6 +23,12 @@ body{
 .icon-btn[aria-pressed="false"] .wave{display:none}
 .icon-btn[aria-pressed="true"] .off{display:none}
 .top .back{margin-right:auto}
+.icon-btn:disabled{opacity:.4;cursor:default}
+/* Eelmise ülesande vaatamine (sama muster nagu Kirjutajas). */
+.reviewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  background:var(--warm-soft);border:1.5px solid var(--accent-edge);border-radius:14px;
+  padding:8px 10px 8px 14px;font-weight:700;font-size:14.5px}
+.reviewbar .ghost{padding:7px 12px;font-size:14px}
 .track{flex:1;height:10px;border-radius:999px;background:var(--rule-soft);overflow:hidden}
 .track i{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .25s ease}
 

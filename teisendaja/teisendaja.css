@@ -23,6 +23,12 @@ body{
 .icon-btn[aria-pressed="false"] .wave{display:none}
 .icon-btn[aria-pressed="true"] .off{display:none}
 .top .back{margin-right:auto}
+.icon-btn:disabled{opacity:.4;cursor:default}
+/* Eelmise ülesande vaatamine (sama muster nagu Kirjutajas). */
+.reviewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  background:var(--warm-soft);border:1.5px solid var(--accent-edge);border-radius:14px;
+  padding:8px 10px 8px 14px;font-weight:700;font-size:14.5px}
+.reviewbar .ghost{padding:7px 12px;font-size:14px}
 .track{flex:1;height:10px;border-radius:999px;background:var(--rule-soft);overflow:hidden}
 .track i{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .25s ease}
 
@@ -178,7 +184,7 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset
 .kl-vali:focus-within{border-color:var(--accent-edge);box-shadow:0 0 0 3px var(--warm-soft)}
 .kl-vali input{
   font:inherit;font-family:var(--display);font-weight:600;font-size:30px;color:var(--ink);
-  background:none;border:0;outline:none;width:4.2ch;text-align:right;font-variant-numeric:tabular-nums;
+  background:none;border:0;outline:none;width:4.5ch;max-width:60vw;text-align:right;font-variant-numeric:tabular-nums;
 }
 .kl-vali input:disabled{color:var(--ink-soft)}
 .kl-silt{font-family:var(--display);font-weight:600;font-size:22px;color:var(--ink-soft);min-width:2.2ch}
