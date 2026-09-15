@@ -27,6 +27,8 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**VEAPARANDUS (15. sept, haru `klahvistik-lukk`, commit `db99766`) — OOTAB SILVERI MERGE'I.** Teisendajas oli teisest klahvistikuga ülesandest alates klahvistik hall ja vastata ei saanud: `#pad` on sama element igas ülesandes, `lukusta()` lisas sellele klassi `lukus` ja `HKlahvistik.loo()` ei võtnud seda maha. Parandus `core/klahvistik.js`-is (loo() eemaldab `lukus`), regressioonitest `tools/test_teisendaja.py`-s (kukub vana koodiga, läheb läbi uuega), `sw.js` VERSION tõstetud. Viga oli sees Teisendaja algusest (`89fa597`). Ühtlustuse haru on juba mainis (PR #3). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...klahvistik-lukk
+
 **ÜHTLUSTUS ON TEHTUD JA TESTITUD (14. sept, haru `uhtlustus`, commit `3e7964d`) — OOTAB SILVERI MERGE'I.** Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...uhtlustus
 
 Töö algas Silveri küsimusest, kas offline-lubadus avalehel on tõsi ja miks moodulid lõpetavad ringi eri moodi. Mõlemad vastused olid „ei ole hästi". Küsiti kolme arvamust — Fable, ChatGPT (Codex, luges koodi) ja Gemini; ✕ vs tekstnupp läks 2:1 ✕ kasuks, aga kõik kolm ütlesid sama olulisema asja: **esimene vajutus peab muutma nuppu ennast**.

@@ -44,6 +44,9 @@
     var onVastus = o.onVastus || function () {};
     host.innerHTML = '';
     host.classList.add('klahvistik');
+    /* Host on sama element ülesandest ülesandesse. Eelmise vastuse lukk
+       jääks muidu külge ja uus klahvistik oleks algusest peale kinni. */
+    host.classList.remove('lukus');
 
     /* --- sisestusväljad --- */
     var read = document.createElement('div');
