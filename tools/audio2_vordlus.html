@@ -24,6 +24,18 @@
   h1{font-size:24px;margin:0 0 8px}
   .sissejuhatus{color:var(--hall);margin:0 0 24px}
   .sissejuhatus b{color:var(--sinine)}
+  .juhis{
+    background:#fff;
+    border:2px solid var(--kollane);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:0 0 24px;
+    color:var(--sinine);
+    font-size:15px;
+  }
+  .juhis ul{margin:10px 0;padding-left:20px}
+  .juhis li{margin-bottom:4px}
+  .juhis code{font-size:13px;color:var(--hall)}
   .kolmik{
     background:#fff;
     border:1px solid var(--joon);
@@ -48,12 +60,25 @@
   }
   .rida:last-child{margin-bottom:0}
   .haal{
-    width:92px;
-    flex:0 0 92px;
+    width:104px;
+    flex:0 0 104px;
     font-size:13px;
     font-weight:600;
     color:var(--hall);
   }
+  .haalenimi{
+    display:block;
+    font-size:15px;
+    font-weight:700;
+    color:var(--sinine);
+    letter-spacing:.01em;
+  }
+  .rida{border-radius:10px;padding:6px 8px;margin-left:-8px}
+  .h-kore{background:#fff}
+  .h-charon{background:#fdf6e3}
+  .h-charon button{background:#fbeec4;border-color:#f0dfa8}
+  .h-charon button:hover{background:#f7e4ac}
+  .h-charon .koik{background:#fff}
   button{
     font:inherit;
     font-weight:600;
@@ -77,26 +102,56 @@
     border-style:dashed;
   }
   .markus{margin-top:24px;color:var(--hall);font-size:14px}
+  h2.ruhm{
+    font-size:18px;
+    margin:28px 0 4px;
+    padding-top:12px;
+    border-top:2px solid var(--joon);
+  }
+  h2.ruhm:first-child{margin-top:0;padding-top:0;border-top:0}
+  .ruhmaselgitus{margin:0 0 14px;color:var(--hall);font-size:14px}
 </style>
 </head>
 <body>
 <div class="leht">
   <h1>Kuulamisabi: kahe hääle võrdlus</h1>
-  <p class="sissejuhatus">
-    Ülemine rida on <b>küsimuse hääl</b> (Kore, kaust <code>kirjutaja/audio</code>).
-    Alumine rida on <b>võrdluse hääl</b> (Charon, kaust <code>kirjutaja/audio2</code>).
-    Kuula kolm pikkust järjest ja vaata, kas Charon eristab neid sama selgelt kui Kore.
-  </p>
+  <div class="juhis">
+    <b>Kuula alati mõlemat rida.</b>
+    Vajuta ülemise rea „kõik kolm", siis alumise rea „kõik kolm", ja võrdle.
+    <ul>
+      <li><b>Ülemine rida, Kore</b> (<code>kirjutaja/audio</code>) — hääl, mis on juba mängus sees.</li>
+      <li><b>Alumine rida, Charon</b> (<code>kirjutaja/audio2</code>) — uus võrdlushääl, mida katsetame.</li>
+    </ul>
+    Küsimus on iga kord: kas <b>keskmine</b> sõna kõlab õigesti, ehk kas venitatud on
+    kaashäälik (tup-pa) või ekslikult täishäälik (tuu-pa). Kirjuta üles, kummal real viga oli.
+  </div>
 
   <div id="loend"></div>
 
   <p class="markus">
-    Esimesed kuusteist kolmikut on mõlema häälega täiesti olemas. Kahel viimasel on
-    võrdlushäälest üks klipp veel puudu; kui nupp on kriipsutatud, siis seda klippi ei ole.
+    Kõik teise ringi kolmikud on mõlema häälega täielikud. Esimeses ringis on kahel
+    viimasel (kade ja sadam) võrdlushäälest üks klipp puudu; kui nupp on kriipsutatud,
+    siis seda klippi ei ole.
   </p>
 </div>
 
 <script>
+// Teine ring: sõnad, mida Silver ja Mia ei ole veel kuulnud. Mõlemas kaustas täielikud.
+const TEINE_RING = [
+  ["uba", "upa", "uppa"],
+  ["saba", "sapa", "sappa"],
+  ["tibu", "tipu", "tippu"],
+  ["paber", "paper", "papper"],
+  ["pada", "pata", "patta"],
+  ["muda", "muta", "mutta"],
+  ["redel", "retel", "rettel"],
+  ["vedur", "vetur", "vettur"],
+  ["nuga", "nuka", "nukka"],
+  ["magu", "maku", "makku"],
+  ["viga", "vika", "vikka"],
+  ["tegu", "teku", "tekku"]
+];
+
 const KOLMIKUD = [
   ["kabi", "kapi", "kappi"],
   ["tigu", "tiku", "tikku"],
@@ -121,8 +176,8 @@ const KOLMIKUD = [
 
 const SILDID = ["lühike", "pikk", "ülipikk"];
 const HAALED = [
-  { nimi: "Küsimus", kaust: "../kirjutaja/audio/" },
-  { nimi: "Võrdlus", kaust: "../kirjutaja/audio2/" }
+  { nimi: "Küsimus", haal: "Kore", klass: "h-kore", kaust: "../kirjutaja/audio/" },
+  { nimi: "Võrdlus", haal: "Charon", klass: "h-charon", kaust: "../kirjutaja/audio2/" }
 ];
 
 let mangija = null;
@@ -166,7 +221,21 @@ async function mangiKoik(nupud) {
 
 const loend = document.getElementById("loend");
 
-KOLMIKUD.forEach(function (kolmik) {
+function pealkiriRuhm(tekst, selgitus) {
+  const p = document.createElement("h2");
+  p.className = "ruhm";
+  p.textContent = tekst;
+  loend.appendChild(p);
+  if (selgitus) {
+    const s = document.createElement("p");
+    s.className = "ruhmaselgitus";
+    s.textContent = selgitus;
+    loend.appendChild(s);
+  }
+}
+
+function joonista(nimekiri) {
+nimekiri.forEach(function (kolmik) {
   const kast = document.createElement("div");
   kast.className = "kolmik";
 
@@ -176,11 +245,11 @@ KOLMIKUD.forEach(function (kolmik) {
 
   HAALED.forEach(function (haal) {
     const rida = document.createElement("div");
-    rida.className = "rida";
+    rida.className = "rida " + haal.klass;
 
     const silt = document.createElement("span");
     silt.className = "haal";
-    silt.textContent = haal.nimi;
+    silt.innerHTML = haal.nimi + '<span class="haalenimi">' + haal.haal + "</span>";
     rida.appendChild(silt);
 
     const nupud = [];
@@ -204,6 +273,19 @@ KOLMIKUD.forEach(function (kolmik) {
 
   loend.appendChild(kast);
 });
+}
+
+pealkiriRuhm(
+  "Teine ring — need on veel kuulamata",
+  "Kaksteist uut kolmikut. Kuula iga kolmiku mõlemat rida ja pane tähele keskmist sõna: kas võrdlushääl venitab seal kaashäälikut või hoopis täishäälikut."
+);
+joonista(TEINE_RING);
+
+pealkiriRuhm(
+  "Esimene ring — juba kuulatud",
+  "Neist leidsid vea sõnades rata (kõlas raata) ja tupa (kõlas tuupa). Need kaks klippi tehakse uuesti, kui Gemini päevakvoot lähtestub."
+);
+joonista(KOLMIKUD);
 </script>
 </body>
 </html>
