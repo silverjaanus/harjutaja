@@ -27,6 +27,8 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**KEELE HELI VALMIS (16. sept, haru `keel-heli`) — OOTAB SILVERI MERGE'I.** `tools/keel_audio.py` tegi ülejäänud 7 lauset ja kõik 31 sõna (11 Gemini TTS päringut, iga partii transkriptsiooniga kontrollitud): `keel/audio/u4l4-01…10.mp3` ja `keel/audio/s/<sõna>.mp3`. Nüüd kõlab Keeles Gemini Kore hääl; brauseri hääl loeb ainult lühikesi abisõnu (a, an, the, to, at, in, is). Uue tunni lisamisel käivita sama skript uuesti — olemasolevad failid jäetakse vahele.
+
 **KÜLASTUSTE STATISTIKA: Vercel Web Analytics (haru `analuutika`) — OOTAB SILVERI MERGE'I JA ANALYTICS'I SISSELÜLITAMIST.** Silver tahtis näha, kas ja kui palju äppi kasutatakse (e-kiri tuttavatele saadetud). Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...analuutika
 
 - Igale lehele (avaleht, viis moodulit, `_mall/index.html`, Korrutajal `korrutaja.src.html` + `build.py`) lisati `<head>`-i Verceli HTML-skript: `window.va` järjekord + `<script defer src="/_vercel/insights/script.js">`. Pakette ega ehitust pole vaja.
