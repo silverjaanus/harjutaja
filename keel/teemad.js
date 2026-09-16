@@ -215,6 +215,103 @@
         { id: "oh-block", en: "Block", et: "blokeeri",
           teeb: "„Block“ tähendab blokeerimist. See mängija ei saa sulle enam kirjutada." }
       ]
+    },
+    {
+      id: "konsool",
+      nimi: "Konsool",
+      kus: "konsoolis",
+      ekraan: "konsool",
+      sonad: [
+        { id: "ps-press", en: "Press", et: "vajuta (puldil)",
+          teeb: "„Press“ tähendab vajutamist. „Press ✕ to start“ tähendab: alustamiseks vajuta puldil nuppu ✕." },
+        { id: "ps-start", en: "Start", et: "alusta",
+          teeb: "„Start“ tähendab alustamist. Mäng läheb käima." },
+        { id: "ps-continue", en: "Continue", et: "jätka (poolelijäänud mängu)",
+          teeb: "„Continue“ tähendab jätkamist. Mäng läheb edasi sealt, kus see pooleli jäi." },
+        { id: "ps-newgame", en: "New Game", et: "uus mäng",
+          teeb: "„New Game“ tähendab uut mängu. Mäng algab päris algusest." },
+        { id: "ps-load", en: "Load", et: "laadi (salvestatud mäng)",
+          teeb: "„Load“ tähendab laadimist: avad salvestatud mängu ja valid, millisest kohast jätkata." },
+        { id: "ps-retry", en: "Retry", et: "proovi uuesti (1 sõna)",
+          teeb: "„Retry“ tähendab uuesti proovimist. Sama koht algab uuesti." },
+        { id: "ps-options", en: "Options", et: "valikud",
+          teeb: "„Options“ tähendab valikuid. Seal saad muuta heli, pilti ja pulti." },
+        { id: "ps-quit", en: "Quit", et: "välju (mängust)",
+          teeb: "„Quit“ tähendab mängust väljumist. Enne salvesta, muidu läheb tehtu kaduma." }
+      ]
+    },
+    {
+      id: "telefon",
+      nimi: "Telefon küsib",
+      kus: "telefonis",
+      ekraan: "telefon",
+      sonad: [
+        { id: "te-allow", en: "Allow", et: "luba",
+          teeb: "„Allow“ tähendab lubamist. Luba ainult siis, kui tead, milleks äpp seda vajab." },
+        { id: "te-dontallow", en: "Don't Allow", et: "ära luba",
+          teeb: "„Don’t Allow“ tähendab „ära luba“. Kui sa pole kindel, vali see." },
+        { id: "te-update", en: "Update", et: "uuenda",
+          teeb: "„Update“ tähendab uuendamist. Äpp saab uue versiooni." },
+        { id: "te-install", en: "Install", et: "paigalda (äpp)",
+          teeb: "„Install“ tähendab äpi paigaldamist telefoni. Tee seda koos vanemaga.",
+          markus: "Eesti keeles öeldakse ka „installima“." },
+        { id: "te-open", en: "Open", et: "ava",
+          teeb: "„Open“ tähendab avamist. Äpp läheb lahti." },
+        { id: "te-delete", en: "Delete", et: "kustuta",
+          teeb: "„Delete“ tähendab kustutamist. Kustutatud asja ei pruugi enam tagasi saada. Tee seda koos vanemaga." },
+        { id: "te-cancel", en: "Cancel", et: "tühista",
+          teeb: "„Cancel“ tähendab tühistamist. Aken läheb kinni ja midagi ei juhtu." },
+        { id: "te-turnon", en: "Turn On", et: "lülita sisse",
+          teeb: "„Turn On“ tähendab sisselülitamist. Bluetooth läheb tööle." }
+      ]
+    },
+    {
+      id: "veeb",
+      nimi: "Veebileht",
+      kus: "veebilehel",
+      ekraan: "veeb",
+      sonad: [
+        { id: "ve-login", en: "Log In", et: "logi sisse",
+          teeb: "„Log In“ tähendab oma kontole sisselogimist." },
+        { id: "ve-signup", en: "Sign Up", et: "loo konto",
+          teeb: "„Sign Up“ tähendab uue konto tegemist. Tee seda ainult koos vanemaga." },
+        { id: "ve-username", en: "Username", et: "kasutajanimi",
+          teeb: "„Username“ tähendab kasutajanime. Ära pane sinna oma päris nime, mõtle välja hüüdnimi." },
+        { id: "ve-password", en: "Password", et: "parool",
+          teeb: "„Password“ tähendab parooli. Ära ütle parooli kellelegi, ka mitte sõbrale. Vanem võib seda teada." },
+        { id: "ve-menu", en: "Menu", et: "menüü",
+          teeb: "„Menu“ tähendab menüüd. Sageli on see kolm kriipsu üleval nurgas." },
+        { id: "ve-close", en: "Close", et: "sulge",
+          teeb: "„Close“ tähendab sulgemist. Sageli on selle nupu peal rist." },
+        { id: "ve-acceptall", en: "Accept All", et: "nõustu kõigega",
+          teeb: "„Accept All“ tähendab „nõustu kõigega“. See aken küsib luba küpsiste jaoks. Küpsised on väikesed failid, mis jätavad meelde, mida sa lehel teed." },
+        { id: "ve-logout", en: "Log Out", et: "logi välja",
+          teeb: "„Log Out“ tähendab väljalogimist. Tee seda alati, kui kasutad kellegi teise arvutit." }
+      ]
+    },
+    {
+      id: "probleemid",
+      nimi: "Kui midagi ei tööta",
+      kus: "kui midagi ei tööta",
+      ekraan: "probleemid",
+      sonad: [
+        { id: "pr-loading", en: "Loading", et: "laadimine",
+          teeb: "„Loading“ tähendab, et midagi laadib. Oota natuke." },
+        { id: "pr-error", en: "Error", et: "viga",
+          teeb: "„Error“ tähendab viga. Midagi läks valesti." },
+        { id: "pr-tryagain", en: "Try Again", et: "proovi uuesti (2 sõna)",
+          teeb: "„Try Again“ tähendab uuesti proovimist. Sama asi tehakse veel kord." },
+        { id: "pr-nointernet", en: "No Internet", et: "internetti pole",
+          teeb: "„No Internet“ tähendab, et internetiühendust pole. Kontrolli, kas wifi on sees." },
+        { id: "pr-wait", en: "Wait", et: "oota",
+          teeb: "„Wait“ tähendab ootamist. Äpp mõtleb veel – ära vajuta mitu korda." },
+        { id: "pr-restart", en: "Restart", et: "taaskäivita (pane uuesti käima)",
+          teeb: "„Restart“ tähendab taaskäivitamist. Seade või mäng läheb kinni ja uuesti lahti." },
+        { id: "pr-lowbattery", en: "Low Battery", et: "aku on peaaegu tühi",
+          teeb: "„Low Battery“ tähendab, et aku hakkab tühjaks saama. Pane telefon laadima." },
+        { id: "pr-help", en: "Help", et: "abi",
+          teeb: "„Help“ tähendab abi. Seal on juhised, kui midagi ei tööta." }
+      ]
     }
   ];
 })();

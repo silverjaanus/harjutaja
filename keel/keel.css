@@ -327,3 +327,88 @@
 .mull.juhis .k-sona{color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:900;font-size:24px}
 .k-sona .tapsustus{font-family:var(--body);font-size:17px}
 .k-juhend{margin:0;font-size:15px;font-weight:800;color:var(--warm);text-align:center}
+
+/* Konsool (16. sept) */
+.ps{background:#0b1026;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;padding:10px;display:flex;flex-direction:column;gap:8px}
+.ps .ek{border:0;color:#fff;background:none;font-weight:800}
+.ps-tv{background:radial-gradient(circle at 50% 20%,#27346e,#0b1026 75%);border:3px solid #2a2f45;border-radius:10px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.ps-nimi{margin:4px 0 0;font-size:22px;letter-spacing:.15em;color:#ffd166;text-shadow:0 2px 0 #7a4b00}
+.ps-menyy{display:flex;flex-direction:column;gap:4px;width:80%}
+.ps .ps-rida{background:rgba(255,255,255,.08);border-radius:8px;font-size:16px;min-height:38px}
+.ps .ps-rida:first-child{background:rgba(255,255,255,.22)}
+.ps-vajuta{margin:4px 0 0;font-size:15px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:center;color:#c9d6ff}
+.ps .ps-sona{padding:2px 6px;min-height:34px;border-radius:6px;background:rgba(255,255,255,.12);color:#fff;font-size:15px}
+.ps-x{font-style:normal;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#dfe6ff;color:#3a55c8;font-size:13px}
+.ps-over{background:#3a0d14;border:2px solid #7a1f2c;border-radius:10px;padding:8px;display:flex;align-items:center;justify-content:space-between}
+.ps-over p{margin:0;color:#ff8c9a;letter-spacing:.1em}
+.ps .ps-retry{background:#e84a5f;border-radius:8px;padding:6px 16px}
+.ps-pult{width:55%;align-self:center;height:auto}
+.tehtud-ps-retry .ps-over{background:#0d3a1f;border-color:#1f7a44}
+
+/* Telefon küsib */
+.tf{background:linear-gradient(#cfd9ea,#e9eef6);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#111;padding:10px;display:flex;flex-direction:column;gap:8px}
+.tf .ek{border:0;font-weight:600;font-size:15px}
+.tf-aken{background:rgba(255,255,255,.92);border-radius:14px;overflow:hidden;text-align:center}
+.tf-aken p{margin:0;padding:10px 12px;font-size:13.5px}
+.tf-nupud{display:flex;border-top:1px solid #ccd}
+.tf .tf-nupp{flex:1;background:none;color:#0a64d6;border-radius:0;min-height:42px}
+.tf .tf-nupp + .tf-nupp{border-left:1px solid #ccd}
+.tf .tf-paks{font-weight:800}
+.tf .tf-punane{color:#d11}
+.tf-pood{display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 8px}
+.tf-ikoon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#7cc36b,#3c8527);flex:none}
+.tf-ik2{background:linear-gradient(135deg,#ff9f1c,#e84a5f)}
+.tf-app{flex:1;display:flex;flex-direction:column;font-size:13px;font-weight:700;min-width:0}
+.tf-app small{color:#667;font-weight:500}
+.tf .tf-pill{background:#e8eef8;color:#0a64d6;border-radius:999px;padding:4px 12px;font-weight:800;min-height:34px}
+.tf .tf-sinine{background:#0a64d6;color:#fff}
+.tf-riba{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:6px 8px;font-size:13px}
+.tehtud-te-turnon .tf-riba{background:#e3f5ec}
+
+/* Veebileht */
+.vb{background:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1b1b1b;position:relative}
+.vb .ek{border:0;font-weight:700;font-size:14px}
+.vb-aadress{display:flex;align-items:center;gap:6px;background:#eceff4;padding:6px 10px;font-size:12px;color:#556}
+.vb-aadress i{width:10px;height:12px;border:2px solid #556;border-radius:2px}
+.vb-pais{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid #e3e6ec}
+.vb .vb-menu{background:none;flex-direction:column;gap:1px;font-size:10px;padding:2px 6px}
+.vb-burger{display:flex;flex-direction:column;gap:3px}
+.vb-burger i{display:block;width:18px;height:2.5px;background:#1b1b1b;border-radius:2px}
+.vb-logo{flex:1;text-align:center;font-size:18px;color:#6a44b8}
+.vb .vb-link{background:none;color:#0a64d6;text-decoration:underline;font-size:13px}
+.vb-vorm{padding:10px 14px 12px;display:flex;flex-direction:column;align-items:stretch;gap:3px}
+.vb-pealkiri{margin:0 0 4px;font-size:18px;font-weight:800}
+.vb .vb-silt{background:none;justify-content:flex-start;padding:2px 0;min-height:30px;font-size:13px;color:#333}
+.vb-vali{border:1.5px solid #c9cdd6;border-radius:8px;padding:6px 8px;font-size:14px;color:#444;margin-bottom:4px}
+.vb-nupud{display:flex;gap:6px;margin-top:6px}
+.vb .vb-nupp{flex:1;background:#eceff4;color:#1b1b1b;border-radius:8px}
+.vb .vb-sinine{background:#0a64d6;color:#fff}
+.vb-kupsis{position:relative;margin:0 8px 8px;background:#222;color:#fff;border-radius:12px;padding:10px 10px 10px;display:flex;flex-direction:column;gap:6px}
+.vb-kupsis p{margin:0 30px 0 0;font-size:13px}
+.vb .vb-rist{position:absolute;top:4px;right:4px;background:none;color:#fff;flex-direction:column;gap:0;font-size:10px;padding:2px 4px;min-height:36px}
+.vb .vb-rist span:first-child{font-size:16px}
+.tehtud-ve-close .vb-kupsis,.tehtud-ve-acceptall .vb-kupsis{opacity:.35}
+
+/* Kui midagi ei tööta */
+.pr{background:#f3f4f7;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1b1b1b;padding:10px;display:flex;flex-direction:column;gap:8px}
+.pr .ek{border:0;font-weight:800;font-size:14px}
+.pr-riba{display:flex;gap:6px}
+.pr .pr-teade{flex:1;background:#fff3cd;color:#6b4e00;border-radius:10px;gap:4px;padding:4px 6px}
+.pr .pr-aku{background:#fde2e1;color:#8a1c1c}
+.pr-akuikoon{width:22px;height:11px;border:2px solid currentColor;border-radius:2px;position:relative;flex:none}
+.pr-akuikoon i{position:absolute;left:1px;top:1px;bottom:1px;width:3px;background:#d11}
+.pr-kaart{background:#fff;border-radius:12px;padding:10px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.pr .pr-lae{background:none;gap:8px;font-size:16px}
+.pr-ring{width:20px;height:20px;border-radius:50%;border:3px solid #cfd6e4;border-top-color:#0a64d6;animation:pr-kei 1s linear infinite}
+@keyframes pr-kei{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.pr-ring{animation:none}}
+.pr .pr-link{background:#eceff4;border-radius:8px}
+.pr-viga{flex-direction:column;align-items:stretch}
+.pr .pr-pealkiri{background:none;justify-content:flex-start;color:#b3261e;font-size:17px;gap:6px}
+.pr-viga p{margin:0;font-size:13px;color:#444}
+.pr-nupud{display:flex;gap:6px}
+.pr .pr-nupp{flex:1;background:#eceff4;border-radius:8px}
+.pr .pr-sinine{background:#0a64d6;color:#fff}
+.pr .pr-abi{align-self:flex-end;background:#fff;border:1.5px solid #c9cdd6;border-radius:999px;gap:6px;padding:4px 12px}
+.pr .pr-abi span:first-child{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#1b1b1b;color:#fff;font-size:12px}
+.tehtud-pr-tryagain .pr-viga,.tehtud-pr-restart .pr-viga{background:#e3f5ec}

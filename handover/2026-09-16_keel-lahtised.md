@@ -1,4 +1,4 @@
-Seis: OOTAB MERGE'I
+Seis: MERGE'ITUD (PR #17)
 
 # Keel: lahtised otsad pärast ekraanisõnade teemasid (haru `keel-lahtised`)
 
