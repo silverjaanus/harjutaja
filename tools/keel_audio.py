@@ -62,6 +62,10 @@ STYLE_PHRASE = ("Read this short English phrase aloud for a young child who is l
 NUMBRID = {"1": " one ", "2": " two ", "3": " three ", "4": " four ", "5": " five "}
 
 
+# Sama kolaga sonad: transkriptsioon ei saa neid eristada ("Ad" kirjutati alati "add").
+SAMA_KOLA = {"ad": {"add"}}
+
+
 def puhas(s):
     s = s.lower().replace("’", "'")
     for k, v in NUMBRID.items():
@@ -182,7 +186,7 @@ def main():
                 if len(kuulis) != len(partii):
                     log("  kontroll kuulis %d sõna %d-st (katse %d)" % (len(kuulis), len(partii), katse)); continue
                 for w, h, (x, y) in zip(partii, kuulis, osad):
-                    if h != w:
+                    if h != w and h not in SAMA_KOLA.get(w, ()):
                         log("  jätan vahele %s (kuulis %s)" % (w, h)); continue
                     path = os.path.join(OUT_S, sona_fail(w) + ".mp3")
                     T.write_mp3(T.cut(pcm, x, y), path + ".part.mp3", ffmpeg); os.replace(path + ".part.mp3", path)

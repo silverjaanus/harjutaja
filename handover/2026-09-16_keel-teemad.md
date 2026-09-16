@@ -1,4 +1,4 @@
-Seis: OOTAB MERGE'I
+Seis: MERGE'ITUD (PR #16)
 
 # Keel: viis uut ekraanisõnade teemat ja selgem küsimus (haru `keel-teemad`)
 
