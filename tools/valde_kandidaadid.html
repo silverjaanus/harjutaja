@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirjutaja – vali õige klipp</title>
+<style>
+ :root { --tint:#16284a; --kollane:#f3c445; --hall:#eef1f6; }
+ body { font-family: system-ui, sans-serif; color: var(--tint); background:#fff;
+        max-width: 60rem; margin: 0 auto; padding: 1rem 1rem 9rem; }
+ h1 { font-size: 1.4rem; margin-bottom: .3rem; }
+ .juhis { background: var(--kollane); padding: .9rem 1rem; border-radius: .6rem; line-height: 1.5; margin: 1rem 0 1.5rem; }
+ .juhis ol { margin: .5rem 0 0; padding-left: 1.2rem; }
+ .rida { border: 1px solid #ccd3e0; border-radius: .6rem; padding: .8rem 1rem; margin-bottom: .9rem; }
+ .rida.valitud { background: #eaf7ee; border-color: #8ccfa3; }
+ .rida.ykski { background: #fdeceb; border-color: #e39b96; }
+ .pais { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+ .sona { font-size: 1.15rem; font-weight: 700; }
+ .miks { color: #5a6782; font-size: .85rem; }
+ .rea { display: flex; align-items: center; gap: .4rem; margin-top: .5rem; flex-wrap: wrap;
+        background: var(--hall); border-radius: .4rem; padding: .3rem .4rem; }
+ .silt { width: 9rem; font-size: .85rem; font-weight: 700; }
+ .vahe { flex: 1; }
+ button { font: inherit; padding: .35rem .7rem; border-radius: .4rem; border: 1px solid #ccd3e0;
+          background: #fff; color: var(--tint); cursor: pointer; }
+ button:hover { background: #f6f8fb; }
+ button.vali.on { background: #1f8a4c; border-color: #1f8a4c; color: #fff; }
+ button.ei.on { background: #c0392b; border-color: #c0392b; color: #fff; }
+ #kokku { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 2px solid var(--tint); padding: .7rem 1rem; }
+ #kokku textarea { width: 100%; height: 5rem; font: inherit; font-size: .85rem; box-sizing: border-box; }
+</style>
+</head>
+<body>
+<h1>Vali õige klipp</h1>
+<p>Need klipid tulid kahel korral valesti: hääl venitas täishäälikut. Nüüd on igale sõnale tehtud kolm uut katset (A, B, C).</p>
+<div class="juhis">
+<b>Kuidas kuulata:</b>
+<ol>
+ <li>Igal real vajuta kõigepealt „lühike“: see on sama kolmiku lühike vorm, millega võrrelda.</li>
+ <li>Siis kuula katseid A, B ja C. Õige kõla: täishäälik on sama lühike kui lühikeses vormis, pikem on ainult k, p või t („putuka“, mitte „puutuka“).</li>
+ <li>Vajuta sobiva katse all „vali see“. Kui ükski ei sobi, vajuta „ükski ei sobi“.</li>
+ <li>Lehe allservast kopeeri tulemus ja saada Claude'ile. Valikud jäävad alles ka siis, kui lehe uuesti avad.</li>
+</ol>
+</div>
+<div id="loend">Laen …</div>
+<div id="kokku">
+ <div><b>Valitud:</b> <span id="arv">0</span> / <span id="kokkuarv">0</span></div>
+ <textarea id="valjund" readonly placeholder="Vali igal real, siis kopeeri see tekst ja saada Claude'ile."></textarea>
+</div>
+<script>
+const VOTI = "valde_kandidaadid_v1";
+let valik = {};
+try { valik = JSON.parse(localStorage.getItem(VOTI)) || {}; } catch (e) { valik = {}; }
+const salvesta = () => { try { localStorage.setItem(VOTI, JSON.stringify(valik)); } catch (e) {} };
+const mangi = url => { const a = new Audio(url); a.play().catch(() => {}); };
+let SIHID = [];
+
+function nupp(tekst, fn, klass) {
+  const b = document.createElement("button");
+  b.textContent = tekst; if (klass) b.className = klass; b.onclick = fn; return b;
+}
+
+function uuenda() {
+  const read = SIHID.map(s => { const v = valik[s.haal + ":" + s.id]; return v ? s.haal + " " + s.sona + ": " + (v === "-" ? "ükski ei sobi" : v) : null; }).filter(Boolean);
+  document.getElementById("arv").textContent = read.length;
+  document.getElementById("valjund").value = read.join("\n");
+}
+
+fetch("valde_kandidaadid.json").then(r => r.json()).then(d => {
+  SIHID = d.sihid;
+  document.getElementById("kokkuarv").textContent = SIHID.length;
+  const loend = document.getElementById("loend"); loend.innerHTML = "";
+  SIHID.forEach(s => {
+    const voti = s.haal + ":" + s.id;
+    const div = document.createElement("div");
+    div.className = "rida";
+    div.innerHTML = '<div class="pais"><span class="sona">' + s.sona + '</span><span class="miks">' + s.haal + ', ' + (s.vorm === "pikk" ? "pikk vorm" : "ülipikk vorm") + '</span></div>';
+    const r1 = document.createElement("div"); r1.className = "rea";
+    r1.innerHTML = '<span class="silt">Võrdlus</span>';
+    r1.appendChild(nupp("lühike", () => mangi("../kirjutaja/" + s.kaust + "/" + s.trio.lyhike + ".mp3")));
+    r1.appendChild(nupp("praegune (vigane)", () => mangi("../kirjutaja/" + s.kaust + "/" + s.id + ".mp3")));
+    div.appendChild(r1);
+    const nupud = [];
+    Object.keys(s.kandidaadid).forEach(k => {
+      const r = document.createElement("div"); r.className = "rea";
+      r.innerHTML = '<span class="silt">Katse ' + k + '</span>';
+      r.appendChild(nupp("kuula", () => mangi("../kirjutaja/kandidaadid/" + s.haal + "/" + s.kandidaadid[k])));
+      r.appendChild(nupp("lühike + see", () => {
+        const a = new Audio("../kirjutaja/" + s.kaust + "/" + s.trio.lyhike + ".mp3");
+        a.onended = () => mangi("../kirjutaja/kandidaadid/" + s.haal + "/" + s.kandidaadid[k]);
+        a.play().catch(() => {});
+      }));
+      const v = document.createElement("span"); v.className = "vahe"; r.appendChild(v);
+      const b = nupp("vali see", () => { valik[voti] = valik[voti] === k ? undefined : k; salvesta(); joonista(); uuenda(); }, "vali");
+      nupud.push([k, b]); r.appendChild(b);
+      div.appendChild(r);
+    });
+    const r2 = document.createElement("div"); r2.className = "rea";
+    r2.innerHTML = '<span class="vahe"></span>';
+    const ei = nupp("ükski ei sobi", () => { valik[voti] = valik[voti] === "-" ? undefined : "-"; salvesta(); joonista(); uuenda(); }, "ei");
+    nupud.push(["-", ei]); r2.appendChild(ei); div.appendChild(r2);
+    const joonista = () => {
+      div.className = "rida" + (valik[voti] === "-" ? " ykski" : valik[voti] ? " valitud" : "");
+      nupud.forEach(([k, b]) => b.classList.toggle("on", valik[voti] === k));
+    };
+    joonista();
+    loend.appendChild(div);
+  });
+  uuenda();
+}).catch(() => {
+  document.getElementById("loend").textContent = "Ei leidnud faili valde_kandidaadid.json. Käivita esmalt tools/valde_kandidaadid.py.";
+});
+</script>
+</body>
+</html>
