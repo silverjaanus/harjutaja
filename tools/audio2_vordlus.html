@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuulamisabi: kahe hääle võrdlus</title>
+<style>
+  :root{
+    --sinine:#123a63;
+    --helesinine:#e7eef7;
+    --kollane:#f2b705;
+    --hall:#6b7280;
+    --joon:#d3dce8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    padding:24px 16px 64px;
+    background:#f7f9fc;
+    color:var(--sinine);
+    font:16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .leht{max-width:760px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 8px}
+  .sissejuhatus{color:var(--hall);margin:0 0 24px}
+  .sissejuhatus b{color:var(--sinine)}
+  .juhis{
+    background:#fff;
+    border:2px solid var(--kollane);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:0 0 24px;
+    color:var(--sinine);
+    font-size:15px;
+  }
+  .juhis ul{margin:10px 0;padding-left:20px}
+  .juhis li{margin-bottom:4px}
+  .juhis code{font-size:13px;color:var(--hall)}
+  .kolmik{
+    background:#fff;
+    border:1px solid var(--joon);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .kolmik h2{
+    font-size:15px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--hall);
+    margin:0 0 10px;
+    font-weight:600;
+  }
+  .rida{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+  }
+  .rida:last-child{margin-bottom:0}
+  .haal{
+    width:104px;
+    flex:0 0 104px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--hall);
+  }
+  .haalenimi{
+    display:block;
+    font-size:15px;
+    font-weight:700;
+    color:var(--sinine);
+    letter-spacing:.01em;
+  }
+  .rida{border-radius:10px;padding:6px 8px;margin-left:-8px}
+  .h-kore{background:#fff}
+  .h-charon{background:#fdf6e3}
+  .h-charon button{background:#fbeec4;border-color:#f0dfa8}
+  .h-charon button:hover{background:#f7e4ac}
+  .h-charon .koik{background:#fff}
+  button{
+    font:inherit;
+    font-weight:600;
+    color:var(--sinine);
+    background:var(--helesinine);
+    border:1px solid var(--joon);
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+    min-width:104px;
+    text-align:left;
+  }
+  button:hover{background:#dbe6f4}
+  button.mangib{background:var(--kollane);border-color:var(--kollane)}
+  button.puudu{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+  button .pikkus{display:block;font-size:11px;font-weight:500;color:var(--hall);text-transform:uppercase;letter-spacing:.03em}
+  button.mangib .pikkus{color:#5a4300}
+  .koik{
+    min-width:0;
+    background:#fff;
+    border-style:dashed;
+  }
+  .markus{margin-top:24px;color:var(--hall);font-size:14px}
+  h2.ruhm{
+    font-size:18px;
+    margin:28px 0 4px;
+    padding-top:12px;
+    border-top:2px solid var(--joon);
+  }
+  h2.ruhm:first-child{margin-top:0;padding-top:0;border-top:0}
+  .ruhmaselgitus{margin:0 0 14px;color:var(--hall);font-size:14px}
+</style>
+</head>
+<body>
+<div class="leht">
+  <h1>Kuulamisabi: kahe hääle võrdlus</h1>
+  <div class="juhis">
+    <b>Kuula alati mõlemat rida.</b>
+    Vajuta ülemise rea „kõik kolm", siis alumise rea „kõik kolm", ja võrdle.
+    <ul>
+      <li><b>Ülemine rida, Kore</b> (<code>kirjutaja/audio</code>) — hääl, mis on juba mängus sees.</li>
+      <li><b>Alumine rida, Charon</b> (<code>kirjutaja/audio2</code>) — uus võrdlushääl, mida katsetame.</li>
+    </ul>
+    Küsimus on iga kord: kas <b>keskmine</b> sõna kõlab õigesti, ehk kas venitatud on
+    kaashäälik (tup-pa) või ekslikult täishäälik (tuu-pa). Kirjuta üles, kummal real viga oli.
+  </div>
+
+  <div id="loend"></div>
+
+  <p class="markus">
+    Kõik teise ringi kolmikud on mõlema häälega täielikud. Esimeses ringis on kahel
+    viimasel (kade ja sadam) võrdlushäälest üks klipp puudu; kui nupp on kriipsutatud,
+    siis seda klippi ei ole.
+  </p>
+</div>
+
+<script>
+// Teine ring: sõnad, mida Silver ja Mia ei ole veel kuulnud. Mõlemas kaustas täielikud.
+const TEINE_RING = [
+  ["uba", "upa", "uppa"],
+  ["saba", "sapa", "sappa"],
+  ["tibu", "tipu", "tippu"],
+  ["paber", "paper", "papper"],
+  ["pada", "pata", "patta"],
+  ["muda", "muta", "mutta"],
+  ["redel", "retel", "rettel"],
+  ["vedur", "vetur", "vettur"],
+  ["nuga", "nuka", "nukka"],
+  ["magu", "maku", "makku"],
+  ["viga", "vika", "vikka"],
+  ["tegu", "teku", "tekku"]
+];
+
+const KOLMIKUD = [
+  ["kabi", "kapi", "kappi"],
+  ["tigu", "tiku", "tikku"],
+  ["lugu", "luku", "lukku"],
+  ["lagi", "laki", "lakki"],
+  ["kodu", "kotu", "kottu"],
+  ["vigur", "vikur", "vikkur"],
+  ["ribi", "ripi", "rippi"],
+  ["pudel", "putel", "puttel"],
+  ["sibul", "sipul", "sippul"],
+  ["madal", "matal", "mattal"],
+  ["rada", "rata", "ratta"],
+  ["kabe", "kape", "kappe"],
+  ["tuba", "tupa", "tuppa"],
+  ["siga", "sika", "sikka"],
+  ["vaba", "vapa", "vappa"],
+  ["kagu", "kaku", "kakku"],
+  // Neil kahel on võrdlushäälest üks klipp veel puudu — seepärast on nad lõpus.
+  ["kade", "kate", "katte"],
+  ["sadam", "satam", "sattam"]
+];
+
+const SILDID = ["lühike", "pikk", "ülipikk"];
+const HAALED = [
+  { nimi: "Küsimus", haal: "Kore", klass: "h-kore", kaust: "../kirjutaja/audio/" },
+  { nimi: "Võrdlus", haal: "Charon", klass: "h-charon", kaust: "../kirjutaja/audio2/" }
+];
+
+let mangija = null;
+let aktiivneNupp = null;
+
+function peata() {
+  if (mangija) { mangija.pause(); mangija = null; }
+  if (aktiivneNupp) { aktiivneNupp.classList.remove("mangib"); aktiivneNupp = null; }
+}
+
+function mangi(nupp) {
+  return new Promise(function (valmis) {
+    peata();
+    nupp.classList.add("mangib");
+    aktiivneNupp = nupp;
+    const heli = new Audio(nupp.dataset.fail);
+    mangija = heli;
+    heli.onended = function () {
+      nupp.classList.remove("mangib");
+      if (aktiivneNupp === nupp) { aktiivneNupp = null; }
+      if (mangija === heli) { mangija = null; }
+      valmis();
+    };
+    heli.onerror = function () {
+      nupp.classList.remove("mangib");
+      nupp.classList.add("puudu");
+      if (mangija === heli) { mangija = null; }
+      valmis();
+    };
+    heli.play().catch(function () { valmis(); });
+  });
+}
+
+async function mangiKoik(nupud) {
+  for (const nupp of nupud) {
+    if (nupp.classList.contains("puudu")) { continue; }
+    await mangi(nupp);
+    await new Promise(function (v) { setTimeout(v, 320); });
+  }
+}
+
+const loend = document.getElementById("loend");
+
+function pealkiriRuhm(tekst, selgitus) {
+  const p = document.createElement("h2");
+  p.className = "ruhm";
+  p.textContent = tekst;
+  loend.appendChild(p);
+  if (selgitus) {
+    const s = document.createElement("p");
+    s.className = "ruhmaselgitus";
+    s.textContent = selgitus;
+    loend.appendChild(s);
+  }
+}
+
+function joonista(nimekiri) {
+nimekiri.forEach(function (kolmik) {
+  const kast = document.createElement("div");
+  kast.className = "kolmik";
+
+  const pealkiri = document.createElement("h2");
+  pealkiri.textContent = kolmik.join(" – ");
+  kast.appendChild(pealkiri);
+
+  HAALED.forEach(function (haal) {
+    const rida = document.createElement("div");
+    rida.className = "rida " + haal.klass;
+
+    const silt = document.createElement("span");
+    silt.className = "haal";
+    silt.innerHTML = haal.nimi + '<span class="haalenimi">' + haal.haal + "</span>";
+    rida.appendChild(silt);
+
+    const nupud = [];
+    kolmik.forEach(function (sona, i) {
+      const nupp = document.createElement("button");
+      nupp.dataset.fail = haal.kaust + sona + ".mp3";
+      nupp.innerHTML = '<span class="pikkus">' + SILDID[i] + "</span>" + sona;
+      nupp.addEventListener("click", function () { mangi(nupp); });
+      rida.appendChild(nupp);
+      nupud.push(nupp);
+    });
+
+    const koik = document.createElement("button");
+    koik.className = "koik";
+    koik.textContent = "▶ kõik kolm";
+    koik.addEventListener("click", function () { mangiKoik(nupud); });
+    rida.appendChild(koik);
+
+    kast.appendChild(rida);
+  });
+
+  loend.appendChild(kast);
+});
+}
+
+pealkiriRuhm(
+  "Teine ring — need on veel kuulamata",
+  "Kaksteist uut kolmikut. Kuula iga kolmiku mõlemat rida ja pane tähele keskmist sõna: kas võrdlushääl venitab seal kaashäälikut või hoopis täishäälikut."
+);
+joonista(TEINE_RING);
+
+pealkiriRuhm(
+  "Esimene ring — juba kuulatud",
+  "Neist leidsid vea sõnades rata (kõlas raata) ja tupa (kõlas tuupa). Need kaks klippi tehakse uuesti, kui Gemini päevakvoot lähtestub."
+);
+joonista(KOLMIKUD);
+</script>
+</body>
+</html>
