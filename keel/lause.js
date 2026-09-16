@@ -127,12 +127,14 @@
     return !!(s && s.labi);
   }
 
-  /* Rea praegune samm (indeks SAMMUD-is); 5 = rida on selge. */
-  function samm(stats, reaId) {
-    for (var i = 0; i < SAMMUD.length; i++) if (!sammLabi(stats, reaId, SAMMUD[i])) return i;
-    return SAMMUD.length;
+  /* Rea praegune samm (indeks sammude loendis); loendi pikkus = rida on selge.
+     sammud: vaikimisi lausete viis sammu; ekraanisõnadel oma nimekiri (sonad.js). */
+  function samm(stats, reaId, sammud) {
+    sammud = sammud || SAMMUD;
+    for (var i = 0; i < sammud.length; i++) if (!sammLabi(stats, reaId, sammud[i])) return i;
+    return sammud.length;
   }
-  function selge(stats, reaId) { return samm(stats, reaId) >= SAMMUD.length; }
+  function selge(stats, reaId, sammud) { return samm(stats, reaId, sammud) >= (sammud || SAMMUD).length; }
 
   /* Kirjuta tulemus statistikasse. abi = tõlkimisel kasutati kuulamist. */
   function salvesta(stats, q, ok, ringId, abi) {
@@ -155,15 +157,17 @@
   /* ---------- ring ---------- */
   function Ring(read, stats, opts) {
     opts = opts || {};
+    var S = opts.sammud || SAMMUD;
     this.stats = stats;
+    this.liik = opts.liik || 'lause';
     this.id = opts.ringId || String(Date.now());
     this.q = [];         // ootel ülesanded
     this.due = [];       // vale vastuse kordused (HMang loeb pikkust)
     this.asked = 0;
     this.repeats = {};
     this.valitud = [];
-    var pooleli = read.filter(function (r) { return !selge(stats, r.id); });
-    var valmis = read.filter(function (r) { return selge(stats, r.id); });
+    var pooleli = read.filter(function (r) { return !selge(stats, r.id, S); });
+    var valmis = read.filter(function (r) { return selge(stats, r.id, S); });
     if (opts.fookus && opts.fookus.length) {
       var f = opts.fookus;
       pooleli = pooleli.filter(function (r) { return f.indexOf(r.id) >= 0; })
@@ -178,20 +182,20 @@
     var korrata = valmis.slice(0, n - valik.length);
     var plaan = [];
     valik.forEach(function (r) {
-      var algus = samm(stats, r.id), p = [];
-      for (var i = algus; i < SAMMUD.length && p.length < RINGIS_SAMME; i++) p.push(SAMMUD[i]);
+      var algus = samm(stats, r.id, S), p = [];
+      for (var i = algus; i < S.length && p.length < RINGIS_SAMME; i++) p.push(S[i]);
       plaan.push({ rida: r, sammud: p });
     });
     korrata.forEach(function (r) { plaan.push({ rida: r, sammud: ['tolgi'] }); });
     this.valitud = plaan.map(function (p) { return p.rida; });
     for (var kord = 0; kord < RINGIS_SAMME; kord++)
       plaan.forEach(function (p) {
-        if (p.sammud[kord]) this.q.push(uus(p.rida, p.sammud[kord], false));
+        if (p.sammud[kord]) this.q.push(uus(p.rida, p.sammud[kord], false, this.liik));
       }, this);
     this.length = this.q.length;
   }
-  function uus(rida, samm_, kordus) {
-    return { id: voti(rida.id, samm_), lemma: rida.id, rida: rida, samm: samm_, kordus: !!kordus };
+  function uus(rida, samm_, kordus, liik) {
+    return { id: voti(rida.id, samm_), lemma: rida.id, rida: rida, samm: samm_, kordus: !!kordus, liik: liik || 'lause' };
   }
   Ring.prototype.next = function () {
     this.asked++;
@@ -212,7 +216,7 @@
     if (ok && !abi) return;
     this.repeats[it.id] = (this.repeats[it.id] || 0) + 1;
     if (this.repeats[it.id] > 2) return;
-    this.due.push({ item: uus(it.rida, it.samm, true), at: this.asked + 3 + Math.floor(Math.random() * 3) });
+    this.due.push({ item: uus(it.rida, it.samm, true, it.liik), at: this.asked + 3 + Math.floor(Math.random() * 3) });
   };
 
   var api = {
