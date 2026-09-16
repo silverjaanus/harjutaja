@@ -1,5 +1,5 @@
 /* Harjutaja service worker: rakenduse failid vahemällu, heli vahemällu esimesel kuulamisel. */
-const VERSION = 'h-202609171200';
+const VERSION = 'h-202609161508';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core/config.js', 'core/klass.js', 'core/sfx.js', 'core/engine.js', 'core/panda.js', 'core/klahvistik.js', 'core/arm.js', 'core/base.css', 'core/eelistused.js', 'core/muusika.js', 'core/mang.js', 'core/voistlus.js', 'core/saatmine.js', 'core/tulemus.js', 'core/edetabel.js', 'core/seaded.js', 'core/moodul.js',
   'kirjutaja/', 'kirjutaja/index.html', 'kirjutaja/kirjutaja.css', 'kirjutaja/app.js', 'kirjutaja/robot.js', 'kirjutaja/data.js',
   'korrutaja/', 'korrutaja/index.html',
@@ -10,8 +10,14 @@ const CORE = ['./', 'index.html', 'manifest.webmanifest', 'core/store.js', 'core
 self.addEventListener('install', e => {
   e.waitUntil(caches.open('app-' + VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
+/* Heli vahemälu ei aegu. Kui mõni klipp tehakse uuesti või kustutatakse, pane
+   ta siia – siis võetakse telefonis vana koopia maha ja järgmisel korral tuleb uus. */
+const HELI_MUUTUNUD = ['kirjutaja/audio/rata.mp3', 'kirjutaja/audio/tupa.mp3', 'kirjutaja/audio/tuka.mp3', 'kirjutaja/audio/make.mp3',
+  'kirjutaja/audio2/rattu.mp3', 'kirjutaja/audio2/happut.mp3'];
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('app-') && k !== 'app-' + VERSION).map(k => caches.delete(k))))
+    .then(() => caches.open('audio')).then(c => Promise.all(HELI_MUUTUNUD.map(f => c.delete(new URL(f, self.registration.scope).href))))
+    .catch(() => {})
     .then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {

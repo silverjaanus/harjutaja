@@ -50,5 +50,15 @@
  "sadamat": {
   "drop": true,
   "sentence": "Me vaatasime laevalt sadamat."
+ },
+ "putuka": {
+  "drop": true,
+  "sentence": "Putuka jalad on peened.",
+  "miks": "Kore ja Charon venitavad täishäälikut (16. sept); tagasi, kui on korras hääl"
+ },
+ "jutukas": {
+  "drop": true,
+  "sentence": "Mu sõber on väga jutukas.",
+  "miks": "Kore venitab täishäälikut (16. sept); tagasi, kui on korras hääl"
  }
 }

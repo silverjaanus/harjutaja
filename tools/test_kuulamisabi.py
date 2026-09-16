@@ -104,7 +104,12 @@ def run(pw):
     page.wait_for_timeout(1300)
     check("ka kolme klipi jada lõpus pole right/wrong tekkinud",
           page.locator("#opts .opt.right, #opts .opt.wrong").count() == 0)
-    check("#cmpBtn ei jäänud 'playing' olekusse (audio2 puudumine ei jätnud kinni)",
+    # audio2 on nüüd repos ja brauser mängib klipid päriselt ära – oota jada lõpuni
+    try:
+        page.wait_for_function("() => !document.querySelector('#cmpBtn').classList.contains('playing')", timeout=10000)
+    except Exception:
+        pass
+    check("#cmpBtn ei jäänud 'playing' olekusse (jada jõudis lõpuni)",
           "playing" not in (page.locator("#cmpBtn").get_attribute("class") or ""))
 
     print("\n4. Vastamise järel kuulamisabi rida ja märkus kaovad")

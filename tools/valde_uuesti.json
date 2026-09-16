@@ -1,0 +1,106 @@
+{
+ "kahtlased": [
+  {
+   "sona": "tuka",
+   "trio": {
+    "lyhike": "tuga",
+    "pikk": "tuka",
+    "ylipikk": "tukka"
+   },
+   "pohjus": "uuesti tehtud: Kore"
+  },
+  {
+   "sona": "rattu",
+   "trio": {
+    "lyhike": "radu",
+    "pikk": "ratu",
+    "ylipikk": "rattu"
+   },
+   "pohjus": "uuesti tehtud: Charon"
+  },
+  {
+   "sona": "vikkurit",
+   "trio": {
+    "lyhike": "vigurit",
+    "pikk": "vikurit",
+    "ylipikk": "vikkurit"
+   },
+   "pohjus": "uuesti tehtud: Kore"
+  },
+  {
+   "sona": "make",
+   "trio": {
+    "lyhike": "mage",
+    "pikk": "make",
+    "ylipikk": "makke"
+   },
+   "pohjus": "uuesti tehtud: Kore"
+  },
+  {
+   "sona": "happut",
+   "trio": {
+    "lyhike": "habut",
+    "pikk": "haput",
+    "ylipikk": "happut"
+   },
+   "pohjus": "uuesti tehtud: Charon"
+  },
+  {
+   "sona": "jutukas",
+   "trio": {
+    "lyhike": "judukas",
+    "pikk": "jutukas",
+    "ylipikk": "juttukas"
+   },
+   "pohjus": "uuesti tehtud: Kore"
+  },
+  {
+   "sona": "putuka",
+   "trio": {
+    "lyhike": "puduka",
+    "pikk": "putuka",
+    "ylipikk": "puttuka"
+   },
+   "pohjus": "uuesti tehtud: Kore ja Charon"
+  },
+  {
+   "sona": "puttuka",
+   "trio": {
+    "lyhike": "puduka",
+    "pikk": "putuka",
+    "ylipikk": "puttuka"
+   },
+   "pohjus": "uuesti tehtud: Kore ja Charon"
+  },
+  {
+   "sona": "jõkki",
+   "id": "j6kki",
+   "trio": {
+    "lyhike": "j6gi",
+    "pikk": "j6ki",
+    "ylipikk": "j6kki"
+   },
+   "pohjus": "Charonil varem puudu, nüüd tehtud"
+  },
+  {
+   "sona": "rõttud",
+   "id": "r6ttud",
+   "trio": {
+    "lyhike": "r6dud",
+    "pikk": "r6tud",
+    "ylipikk": "r6ttud"
+   },
+   "pohjus": "Charonil varem puudu, nüüd tehtud"
+  },
+  {
+   "sona": "sõta",
+   "id": "s6ta",
+   "trio": {
+    "lyhike": "s6da",
+    "pikk": "s6ta",
+    "ylipikk": "s6tta"
+   },
+   "pohjus": "Charonil varem puudu, nüüd tehtud"
+  }
+ ]
+}
