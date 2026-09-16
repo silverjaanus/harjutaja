@@ -152,7 +152,7 @@
 .tehtud-yt-search .yt-otsirida{display:flex}
 .yt-video{position:relative;aspect-ratio:16/9;background:#000}
 .yt-pilt{display:block;width:100%;height:100%}
-.yt-reklaam{position:absolute;inset:0;background:rgba(0,0,0,.35);transition:opacity .3s}
+.yt-reklaam{position:absolute;inset:0;transition:opacity .3s}
 .yt-ad{position:absolute;left:8px;bottom:8px;background:#ffd400;color:#000;font-size:12px;font-weight:800;border-radius:4px;padding:1px 6px}
 .yt .yt-skip{position:absolute;right:8px;bottom:8px;border-radius:4px;background:rgba(20,20,20,.85);color:#fff}
 .tehtud-yt-skip .yt-reklaam{opacity:0}
@@ -209,3 +209,121 @@
 .ek-hall{border:1.5px solid #9aa3b2;border-radius:12px;background:#eef0f3;color:#1d2f4f;font-size:20px;font-weight:700;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:12px 6px;min-height:52px}
 
 /* avalehe sõnade kaart kasutab sama .rr kujundust */
+
+/* Roblox (joonistus, mitte logo) */
+.rb{background:#232527;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:600;padding-bottom:8px}
+.rb .ek{border:0;border-radius:8px;color:#fff;background:#393b3d;padding:6px 12px;font-size:14px;font-weight:700}
+.rb-pais{display:flex;align-items:center;gap:6px;padding:8px}
+.rb-tyhi{flex:1}
+.rb-kaart{margin:0 8px;background:#2f3133;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.rb-pilt{display:block;width:100%;height:auto}
+.rb-nimi{margin:6px 10px 4px;font-size:15px}
+.rb .rb-play{margin:0 10px 10px;background:#00a2ff;font-size:17px;min-height:44px}
+.rb-sobrad{margin:8px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.rb .rb-link{background:none;padding:4px 2px}
+.rb-sober{display:flex;align-items:center;gap:8px;width:100%;background:#2f3133;border-radius:10px;padding:6px 8px}
+.rb-sober span{flex:1;display:flex;flex-direction:column;font-size:13px}
+.rb-sober small{color:#9aa;font-weight:500}
+.rb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ffd166,#ef476f);flex:none}
+.rb .rb-join{background:#00b06f}
+.rb-menyy{margin:8px;background:#1a1b1c;border:1px solid #444;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.rb-menyy-nimi{margin:0 0 2px;font-size:13px;color:#bbb}
+.rb .rb-sinine{background:#00a2ff}
+.tehtud-rb-join .rb-join,.tehtud-rb-play .rb-play{background:#0a7a4f}
+
+/* Ehitamine */
+.eh{background:#dff0ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.eh-plats{position:relative;background:repeating-linear-gradient(0deg,#9fd08c 0 19px,#8cc278 19px 20px),#9fd08c;padding:14px 10px 6px;display:flex;justify-content:center}
+.eh-maja{width:70%;height:auto;transition:transform .4s}
+.eh-uus{opacity:0;transition:opacity .3s}
+.eh-teade{position:absolute;top:8px;right:10px;background:#1d2f4f;color:#fff;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;opacity:0}
+.tehtud-eh-save .eh-teade{opacity:1}
+.tehtud-eh-place .eh-uus{opacity:1}
+.tehtud-eh-rotate .eh-maja{transform:scaleX(-1)}
+.tehtud-eh-move .eh-maja{transform:translateX(-18%)}
+.tehtud-eh-delete .eh-sein{opacity:.15}
+.tehtud-eh-paint .eh-sein{fill:#e84a5f}
+.tehtud-eh-undo .eh-katus{opacity:.3}
+.eh-riba{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px;background:#2b3a55}
+.eh .eh-riist{flex-direction:column;gap:2px;border:0;border-radius:10px;background:#3e5075;color:#fff;font-size:12px;font-weight:700;padding:6px 2px;min-height:52px}
+.eh .eh-riist svg{width:20px;height:20px}
+.tehtud-eh-build .eh-riist.vajutatud{background:#f3c445;color:#1d2f4f}
+
+/* Tasemed ja auhinnad */
+.ed{background:#2d1b4e;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;padding:8px;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.ed .ek{border:0;border-radius:10px;color:#fff;font-size:13px;font-weight:800;padding:6px 8px}
+.ed-hud{display:flex;gap:4px;justify-content:space-between}
+.ed .ed-silt{background:#4b3279;gap:4px;flex:1 1 0;min-width:0;padding:6px 4px}
+.ed .ed-silt b{color:#ffd166}
+.ed .ed-kuld{background:#8a6a12}
+.ed-munt{width:14px;height:14px;border-radius:50%;background:#f3c445;border:2px solid #b8860b;flex:none}
+.ed .ed-banner{background:linear-gradient(90deg,#ff9f1c,#ffd166);color:#3a2000;font-size:20px;min-height:48px;border-radius:14px}
+.ed-paneel{background:#3a2766;border-radius:12px;padding:6px 10px}
+.ed .ed-pealkiri{background:none;padding:2px 0;font-size:15px}
+.ed-tekst{margin:2px 0 0;font-size:13px;font-weight:600}
+.ed-tekst b{color:#8ce99a}
+.ed-rida{display:flex;gap:8px}
+.ed-ese{flex:1;background:#3a2766;border-radius:12px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.ed-ese svg{width:44px;height:44px}
+.ed .ed-nupp{background:#00a86b;width:100%}
+.ed .ed-next{background:#5b8def;align-self:flex-end;padding:8px 16px}
+.tehtud-ed-reward .ed-kuld.vajutatud,.tehtud-ed-equip .ed-nupp.vajutatud{background:#555}
+
+/* Ettevaatust */
+.oh{background:#f4f4f7;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:600;color:#1a1a1a;padding:8px;display:flex;flex-direction:column;gap:8px}
+.oh .ek{border:0;border-radius:8px;font-size:14px;font-weight:800;padding:6px 12px}
+.oh-reklaam{position:relative;background:linear-gradient(135deg,#ff006e,#8338ec);color:#fff;border-radius:12px;padding:10px;text-align:center}
+.oh .oh-ad{position:absolute;left:6px;top:6px;background:#ffd400;color:#000;font-size:12px;min-height:28px;padding:2px 8px;border-radius:4px}
+.oh-suur{margin:14px 0 2px;font-size:26px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:6px}
+.oh .oh-free{background:#ffd400;color:#000;font-size:24px;font-weight:900}
+.oh-vaike{margin:0;font-size:12px;text-decoration:underline}
+.oh-pood{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:6px 8px}
+.oh-pood svg{width:40px;height:40px;flex:none}
+.oh-ese{flex:1;display:flex;flex-direction:column;font-size:14px}
+.oh-ese small{color:#666}
+.oh .oh-osta{background:#00b06f;color:#fff}
+.oh-kutse{background:#fff;border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.oh-kutse p{margin:0;font-size:13px}
+.oh .oh-pealkiri{background:none;padding:0;font-size:17px;justify-content:flex-start;min-height:32px}
+.oh-nupud{display:flex;gap:6px}
+.oh-nupud .ek{flex:1}
+.oh .oh-roheline{background:#00b06f;color:#fff}
+.oh .oh-hall{background:#d9dce2;color:#1a1a1a}
+.oh .oh-punane{background:#e03131;color:#fff}
+.oh-mangija{display:flex;align-items:center;gap:6px;background:#fff;border-radius:12px;padding:6px 8px;font-size:13px}
+.oh-mangija span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.oh-voor{width:28px;height:28px;background:linear-gradient(135deg,#555,#999)}
+.tehtud-oh-block .oh-mangija{opacity:.45}
+
+/* Juhised: ingliskeelne mängujuhis ja väli */
+.ek-ul .mull.juhis{background:#1d2f4f;color:#fff;border-color:#1d2f4f}
+.ek-ul .mull.juhis::before{border-right-color:#1d2f4f}
+.ju{background:radial-gradient(circle at 50% 30%,#bfe3ff,#8cc6f0);padding:12px}
+.ju-loendur{margin:0 0 8px;text-align:center;font-family:var(--display);font-size:20px;color:#1d2f4f}
+.ju-vali{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ju-vali.ju-rajad{grid-template-columns:1fr}
+.jo{position:relative;border:2px solid rgba(29,47,79,.25);border-radius:16px;background:rgba(255,255,255,.55);padding:6px;cursor:pointer;aspect-ratio:1;display:grid;place-items:center;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.jo svg{width:72%;height:auto;pointer-events:none}
+.jo.jo-rada{aspect-ratio:auto;padding:4px}
+.jo.jo-rada svg{width:100%;border-radius:10px}
+.jo:active{transform:scale(.95)}
+.jo:disabled{cursor:default}
+.jo.korjatud{opacity:.2;transform:scale(.7);transition:opacity .25s,transform .25s}
+.jo.oige{outline:3px solid var(--ok);outline-offset:2px}
+.jo.vale{outline:3px solid var(--bad);outline-offset:2px}
+.jo-taitub{position:absolute;left:10%;right:10%;bottom:6px;height:6px;border-radius:3px;background:rgba(29,47,79,.2);overflow:hidden}
+.jo-taitub::after{content:"";position:absolute;inset:0;width:0;background:var(--ok)}
+.jo.hoian .jo-taitub::after{width:100%;transition:width .9s linear}
+@media (prefers-reduced-motion:reduce){.jo.hoian .jo-taitub::after{transition:none}}
+.juhis-et{margin:0;text-align:center;font-size:16px;color:var(--ink)}
+
+#juhisNote.teade{color:var(--bad);font-weight:800}
+
+/* küsimus mullis: silt + suur eesti tähendus (16. sept) */
+.ek-ul .mull.kysimus,.ek-ul .mull.juhis{display:flex;flex-direction:column;gap:2px}
+.k-silt{font-size:14px;font-weight:700;color:var(--ink-soft)}
+.k-sona{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.2;color:var(--ink)}
+.mull.juhis .k-silt{color:#c9d6ee}
+.mull.juhis .k-sona{color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:900;font-size:24px}
+.k-sona .tapsustus{font-family:var(--body);font-size:17px}
+.k-juhend{margin:0;font-size:15px;font-weight:800;color:var(--warm);text-align:center}

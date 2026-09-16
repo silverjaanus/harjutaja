@@ -18,16 +18,34 @@ TEEMAD.forEach(t => {
   t.sonad.forEach(s => {
     ok(!ids[s.id], 'id on kordumatu: ' + s.id); ids[s.id] = 1;
     ok(/^[a-z]{2}-[a-z]+$/.test(s.id), 'id kuju: ' + s.id);
-    ['en', 'et', 'ul', 'teeb'].forEach(k => ok(typeof s[k] === 'string' && s[k].trim(), s.id + ': väli ' + k));
+    ['en', 'et', 'teeb'].forEach(k => ok(typeof s[k] === 'string' && s[k].trim(), s.id + ': väli ' + k));
     ok(/^[A-Za-z][A-Za-z ]*$/.test(s.en), s.id + ': en on ainult tähed ja tühikud');
     ok(!en[S.heliNimi(s.en)], t.id + ': heli nimi kordub ' + s.en); en[S.heliNimi(s.en)] = 1;
     const p = S.etOsad(s.et).pohi.toLowerCase();
     ok(p && !et[p], t.id + ': eesti vaste kordub ' + p); et[p] = 1;
-    ok(!ul[s.ul], t.id + ': ülesanne kordub'); ul[s.ul] = 1;
-    ok(/[.!?]$/.test(s.ul) && /[.!?]$/.test(s.teeb), s.id + ': laused lõpevad punktiga');
+    ok(s.ul === undefined, s.id + ': ülesandelauset ei kasutata (küsimus on eesti tähendus)');
+    ok(/[.!?]$/.test(s.teeb), s.id + ': laused lõpevad punktiga');
     ok(s.teeb.indexOf('„' + s.en + '“') === 0, s.id + ': teeb algab sõnaga jutumärkides');
-    ok(!/"/.test(s.ul + s.teeb + (s.markus || '') + s.et), s.id + ': sirgeid jutumärke pole');
+    ok(!/"/.test(s.teeb + (s.markus || '') + s.et), s.id + ': sirgeid jutumärke pole');
     ok(!s.markus || /[.!?]$/.test(s.markus), s.id + ': markus lõpeb punktiga');
+  });
+});
+
+// 1b. juhiste teema: juhis, tõlge ja väli
+require('./ekraanid.js');
+const EK = window.KEkraan;
+TEEMAD.forEach(t => {
+  ok(t.juhised || EK.EKRAANID[t.ekraan], t.id + ': ekraan on olemas');
+  if (!t.juhised) return;
+  t.sonad.forEach(s => {
+    ok(/^[A-Z][A-Za-z0-9 :]*!$/.test(s.juhis || ''), s.id + ': juhis on lühike ingliskeelne käsk');
+    ok(new RegExp('\\b' + s.en + '\\b', 'i').test(s.juhis), s.id + ': juhises on õpitav sõna');
+    ok(/[!.]$/.test(s.juhisEt || ''), s.id + ': juhisel on eesti tõlge');
+    ok(Array.isArray(s.stseen) && s.stseen.every(a => EK.ASI[a] || EK.RADA[a]), s.id + ': väljal on ainult tuntud asjad');
+    const mitu = s.stseen.filter(a => a === s.siht).length;
+    ok(mitu >= (s.mitu || 1), s.id + ': sihti on väljal piisavalt');
+    ok(s.stseen.length > mitu, s.id + ': väljal on ka valesid asju');
+    ok(!(s.mitu > 1) || mitu > s.mitu, s.id + ': korjamisel on sihti rohkem kui vaja');
   });
 });
 

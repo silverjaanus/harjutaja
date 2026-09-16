@@ -15,7 +15,10 @@ Valvab:
     õige ei loe ja sõna tuleb tagasi; sõna on selge kahe tõlkeringi järel;
   - tulemus: „Harjuta neid sõnu", „… sõna sai selgeks", vihikuplokki pole;
   - ekraanisõnad ei muuda „Selged laused" arvu (edetabel);
-  - Minecrafti ekraan; vana andmetega (ilma rada-valikuta) avaneb kooli rada.
+  - Minecrafti ekraan; vana andmetega (ilma rada-valikuta) avaneb kooli rada;
+  - igal teemal on ekraanil iga sõna nupp täpselt korra;
+  - juhiste teema: ingliskeelne juhis, vale asi → „Juhis oli: … ehk …",
+    hoidmine (lühike vajutus ei loe), korjamine loenduriga, siis loe-samm.
 
 Kasutus (pilvekonteineris, repo juurest):
     python3 -m http.server 8806 &
@@ -102,11 +105,12 @@ def main():
         kontrolli(page.inner_text("#loendur") == "1 / 15", "ringis 15 ülesannet", page.inner_text("#loendur"))
         q = cur(page)
         kontrolli(q["liik"] == "sona" and q["samm"] == "vajuta", "esimene samm on vajuta")
-        kontrolli(page.text_content("#sammNimi") == "Vajuta õiget nuppu", "sammu nimi")
+        kontrolli(page.text_content("#sammNimi") == "Leia nupp", "sammu nimi")
         kontrolli(page.locator("#ekhost .ekraan.yt").count() == 1, "YouTube'i ekraan on joonistatud")
         kontrolli(page.locator("#ekhost button.ek").count() == 8, "ekraanil 8 nuppu", page.locator("#ekhost button.ek").count())
-        ul = page.inner_text(".ek-ul .mull")
-        kontrolli(len(ul) > 5 and ul.endswith("."), "papagoi mullis on ülesanne", ul)
+        kontrolli(page.inner_text(".ek-ul .k-silt") == "Leia nupp, mis tähendab:", "küsimuse silt", page.inner_text(".ek-ul .k-silt"))
+        kontrolli(page.inner_text(".ek-ul .k-sona").split(" (")[0] == q["et"].split(" (")[0], "mullis on eesti tähendus", page.inner_text(".ek-ul .k-sona"))
+        kontrolli(page.inner_text(".k-juhend") == "Vajuta seda all oleval pildil.", "rida, mida teha")
         kontrolli(page.locator("#kthost").count() == 0, "vajutamisel klaviatuuri pole")
 
         # vale nupp
@@ -251,6 +255,84 @@ def main():
         page.click(f'#ekhost button.ek[data-id="{q["sid"]}"]')
         page.wait_for_timeout(200)
         kontrolli(not js, "konsoolis vigu pole (Minecraft)", "; ".join(js))
+        ctx.close()
+
+        # --- kõik teemad: ekraanil on iga sõna nupp täpselt korra ---
+        ctx, page, js = T.uus(b)
+        puudu = page.evaluate("""() => KEEL_TEEMAD.filter(t => !t.juhised).map(t => {
+          const h = document.createElement('div'); document.body.append(h);
+          KEkraan.joonista(h, t);
+          const ids = [...h.querySelectorAll('button.ek')].map(b => b.dataset.id);
+          const vead = t.sonad.filter(s => ids.filter(x => x === s.id).length !== 1).map(s => s.id);
+          if (ids.length !== t.sonad.length) vead.push(t.id + ': nuppe ' + ids.length);
+          h.remove();
+          return vead.join(',');
+        }).filter(Boolean)""")
+        kontrolli(not puudu, "igal teemal on iga sõna jaoks üks nupp", str(puudu))
+        nimed = page.evaluate("() => [...document.querySelectorAll('#val-teema .chip')].map(b => b.textContent)")
+        kontrolli(nimed == ["YouTube", "Minecraft", "Roblox", "Ehitamine", "Mängu juhised", "Tasemed ja auhinnad", "Ettevaatust"],
+                  "teemade kiibid", str(nimed))
+
+        # --- juhiste teema ---
+        vali(page, "Sõnad ekraanilt", "Mängu juhised")
+        page.click("#startBtn")
+        page.wait_for_timeout(300)
+        q = cur(page)
+        kontrolli(q["sid"] == "ju-tap" and page.text_content("#sammNimi") == "Loe ja tee", "juhis: esimene on Tap, samm Loe ja tee", str(q))
+        kontrolli(page.inner_text(".ek-ul .mull.juhis .k-sona") == "Tap the star!", "juhis on ingliskeelne", page.inner_text(".ek-ul .mull"))
+        kontrolli(page.inner_text("#juhisNote") == "Tee seda all oleval mänguväljal.", "juhise all on rida, mida teha")
+        kontrolli(page.locator("#ekhost button.jo").count() == 4, "väljal 4 asja")
+        page.click("#ekhost button.jo[data-t='coin']")
+        page.wait_for_timeout(250)
+        kontrolli(page.inner_text("#fb") == "Juhis oli: „Tap the star!“ ehk „Puuduta tähte!“", "vale juhise tagasiside", page.inner_text("#fb"))
+        kontrolli(page.locator("#ekhost button.jo[data-t='coin'].vale").count() == 1 and
+                  page.locator("#ekhost button.jo[data-t='star'].oige").count() == 1, "vale ja õige asi märgitud")
+        kontrolli(page.locator("#juhisNote").is_hidden(), "vale korral tõlget ei korrata juhise all")
+        page.click("#nextBtn")
+        page.wait_for_timeout(250)
+        q = cur(page)
+        kontrolli(q["sid"] == "ju-hold", "teine on Hold", q["sid"])
+        nupp = page.locator("#ekhost button.jo[data-t='button']")
+        bb = nupp.bounding_box()
+        page.mouse.move(bb["x"] + bb["width"] / 2, bb["y"] + bb["height"] / 2)
+        page.mouse.down(); page.wait_for_timeout(150); page.mouse.up()
+        page.wait_for_timeout(200)
+        kontrolli(not cur(page)["done"] and page.inner_text("#juhisNote") == "Hoia sõrme kauem all.", "lühike vajutus ei loe", page.inner_text("#juhisNote"))
+        page.mouse.down(); page.wait_for_timeout(1200); page.mouse.up()
+        page.wait_for_timeout(200)
+        kontrolli(cur(page)["done"] and "feedback ok" in page.get_attribute("#fb", "class"), "pikk hoidmine on õige")
+        kontrolli(page.locator("#teeb").is_visible() and page.locator("#after").is_visible(), "juhise järel seletus ja Edasi")
+        kontrolli(page.inner_text("#juhisNote") == "„Hold the button!“ ehk „Hoia nuppu all!“", "õige järel on juhise tõlge", page.inner_text("#juhisNote"))
+        page.click("#nextBtn")
+        page.wait_for_timeout(250)
+        q = cur(page)
+        kontrolli(q["sid"] == "ju-collect", "kolmas on Collect", q["sid"])
+        mundid = page.locator("#ekhost button.jo[data-t='coin']")
+        kontrolli(mundid.count() == 4, "väljal 4 münti")
+        mundid.nth(0).click(); mundid.nth(1).click()
+        kontrolli(page.inner_text("#juLoendur") == "2 / 3" and not cur(page)["done"], "kaks münti: loendur 2 / 3")
+        mundid.nth(2).click()
+        page.wait_for_timeout(200)
+        kontrolli(cur(page)["done"] and "feedback ok" in page.get_attribute("#fb", "class"), "kolm münti: õige")
+        kontrolli(any("collectcoins" in s for s in page.evaluate("window.__fail")) or "Collect 3 coins!" in " ".join(page.evaluate("window.__raagi")),
+                  "juhise järel kõlab juhis")
+        page.click("#nextBtn")
+        page.wait_for_timeout(250)
+        for _ in range(12):
+            q = cur(page)
+            if q["samm"] != "vajuta":
+                break
+            if page.locator("#ekhost button.jo[data-t='grasspath']").count():
+                page.click("#ekhost button.jo[data-t='grasspath']")
+            else:
+                sihid = page.evaluate("() => { const r = HMang._aktiivne.cur.rida; return [r.siht, r.mitu || 1, !!r.hoia]; }")
+                for k in range(sihid[1]):
+                    page.locator(f"#ekhost button.jo[data-t='{sihid[0]}']:not([disabled])").first.click()
+            edasi(page)
+        q = cur(page)
+        kontrolli(q["samm"] == "loe" and page.locator("#ekhost button.ek-hall").count() == 6, "juhiste teemas tuleb siis loe", q["samm"])
+        kontrolli(not page.locator(".ek-ul .mull.juhis").count() and page.inner_text(".ek-ul .k-silt") == "Leia sõna, mis tähendab:", "loe-sammus on eesti tähendus")
+        kontrolli(not js, "konsoolis vigu pole (teemad)", "; ".join(js))
         ctx.close()
 
         # --- kooli rada töötab edasi ---

@@ -50,15 +50,22 @@ def lae_read():
 
 def lae_teemad():
     src = open(os.path.join(ROOT, "keel", "teemad.js"), encoding="utf-8").read()
-    return [m.group(1) for m in re.finditer(r'\ben:\s*"([^"]+)"', src)]
+    # sõnad ja juhiste teema ingliskeelsed juhised („Collect 3 coins!")
+    return ([m.group(1) for m in re.finditer(r'\ben:\s*"([^"]+)"', src)] +
+            [m.group(1) for m in re.finditer(r'\bjuhis:\s*"([^"]+)"', src)])
 
 
 STYLE_PHRASE = ("Read this short English phrase aloud for a young child who is learning English. "
                 "Use clear British English, as one phrase without a long pause. Read only the phrase, nothing else:\n")
 
 
+NUMBRID = {"1": " one ", "2": " two ", "3": " three ", "4": " four ", "5": " five "}
+
+
 def puhas(s):
     s = s.lower().replace("’", "'")
+    for k, v in NUMBRID.items():
+        s = s.replace(k, v)
     return " ".join(re.sub(r"[^a-z' ]", " ", s).split())
 
 
