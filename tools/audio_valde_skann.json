@@ -1,0 +1,233 @@
+{
+ "lavendid": {
+  "V_MAX": 1.3,
+  "S_MIN": 1.4
+ },
+ "kahtlased": [
+  {
+   "sona": "tuka",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "tuga",
+    "pikk": "tuka",
+    "ylipikk": "tukka"
+   },
+   "lyhike": "tuga",
+   "taishaalik": 1.73,
+   "sulg": 2.7,
+   "charon_taishaalik": 0.79,
+   "pohjus": "täishäälik 1.73x pikem, Charonil korras (0.79x)",
+   "skoor": 1.735
+  },
+  {
+   "sona": "rattu",
+   "vorm": "ylipikk",
+   "trio": {
+    "lyhike": "radu",
+    "pikk": "ratu",
+    "ylipikk": "rattu"
+   },
+   "lyhike": "radu",
+   "taishaalik": 1.72,
+   "sulg": 6.13,
+   "charon_taishaalik": 0.91,
+   "pohjus": "täishäälik 1.72x pikem, Charonil korras (0.91x)",
+   "skoor": 1.716
+  },
+  {
+   "sona": "vikkurit",
+   "vorm": "ylipikk",
+   "trio": {
+    "lyhike": "vigurit",
+    "pikk": "vikurit",
+    "ylipikk": "vikkurit"
+   },
+   "lyhike": "vigurit",
+   "taishaalik": 1.6,
+   "sulg": 3.0,
+   "charon_taishaalik": 0.89,
+   "pohjus": "täishäälik 1.60x pikem, Charonil korras (0.89x)",
+   "skoor": 1.601
+  },
+  {
+   "sona": "jaki",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "jagi",
+    "pikk": "jaki",
+    "ylipikk": "jakki"
+   },
+   "lyhike": "jagi",
+   "taishaalik": 1.58,
+   "sulg": 1.87,
+   "charon_taishaalik": 0.6,
+   "pohjus": "täishäälik 1.58x pikem, Charonil korras (0.60x)",
+   "skoor": 1.581
+  },
+  {
+   "sona": "nuka",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "nuga",
+    "pikk": "nuka",
+    "ylipikk": "nukka"
+   },
+   "lyhike": "nuga",
+   "taishaalik": 1.57,
+   "sulg": 2.57,
+   "charon_taishaalik": 1.0,
+   "pohjus": "täishäälik 1.57x pikem, Charonil korras (1.00x)",
+   "skoor": 1.575
+  },
+  {
+   "sona": "make",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "mage",
+    "pikk": "make",
+    "ylipikk": "makke"
+   },
+   "lyhike": "mage",
+   "taishaalik": 1.55,
+   "sulg": 2.77,
+   "charon_taishaalik": 0.37,
+   "pohjus": "täishäälik 1.55x pikem, Charonil korras (0.37x)",
+   "skoor": 1.549
+  },
+  {
+   "sona": "patta",
+   "vorm": "ylipikk",
+   "trio": {
+    "lyhike": "pada",
+    "pikk": "pata",
+    "ylipikk": "patta"
+   },
+   "lyhike": "pada",
+   "taishaalik": 1.55,
+   "sulg": 8.68,
+   "charon_taishaalik": 1.13,
+   "pohjus": "täishäälik 1.55x pikem, Charonil korras (1.13x)",
+   "skoor": 1.545
+  },
+  {
+   "sona": "happut",
+   "vorm": "ylipikk",
+   "trio": {
+    "lyhike": "habut",
+    "pikk": "haput",
+    "ylipikk": "happut"
+   },
+   "lyhike": "habut",
+   "taishaalik": 1.48,
+   "sulg": 7.96,
+   "charon_taishaalik": 0.97,
+   "pohjus": "täishäälik 1.48x pikem, Charonil korras (0.97x)",
+   "skoor": 1.477
+  },
+  {
+   "sona": "nukka",
+   "vorm": "ylipikk",
+   "trio": {
+    "lyhike": "nuga",
+    "pikk": "nuka",
+    "ylipikk": "nukka"
+   },
+   "lyhike": "nuga",
+   "taishaalik": 1.47,
+   "sulg": 6.32,
+   "charon_taishaalik": 0.65,
+   "pohjus": "täishäälik 1.47x pikem, Charonil korras (0.65x)",
+   "skoor": 1.47
+  },
+  {
+   "sona": "sipelga",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "sibelga",
+    "pikk": "sipelga",
+    "ylipikk": "sippelga"
+   },
+   "lyhike": "sibelga",
+   "taishaalik": 1.39,
+   "sulg": 2.61,
+   "charon_taishaalik": 0.81,
+   "pohjus": "täishäälik 1.39x pikem, Charonil korras (0.81x)",
+   "skoor": 1.393
+  },
+  {
+   "sona": "luke",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "luge",
+    "pikk": "luke",
+    "ylipikk": "lukke"
+   },
+   "lyhike": "luge",
+   "taishaalik": 1.38,
+   "sulg": 2.94,
+   "charon_taishaalik": 0.8,
+   "pohjus": "täishäälik 1.38x pikem, Charonil korras (0.80x)",
+   "skoor": 1.376
+  },
+  {
+   "sona": "jutukas",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "judukas",
+    "pikk": "jutukas",
+    "ylipikk": "juttukas"
+   },
+   "lyhike": "judukas",
+   "taishaalik": 1.35,
+   "sulg": 0.88,
+   "charon_taishaalik": 0.59,
+   "pohjus": "täishäälik 1.35x pikem, Charonil korras (0.59x)",
+   "skoor": 1.346
+  },
+  {
+   "sona": "putuka",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "puduka",
+    "pikk": "putuka",
+    "ylipikk": "puttuka"
+   },
+   "lyhike": "puduka",
+   "taishaalik": 1.34,
+   "sulg": 1.86,
+   "charon_taishaalik": 1.56,
+   "pohjus": "täishäälik 1.34x pikem, Charonil samuti pikk (1.56x)",
+   "skoor": 1.34
+  },
+  {
+   "sona": "ruki",
+   "vorm": "pikk",
+   "trio": {
+    "lyhike": "rugi",
+    "pikk": "ruki",
+    "ylipikk": "rukki"
+   },
+   "lyhike": "rugi",
+   "taishaalik": 1.34,
+   "sulg": 1.81,
+   "charon_taishaalik": 0.88,
+   "pohjus": "täishäälik 1.34x pikem, Charonil korras (0.88x)",
+   "skoor": 1.338
+  },
+  {
+   "sona": "puttuka",
+   "vorm": "ylipikk",
+   "trio": {
+    "lyhike": "puduka",
+    "pikk": "putuka",
+    "ylipikk": "puttuka"
+   },
+   "lyhike": "puduka",
+   "taishaalik": 1.33,
+   "sulg": 2.18,
+   "charon_taishaalik": 0.98,
+   "pohjus": "täishäälik 1.33x pikem, Charonil korras (0.98x)",
+   "skoor": 1.334
+  }
+ ]
+}
