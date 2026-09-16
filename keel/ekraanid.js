@@ -41,6 +41,8 @@
     ketas: '<svg ' + S + '><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></svg>',
     kott: '<svg ' + S + '><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
     lipp: '<svg ' + S + '><path d="M5 21V4"/><path d="M5 4h12l-3 4 3 4H5"/></svg>',
+    wifi: '<svg ' + S + '><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/><path d="M3 3l18 18"/></svg>',
+    hoiatus: '<svg ' + S + '><path d="M12 3 22 20H2z"/><path d="M12 10v4"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>',
     inimesed: '<svg ' + S + '><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c2.8 0 5 2 5 5"/></svg>'
   };
 
@@ -287,7 +289,78 @@
     });
   }
 
-  var EKRAANID = { youtube: youtube, minecraft: minecraft, roblox: roblox, ehitamine: ehitamine, edasi: edasi, ettevaatust: ettevaatust };
+  /* ---------- Konsool: mängu algusmenüü, pult ja „Game Over" ---------- */
+  function konsool(t) {
+    var w = function (en) { return leia(t, en); };
+    var menyy = function (en) { return nupp(w(en), 'ps-rida', '<span>' + esc(en) + '</span>'); };
+    return '<div class="ekraan ps">' +
+      '<div class="ps-tv">' +
+        '<p class="ps-nimi">SPACE QUEST</p>' +
+        '<div class="ps-menyy">' + menyy('Continue') + menyy('New Game') + menyy('Load') + menyy('Options') + menyy('Quit') + '</div>' +
+        '<p class="ps-vajuta">' + nupp(w('Press'), 'ps-sona', '<span>Press</span>') +
+          ' <i class="ps-x" aria-label="rist">✕</i> to ' + nupp(w('Start'), 'ps-sona', '<span>start</span>') + '</p>' +
+      '</div>' +
+      '<div class="ps-over"><p>GAME OVER</p>' + nupp(w('Retry'), 'ps-retry', '<span>Retry</span>') + '</div>' +
+      '<svg class="ps-pult" viewBox="0 0 200 90" aria-hidden="true">' +
+        '<path d="M30 20h140c18 0 28 18 28 40 0 18-10 26-20 26-12 0-18-16-34-16H56c-16 0-22 16-34 16C12 86 2 78 2 60 2 38 12 20 30 20z" fill="#e8eaef" stroke="#555" stroke-width="2"/>' +
+        '<path d="M40 44h8v-8h8v8h8v8h-8v8h-8v-8h-8z" fill="#555"/>' +
+        '<circle cx="150" cy="36" r="6" fill="none" stroke="#555" stroke-width="2"/><circle cx="162" cy="48" r="6" fill="none" stroke="#555" stroke-width="2"/>' +
+        '<circle cx="138" cy="48" r="6" fill="none" stroke="#555" stroke-width="2"/><circle cx="150" cy="60" r="7" fill="#dfe6ff" stroke="#3a55c8" stroke-width="2"/>' +
+        '<path d="M146 56l8 8M154 56l-8 8" stroke="#3a55c8" stroke-width="2"/></svg>' +
+    '</div>';
+  }
+
+  /* ---------- Telefon küsib: süsteemi aknad ---------- */
+  function telefon(t) {
+    var w = function (en) { return leia(t, en); };
+    var kiri2 = function (en) { return '<span>' + esc(en.replace(/'/g, '’')) + '</span>'; };
+    return '<div class="ekraan tf">' +
+      '<div class="tf-aken"><p><b>“Block World” Would Like to Send You Notifications</b></p>' +
+        '<div class="tf-nupud">' + nupp(w("Don't Allow"), 'tf-nupp', kiri2("Don't Allow")) + nupp(w('Allow'), 'tf-nupp tf-paks', kiri2('Allow')) + '</div></div>' +
+      '<div class="tf-pood"><i class="tf-ikoon" aria-hidden="true"></i><span class="tf-app">Block World<small>Games</small></span>' +
+        nupp(w('Install'), 'tf-pill', kiri2('Install')) + '</div>' +
+      '<div class="tf-pood"><i class="tf-ikoon tf-ik2" aria-hidden="true"></i><span class="tf-app">Paint Fun<small>Update available</small></span>' +
+        nupp(w('Update'), 'tf-pill', kiri2('Update')) + nupp(w('Open'), 'tf-pill tf-sinine', kiri2('Open')) + '</div>' +
+      '<div class="tf-aken"><p><b>Delete this photo?</b></p>' +
+        '<div class="tf-nupud">' + nupp(w('Cancel'), 'tf-nupp', kiri2('Cancel')) + nupp(w('Delete'), 'tf-nupp tf-punane', kiri2('Delete')) + '</div></div>' +
+      '<div class="tf-riba"><span>Bluetooth is off</span>' + nupp(w('Turn On'), 'tf-pill tf-sinine', kiri2('Turn On')) + '</div>' +
+    '</div>';
+  }
+
+  /* ---------- Veebileht: päis, sisselogimine ja küpsiste aken ---------- */
+  function veeb(t) {
+    var w = function (en) { return leia(t, en); };
+    return '<div class="ekraan vb">' +
+      '<div class="vb-aadress" aria-hidden="true"><i></i><span>www.funzone.example</span></div>' +
+      '<div class="vb-pais">' + nupp(w('Menu'), 'vb-menu', '<span class="vb-burger" aria-hidden="true"><i></i><i></i><i></i></span><span>Menu</span>') +
+        '<b class="vb-logo">FunZone</b>' + nupp(w('Log Out'), 'vb-link', '<span>Log Out</span>') + '</div>' +
+      '<div class="vb-vorm"><p class="vb-pealkiri">Welcome!</p>' +
+        nupp(w('Username'), 'vb-silt', '<span>Username</span>') + '<span class="vb-vali" aria-hidden="true">cool_gamer</span>' +
+        nupp(w('Password'), 'vb-silt', '<span>Password</span>') + '<span class="vb-vali" aria-hidden="true">••••••••</span>' +
+        '<div class="vb-nupud">' + nupp(w('Log In'), 'vb-nupp vb-sinine', '<span>Log In</span>') + nupp(w('Sign Up'), 'vb-nupp', '<span>Sign Up</span>') + '</div></div>' +
+      '<div class="vb-kupsis">' + nupp(w('Close'), 'vb-rist', '<span aria-hidden="true">✕</span><span>Close</span>') +
+        '<p>This website uses cookies.</p>' + nupp(w('Accept All'), 'vb-nupp vb-sinine', '<span>Accept All</span>') + '</div>' +
+    '</div>';
+  }
+
+  /* ---------- Kui midagi ei tööta: laadimine, vead ja aku ---------- */
+  function probleemid(t) {
+    var w = function (en) { return leia(t, en); };
+    return '<div class="ekraan pr">' +
+      '<div class="pr-riba">' + nupp(w('No Internet'), 'pr-teade', IKOON.wifi + '<span>No Internet</span>') +
+        nupp(w('Low Battery'), 'pr-teade pr-aku', '<span class="pr-akuikoon" aria-hidden="true"><i></i></span><span>Low Battery</span>') + '</div>' +
+      '<div class="pr-kaart">' + nupp(w('Loading'), 'pr-lae', '<span class="pr-ring" aria-hidden="true"></span><span>Loading</span>') +
+        nupp(w('Wait'), 'pr-link', '<span>Wait</span>') + '</div>' +
+      '<div class="pr-kaart pr-viga">' + nupp(w('Error'), 'pr-pealkiri', IKOON.hoiatus + '<span>Error</span>') +
+        '<p>Something went wrong.</p>' +
+        '<div class="pr-nupud">' + nupp(w('Try Again'), 'pr-nupp pr-sinine', '<span>Try Again</span>') +
+          nupp(w('Restart'), 'pr-nupp', '<span>Restart</span>') + '</div></div>' +
+      nupp(w('Help'), 'pr-abi', '<span aria-hidden="true">?</span><span>Help</span>') +
+    '</div>';
+  }
+
+  var EKRAANID = { youtube: youtube, minecraft: minecraft, roblox: roblox, ehitamine: ehitamine, edasi: edasi, ettevaatust: ettevaatust,
+    konsool: konsool, telefon: telefon, veeb: veeb, probleemid: probleemid };
 
   function joonista(host, teema) {
     var f = EKRAANID[teema.ekraan];

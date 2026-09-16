@@ -39,7 +39,7 @@
     tolgi: "Tõlgi"
   };
   const SAMMU_NIMI_S = {
-    vajuta: "Leia nupp",
+    vajuta: "Leia ekraanilt",
     loe: "Leia sõna",
     kuula: "Kirjuta kuulmise järgi",
     tolgi: "Tõlgi"
@@ -272,7 +272,7 @@
   function kysimus(q) {
     const leia = q.samm === "vajuta";
     return '<div class="ek-ul">' + '<span class="kp-pea">' + KPapagoi("teach", { head: true }) + "</span>" +
-      '<div class="mull kysimus"><span class="k-silt">' + (leia ? "Leia nupp, mis tähendab:" : "Leia sõna, mis tähendab:") + "</span>" +
+      '<div class="mull kysimus"><span class="k-silt">' + (leia ? "Leia ekraanilt, mis tähendab:" : "Leia sõna, mis tähendab:") + "</span>" +
       '<span class="k-sona">' + etHtmlSisu(q.rida.et, false) + "</span></div></div>" +
       '<p class="k-juhend">' + (leia ? "Vajuta seda all oleval pildil." : "Vajuta õiget sõna.") + "</p>";
   }
@@ -287,7 +287,7 @@
   }
   /* „„Search“ tähendab …" — sõna jutumärkides paksult. */
   function teebHtml(sona) {
-    const t = esc(sona.teeb), en = esc("„" + sona.en + "“");
+    const t = esc(sona.teeb), en = esc("„" + sona.en.replace(/'/g, "’") + "“");
     return t.indexOf(en) === 0 ? "<b>" + en + "</b>" + t.slice(en.length) : t;
   }
   function kuulaNupudS() {

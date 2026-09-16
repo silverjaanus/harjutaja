@@ -19,13 +19,13 @@ TEEMAD.forEach(t => {
     ok(!ids[s.id], 'id on kordumatu: ' + s.id); ids[s.id] = 1;
     ok(/^[a-z]{2}-[a-z]+$/.test(s.id), 'id kuju: ' + s.id);
     ['en', 'et', 'teeb'].forEach(k => ok(typeof s[k] === 'string' && s[k].trim(), s.id + ': väli ' + k));
-    ok(/^[A-Za-z][A-Za-z ]*$/.test(s.en), s.id + ': en on ainult tähed ja tühikud');
+    ok(/^[A-Za-z][A-Za-z ']*$/.test(s.en), s.id + ': en on ainult tähed, tühikud ja ülakoma');
     ok(!en[S.heliNimi(s.en)], t.id + ': heli nimi kordub ' + s.en); en[S.heliNimi(s.en)] = 1;
     const p = S.etOsad(s.et).pohi.toLowerCase();
     ok(p && !et[p], t.id + ': eesti vaste kordub ' + p); et[p] = 1;
     ok(s.ul === undefined, s.id + ': ülesandelauset ei kasutata (küsimus on eesti tähendus)');
     ok(/[.!?]$/.test(s.teeb), s.id + ': laused lõpevad punktiga');
-    ok(s.teeb.indexOf('„' + s.en + '“') === 0, s.id + ': teeb algab sõnaga jutumärkides');
+    ok(s.teeb.indexOf('„' + s.en.replace(/'/g, '’') + '“') === 0, s.id + ': teeb algab sõnaga jutumärkides');
     ok(!/"/.test(s.teeb + (s.markus || '') + s.et), s.id + ': sirgeid jutumärke pole');
     ok(!s.markus || /[.!?]$/.test(s.markus), s.id + ': markus lõpeb punktiga');
   });
@@ -36,7 +36,11 @@ require('./ekraanid.js');
 const EK = window.KEkraan;
 TEEMAD.forEach(t => {
   ok(t.juhised || EK.EKRAANID[t.ekraan], t.id + ': ekraan on olemas');
-  if (!t.juhised) return;
+  if (!t.juhised) {
+    const h = EK.EKRAANID[t.ekraan] ? EK.EKRAANID[t.ekraan](t) : '';
+    t.sonad.forEach(s => ok(h.indexOf('data-id="' + s.id + '"') >= 0, t.id + ': ekraanil on nupp ' + s.id));
+    return;
+  }
   t.sonad.forEach(s => {
     ok(/^[A-Z][A-Za-z0-9 :]*!$/.test(s.juhis || ''), s.id + ': juhis on lühike ingliskeelne käsk');
     ok(new RegExp('\\b' + s.en + '\\b', 'i').test(s.juhis), s.id + ': juhises on õpitav sõna');

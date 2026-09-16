@@ -105,10 +105,10 @@ def main():
         kontrolli(page.inner_text("#loendur") == "1 / 15", "ringis 15 ülesannet", page.inner_text("#loendur"))
         q = cur(page)
         kontrolli(q["liik"] == "sona" and q["samm"] == "vajuta", "esimene samm on vajuta")
-        kontrolli(page.text_content("#sammNimi") == "Leia nupp", "sammu nimi")
+        kontrolli(page.text_content("#sammNimi") == "Leia ekraanilt", "sammu nimi")
         kontrolli(page.locator("#ekhost .ekraan.yt").count() == 1, "YouTube'i ekraan on joonistatud")
         kontrolli(page.locator("#ekhost button.ek").count() == 8, "ekraanil 8 nuppu", page.locator("#ekhost button.ek").count())
-        kontrolli(page.inner_text(".ek-ul .k-silt") == "Leia nupp, mis tähendab:", "küsimuse silt", page.inner_text(".ek-ul .k-silt"))
+        kontrolli(page.inner_text(".ek-ul .k-silt") == "Leia ekraanilt, mis tähendab:", "küsimuse silt", page.inner_text(".ek-ul .k-silt"))
         kontrolli(page.inner_text(".ek-ul .k-sona").split(" (")[0] == q["et"].split(" (")[0], "mullis on eesti tähendus", page.inner_text(".ek-ul .k-sona"))
         kontrolli(page.inner_text(".k-juhend") == "Vajuta seda all oleval pildil.", "rida, mida teha")
         kontrolli(page.locator("#kthost").count() == 0, "vajutamisel klaviatuuri pole")
@@ -270,7 +270,7 @@ def main():
         }).filter(Boolean)""")
         kontrolli(not puudu, "igal teemal on iga sõna jaoks üks nupp", str(puudu))
         nimed = page.evaluate("() => [...document.querySelectorAll('#val-teema .chip')].map(b => b.textContent)")
-        kontrolli(nimed == ["YouTube", "Minecraft", "Roblox", "Ehitamine", "Mängu juhised", "Tasemed ja auhinnad", "Ettevaatust"],
+        kontrolli(nimed == ["YouTube", "Minecraft", "Roblox", "Ehitamine", "Mängu juhised", "Tasemed ja auhinnad", "Ettevaatust", "Konsool", "Telefon küsib", "Veebileht", "Kui midagi ei tööta"],
                   "teemade kiibid", str(nimed))
 
         # --- juhiste teema ---
