@@ -27,6 +27,8 @@ Täisplaan on Claude'i projektis failis `claude/kirjutaja-plaan.md`, taust ja re
 
 ## In Progress
 
+**KEELE HELI VALMIS (16. sept, haru `keel-heli`) — OOTAB SILVERI MERGE'I.** `tools/keel_audio.py` tegi ülejäänud 7 lauset ja kõik 31 sõna (11 Gemini TTS päringut, iga partii transkriptsiooniga kontrollitud): `keel/audio/u4l4-01…10.mp3` ja `keel/audio/s/<sõna>.mp3`. Nüüd kõlab Keeles Gemini Kore hääl; brauseri hääl loeb ainult lühikesi abisõnu (a, an, the, to, at, in, is). Uue tunni lisamisel käivita sama skript uuesti — olemasolevad failid jäetakse vahele.
+
 **KEEL: SÕNAD EKRAANILT (16. sept, haru `keel-ekraan`, worktree `..\harjutaja-ekraan`) — OOTAB SILVERI MERGE'I JA PROOVIMIST.** Võrdluslink: https://github.com/silverjaanus/harjutaja/compare/main...keel-ekraan. Plaan (Silver kinnitas 16. sept, paberkatset ei tehta): Claude'i projektis `claude/keel-yldplaan.md`.
 
 - **Uus rada Keele moodulis.** Avalehel „Mida harjutad?": *Kooli laused* (endine Keel) või *Sõnad ekraanilt*. Kiip „Tund" on näha ainult kooli lausetel, „Teema" (YouTube, Minecraft) ainult ekraanisõnadel. Vana andmetega laps jääb kooli rajale (`valik.rada` vaikimisi `kool`).
