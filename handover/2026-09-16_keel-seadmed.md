@@ -1,4 +1,4 @@
-Seis: OOTAB MERGE'I
+Seis: MERGE'ITUD (PR #18)
 
 # Keel: neli uut teemat seadmetest (haru `keel-seadmed`)
 

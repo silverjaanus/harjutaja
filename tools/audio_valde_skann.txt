@@ -1,0 +1,17 @@
+KAHTLASED KLIPID (15), koige kahtlasem enne
+
+tuka           (pikk     vs tuga          )  täishäälik 1.73x pikem, Charonil korras (0.79x)
+rattu          (ylipikk  vs radu          )  täishäälik 1.72x pikem, Charonil korras (0.91x)
+vikkurit       (ylipikk  vs vigurit       )  täishäälik 1.60x pikem, Charonil korras (0.89x)
+jaki           (pikk     vs jagi          )  täishäälik 1.58x pikem, Charonil korras (0.60x)
+nuka           (pikk     vs nuga          )  täishäälik 1.57x pikem, Charonil korras (1.00x)
+make           (pikk     vs mage          )  täishäälik 1.55x pikem, Charonil korras (0.37x)
+patta          (ylipikk  vs pada          )  täishäälik 1.55x pikem, Charonil korras (1.13x)
+happut         (ylipikk  vs habut         )  täishäälik 1.48x pikem, Charonil korras (0.97x)
+nukka          (ylipikk  vs nuga          )  täishäälik 1.47x pikem, Charonil korras (0.65x)
+sipelga        (pikk     vs sibelga       )  täishäälik 1.39x pikem, Charonil korras (0.81x)
+luke           (pikk     vs luge          )  täishäälik 1.38x pikem, Charonil korras (0.80x)
+jutukas        (pikk     vs judukas       )  täishäälik 1.35x pikem, Charonil korras (0.59x)
+putuka         (pikk     vs puduka        )  täishäälik 1.34x pikem, Charonil samuti pikk (1.56x)
+ruki           (pikk     vs rugi          )  täishäälik 1.34x pikem, Charonil korras (0.88x)
+puttuka        (ylipikk  vs puduka        )  täishäälik 1.33x pikem, Charonil korras (0.98x)
