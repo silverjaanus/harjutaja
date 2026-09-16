@@ -86,8 +86,13 @@
     soojendaSonad: function (sonad, tehtud) {
       if (!window.fetch) return;
       var koik = true;
-      Promise.all(sonad.map(function (s) {
-        return fetch('audio/s/' + sonaFail(s.en) + '.mp3').then(function (r) { if (!r.ok) koik = false; })
+      var failid = [];
+      sonad.forEach(function (s) {
+        failid.push(sonaFail(s.en));
+        if (s.juhis) failid.push(sonaFail(s.juhis));   /* juhiste teema: terve juhis */
+      });
+      Promise.all(failid.map(function (f) {
+        return fetch('audio/s/' + f + '.mp3').then(function (r) { if (!r.ok) koik = false; })
           .catch(function () { koik = false; });
       })).then(function () { if (koik && tehtud) tehtud(); });
     },

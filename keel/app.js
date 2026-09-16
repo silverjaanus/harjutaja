@@ -39,8 +39,8 @@
     tolgi: "Tõlgi"
   };
   const SAMMU_NIMI_S = {
-    vajuta: "Vajuta õiget nuppu",
-    loe: "Loe ja vajuta",
+    vajuta: "Leia nupp",
+    loe: "Leia sõna",
     kuula: "Kirjuta kuulmise järgi",
     tolgi: "Tõlgi"
   };
@@ -61,7 +61,7 @@
     '<li><b>Kirjuta kuulmise järgi.</b> Kuula ja kirjuta lause.</li>' +
     '<li><b>Tõlgi.</b> Näed lauset eesti keeles ja kirjutad selle inglise keeles. Nii küsib ka õpetaja.</li>' +
     '</ul>' +
-    '<p><b>Sõnad ekraanilt.</b> Need on sõnad, mida näed YouTube’is ja mängudes. Iga sõna harjutad neljas sammus: vajutad joonistatud ekraanil õiget nuppu, loed sama sõna ilma pildita, kirjutad selle kuulmise järgi ja lõpuks tõlgid eesti keelest. Mõnda sõna öeldakse ka eesti keeles inglise keele järgi (näiteks „laikima“). Siis on see selgituses kirjas.</p>' +
+    '<p><b>Sõnad ekraanilt.</b> Need on sõnad, mida näed YouTube’is ja mängudes. Iga sõna harjutad neljas sammus. Papagoi ütleb sõna eesti keeles ja sina leiad joonistatud ekraanilt sama nupu inglise keeles. Siis leiad sama sõna ilma pildita, kirjutad selle kuulmise järgi ja lõpuks tõlgid selle eesti keelest inglise keelde. „Mängu juhiste“ teemas on juhis inglise keeles ja sina teed mänguväljal seda, mida see ütleb. Mõnda sõna öeldakse ka eesti keeles inglise keele järgi (näiteks „laikima“). Siis on see selgituses kirjas.</p>' +
     '<p>Mängul on oma klaviatuur, et telefon ei pakuks sõnu ette. Suured ja väikesed tähed ning punkt lõpus ei loe, aga iga täht sõnas loeb. Ringi lõpus kirjuta laused ka vihikusse — ekraanil kirjutamine ei asenda käega kirjutamist.</p>' +
     '<p>Mängu ajal on ülesande all nupp <b>„Anna veast teada“</b>. Kui tõlge või hääl tundub vale, vajuta seda ja vali, mis on valesti. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Keel">e-kirjaga</a>.</p>';
 
@@ -266,14 +266,24 @@
   /* ---------- ekraanisõnad (q.liik === "sona") ---------- */
   let vastaS = null;
 
-  function ulMull(q) {
+  /* Küsimus on alati sama kujuga (Silver 16. sept: ülesandelause „Mine tagasi
+     avalehele" oli segane ja polnud aru saada, et midagi küsitakse):
+     silt + suurelt eesti tähendus + rida, mida teha. */
+  function kysimus(q) {
+    const leia = q.samm === "vajuta";
     return '<div class="ek-ul">' + '<span class="kp-pea">' + KPapagoi("teach", { head: true }) + "</span>" +
-      '<p class="mull">' + esc(q.rida.ul) + "</p></div>";
+      '<div class="mull kysimus"><span class="k-silt">' + (leia ? "Leia nupp, mis tähendab:" : "Leia sõna, mis tähendab:") + "</span>" +
+      '<span class="k-sona">' + etHtmlSisu(q.rida.et, false) + "</span></div></div>" +
+      '<p class="k-juhend">' + (leia ? "Vajuta seda all oleval pildil." : "Vajuta õiget sõna.") + "</p>";
+  }
+  /* „(2 sõna)" on vihje ainult kirjutamiseks; mujal seda ei näidata. */
+  function etHtmlSisu(et, kirjutamine) {
+    const o = S.etOsad(et);
+    const t = o.tapsustus && (kirjutamine || !/sõna$/.test(o.tapsustus)) ? o.tapsustus : "";
+    return esc(o.pohi) + (t ? ' <span class="tapsustus">(' + esc(t) + ")</span>" : "");
   }
   function etHtml(et, suur) {
-    const o = S.etOsad(et);
-    return '<p class="et' + (suur ? " suur" : "") + '">' + esc(o.pohi) +
-      (o.tapsustus ? ' <span class="tapsustus">(' + esc(o.tapsustus) + ")</span>" : "") + "</p>";
+    return '<p class="et' + (suur ? " suur" : "") + '">' + etHtmlSisu(et, true) + "</p>";
   }
   /* „„Search“ tähendab …" — sõna jutumärkides paksult. */
   function teebHtml(sona) {
@@ -290,6 +300,14 @@
   }
   const leiaSona = id => { for (const t of TEEMAD) { const s = t.sonad.find(x => x.id === id); if (s) return s; } return null; };
   const nupuline = q => q.samm === "vajuta" || q.samm === "loe";
+  /* Juhiste teema: esimeses sammus on ingliskeelne juhis ja laps teeb seda väljal. */
+  const juhisel = q => q.samm === "vajuta" && !!(q.teema && q.teema.juhised);
+  function juhisMull(q) {
+    return '<div class="ek-ul">' + '<span class="kp-pea">' + KPapagoi("teach", { head: true }) + "</span>" +
+      '<div class="mull juhis"><span class="k-silt">Loe juhist ja tee, mida see ütleb:</span>' +
+      '<span class="k-sona" lang="en">' + esc(q.rida.juhis) + "</span></div></div>" +
+      '<p class="k-juhend" id="juhisNote">Tee seda all oleval mänguväljal.</p>';
+  }
 
   const SONA = {
     valmista(it) {
@@ -300,13 +318,15 @@
 
     joonista(q, vasta, vaade) {
       const r = q.rida, lava = $("lava"), opts = $("opts");
-      $("sammNimi").textContent = SAMMU_NIMI_S[q.samm];
+      $("sammNimi").textContent = juhisel(q) ? "Loe ja tee" : SAMMU_NIMI_S[q.samm];
       opts.hidden = true; opts.innerHTML = "";
       kb = null; uuesti = false; kaardid = []; pandud = [];
       vastaS = vasta;
       let h = "";
-      if (q.samm === "vajuta" || q.samm === "loe") {
-        h = ulMull(q) + '<div class="ekhost" id="ekhost"></div>' + '<p class="teeb" id="teeb" hidden></p>';
+      if (juhisel(q)) {
+        h = juhisMull(q) + '<div class="ekhost" id="ekhost"></div>' + '<p class="teeb" id="teeb" hidden></p>';
+      } else if (q.samm === "vajuta" || q.samm === "loe") {
+        h = kysimus(q) + '<div class="ekhost" id="ekhost"></div>' + '<p class="teeb" id="teeb" hidden></p>';
       } else if (q.samm === "kuula") {
         h = kuulaNupudS() + etHtml(r.et) + '<div id="kthost"></div>';
       } else {
@@ -316,7 +336,12 @@
       }
       lava.innerHTML = h;
       lava._q = q;
-      if (q.samm === "vajuta") KEkraan.joonista($("ekhost"), q.teema);
+      if (juhisel(q)) {
+        KEkraan.juhis($("ekhost"), r, {
+          vasta: v => { if (!q.done && !mang().review) vasta(v); },
+          teade: t => { const n = $("juhisNote"); if (n) { n.textContent = t; n.classList.add("teade"); } }
+        });
+      } else if (q.samm === "vajuta") KEkraan.joonista($("ekhost"), q.teema);
       if (q.samm === "loe") KEkraan.nupud($("ekhost"), q.valikud);
       if ($("kthost")) {
         kb = KKlaviatuur.loo({
@@ -343,6 +368,7 @@
 
     valeLause(rec) {
       const q = rec.q;
+      if (juhisel(q)) return "Juhis oli: „" + q.rida.juhis + "“ ehk „" + q.rida.juhisEt + "“";
       if (nupuline(q)) {
         const v = leiaSona(rec.vastus);
         return (v ? "See nupp on „" + v.en + "“. " : "") + "Õige nupp on „" + q.rida.en + "“.";
@@ -353,6 +379,10 @@
     vihje(q, v) {
       const r = q.rida;
       let h = KPapagoi("teach", { head: true }) + '<div class="hinttext">';
+      if (juhisel(q)) {
+        h += '<p class="teeb">' + teebHtml(r) + "</p>";
+        return h + "</div>";
+      }
       if (nupuline(q)) {
         const valitud = leiaSona(v);
         if (valitud && valitud.id !== r.id) h += '<p class="teeb">' + teebHtml(valitud) + "</p>";
@@ -370,6 +400,20 @@
 
     naitaVastus(rec) {
       const q = rec.q;
+      if (juhisel(q)) {
+        const vale = typeof rec.vastus === "string" && rec.vastus.indexOf("vale:") === 0 ? rec.vastus.slice(5) : null;
+        KEkraan.margiJuhis($("ekhost"), { siht: q.rida.siht, vale: vale });
+        const n = $("juhisNote");
+        /* Vale korral on tõlge juba tagasiside reas — siin seda ei korrata. */
+        if (n) {
+          n.textContent = rec.ok ? "„" + q.rida.juhis + "“ ehk „" + q.rida.juhisEt + "“" : "";
+          n.hidden = !rec.ok;
+          n.classList.remove("teade"); n.classList.add("juhis-et");
+        }
+        const t = $("teeb");
+        if (t && rec.ok) { t.innerHTML = teebHtml(q.rida); t.hidden = false; }
+        return;
+      }
       if (nupuline(q)) {
         KEkraan.margi($("ekhost"), { vajutatud: rec.vastus, oige: q.rida.id, ok: rec.ok });
         const t = $("teeb");
@@ -394,7 +438,7 @@
 
     lukusta() {
       if (kb) kb.lukusta();
-      document.querySelectorAll("#ekhost button.ek").forEach(b => { b.disabled = true; });
+      document.querySelectorAll("#ekhost button").forEach(b => { b.disabled = true; });
     },
 
     fookus() { if (kb) kb.fookus(); },
@@ -402,7 +446,11 @@
     mustand() { return kb ? { tekst: kb.vaartus() } : null; },
     taasta(m) { if (m && kb && m.tekst != null) kb.pane(m.tekst); },
 
-    valikud() { return Array.from(document.querySelectorAll("#ekhost button.ek:not(:disabled)")); },
+    valikud() {
+      const q = mang().cur;
+      if (q && juhisel(q)) return [];
+      return Array.from(document.querySelectorAll("#ekhost button.ek:not(:disabled)"));
+    },
 
     klahv(e, q) {
       if (kb && (!q.done || uuesti) && e.target !== kb.input && kb.klahv(e)) return true;
@@ -417,6 +465,8 @@
     vastatud(rec) {
       const q = rec.q;
       /* Õige nupu järel kõlab sõna: nii seob laps kirja ja kõla. */
+      /* Juhise järel kõlab terve juhis: nii kuuleb laps, mida ta just luges. */
+      if (juhisel(q)) { KHeli.sona(q.rida.juhis); return; }
       if (nupuline(q)) { if (rec.ok) KHeli.sona(q.rida.en); return; }
       if (!rec.ok) KHeli.sona(q.rida.en);
     },
