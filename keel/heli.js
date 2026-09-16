@@ -5,7 +5,8 @@
    KHeli.rida(rida, {aeglane, nupp, valmis}) — mängi rida
    KHeli.sona(sona)                         — mängi üks sõna
    KHeli.peata()
-   KHeli.soojenda(read)                     — kogu tunni heli vahemällu (võrguta töö) */
+   KHeli.soojenda(read)                     — kogu tunni heli vahemällu (võrguta töö)
+   KHeli.soojendaSonad(sonad)               — ekraanisõnade teema heli vahemällu */
 (function () {
   'use strict';
   var praegu = null, nupp = null;
@@ -81,6 +82,15 @@
       mangi(LYHIKESED[f] ? null : 'audio/s/' + f + '.mp3', w.replace(/[.,!?]/g, ''), o);
     },
     peata: peata,
+    /* Ekraanisõnade heli: audio/s/<sõna>.mp3 (nt „Create New" → createnew). */
+    soojendaSonad: function (sonad, tehtud) {
+      if (!window.fetch) return;
+      var koik = true;
+      Promise.all(sonad.map(function (s) {
+        return fetch('audio/s/' + sonaFail(s.en) + '.mp3').then(function (r) { if (!r.ok) koik = false; })
+          .catch(function () { koik = false; });
+      })).then(function () { if (koik && tehtud) tehtud(); });
+    },
     /* Kogu tunni heli taustal vahemällu (service worker paneb .mp3 vahemällu
        esimesel päringul). Alles pärast esimese ringi algust, mitte lehe avamisel. */
     soojenda: function (read, tehtud) {

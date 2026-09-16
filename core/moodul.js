@@ -26,12 +26,13 @@
      voistlus: { n: 15, sek: 10, kirjeldus: "…" },   // või null (võistlust pole)
      kiibid: [{ id: "tase", silt: "Kui raske?", vaikimisi: 1,     // avalehe valikud; laps valib kiibiga
                 markus: "Igal tasemel on ka eelmiste tasemete ülesandeid.",
-                valikud: [{ id: 1, nimi: "Kuni 10" }, …] }],
+                valikud: [{ id: 1, nimi: "Kuni 10" }, …],
+                naita: valik => true }],                    // valikuline: kiip on näha ainult siis, kui true
      pakk: (valik, mode) => [ülesanne, …],  // igal ülesandel id (statistika võti) ja lemma (oskus)
      selgus: "Selge on tehe, mille …",      // edetabeli ja avalehe selgitus
      selgedArv: D => n,                     // valikuline; vaikimisi selgete id-de arv
      alamTekst: "…",                        // madala tulemuse lause
-     harjutaNeid: "Harjuta neid tehteid",
+     harjutaNeid: "Harjuta neid tehteid",   // alamTekst ja harjutaNeid võivad olla ka funktsioonid D => tekst
      veaRida: q => element,                 // üks rida „Järgmisel korral harjutame" all
      kaart: { silt, markus, joonista(host, D, valik) },   // valikuline plokk avalehel
      abi: "<p>…</p>",                       // „Kuidas see käib?" sisu (HTML)
@@ -50,10 +51,12 @@
      enneTulemust: G => {},                 // nt heli peatamine, vigade nimekirja puhastus
      tulemusLisa: { silt, markus, joonista(host, G, round) },   // plokk tulemuse ekraanil
      koju: () => {},                        // avalehele minnes
+     ringiAsjad: D => ({ yks, mitu }),      // kui ringis on muud asjad kui asjad (Keel: sõnad ja laused)
+     ringiSelged: D => n,                   // „N … sai selgeks" loendur, kui see erineb selgedArv-ist
      // kaart.id: avalehe kaardi elemendi id (vaikimisi "kaart")
      // HMang konksud (vt core/mang.js): joonista, kontrolli, oige, vihje,
      // naitaVastus, lukusta, tyhi, mustand, taasta, fookus, valikud, sama,
-     // veateade, valmista, algus, vastatud, valeLause, aken, klahv
+     // veateade, valmista, algus, vastatud, valeLause, aken, klahv, peatu
    });
 */
 (function () {
@@ -67,7 +70,7 @@
 
   var KONKSUD = ['joonista', 'kontrolli', 'oige', 'vihje', 'naitaVastus', 'lukusta', 'tyhi',
     'mustand', 'taasta', 'fookus', 'valikud', 'sama', 'veateade', 'valmista', 'algus',
-    'vastatud', 'valeLause', 'aken', 'klahv'];
+    'vastatud', 'valeLause', 'aken', 'klahv', 'peatu'];
   var MIKS = {
     ulesanne: 'Ülesanne on imelik',
     vastus: 'Mäng näitab valet vastust',
@@ -90,7 +93,7 @@
     var v = m.voistlus;
     var muusika = m.muusika && m.muusika.length;
     var valikud = (m.kiibid || []).map(function (x) {
-      return '<div class="block">' +
+      return '<div class="block" id="blk-' + x.id + '">' +
         '<span class="label" id="lbl-' + x.id + '">' + esc(x.silt) + '</span>' +
         '<div class="chips" role="group" aria-labelledby="lbl-' + x.id + '" id="val-' + x.id + '"></div>' +
         (x.markus ? '<p class="hint-small" id="mark-' + x.id + '"></p>' : '') +
@@ -233,6 +236,8 @@
       return Object.keys(D.stats).filter(function (k) { return HEngine.mastered(D.stats[k]); }).length;
     };
 
+    var ringiSelged = m.ringiSelged ? function () { return m.ringiSelged(D); } : selged;
+
     /* Võistlusring: kindel järjekord, kordusi ei ole. */
     function TestRound(items) { this.items = items; this.length = items.length; this.asked = 0; this.due = []; }
     TestRound.prototype.next = function () {
@@ -259,7 +264,7 @@
       salvesta: function (q, ok) { round.record(q, ok, q.abi); save(); },
       lopp: function (G) {
         if (m.enneTulemust) m.enneTulemust(G);
-        lastWrong = tulemus.naita(G, { uued: selged() - selgedEnne });
+        lastWrong = tulemus.naita(G, { uued: ringiSelged() - selgedEnne });
         if (m.tulemusLisa) {
           var host = $('resLisa'); host.innerHTML = '';
           var on = m.tulemusLisa.joonista(host, G, round);
@@ -290,7 +295,7 @@
       if (m.ring) {
         round = m.ring(D, mode, focus || []);
         if (!round || !round.length) return;
-        selgedEnne = selged();
+        selgedEnne = ringiSelged();
         mang.alusta(round, test ? 'test' : 'train');
         if (m.ringAlgas) m.ringAlgas(round, D);
         return;
@@ -312,7 +317,7 @@
       if (!test && focus && focus.length) {
         round.due = focus.map(function (q, i) { return { item: q, at: 1 + 2 * i }; });
       }
-      selgedEnne = selged();
+      selgedEnne = ringiSelged();
       mang.alusta(round, test ? 'test' : 'train');
       if (m.ringAlgas) m.ringAlgas(round, D);
     }
@@ -320,9 +325,11 @@
     var tulemus = HTulemus.loo({
       D: D, save: save, saatmine: saatmine, voistlus: voistlus, mang: mang, n: v ? v.n : ringiPikkus,
       maskott: m.maskott,
-      alamTekst: m.alamTekst || '',
-      selgeks: [asjad.yks, asjad.mitu],
-      harjutaNeid: m.harjutaNeid || 'Harjuta neid uuesti',
+      alamTekst: typeof m.alamTekst === 'function' ? function () { return m.alamTekst(D); } : (m.alamTekst || ''),
+      selgeks: m.ringiAsjad
+        ? function () { var a = m.ringiAsjad(D); return [a.yks, a.mitu]; }
+        : [asjad.yks, asjad.mitu],
+      harjutaNeid: typeof m.harjutaNeid === 'function' ? function () { return m.harjutaNeid(D); } : (m.harjutaNeid || 'Harjuta neid uuesti'),
       ringiLisa: function () { return { valik: JSON.parse(JSON.stringify(D.valik)) }; },
       kordus: m.kordus,
       veaRida: m.veaRida
@@ -340,6 +347,8 @@
           b.onclick = function () { D.valik[x.id] = y.id; save(); renderKodu(); };
           box.appendChild(b);
         });
+        var blk = $('blk-' + x.id);
+        if (blk) blk.hidden = !!(x.naita && !x.naita(D.valik));
         var mk = $('mark-' + x.id);
         if (mk) mk.textContent = typeof x.markus === 'function' ? x.markus(D.valik) : x.markus;
       });

@@ -37,7 +37,8 @@
          vastatud(rec),              // vastus on antud ja joonistatud (Kirjutaja: loe variandid ette)
          valeLause(rec),             // vale vastuse lause; vaikimisi „Õige vastus on …."
          aken(q),                    // veateate aken avaneb (Kirjutaja: peata heli)
-         klahv(e, q)                 // mooduli oma klahv; true = võetud
+         klahv(e, q),                // mooduli oma klahv; true = võetud
+         peatu(rec)                  // true: ka õige vastuse järel oota nuppu „Edasi" (harjutuses)
        },
        taimerIse: false,             // true: moodul kutsub M.kaivitaTaimer() ise (Kirjutaja pärast sõna)
        eelmineTekst, sammuTekst(n),  // eelmise vaatamise riba tekst
@@ -182,6 +183,9 @@
       joonistaPais();
       if (md.vastatud) md.vastatud(rec);
 
+      /* Keele ekraanisõnad (16. sept): õige nupu järel on seletus, mida
+         lugeda — siis ootab mäng nuppu „Edasi", nagu vale vastuse järel. */
+      if (ok && !test && md.peatu && md.peatu(rec)) { if (window.HSfx) HSfx.ok(); $('after').hidden = false; return; }
       if (ok) { if (window.HSfx) HSfx.ok(); edasi(test ? AEG.okVoistlus : AEG.ok); return; }
       if (window.HSfx) HSfx.bad();
       if (test) { edasi(AEG.viga); return; }
@@ -263,7 +267,7 @@
       var rec = G.history[G.history.length - 1];
       if (cur.done && rec && rec.q === cur) {
         maali(rec);
-        $('after').hidden = rec.ok || G.mode === 'test';
+        $('after').hidden = (rec.ok && !(md.peatu && md.peatu(rec))) || G.mode === 'test';
       } else if (mustand && md.taasta) {
         md.taasta(mustand);
       }
