@@ -1,4 +1,4 @@
-Seis: OOTAB MERGE'I
+Seis: MERGE'ITUD (PR #19)
 
 # Kirjutaja: kuulamisabi võrdlusklipid ja Kore välteviga (haru `kuulamisabi-haal`)
 

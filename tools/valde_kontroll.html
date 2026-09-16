@@ -3,136 +3,140 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kirjutaja — kahtlaste klippide kontroll</title>
+<title>Kirjutaja – kahtlaste klippide kontroll</title>
 <style>
  :root { --tint:#16284a; --kollane:#f3c445; --hall:#eef1f6; }
- body { font-family: system-ui, sans-serif; color: var(--tint);
-        max-width: 60rem; margin: 0 auto; padding: 1rem 1rem 6rem; }
+ body { font-family: system-ui, sans-serif; color: var(--tint); background:#fff;
+        max-width: 60rem; margin: 0 auto; padding: 1rem 1rem 8rem; }
  h1 { font-size: 1.4rem; margin-bottom: .3rem; }
  .juhis { background: var(--kollane); padding: .9rem 1rem; border-radius: .6rem;
           line-height: 1.5; margin: 1rem 0 1.5rem; }
  .juhis ol { margin: .5rem 0 0; padding-left: 1.2rem; }
- .rida { border: 1px solid #ccd3e0; border-radius: .6rem; padding: .8rem 1rem;
-         margin-bottom: .9rem; }
- .rida.korras { background: #eaf7ee; border-color: #8ccfa3; }
- .rida.vigane { background: #fdeceb; border-color: #e39b96; }
+ .rida { border: 1px solid #ccd3e0; border-radius: .6rem; padding: .8rem 1rem; margin-bottom: .9rem; }
  .pais { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
  .sona { font-size: 1.15rem; font-weight: 700; }
  .miks { color: #5a6782; font-size: .85rem; }
- .haal { display: flex; align-items: center; gap: .4rem; margin-top: .5rem;
-         flex-wrap: wrap; }
- .silt { width: 8.5rem; font-size: .85rem; color: #5a6782; }
- .charon .silt { font-weight: 700; color: var(--tint); }
- .charon { background: var(--hall); border-radius: .4rem; padding: .3rem .4rem; }
+ .haal { display: flex; align-items: center; gap: .4rem; margin-top: .5rem; flex-wrap: wrap;
+         border-radius: .4rem; padding: .3rem .4rem; background: var(--hall); }
+ .haal.korras { background: #eaf7ee; }
+ .haal.vigane { background: #fdeceb; }
+ .silt { width: 8.5rem; font-size: .85rem; font-weight: 700; }
+ .vahe { flex: 1; }
  button { font: inherit; padding: .35rem .7rem; border-radius: .4rem;
-          border: 1px solid #ccd3e0; background: #fff; cursor: pointer; }
- button:hover { background: var(--hall); }
- button.mang { min-width: 6.5rem; }
+          border: 1px solid #ccd3e0; background: #fff; color: var(--tint); cursor: pointer; }
+ button:hover { background: #f6f8fb; }
+ button.mang { min-width: 5.5rem; }
  button.uuritav { border-color: var(--tint); border-width: 2px; font-weight: 700; }
- .otsus { margin-top: .6rem; display: flex; gap: .5rem; }
- .otsus button.valitud { background: var(--tint); color: #fff; }
+ button.valitud.ok { background: #1f8a4c; border-color: #1f8a4c; color: #fff; }
+ button.valitud.halb { background: #c0392b; border-color: #c0392b; color: #fff; }
  #kokku { position: fixed; left: 0; right: 0; bottom: 0; background: #fff;
           border-top: 2px solid var(--tint); padding: .7rem 1rem; }
- #kokku textarea { width: 100%; height: 3.5rem; font: inherit; font-size: .85rem; }
+ #kokku textarea { width: 100%; height: 3.5rem; font: inherit; font-size: .85rem; box-sizing: border-box; }
 </style>
 </head>
 <body>
-<h1>Kahtlased klipid — kuulamiskontroll</h1>
-<p>Masin mõõtis kõik 882 klippi läbi ja leidis need, kus <b>Kore venitab pikas vormis täishäälikut</b>, selle asemel et venitada sulghäälikut. Täpselt see viga oli klippides <code>rata</code> ja <code>tupa</code>.</p>
+<h1>Kahtlased klipid – kuulamiskontroll</h1>
+<p>Masin mõõtis kõik 882 klippi läbi ja leidis need, kus pikas vormis võib venida <b>täishäälik</b>, mitte sulghäälik. Just see viga oli klippides <code>rata</code> ja <code>tupa</code>.</p>
 
 <div class="juhis">
 <b>Kuidas kuulata:</b>
 <ol>
- <li>Vajuta <b>„kõik kolm"</b> Kore real ja kuula kolmikut järjest.</li>
- <li>Küsi endalt ainult üht: kas teine ja kolmas sõna erinevad esimesest <b>kaashääliku</b> pikkuse poolest (õige) või venib neis <b>täishäälik</b> (vale)? „raata" on vale, „ratta" on õige.</li>
- <li>Kui kahtled, kuula sama kolmik <b>Charoni real</b> — see hääl läbis kontrolli ja kõlbab võrdluseks.</li>
- <li>Märgi <b>korras</b> või <b>vigane</b>. Lehe allservast saad valmis nimekirja kopeerida.</li>
+ <li>Vajuta ühe hääle real „kõik kolm“ ja kuula kolmikut järjest.</li>
+ <li>Küsi endalt: kas teine ja kolmas sõna erinevad esimesest <b>kaashääliku</b> pikkuse poolest (õige) või venib neis <b>täishäälik</b> (vale)? „raata“ on vale, „ratta“ on õige.</li>
+ <li>Märgi <b>iga hääl eraldi</b>: Kore real „korras“ või „vigane“, Charoni real samamoodi.</li>
+ <li>Lehe allservast saad valmis nimekirja kopeerida. Märked jäävad alles ka siis, kui lehe uuesti avad.</li>
 </ol>
-Paksus kirjas nupp on see klipp, mille masin kahtluse alla pani.
+Paksu äärisega nupp on see klipp, mille masin kahtluse alla pani.
 </div>
 
-<div id="loend">Laen…</div>
+<div id="loend">Laen …</div>
 
 <div id="kokku">
- <div><b>Vigaseks märgitud:</b> <span id="arv">0</span></div>
- <textarea id="valjund" readonly placeholder="Märgi klippe, siis kopeeri see rida ja saada Claude'ile."></textarea>
+ <div><b>Vigaseks märgitud:</b> Kore <span id="arvK">0</span>, Charon <span id="arvC">0</span></div>
+ <textarea id="valjund" readonly placeholder="Märgi klippe, siis kopeeri see tekst ja saada Claude'ile."></textarea>
 </div>
 
 <script>
 const VORMID = [["lyhike","lühike"],["pikk","pikk"],["ylipikk","ülipikk"]];
-const otsused = {};
+const HAALED = [["audio","Kore (mängus)","Kore"],["audio2","Charon (võrdlus)","Charon"]];
+const FAIL = new URLSearchParams(location.search).get("fail") || "audio_valde_skann.json";
+const VOTI = "valde_kontroll_v2" + (FAIL === "audio_valde_skann.json" ? "" : ":" + FAIL);
+let otsused = {};
+try { otsused = JSON.parse(localStorage.getItem(VOTI)) || {}; } catch (e) { otsused = {}; }
+const salvesta = () => { try { localStorage.setItem(VOTI, JSON.stringify(otsused)); } catch (e) {} };
 
 function mangi(kaust, sonad) {
   let i = 0;
   const jargmine = () => {
     if (i >= sonad.length) return;
     const a = new Audio("../kirjutaja/" + kaust + "/" + sonad[i++] + ".mp3");
-    a.onended = jargmine;
-    a.onerror = jargmine;
+    a.onended = jargmine; a.onerror = jargmine;
     a.play().catch(jargmine);
   };
   jargmine();
 }
 
-function haalRida(kaust, silt, trio, uuritav, klass) {
+function haalRida(kaust, silt, lyhi, trio, uuritav, sona) {
   const div = document.createElement("div");
-  div.className = "haal" + (klass ? " " + klass : "");
+  div.className = "haal";
   div.innerHTML = '<span class="silt">' + silt + "</span>";
-  for (const [votme, nimi] of VORMID) {
+  for (const [v, nimi] of VORMID) {
     const b = document.createElement("button");
-    b.className = "mang" + (trio[votme] === uuritav ? " uuritav" : "");
+    b.className = "mang" + (trio[v] === uuritav ? " uuritav" : "");
     b.textContent = nimi;
-    b.onclick = () => mangi(kaust, [trio[votme]]);
+    b.onclick = () => mangi(kaust, [trio[v]]);
     div.appendChild(b);
   }
   const k = document.createElement("button");
   k.textContent = "kõik kolm";
   k.onclick = () => mangi(kaust, VORMID.map(v => trio[v[0]]));
   div.appendChild(k);
+  const vahe = document.createElement("span"); vahe.className = "vahe"; div.appendChild(vahe);
+  const voti = lyhi + ":" + sona;
+  const nupud = [];
+  [["korras","ok"],["vigane","halb"]].forEach(([v, kl]) => {
+    const b = document.createElement("button");
+    b.textContent = v;
+    b.className = kl;
+    b.onclick = () => { otsused[voti] = otsused[voti] === v ? undefined : v; salvesta(); joonista(); uuenda(); };
+    nupud.push([v, b]);
+    div.appendChild(b);
+  });
+  const joonista = () => {
+    div.className = "haal " + (otsused[voti] || "");
+    nupud.forEach(([v, b]) => b.classList.toggle("valitud", otsused[voti] === v));
+  };
+  joonista();
   return div;
 }
 
-function uuendaValjund() {
-  const vigased = Object.keys(otsused).filter(s => otsused[s] === "vigane");
-  document.getElementById("arv").textContent = vigased.length;
-  document.getElementById("valjund").value = vigased.length
-    ? "Vigased klipid: " + vigased.join(", ")
+function uuenda() {
+  const vig = h => Object.keys(otsused).filter(k => k.startsWith(h + ":") && otsused[k] === "vigane").map(k => k.split(":")[1]);
+  const k = vig("Kore"), c = vig("Charon");
+  const kontr = Object.keys(otsused).filter(x => otsused[x]).length;
+  document.getElementById("arvK").textContent = k.length;
+  document.getElementById("arvC").textContent = c.length;
+  document.getElementById("valjund").value = kontr
+    ? "Kore vigased: " + (k.join(", ") || "–") + "\nCharon vigased: " + (c.join(", ") || "–") + "\nMärgitud kokku: " + kontr + " / " + (2 * RIDU)
     : "";
 }
 
-fetch("audio_valde_skann.json").then(r => r.json()).then(d => {
+let RIDU = 0;
+fetch(FAIL).then(r => r.json()).then(d => {
   const loend = document.getElementById("loend");
   loend.innerHTML = "";
+  RIDU = d.kahtlased.length;
   d.kahtlased.forEach(r => {
     const div = document.createElement("div");
     div.className = "rida";
-    const pais = document.createElement("div");
-    pais.className = "pais";
-    pais.innerHTML = '<span class="sona">' + r.sona + "</span>"
-      + '<span class="miks">' + r.pohjus + "</span>";
-    div.appendChild(pais);
-    div.appendChild(haalRida("audio", "Kore (mängus)", r.trio, r.sona));
-    div.appendChild(haalRida("audio2", "Charon (võrdlus)", r.trio, r.sona, "charon"));
-    const otsus = document.createElement("div");
-    otsus.className = "otsus";
-    [["korras","korras"],["vigane","vigane"]].forEach(([v, silt]) => {
-      const b = document.createElement("button");
-      b.textContent = silt;
-      b.onclick = () => {
-        otsused[r.sona] = otsused[r.sona] === v ? null : v;
-        div.className = "rida " + (otsused[r.sona] || "");
-        [...otsus.children].forEach(c => c.classList.remove("valitud"));
-        if (otsused[r.sona]) b.classList.add("valitud");
-        uuendaValjund();
-      };
-      otsus.appendChild(b);
-    });
-    div.appendChild(otsus);
+    div.innerHTML = '<div class="pais"><span class="sona">' + r.sona + '</span><span class="miks">' + r.pohjus + "</span></div>";
+    HAALED.forEach(([kaust, silt, lyhi]) => div.appendChild(haalRida(kaust, silt, lyhi, r.trio, r.id || r.sona, r.sona)));
     loend.appendChild(div);
   });
-}).catch(e => {
+  uuenda();
+}).catch(() => {
   document.getElementById("loend").textContent =
-    "Ei leidnud faili audio_valde_skann.json. Käivita esmalt tools/audio_valde_skann.py.";
+    "Ei leidnud faili " + FAIL + ".";
 });
 </script>
 </body>
