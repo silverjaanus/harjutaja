@@ -9,7 +9,10 @@ Kontroll: iga päringu heli kirjutab eraldi tekstimudel üles ja see peab
 klappima oodatud tekstiga (väiketähed, kirjavahemärgid maha).
 Olemasolevad failid jäetakse vahele — skripti võib korduvalt käivitada.
 
-Sisend: keel/tunnid.js. Väljund: keel/audio/<rea id>.mp3, keel/audio/s/<sõna>.mp3.
+Sisend: keel/tunnid.js ja keel/teemad.js (ekraanisõnad, 16. sept).
+Väljund: keel/audio/<rea id>.mp3, keel/audio/s/<sõna>.mp3. Ekraanisõna, milles
+on tühik („Create New"), tehakse eraldi päringuga ja fail on ilma tühikuta
+(keel/audio/s/createnew.mp3), nagu heli.js seda otsib.
 Kasutus: python tools/keel_audio.py [--max-requests 30] [--voice Kore] [--dry]
 """
 import argparse, base64, io, os, re, shutil, sys, time, wave
@@ -43,6 +46,15 @@ def lae_read():
     src = open(os.path.join(ROOT, "keel", "tunnid.js"), encoding="utf-8").read()
     return [{"id": m.group(1), "en": m.group(2)}
             for m in re.finditer(r'\{\s*id:\s*"([^"]+)",\s*en:\s*"([^"]+)"', src)]
+
+
+def lae_teemad():
+    src = open(os.path.join(ROOT, "keel", "teemad.js"), encoding="utf-8").read()
+    return [m.group(1) for m in re.finditer(r'\ben:\s*"([^"]+)"', src)]
+
+
+STYLE_PHRASE = ("Read this short English phrase aloud for a young child who is learning English. "
+                "Use clear British English, as one phrase without a long pause. Read only the phrase, nothing else:\n")
 
 
 def puhas(s):
@@ -112,12 +124,19 @@ def main():
     ffmpeg = shutil.which("ffmpeg") or sys.exit("ffmpeg puudub")
     read = lae_read()
     koik_sonad = sonad(read)
+    ekraan = lae_teemad()
+    for w in ekraan:
+        if " " not in w and puhas(w) not in koik_sonad and puhas(w) not in LYHIKESED:
+            koik_sonad.append(puhas(w))
+    fraasid = [w for w in ekraan if " " in w]
+    puudu_f = [w for w in fraasid if not T.valid_mp3(os.path.join(OUT_S, sona_fail(w) + ".mp3"), ffmpeg)]
     puudu_r = [r for r in read if not T.valid_mp3(os.path.join(OUT, r["id"] + ".mp3"), ffmpeg)]
     puudu_s = [w for w in koik_sonad if not T.valid_mp3(os.path.join(OUT_S, sona_fail(w) + ".mp3"), ffmpeg)]
     log("read %d (puudu %d), sõnad %d (puudu %d), hääl %s" % (len(read), len(puudu_r), len(koik_sonad), len(puudu_s), a.voice))
     if a.dry:
         log("  puuduvad read: %s" % [r["id"] for r in puudu_r])
         log("  puuduvad sõnad: %s" % puudu_s)
+        log("  puuduvad fraasid: %s" % puudu_f)
         return
     key = T.get_key()
     st = {"tts": 0}
@@ -132,6 +151,17 @@ def main():
                 path = os.path.join(OUT, r["id"] + ".mp3")
                 T.write_mp3(pcm, path + ".part.mp3", ffmpeg); os.replace(path + ".part.mp3", path)
                 log("  %s valmis%s" % (r["id"], "" if kuulis is not None else " (kontrollimata)"))
+                break
+        for w in puudu_f:
+            for katse in (1, 2):
+                pcm = T.trim(tts(STYLE_PHRASE + w + ".", a.voice, key, st, a.max_requests))
+                kuulis = transcribe(pcm, key)
+                if kuulis is not None and puhas(kuulis) != puhas(w):
+                    log("  %s: kuulis '%s' (katse %d)" % (w, kuulis.strip(), katse))
+                    continue
+                path = os.path.join(OUT_S, sona_fail(w) + ".mp3")
+                T.write_mp3(pcm, path + ".part.mp3", ffmpeg); os.replace(path + ".part.mp3", path)
+                log("  %s valmis%s" % (w, "" if kuulis is not None else " (kontrollimata)"))
                 break
         for i in range(0, len(puudu_s), a.batch):
             partii = puudu_s[i:i + a.batch]
@@ -156,7 +186,8 @@ def main():
     log("TTS päringuid %d" % st["tts"])
     jaak_r = [r["id"] for r in read if not T.valid_mp3(os.path.join(OUT, r["id"] + ".mp3"), ffmpeg)]
     jaak_s = [w for w in koik_sonad if not T.valid_mp3(os.path.join(OUT_S, sona_fail(w) + ".mp3"), ffmpeg)]
-    log("PUUDU read: %s; sõnad: %s" % (jaak_r or "-", jaak_s or "-"))
+    jaak_f = [w for w in fraasid if not T.valid_mp3(os.path.join(OUT_S, sona_fail(w) + ".mp3"), ffmpeg)]
+    log("PUUDU read: %s; sõnad: %s; fraasid: %s" % (jaak_r or "-", jaak_s or "-", jaak_f or "-"))
 
 
 if __name__ == "__main__":

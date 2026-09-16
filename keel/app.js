@@ -1,30 +1,46 @@
-/* Keele mäng: inglise keele laused (esimene tund: Unit 4 „Where's the museum?").
+/* Keele mäng: inglise keele laused kooli tunnist ja sõnad ekraanilt.
 
    Sisu on failis tunnid.js, loogika (võrdlus, sammud, ring) lause.js-is,
    heli heli.js-is, klaviatuur klaviatuur.js-is, maskott tegelane.js-is.
    Kogu leht (avaleht, mäng, tulemus, edetabel, seaded) tuleb failist
    core/moodul.js (raamistiku mall, 16. sept) — siin on ainult Keele oma osa.
 
-   Iga lause läbib viis sammu (vt lause.js): tutvu → lünk → kokku → kuula →
-   tõlgi. Kava ja põhjendused: Claude'i projektis claude/keel-plaan.md.
+   Kaks rada (avalehe valik „Mida harjutad?"):
+   - Kooli laused: iga lause läbib viis sammu (vt lause.js): tutvu → lünk →
+     kokku → kuula → tõlgi. Kava: Claude'i projektis claude/keel-plaan.md.
+   - Sõnad ekraanilt (16. sept): YouTube'i ja mängude sõnad joonistatud
+     ekraanil; neli sammu (vt sonad.js): vajuta → loe → kuula → tõlgi.
+     Sisu teemad.js, ekraanid ekraanid.js. Kava: claude/keel-yldplaan.md.
+   Ülesandel on liik: q.liik === "sona" on ekraanisõna, muidu lause.
    Võistlust ei ole — võistlusreeglid on Silveri otsus. */
 (function () {
   'use strict';
   const $ = id => document.getElementById(id);
   const L = KLause;
+  const S = KSonad;
 
   const TUNNID = window.KEEL_TUNNID || [];
+  const TEEMAD = window.KEEL_TEEMAD || [];
   /* api tuleb registreeri() lõpus; andmed saame juba laadi() konksust,
      sest avaleht joonistatakse registreerimise ajal. */
   let api = null, andmed = null;
   const mang = () => api.mang;
   const D = () => andmed;
   const tund = () => TUNNID.find(t => t.id === D().valik.tund) || TUNNID[0];
+  const ekraanil = d => (d || D()).valik.rada === "ekraan";
+  const teema = () => TEEMAD.find(t => t.id === D().valik.teema) || TEEMAD[0];
+  const sonaTeema = id => TEEMAD.find(t => t.sonad.some(s => s.id === id)) || TEEMAD[0];
 
   const SAMMU_NIMI = {
     tutvu: "Kuula ja loe ette",
     lunk: "Kirjuta puuduv sõna",
     kokku: "Pane kokku",
+    kuula: "Kirjuta kuulmise järgi",
+    tolgi: "Tõlgi"
+  };
+  const SAMMU_NIMI_S = {
+    vajuta: "Vajuta õiget nuppu",
+    loe: "Loe ja vajuta",
     kuula: "Kirjuta kuulmise järgi",
     tolgi: "Tõlgi"
   };
@@ -45,6 +61,7 @@
     '<li><b>Kirjuta kuulmise järgi.</b> Kuula ja kirjuta lause.</li>' +
     '<li><b>Tõlgi.</b> Näed lauset eesti keeles ja kirjutad selle inglise keeles. Nii küsib ka õpetaja.</li>' +
     '</ul>' +
+    '<p><b>Sõnad ekraanilt.</b> Need on sõnad, mida näed YouTube’is ja mängudes. Iga sõna harjutad neljas sammus: vajutad joonistatud ekraanil õiget nuppu, loed sama sõna ilma pildita, kirjutad selle kuulmise järgi ja lõpuks tõlgid eesti keelest. Mõnda sõna öeldakse ka eesti keeles inglise keele järgi (näiteks „laikima“). Siis on see selgituses kirjas.</p>' +
     '<p>Mängul on oma klaviatuur, et telefon ei pakuks sõnu ette. Suured ja väikesed tähed ning punkt lõpus ei loe, aga iga täht sõnas loeb. Ringi lõpus kirjuta laused ka vihikusse — ekraanil kirjutamine ei asenda käega kirjutamist.</p>' +
     '<p>Mängu ajal on ülesande all nupp <b>„Anna veast teada“</b>. Kui tõlge või hääl tundub vale, vajuta seda ja vali, mis on valesti. Vanemale või õpetajale: pikema tagasiside võib saata <a href="mailto:silver.jaanus@gmail.com?subject=Harjutaja:%20Keel">e-kirjaga</a>.</p>';
 
@@ -73,7 +90,7 @@
     const g = $("gap"); if (g) g.textContent = t || " ";
   }
 
-  const moodul = {
+  const LAUSE = {
     valmista(it) {
       const q = Object.assign({}, it, { abi: false });
       if (q.samm === "lunk") q.l = L.lunk(q.rida, tund().read);
@@ -245,6 +262,205 @@
     }
   };
 
+
+  /* ---------- ekraanisõnad (q.liik === "sona") ---------- */
+  let vastaS = null;
+
+  function ulMull(q) {
+    return '<div class="ek-ul">' + '<span class="kp-pea">' + KPapagoi("teach", { head: true }) + "</span>" +
+      '<p class="mull">' + esc(q.rida.ul) + "</p></div>";
+  }
+  function etHtml(et, suur) {
+    const o = S.etOsad(et);
+    return '<p class="et' + (suur ? " suur" : "") + '">' + esc(o.pohi) +
+      (o.tapsustus ? ' <span class="tapsustus">(' + esc(o.tapsustus) + ")</span>" : "") + "</p>";
+  }
+  /* „„Search“ tähendab …" — sõna jutumärkides paksult. */
+  function teebHtml(sona) {
+    const t = esc(sona.teeb), en = esc("„" + sona.en + "“");
+    return t.indexOf(en) === 0 ? "<b>" + en + "</b>" + t.slice(en.length) : t;
+  }
+  function kuulaNupudS() {
+    return '<div class="kuula"><button class="ghost" data-heli="rida">' + KOLAR + ' Kuula</button>' +
+      '<button class="ghost" data-heli="aeglane">' + KOLAR + " Aeglaselt</button></div>";
+  }
+  function abiNuppS() {
+    return '<div class="kuula"><button class="ghost" data-heli="abi">' + KOLAR + " Kuula abiks</button></div>" +
+      '<p class="hint-small" id="abiNote" hidden>Kuulasid abiks. See sõna tuleb selles ringis veel korra.</p>';
+  }
+  const leiaSona = id => { for (const t of TEEMAD) { const s = t.sonad.find(x => x.id === id); if (s) return s; } return null; };
+  const nupuline = q => q.samm === "vajuta" || q.samm === "loe";
+
+  const SONA = {
+    valmista(it) {
+      const q = Object.assign({}, it, { abi: false, teema: sonaTeema(it.rida.id) });
+      if (q.samm === "loe") q.valikud = S.valikud(q.rida, q.teema);
+      return q;
+    },
+
+    joonista(q, vasta, vaade) {
+      const r = q.rida, lava = $("lava"), opts = $("opts");
+      $("sammNimi").textContent = SAMMU_NIMI_S[q.samm];
+      opts.hidden = true; opts.innerHTML = "";
+      kb = null; uuesti = false; kaardid = []; pandud = [];
+      vastaS = vasta;
+      let h = "";
+      if (q.samm === "vajuta" || q.samm === "loe") {
+        h = ulMull(q) + '<div class="ekhost" id="ekhost"></div>' + '<p class="teeb" id="teeb" hidden></p>';
+      } else if (q.samm === "kuula") {
+        h = kuulaNupudS() + etHtml(r.et) + '<div id="kthost"></div>';
+      } else {
+        h = '<p class="hint-small">Kirjuta inglise keeles:</p>' + etHtml(r.et, true) +
+          '<p class="teema-silt">' + esc(q.teema.kus) + "</p>" +
+          '<div id="kthost"></div>' + abiNuppS();
+      }
+      lava.innerHTML = h;
+      lava._q = q;
+      if (q.samm === "vajuta") KEkraan.joonista($("ekhost"), q.teema);
+      if (q.samm === "loe") KEkraan.nupud($("ekhost"), q.valikud);
+      if ($("kthost")) {
+        kb = KKlaviatuur.loo({
+          host: $("kthost"),
+          silt: "Kirjuta sõna inglise keeles",
+          onVastus: v => (uuesti ? kontrolliUuesti(q, v) : vasta(v))
+        });
+        if (!vaade) setTimeout(() => { if (kb && !q.done) kb.fookus(); }, 50);
+      }
+      if (q.abi && $("abiNote")) $("abiNote").hidden = false;
+    },
+
+    tyhi(q, v) {
+      if (nupuline(q)) return null;
+      return L.norm(v) ? null : "Kirjuta sõna.";
+    },
+
+    kontrolli(q, v) {
+      if (nupuline(q)) return v === q.rida.id;
+      return S.kontrolli(q.rida, v);
+    },
+
+    oige: q => "„" + q.rida.en + "“",
+
+    valeLause(rec) {
+      const q = rec.q;
+      if (nupuline(q)) {
+        const v = leiaSona(rec.vastus);
+        return (v ? "See nupp on „" + v.en + "“. " : "") + "Õige nupp on „" + q.rida.en + "“.";
+      }
+      return "Õige sõna on „" + q.rida.en + "“.";
+    },
+
+    vihje(q, v) {
+      const r = q.rida;
+      let h = KPapagoi("teach", { head: true }) + '<div class="hinttext">';
+      if (nupuline(q)) {
+        const valitud = leiaSona(v);
+        if (valitud && valitud.id !== r.id) h += '<p class="teeb">' + teebHtml(valitud) + "</p>";
+        h += '<p class="teeb">' + teebHtml(r) + "</p>";
+        return h + "</div>";
+      }
+      h += '<p class="oigerida"><span class="halb">' + esc(r.en) + "</span></p>";
+      h += "<p>" + esc(S.etOsad(r.et).pohi) + "</p>";
+      if (r.markus) h += '<p class="hint-small">' + esc(r.markus) + "</p>";
+      h += '<button class="ghost" data-uuesti="1">Peida ja kirjuta uuesti</button>';
+      return h + "</div>";
+    },
+
+    sama: (a, b) => a.id === b.id,
+
+    naitaVastus(rec) {
+      const q = rec.q;
+      if (nupuline(q)) {
+        KEkraan.margi($("ekhost"), { vajutatud: rec.vastus, oige: q.rida.id, ok: rec.ok });
+        const t = $("teeb");
+        if (t && rec.ok && q.samm === "vajuta") {
+          t.innerHTML = teebHtml(q.rida) + (q.rida.markus ? '<small class="markus">' + esc(q.rida.markus) + "</small>" : "");
+          t.hidden = false;
+        }
+        return;
+      }
+      if (kb) {
+        kb.pane(rec.vastus == null ? "" : rec.vastus);
+        kb.lukusta();
+        kb.input.classList.toggle("ok", rec.ok);
+        kb.input.classList.toggle("bad", !rec.ok);
+      }
+      if (rec.ok && q.samm === "tolgi" && q.rida.markus) {
+        const t = document.createElement("p");
+        t.className = "hint-small"; t.textContent = q.rida.markus;
+        $("lava").append(t);
+      }
+    },
+
+    lukusta() {
+      if (kb) kb.lukusta();
+      document.querySelectorAll("#ekhost button.ek").forEach(b => { b.disabled = true; });
+    },
+
+    fookus() { if (kb) kb.fookus(); },
+
+    mustand() { return kb ? { tekst: kb.vaartus() } : null; },
+    taasta(m) { if (m && kb && m.tekst != null) kb.pane(m.tekst); },
+
+    valikud() { return Array.from(document.querySelectorAll("#ekhost button.ek:not(:disabled)")); },
+
+    klahv(e, q) {
+      if (kb && (!q.done || uuesti) && e.target !== kb.input && kb.klahv(e)) return true;
+      return false;
+    },
+
+    algus(q) {
+      if (q.samm !== "kuula") return;
+      setTimeout(() => { if (mang().cur === q && !q.done && !mang().review) KHeli.sona(q.rida.en); }, 250);
+    },
+
+    vastatud(rec) {
+      const q = rec.q;
+      /* Õige nupu järel kõlab sõna: nii seob laps kirja ja kõla. */
+      if (nupuline(q)) { if (rec.ok) KHeli.sona(q.rida.en); return; }
+      if (!rec.ok) KHeli.sona(q.rida.en);
+    },
+
+    aken() { KHeli.peata(); },
+
+    /* Nupuvajutuse järel on seletus, mida lugeda: mäng ootab „Edasi". */
+    peatu: rec => rec.q.samm === "vajuta",
+
+    veateade(q) {
+      const r = q.rida;
+      return {
+        item: r.id + ":" + q.samm,
+        lause: r.en + " — " + S.etOsad(r.et).pohi,
+        detail: r.en + " — " + r.et + " — samm " + q.samm + " — teema " + q.teema.id
+      };
+    }
+  };
+
+  /* Iga konks läheb ülesande liigi järgi kas lause- või sõnamängule. */
+  const liik = q => (q && q.liik === "sona" ? SONA : LAUSE);
+  const moodul = {
+    valmista: it => liik(it).valmista(it),
+    joonista: (q, vasta, vaade) => liik(q).joonista(q, vasta, vaade),
+    tyhi: (q, v) => liik(q).tyhi(q, v),
+    kontrolli: (q, v) => liik(q).kontrolli(q, v),
+    oige: q => liik(q).oige(q),
+    valeLause: rec => liik(rec.q).valeLause(rec),
+    vihje: (q, v) => liik(q).vihje(q, v),
+    sama: (a, b) => a.id === b.id,
+    naitaVastus: rec => liik(rec.q).naitaVastus(rec),
+    lukusta: () => liik(mang().cur).lukusta(),
+    fookus: () => { if (kb) kb.fookus(); },
+    mustand: () => liik(mang().cur).mustand(),
+    taasta: m => liik(mang().cur).taasta(m),
+    valikud: () => liik(mang().cur).valikud(),
+    klahv: (e, q) => liik(q).klahv(e, q),
+    algus: q => liik(q).algus(q),
+    vastatud: rec => liik(rec.q).vastatud(rec),
+    aken: () => KHeli.peata(),
+    veateade: q => liik(q).veateade(q),
+    peatu: rec => (rec.q.liik === "sona" ? SONA.peatu(rec) : false)
+  };
+
   /* „Peida ja kirjuta uuesti": õige kuju kaob, laps kirjutab uuesti sama
      klaviatuuriga. Tulemusse see ei lähe — see on ainult harjutus. */
   function alustaUuesti() {
@@ -257,7 +473,7 @@
     kb.input.classList.remove("ok", "bad");
     kb.tyhjenda();
     kb.ava();
-    $("fb").textContent = q.samm === "lunk" ? "Kirjuta puuduv sõna uuesti." : "Kirjuta lause uuesti.";
+    $("fb").textContent = q.samm === "lunk" ? "Kirjuta puuduv sõna uuesti." : q.liik === "sona" ? "Kirjuta sõna uuesti." : "Kirjuta lause uuesti.";
     $("fb").className = "feedback";
   }
   function kontrolliUuesti(q, v) {
@@ -273,7 +489,7 @@
       const o = $("hint").querySelector(".oigerida"); if (o) o.hidden = false;
       $("nextBtn").focus();
     } else {
-      fb.textContent = "Veel mitte. Vaata õiget lauset ja proovi uuesti.";
+      fb.textContent = q.liik === "sona" ? "Veel mitte. Vaata õiget sõna ja proovi uuesti." : "Veel mitte. Vaata õiget lauset ja proovi uuesti.";
       fb.className = "feedback bad";
       const o = $("hint").querySelector(".oigerida"); if (o) o.hidden = false;
       kb.tyhjenda();
@@ -323,20 +539,44 @@
     return read.length > 0;
   }
 
+  const KAART_LAUSED = { silt: "Sinu laused", markus: "Iga lause läbib viis sammu. Lause on selge, kui oled selle kahel eri korral ilma abita õigesti tõlkinud." };
+  const KAART_SONAD = { silt: "Sinu sõnad", markus: "Igal sõnal on neli sammu. Sõna on selge, kui oled selle kahes eri ringis ilma abita õigesti tõlkinud." };
+  const SAMMUDE_NIMI = { 4: "neljast", 5: "viiest" };
+
+  function tapiRida(en, et, s, kokku) {
+    const d = document.createElement("div");
+    d.className = "rr" + (s >= kokku ? " g" : "");
+    d.innerHTML = '<div class="t"><b>' + esc(en) + "</b><small>" + esc(et) + "</small></div>" +
+      '<span class="tapid" role="img" aria-label="' + (s >= kokku ? "Selge" : "Samm " + (s + 1) + " " + SAMMUDE_NIMI[kokku]) + '">' +
+      Array.from({ length: kokku }, (_, i) => "<i" + (i < s ? ' class="on"' : "") + "></i>").join("") + "</span>";
+    return d;
+  }
+
   function renderRead(box) {
     box.className = "readmap"; box.innerHTML = "";
-    tund().read.forEach(r => {
-      const s = L.samm(D().stats, r.id);
-      const d = document.createElement("div");
-      d.className = "rr" + (s >= L.SAMMUD.length ? " g" : "");
-      d.innerHTML = '<div class="t"><b>' + esc(L.kuju(r.en)) + "</b><small>" + esc(r.et) + "</small></div>" +
-        '<span class="tapid" role="img" aria-label="' + (s >= L.SAMMUD.length ? "Selge" : "Samm " + (s + 1) + " viiest") + '">' +
-        L.SAMMUD.map((_, i) => "<i" + (i < s ? ' class="on"' : "") + "></i>").join("") + "</span>";
-      box.append(d);
-    });
+    if (ekraanil()) {
+      teema().sonad.forEach(w => box.append(tapiRida(w.en, S.etOsad(w.et).pohi, S.samm(D().stats, w.id), S.SAMMUD.length)));
+      return;
+    }
+    tund().read.forEach(r => box.append(tapiRida(L.kuju(r.en), r.et, L.samm(D().stats, r.id), L.SAMMUD.length)));
   }
 
   function renderStart() {
+    const k = ekraanil() ? KAART_SONAD : KAART_LAUSED;
+    const blk = $("kaartBlock");
+    if (blk) {
+      blk.querySelector(".label").textContent = k.silt;
+      blk.querySelector(".hint-small").textContent = k.markus;
+    }
+    if (ekraanil()) {
+      const sonad = teema().sonad;
+      const n = Math.min(S.RINGIS_SONU, sonad.length);
+      $("trainMeta").textContent = n + " sõna";
+      $("startNote").textContent = sonad.every(w => S.selge(D().stats, w.id))
+        ? "Kõik selle teema sõnad on selged! Harjuta neid vahel ikka, et need meelde jääksid."
+        : "Ringis on kuni " + n + " sõna. Üks ring võtab umbes 5 minutit.";
+      return;
+    }
     const read = tund().read;
     const n = Math.min(5, read.length);
     $("trainMeta").textContent = n + " lauset";
@@ -352,7 +592,7 @@
     op: "laused",
     nimi: "Keel",
     kus: "Keeles",
-    kirjeldus: "Inglise keele laused: kuula, loe ette ja kirjuta.",
+    kirjeldus: "Inglise keel: laused kooli tunnist ja sõnad, mida näed ekraanil.",
     asjad: { yks: "lause", mitu: "lauset", mitmus: "laused" },
     maskott: (m, o) => KPapagoi(m, o),
     maskotiNimi: "Papagoi",
@@ -361,9 +601,20 @@
     ringiPikkus: 5,
     voistlus: null,
     kiibid: [{
-      id: "tund", silt: "Mida harjutad?",
+      id: "rada", silt: "Mida harjutad?",
+      vaikimisi: "kool",
+      valikud: [{ id: "kool", nimi: "Kooli laused" }, { id: "ekraan", nimi: "Sõnad ekraanilt" }]
+    }, {
+      id: "tund", silt: "Tund",
       vaikimisi: TUNNID[0] && TUNNID[0].id,
-      valikud: TUNNID.map(t => ({ id: t.id, nimi: t.nimi }))
+      valikud: TUNNID.map(t => ({ id: t.id, nimi: t.nimi })),
+      naita: v => v.rada !== "ekraan"
+    }, {
+      id: "teema", silt: "Teema",
+      vaikimisi: TEEMAD[0] && TEEMAD[0].id,
+      valikud: TEEMAD.map(t => ({ id: t.id, nimi: t.nimi })),
+      markus: "Need sõnad aitavad aru saada, mida ekraan sinult tahab.",
+      naita: v => v.rada === "ekraan"
     }],
     /* Enne malli oli valitud tund väljas D.tund. */
     laadi(d) {
@@ -371,22 +622,36 @@
       if (d.tund && !d.valik.tund) d.valik.tund = d.tund;
     },
     ring: (d, mode, fookus) => {
+      if (ekraanil(d)) {
+        const t = teema(); if (!t) return null;
+        return S.ring(t, d.stats, { ringId: String(Date.now()), fookus: fookus || [] });
+      }
       const t = tund(); if (!t) return null;
       return new L.Ring(t.read, d.stats, { ringId: String(Date.now()), fookus: fookus || [] });
     },
     ringAlgas: (round, d) => {
+      if (round.liik === "sona") {
+        d.audioWarmS = d.audioWarmS || {};
+        const t = teema();
+        if (!d.audioWarmS[t.id]) KHeli.soojendaSonad(t.sonad, () => { d.audioWarmS[t.id] = true; api.save(); });
+        return;
+      }
       if (!d.audioWarm) KHeli.soojenda(tund().read, () => { d.audioWarm = true; api.save(); });
     },
+    /* Edetabelis on „Selged laused" — ekraanisõnad sinna ei lähe (plaan 16. sept). */
     selgedArv: d => selged(d.stats),
+    ringiSelged: d => (ekraanil(d) ? S.selgeid(d.stats, TEEMAD) : selged(d.stats)),
+    ringiAsjad: d => (ekraanil(d) ? { yks: "sõna", mitu: "sõna" } : { yks: "lause", mitu: "lauset" }),
     selgus: "Lause on selge, kui oled selle kahel eri korral ilma abita õigesti tõlkinud.",
-    alamTekst: "Uued laused on alguses rasked. Iga ring teeb need tuttavamaks.",
-    harjutaNeid: "Harjuta neid lauseid",
+    alamTekst: d => (ekraanil(d) ? "Uued sõnad on alguses rasked. Iga ring teeb need tuttavamaks."
+      : "Uued laused on alguses rasked. Iga ring teeb need tuttavamaks."),
+    harjutaNeid: d => (ekraanil(d) ? "Harjuta neid sõnu" : "Harjuta neid lauseid"),
     /* Sama lause võib olla vigade seas mitme sammuga — järgmisele ringile üks kord. */
     kordus: G => [...new Set(G.wrong.map(q => q.rida.id))],
     veaRida: q => {
       const s = document.createElement("span");
       s.className = "vaeg";
-      s.innerHTML = "<b>" + esc(q.rida.en) + "</b><small>" + esc(q.rida.et) + "</small>";
+      s.innerHTML = "<b>" + esc(q.rida.en) + "</b><small>" + esc(q.liik === "sona" ? S.etOsad(q.rida.et).pohi : q.rida.et) + "</small>";
       return s;
     },
     enneTulemust(G) {
@@ -399,15 +664,15 @@
     tulemusLisa: {
       silt: "Kirjuta vihikusse",
       markus: "Loe eestikeelne lause, kirjuta see vihikusse inglise keeles ja vajuta siis „Näita“.",
-      joonista: (host, G, round) => joonistaPaber(host, round ? round.valitud : [])
+      joonista: (host, G, round) => (round && round.liik === "sona" ? false : joonistaPaber(host, round ? round.valitud : []))
     },
     koju: () => KHeli.peata(),
-    harjutaMeta: () => Math.min(5, tund().read.length) + " lauset",
+    harjutaMeta: () => (ekraanil() ? Math.min(S.RINGIS_SONU, teema().sonad.length) + " sõna" : Math.min(5, tund().read.length) + " lauset"),
     avaleht: () => renderStart(),
     kaart: {
       id: "readmap",
-      silt: "Sinu laused",
-      markus: "Iga lause läbib viis sammu. Lause on selge, kui oled selle kahel eri korral ilma abita õigesti tõlkinud.",
+      silt: KAART_LAUSED.silt,
+      markus: KAART_LAUSED.markus,
       joonista: host => renderRead(host)
     },
     lava: '<p class="samm" id="sammNimi"></p><div class="lava" id="lava"></div><div class="opts kolm" id="opts" hidden></div>',
@@ -419,17 +684,24 @@
   /* Sõna ja kuulamise nupud laval (üks kuulaja kogu lava jaoks). */
   $("lava").addEventListener("click", e => {
     const q = $("lava")._q; if (!q) return;
+    /* Ekraanisõna: joonistatud nupp on vastus. */
+    const ek = e.target.closest("button.ek");
+    if (ek) {
+      if (q.liik === "sona" && !q.done && !mang().review && vastaS) vastaS(ek.dataset.id);
+      return;
+    }
     const w = e.target.closest("button.w");
     if (w) { KHeli.sona(w.dataset.w, { nupp: w }); return; }
     const h = e.target.closest("button[data-heli]");
     if (!h) return;
+    const mangi = o => (q.liik === "sona" ? KHeli.sona(q.rida.en, o) : KHeli.rida(q.rida, o));
     if (h.dataset.heli === "abi") {
       if (!q.done && !mang().review) { q.abi = true; $("abiNote").hidden = false; }
-      KHeli.rida(q.rida, { nupp: h });
+      mangi({ nupp: h });
       if (kb && !q.done) kb.fookus();
       return;
     }
-    KHeli.rida(q.rida, { aeglane: h.dataset.heli === "aeglane", nupp: h });
+    mangi({ aeglane: h.dataset.heli === "aeglane", nupp: h });
   });
 
   $("hint").addEventListener("click", e => {

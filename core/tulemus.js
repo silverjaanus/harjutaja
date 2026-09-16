@@ -17,8 +17,8 @@
        D, save, saatmine, voistlus, n: 20,
        maskott: KKagu,                       // (meeleolu) → SVG
        alamTekst: "Kell on keeruline asi. …", // harjutusringi madala tulemuse lause
-       selgeks: ["kellaaeg", "kellaaega"],    // „1 kellaaeg / 3 kellaaega sai selgeks"
-       harjutaNeid: "Harjuta neid kellaaegu",
+       selgeks: ["kellaaeg", "kellaaega"],    // „1 kellaaeg / 3 kellaaega sai selgeks" (või funktsioon, mis selle annab)
+       harjutaNeid: "Harjuta neid kellaaegu",   // alamTekst ja harjutaNeid võivad olla ka funktsioonid
        veaRida: it => element,                // üks rida vigade nimekirjas
        ringiLisa: () => ({ level: D.level }), // lisaväljad D.rounds kirjele
        kordus: G => G.wrong,                  // mida „Harjuta neid …" harjutab ([] = ei midagi)
@@ -66,7 +66,7 @@
       if (G.n < VAIKE_RING) return ['Hea algus!', 'wave'];
       if (pct >= 0.9) return ['Suurepärane!', 'cheer', true];
       if (pct >= 0.7) return ['Hästi tehtud!', 'happy'];
-      return ['Hästi harjutatud!', 'kind', false, o.alamTekst || ''];
+      return ['Hästi harjutatud!', 'kind', false, (typeof o.alamTekst === 'function' ? o.alamTekst() : o.alamTekst) || ''];
     }
 
     function naita(G, lisa) {
@@ -115,7 +115,8 @@
         kast(stats, String(parim), rekord ? 'uus rekord' : 'sinu rekord');
       }
       var uued = lisa.uued || 0;
-      if (uued > 0 && o.selgeks) kast(stats, String(uued), (uued === 1 ? o.selgeks[0] : o.selgeks[1]) + ' sai selgeks');
+      var sk = typeof o.selgeks === 'function' ? o.selgeks() : o.selgeks;
+      if (uued > 0 && sk) kast(stats, String(uued), (uued === 1 ? sk[0] : sk[1]) + ' sai selgeks');
       if (o.kastid) o.kastid(G).forEach(function (x) { kast(stats, x[0], x[1]); });
 
       var wins = $('resWins');
@@ -130,7 +131,7 @@
       $('resNextBlock').hidden = !G.wrong.length;
 
       var kordus = o.kordus ? o.kordus(G) : G.wrong.slice();
-      $('againBtn').textContent = kordus.length ? o.harjutaNeid : 'Harjuta veel';
+      $('againBtn').textContent = kordus.length ? (typeof o.harjutaNeid === 'function' ? o.harjutaNeid() : o.harjutaNeid) : 'Harjuta veel';
       o.mang.naita('s-result');
       return kordus;
     }

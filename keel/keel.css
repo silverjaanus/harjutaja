@@ -116,3 +116,96 @@
 #resNext .vaeg small{font-size:14px}
 .uuesti input:focus{outline:none;border-color:var(--accent-edge)}
 .pb .et{color:var(--ink)}
+
+/* ---------- ekraanisõnad (keel/ekraanid.js, 16. sept) ---------- */
+
+/* ülesanne papagoi mullis */
+.ek-ul{display:flex;align-items:center;gap:8px;width:100%}
+.ek-ul .kp-pea{flex:none;width:52px}
+.ek-ul .mull{flex:1;margin:0;background:var(--warm-soft);border:1.5px solid var(--accent-edge);border-radius:16px;padding:10px 14px;font-size:19px;font-weight:800;line-height:1.3;position:relative}
+.ek-ul .mull::before{content:"";position:absolute;left:-8px;top:50%;margin-top:-7px;border:7px solid transparent;border-right-color:var(--accent-edge);border-left:0}
+.teeb{margin:0;font-size:16px;line-height:1.4;color:var(--ink);text-align:center}
+.hinttext .teeb{text-align:left;margin:0 0 8px}
+.teeb .markus{display:block;margin-top:4px;font-size:14px;color:var(--ink-soft)}
+.teeb b{font-family:var(--display);font-weight:600}
+.teema-silt{font-size:14px;color:var(--ink-soft);text-align:center;margin:-6px 0 0}
+.et .tapsustus{color:var(--ink-soft);font-weight:600}
+
+/* ühine ekraaniraam */
+.ekraan{width:100%;max-width:340px;border:3px solid #22252b;border-radius:22px;overflow:hidden;box-shadow:0 4px 0 #22252b;position:relative;text-align:left}
+.ek{font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;transition:transform .12s}
+.ek:active{transform:scale(.96)}
+.ek:disabled{cursor:default}
+.ek.vale{outline:3px solid var(--bad);outline-offset:2px;animation:ek-raputa .35s}
+.ek.oige{outline:3px solid var(--ok);outline-offset:2px}
+@keyframes ek-raputa{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.ek.vale{animation:none}}
+
+/* YouTube (joonistus, mitte logo) */
+.yt{background:#fff;color:#0f0f0f;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:500}
+.yt .ek{border:0;border-radius:999px;background:#f0f0f0;color:#0f0f0f;padding:6px 12px;font-size:14px;font-weight:600}
+.yt-pais{display:flex;align-items:center;justify-content:space-between;padding:8px 10px}
+.yt-nimi{font-size:18px;letter-spacing:-.02em}
+.yt-otsirida{display:none;margin:0 10px 6px;height:32px;border-radius:999px;border:1.5px solid #bbb;padding:0 12px;align-items:center}
+.yt-kursor{width:2px;height:18px;background:#0f0f0f;animation:ek-vilgu 1s steps(2) infinite}
+@keyframes ek-vilgu{50%{opacity:0}}
+.tehtud-yt-search .yt-otsirida{display:flex}
+.yt-video{position:relative;aspect-ratio:16/9;background:#000}
+.yt-pilt{display:block;width:100%;height:100%}
+.yt-reklaam{position:absolute;inset:0;background:rgba(0,0,0,.35);transition:opacity .3s}
+.yt-ad{position:absolute;left:8px;bottom:8px;background:#ffd400;color:#000;font-size:12px;font-weight:800;border-radius:4px;padding:1px 6px}
+.yt .yt-skip{position:absolute;right:8px;bottom:8px;border-radius:4px;background:rgba(20,20,20,.85);color:#fff}
+.tehtud-yt-skip .yt-reklaam{opacity:0}
+.yt-pealkiri{margin:8px 10px 4px;font-size:15px;font-weight:700}
+.yt-kanal{display:flex;align-items:center;gap:8px;padding:4px 10px}
+.yt-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#8e6ad8,#f3c445);flex:none}
+.yt-kanalinimi{flex:1;font-size:13px;font-weight:700;display:flex;flex-direction:column}
+.yt-kanalinimi small{color:#606060;font-weight:500}
+.yt .yt-telli{background:#0f0f0f;color:#fff}
+.yt-t2{display:none}
+.tehtud-yt-subscribe .yt-telli{background:#f0f0f0;color:#0f0f0f}
+.tehtud-yt-subscribe .yt-t1{display:none}
+.tehtud-yt-subscribe .yt-t2{display:inline}
+.yt-tegevused{display:flex;gap:6px;padding:8px 10px;flex-wrap:wrap}
+.yt-arv{font-weight:500;color:#606060}
+.tehtud-yt-like .yt-like .ek-taide{fill:currentColor}
+.tehtud-yt-like .yt-like{background:#e5dcfb}
+.tehtud-yt-share .yt-tegevused .ek.vajutatud,.tehtud-yt-download .yt-tegevused .ek.vajutatud{background:#e5dcfb}
+.yt .yt-kommentaarid{display:flex;flex-direction:column;align-items:stretch;gap:4px;margin:0 10px 8px;width:calc(100% - 20px);border-radius:12px;padding:8px 10px}
+.yt-kom-pais{display:flex;align-items:center;gap:6px}
+.yt-kom-pais small{color:#606060}
+.yt-kom-rida{display:none;align-items:center;gap:6px;font-weight:500}
+.yt-kom-rida i{width:18px;height:18px;border-radius:50%;background:#9fd0a3}
+.tehtud-yt-comments .yt-kom-rida{display:flex}
+.yt-alla{display:flex;justify-content:space-around;align-items:center;border-top:1px solid #e5e5e5;padding:4px 6px}
+.yt .yt-home{background:none;flex-direction:column;gap:0;font-size:11px;padding:4px 8px}
+.tehtud-yt-home .yt-home{background:#f0f0f0}
+.yt-tyhi{width:40px;display:grid;place-items:center}
+.yt-tyhi i{width:20px;height:20px;border-radius:6px;border:2px solid #c9c9c9}
+
+/* Minecraft (joonistus, mitte logo) */
+.mc{background:#6b4a2e;background-image:linear-gradient(45deg,rgba(0,0,0,.12) 25%,transparent 25%,transparent 75%,rgba(0,0,0,.12) 75%),linear-gradient(45deg,rgba(0,0,0,.12) 25%,transparent 25%,transparent 75%,rgba(0,0,0,.12) 75%);background-size:24px 24px;background-position:0 0,12px 12px;color:#fff;font-family:"Courier New",ui-monospace,monospace;font-weight:700;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.mc-nimi{margin:2px 0 0;text-align:center;font-size:24px;letter-spacing:.08em;color:#e0e0e0;text-shadow:3px 3px 0 #333}
+.mc .ek{border:2px solid #111;border-radius:0;background:#8b8b8b;color:#fff;text-shadow:2px 2px 0 #3a3a3a;box-shadow:inset -2px -3px 0 #555,inset 2px 2px 0 #b5b5b5;padding:6px 10px;font-size:15px;font-weight:700;font-family:inherit}
+.mc-menyy{display:flex;flex-direction:column;gap:6px;align-items:center}
+.mc-menyy .ek{width:78%}
+.mc .mc-suur{font-size:17px}
+.mc-paneel{background:rgba(40,40,40,.72);border:2px solid #111;padding:8px;display:flex;flex-direction:column;gap:4px}
+.mc-rida{display:flex;gap:6px}
+.mc-rida .ek{flex:1}
+.mc .mc-roheline{background:#3c8527;box-shadow:inset -2px -3px 0 #1d4d13,inset 2px 2px 0 #6cc349}
+.mc-silt{font-size:12px;color:#d0d0d0;margin-top:4px}
+.mc-surm{background:rgba(120,16,16,.8);border:2px solid #111;padding:8px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.mc-surm p{margin:0;font-size:18px}
+.mc-surm .ek{width:70%}
+.mc-sydamed{display:flex;gap:3px}
+.mc-sydamed i{width:12px;height:11px;background:#3a3a3a;clip-path:polygon(50% 100%,0 40%,15% 5%,50% 25%,85% 5%,100% 40%)}
+.tehtud-mc-respawn .mc-sydamed i{background:#e03030}
+.mc .ek.vajutatud.mc-valik,.mc .ek.vajutatud{background:#5b5b5b;box-shadow:inset 2px 3px 0 #333}
+.mc .ek.vajutatud.mc-roheline{background:#2c6a1c}
+
+/* loe-samm: hallid nupud, ainult kiri */
+.ek-nupud{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.ek-hall{border:1.5px solid #9aa3b2;border-radius:12px;background:#eef0f3;color:#1d2f4f;font-size:20px;font-weight:700;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:12px 6px;min-height:52px}
+
+/* avalehe sõnade kaart kasutab sama .rr kujundust */
