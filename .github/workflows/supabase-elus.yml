@@ -1,0 +1,50 @@
+# Hoiab Harjutaja Supabase'i baasi (projekt "harjutaja", ID cidkhkxivrntfukadzip) ärkvel.
+#
+# Miks: Supabase peatab tasuta projekti, kui baasis pole nädala jooksul piisavalt päringuid.
+# Harjutamine serverit ei puuduta - päringuid teevad ainult võistlus, edetabel, liitumine ja veateade.
+# Vaiksel nädalal ei tee seda keegi, seega teeb see töö iga kahe päeva tagant paar lugemispäringut.
+#
+# Kui töö läheb punaseks: vaata logist HTTP koodi. 540 = projekt on pausil,
+# käivita see Supabase'i lehelt uuesti (Restore project). GitHub saadab punase töö kohta kirja.
+#
+# NB: GitHub peatab ajastatud töö, kui repos pole 60 päeva tegevust olnud (saadab enne kirja).
+# Siis tuleb see Actions-lehelt uuesti sisse lülitada.
+#
+# Aadress ja avalik võti tulevad korrutaja/config.json-ist (sama, mida äpp kasutab).
+
+name: Supabase ärkvel
+
+on:
+  schedule:
+    - cron: '17 5 */2 * *'   # iga kahe päeva tagant 05.17 UTC (Eesti aja järgi 7.17 või 8.17)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: korrutaja/config.json
+          sparse-checkout-cone-mode: false
+
+      - name: Lugemispäringud baasi
+        run: |
+          URL=$(jq -r .url korrutaja/config.json)
+          KEY=$(jq -r .key korrutaja/config.json)
+          for i in 1 2 3; do
+            CODE=$(curl -s -o vastus.json -w '%{http_code}' -X POST \
+              "$URL/rest/v1/rpc/school_suggest" \
+              -H "apikey: $KEY" -H "Content-Type: application/json" \
+              -d '{"p_q":"Testkool"}')
+            echo "Päring $i: HTTP $CODE, vastus $(cat vastus.json)"
+            if [ "$CODE" != "200" ]; then
+              echo "::error::Supabase vastas HTTP $CODE. Kui see on 540, on projekt pausil - käivita see Supabase'i lehelt uuesti."
+              exit 1
+            fi
+            sleep 2
+          done
