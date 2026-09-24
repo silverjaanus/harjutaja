@@ -2,7 +2,7 @@ Seis: OOTAB MERGE'I
 
 # supabase-elus — Supabase'i baas ei tohi pausile minna
 
-**Eesmärk.** 24. sept tuli Supabase'ilt kiri: projekt (ID `cidkhkxivrntfukadzip`, tollal nimega „korrutaja") on nädal otsa vähe päringuid saanud ja läheb varsti pausile. See on Harjutaja **ainus** andmebaas — kõik moodulid kasutavad seda (`core/config.js`, `korrutaja/config.json`). Pausil lakkavad töötamast liitumine, edetabelid, veateated ja võistlustulemuste saatmine (need jäävad telefoni `outbox`'i). Harjutamine töötab edasi, sest see serverit ei puuduta — just seepärast baas vaiksel nädalal tühjaks jääbki.
+**Eesmärk.** 24. sept tuli Supabase'ilt kiri: projekt (ID `cidkhkxivrntfukadzip`, tollal nimega „korrutaja", 24. sept nimetati Supabase'is ümber „harjutajaks" — ID ja URL jäid samaks, äpis pole midagi vaja muuta) on nädal otsa vähe päringuid saanud ja läheb varsti pausile. See on Harjutaja **ainus** andmebaas — kõik moodulid kasutavad seda (`core/config.js`, `korrutaja/config.json`). Pausil lakkavad töötamast liitumine, edetabelid, veateated ja võistlustulemuste saatmine (need jäävad telefoni `outbox`'i). Harjutamine töötab edasi, sest see serverit ei puuduta — just seepärast baas vaiksel nädalal tühjaks jääbki.
 
 **Mis on tehtud.** Uus töövoog `.github/workflows/supabase-elus.yml`: iga kahe päeva tagant 05.17 UTC kolm lugemispäringut (`rpc/school_suggest`) avaliku võtmega, mis loetakse `korrutaja/config.json`-ist. Vastus peab olema HTTP 200, muidu läheb töö punaseks ja GitHub saadab kirja. HTTP 540 tähendab, et projekt on juba pausil — siis Supabase'i lehelt „Restore project". Töövoogu saab käivitada ka käsitsi (Actions → Supabase ärkvel → Run workflow). Andmeid ei muudeta, migratsiooni pole vaja.
 
